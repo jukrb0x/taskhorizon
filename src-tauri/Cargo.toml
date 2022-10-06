@@ -1,8 +1,8 @@
 [package]
-name = "fyp-demo"
+name = "Calitdone"
 version = "0.0.0"
-description = "A Tauri App"
-authors = ["you"]
+description = "Schedule your tasks and events"
+authors = ["Jabriel"]
 license = ""
 repository = ""
 edition = "2021"
