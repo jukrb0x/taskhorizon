@@ -6,7 +6,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "fyp-demo",
+    "productName": "Calidone",
     "version": "0.0.0"
   },
   "tauri": {
