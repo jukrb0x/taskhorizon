@@ -1,7 +1,7 @@
 import { Button, Layout } from '@douyinfe/semi-ui';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import Root from './routes/root';
+import { createBrowserRouter, Link, RouterProvider } from 'react-router-dom';
 import RouteError from './components/RouteError';
+import TodoApp from './pages/TodoApp';
 
 function App() {
     const { Header, Footer, Content, Sider } = Layout;
@@ -9,10 +9,11 @@ function App() {
     const router = createBrowserRouter([
         {
             path: '/',
-            element: <Root />,
+            element: <TodoApp />,
             errorElement: <RouteError />
             // children
         }
+        // todo: adding routes here
     ]);
 
     return (
