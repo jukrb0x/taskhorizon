@@ -37,21 +37,21 @@ graph TB;
 
 ## Infrastructure
 
--   [x] React (TypeScript)
--   [x] Tauri
--   [ ] Redux
--   [x] React-Router
+- [x] React (TypeScript)
+- [x] Tauri
+- [ ] Redux
+- [x] React-Router
 
 ## Framework
 
--   [x] TailwindCSS (PostCSS)
+- [x] TailwindCSS (PostCSS)
 - [x] semi-ui
 - [ ] ...
 
 ## Dev Toolchain
 
--   [x] husky
--   [x] lint-staged
--   [x] stylelint
--   [x] prettier
--   [x] commitlint
+- [x] husky
+- [x] lint-staged
+- [x] stylelint
+- [x] prettier
+- [x] commitlint
