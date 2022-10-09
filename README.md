@@ -6,15 +6,16 @@
   </p>
 </h1>
 
-Project CalItDone integrates To-Do list app (tasking) with Calendar app (scheduling) to make a smooth experience for daily tasking and scheduling.
+Project CalItDone integrates To-Do list app (tasking) with Calendar app (scheduling) to make a smooth experience for
+daily tasking and scheduling.
 
 ## Branches
 
--   `main` : stable branch
--   `dev` : active development
--   `feat/*` : modular feature development
--   `fix/*` : bug fix branch
--   `release/*` : release version
+- `main` : stable branch
+- `dev` : active development
+- `feat/*` : modular feature development
+- `fix/*` : bug fix branch
+- `release/*` : release version
 
 ## Architecture
 
@@ -31,3 +32,17 @@ graph TB;
     React -. IPC through Tauri Core .-> Notification
 
 ```
+
+## Tech Todo
+## Infrastructure
+- [x] React (TypeScript)
+- [x] Tauri
+- [ ] Redux
+- [x] React-Router
+
+## Toolchain
+- [ ] husky
+- [ ] lint-staged
+- [ ] stylelint
+- [ ] prettier
+- [ ] commitlint
