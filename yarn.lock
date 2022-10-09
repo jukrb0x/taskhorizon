@@ -1362,6 +1362,16 @@ csstype@^3.0.2:
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-3.1.1.tgz#841b532c45c758ee546a11d5bd7b7b473c8c30b9"
   integrity sha512-DJR/VvkAvSZW9bTouZue2sSxDwdTN92uHjqeKVm+0dAqdfNykRzQ95tay8aXMBAAPpUiq4Qcug2L7neoRh2Egw==
 
+cz-git@^1.3.11:
+  version "1.3.11"
+  resolved "https://registry.yarnpkg.com/cz-git/-/cz-git-1.3.11.tgz#fd386ca3b111d8585e22a1ea5678076b9aa897fa"
+  integrity sha512-YelXp5cbFCGslt60XQTpF+MQWoyTpkwPC5vMArIdI65bk9llgAl5vLQPtKBva+aQ781YctkeeKldlJ6Pizezbg==
+
+czg@^1.3.11:
+  version "1.3.11"
+  resolved "https://registry.yarnpkg.com/czg/-/czg-1.3.11.tgz#a4de415478321ee83bb01da94ea6fee4e616c384"
+  integrity sha512-v7iZRG9Po8Vix8OfF7vqsaUxchc+uRD2iEOy0rN84Hr22rndzeekfRDff8Vl9wCZGSsBZDqn+eAp6HJt7nXgvg==
+
 dargs@^7.0.0:
   version "7.0.0"
   resolved "https://registry.yarnpkg.com/dargs/-/dargs-7.0.0.tgz#04015c41de0bcb69ec84050f3d9be0caf8d6d5cc"
