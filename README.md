@@ -11,11 +11,11 @@ daily tasking and scheduling.
 
 ## Branches
 
--   `main` : stable branch
--   `dev` : active development
--   `feat/*` : modular feature development
--   `fix/*` : bug fix branch
--   `release/*` : release version
+- `main` : stable branch
+- `dev` : active development
+- `feat/*` : modular feature development
+- `fix/*` : bug fix branch
+- `release/*` : release version
 
 ## Architecture
 
@@ -45,8 +45,8 @@ graph TB;
 ## Framework
 
 -   [x] TailwindCSS (PostCSS)
--
--
+- [x] semi-ui
+- [ ] ...
 
 ## Dev Toolchain
 
