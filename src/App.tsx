@@ -1,9 +1,7 @@
 import { Button, Layout } from '@douyinfe/semi-ui';
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Root from "./routes/root";
-import RouteError from "./components/RouteError";
-import { window } from "@tauri-apps/api";
-
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import Root from './routes/root';
+import RouteError from './components/RouteError';
 
 function App() {
     const { Header, Footer, Content, Sider } = Layout;
@@ -12,29 +10,26 @@ function App() {
         {
             path: '/',
             element: <Root />,
-            errorElement: <RouteError />,
+            errorElement: <RouteError />
+            // children
         }
-    ])
+    ]);
 
     return (
         <div>
-            <Layout className={ "basic-outer" }>
-                <Sider className={ "basic-left-sider" }>
+            <Layout className={'basic-outer'}>
+                <Sider className={'basic-left-sider'}>
                     Sider
-                    <Button onClick={ () => {
-
-                    } }>ToDo</Button>
+                    <Button onClick={() => {}}>ToDo</Button>
                 </Sider>
-                <Layout className={ "basic-right" }>
-                    <Header className={ "basic-header" }>Header</Header>
-                    <Content className={ "basic-content" }>
-                        <RouterProvider router={ router }/>
+                <Layout className={'basic-right'}>
+                    <Header className={'basic-header'}>Header</Header>
+                    <Content className={'basic-content'}>
+                        <RouterProvider router={router} />
                     </Content>
-                    <Footer className={ "basic-footer" }>Footer</Footer>
+                    <Footer className={'basic-footer'}>Footer</Footer>
                 </Layout>
             </Layout>
-
-
         </div>
     );
 }
