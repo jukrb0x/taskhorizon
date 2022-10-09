@@ -1,8 +1,6 @@
 {
     "name": "calitdone",
-    "author": {
-        "name": "Jabriel"
-    },
+    "author": "Jabriel",
     "private": true,
     "version": "0.0.0",
     "type": "module",
@@ -11,7 +9,8 @@
         "dev:app": "tauri dev",
         "build": "tsc && vite build",
         "preview": "vite preview",
-        "tauri": "tauri"
+        "tauri": "tauri",
+        "prepare": "husky install"
     },
     "dependencies": {
         "@douyinfe/semi-ui": "^2.20.3",
@@ -25,15 +24,34 @@
         "@types/node": "^18.7.10",
         "@types/react": "^18.0.15",
         "@types/react-dom": "^18.0.6",
+        "@typescript-eslint/eslint-plugin": "^5.0.0",
         "@vitejs/plugin-react": "^2.0.0",
+        "eslint": "^8.0.1",
+        "eslint-config-prettier": "^8.5.0",
+        "eslint-config-standard-with-typescript": "^23.0.0",
+        "eslint-plugin-import": "^2.25.2",
+        "eslint-plugin-n": "^15.0.0",
+        "eslint-plugin-promise": "^6.0.0",
+        "eslint-plugin-react": "^7.31.8",
+        "husky": "^8.0.1",
+        "lint-staged": "^13.0.3",
         "prettier": "2.7.1",
         "sass": "^1.55.0",
         "stylelint": "^14.13.0",
         "stylelint-config-prettier-scss": "^0.0.1",
-        "stylelint-config-standard": "^28.0.0",
         "stylelint-config-standard-scss": "^5.0.0",
         "tailwindcss": "^3.1.8",
-        "typescript": "^4.6.4",
+        "typescript": "*",
         "vite": "^3.0.2"
+    },
+    "lint-staged": {
+        "*.{js,jsx,ts,tsx}": [
+            "prettier --write",
+            "eslint --fix"
+        ],
+        "*.{css,scss}": [
+            "prettier --write",
+            "stylelint --fix"
+        ]
     }
 }
