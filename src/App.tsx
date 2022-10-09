@@ -20,7 +20,7 @@ function App() {
             <Layout className={'basic-outer'}>
                 <Sider className={'basic-left-sider'}>
                     Sider
-                    <Button onClick={() => {}}>ToDo</Button>
+                    <Button>ToDo</Button>
                 </Sider>
                 <Layout className={'basic-right'}>
                     <Header className={'basic-header'}>Header</Header>
