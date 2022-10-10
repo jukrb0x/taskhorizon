@@ -33,7 +33,22 @@ graph TB;
 
 ```
 
-## Tech Todo
+## Development
+
+```shell
+# install dependencies
+yarn
+
+# start web dev server
+yarn dev
+
+# start Tauri dev window
+# -- it will start both web dev server and Tauri dev window
+yarn tauri dev
+
+# build for production
+yarn tauri build
+```
 
 ## Infrastructure
 
@@ -55,3 +70,14 @@ graph TB;
 - [x] stylelint
 - [x] prettier
 - [x] commitlint
+- [x] commitizen (czg)
+
+# Modules
+> WIP
+
+- Todo List App
+- TodoEvent (Todo + Event) Data Structure
+- Calendar View
+- Data Persistance
+- Prisma, Prisma client rust, LocalForge, Redux
+
