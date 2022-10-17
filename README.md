@@ -1,12 +1,12 @@
 <h1>
   <p align="center">
     <samp>
-      CalItDone
+      Calitdone
     </samp>
   </p>
 </h1>
 
-Project CalItDone integrates To-Do list app (tasking) with Calendar app (scheduling) to make a smooth experience for
+Project Calitdone integrates To-Do list app (tasking) with Calendar app (scheduling) to make a smooth experience for
 daily tasking and scheduling.
 
 ## Branches
