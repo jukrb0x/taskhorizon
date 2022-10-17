@@ -51,9 +51,6 @@ export default function TodoList() {
                 {todos.map((todo) => (
                     <div key={todo.eventId}>
                         <hr />
-                        {/* not ok bcuz cannot change value once it rendered */}
-                        {/* it's not two-way data binding like Vue.js */}
-                        {/* All React components must act like pure functions with respect to their props. */}
                         <Checkbox checked={todo.isDone}>{todo.tittle}</Checkbox>
                         <TimePicker defaultValue={[todo.start, todo.end]} disabled={true} />
                         <br />
