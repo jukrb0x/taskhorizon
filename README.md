@@ -19,7 +19,7 @@ daily tasking and scheduling.
 
 ## Architecture
 
-Version `0.1` :
+Version `0.1 (draft)` :
 
 ```mermaid
 graph TB;
