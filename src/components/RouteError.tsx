@@ -1,7 +1,7 @@
 import { Button, Empty, Notification } from '@douyinfe/semi-ui';
 
 export default function RouteError() {
-    let opts = {
+    const opts = {
         title: '404 Not Found',
         content: 'Seems something wrong...',
         duration: 3
@@ -11,7 +11,7 @@ export default function RouteError() {
         <div>
             <Empty title={opts.title} description={opts.content}>
                 <a href="/">
-                    {/* todo: use route */}
+                    {/* Todo: use route */}
                     <Button>Go Home</Button>
                 </a>
             </Empty>
