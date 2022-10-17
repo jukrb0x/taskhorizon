@@ -1,18 +1,33 @@
 import { useState } from 'react';
-import { Button } from '@douyinfe/semi-ui';
+import { Button, Checkbox, Input, TimePicker } from '@douyinfe/semi-ui';
+import './index.scss';
 
 export default function TodoList() {
     type Todo = {
-        id: number;
-        text: string;
-        done: boolean;
+        eventId: number;
+        isTodo: boolean; // default to be false
+        isDone: boolean; // only works when `isTodo == true`
+        tittle: string;
+        note: string;
+        start: Date;
+        end: Date;
+        reminder: Date[];
     };
+    const title = '';
+    const start: Date = new Date();
+    const end: Date = new Date();
+    const note = '';
 
     const [todos, setTodos] = useState<Todo[]>([
         {
-            id: 1,
-            text: 'todo 1',
-            done: false
+            eventId: 1,
+            isTodo: true,
+            isDone: false,
+            tittle: 'test todo',
+            note: 'some notes',
+            start: new Date(2022, 1, 1, 1, 1, 1),
+            end: new Date(2022, 1, 1, 2, 1, 1),
+            reminder: []
         }
     ]);
 
@@ -22,8 +37,31 @@ export default function TodoList() {
     };
 
     return (
-        <>
+        <div className={'wrapper'}>
+            <Input insetLabel={'Title'} placeholder={'something to do...'} value={title} />
+            <TimePicker
+                insetLabel={'Time'}
+                type={'timeRange'}
+                defaultValue={['00:00:00', '00:00:00']}
+                value={[start, end]}
+            />
+            <Input insetLabel={'Note'} placeholder={'something to note...'} value={note} />
             <Button onClick={() => addTodo}>Add</Button>
-        </>
+            <div>
+                {todos.map((todo) => (
+                    <div key={todo.eventId}>
+                        <hr />
+                        {/* not ok bcuz cannot change value once it rendered */}
+                        {/* it's not two-way data binding like Vue.js */}
+                        {/* All React components must act like pure functions with respect to their props. */}
+                        <Checkbox checked={todo.isDone}>{todo.tittle}</Checkbox>
+                        <TimePicker defaultValue={[todo.start, todo.end]} disabled={true} />
+                        <br />
+                        {todo.note}
+                        <hr />
+                    </div>
+                ))}
+            </div>
+        </div>
     );
 }
