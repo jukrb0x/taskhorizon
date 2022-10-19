@@ -32,7 +32,7 @@ module.exports = {
         ]
     },
     prompt: {
-        /** @use `yarn commit :f` */
+        /** @use `pnpm commit :f` */
         useEmoji: true,
         alias: {
             t: 'fix: typo',

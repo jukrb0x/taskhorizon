@@ -37,17 +37,17 @@ graph TB;
 
 ```shell
 # install dependencies
-yarn
+pnpm i
 
 # start web dev server
-yarn dev
+pnpm dev
 
 # start Tauri dev window
 # -- it will start both web dev server and Tauri dev window
-yarn tauri dev
+pnpm tauri dev
 
 # build for production
-yarn tauri build
+pnpm tauri build
 ```
 
 ## Infrastructure
