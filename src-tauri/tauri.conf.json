@@ -55,10 +55,10 @@
     "windows": [
       {
         "fullscreen": false,
-        "height": 600,
         "resizable": true,
         "title": "Calitdone",
-        "width": 800
+        "width": 1200,
+        "height": 800
       }
     ]
   }
