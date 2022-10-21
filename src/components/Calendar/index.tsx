@@ -102,6 +102,8 @@ export default function CalendarView() {
                     displayValue={new Date(2019, 6, 23, 8, 32, 0)}
                     range={[new Date(2019, 6, 23), new Date(2019, 6, 26)]}
                     width={'100%'}
+                    height={'100%'}
+                    style={{ overflow: 'hidden' }}
                 />
             </div>
         </>
