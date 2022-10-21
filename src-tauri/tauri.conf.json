@@ -6,7 +6,7 @@
     "distDir": "../dist"
   },
   "package": {
-    "productName": "Calitdone",
+    "productName": "calitdone",
     "version": "0.0.0"
   },
   "tauri": {
@@ -56,7 +56,7 @@
       {
         "fullscreen": false,
         "resizable": true,
-        "title": "Calitdone",
+        "title": "calitdone",
         "width": 1200,
         "height": 800
       }

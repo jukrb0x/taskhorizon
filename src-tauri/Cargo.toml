@@ -1,5 +1,5 @@
 [package]
-name = "Calitdone"
+name = "calitdone"
 version = "0.0.0"
 description = "Schedule your tasks and events"
 authors = ["Jabriel"]
