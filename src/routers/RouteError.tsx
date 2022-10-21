@@ -10,7 +10,7 @@ export default function RouteError() {
     return (
         <div>
             <Empty title={opts.title} description={opts.content}>
-                <a href="/">
+                <a href="/src/pages">
                     {/* Todo: use route */}
                     <Button>Go Home</Button>
                 </a>

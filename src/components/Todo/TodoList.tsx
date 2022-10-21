@@ -1,63 +1,69 @@
 import { useState } from 'react';
-import { Button, Checkbox, Input, TimePicker } from '@douyinfe/semi-ui';
+import { Button, Checkbox, Input, TimePicker, Space } from '@douyinfe/semi-ui';
 import './index.scss';
+import TodoItem from '@/components/Todo/TodoItem';
+import { Todo, TodoType, todoList } from '@/components/Todo/temp-todos';
 
 export default function TodoList() {
-    type Todo = {
-        eventId: number;
-        isTodo: boolean; // default to be false
-        isDone: boolean; // only works when `isTodo == true`
-        tittle: string;
-        note: string;
-        start: Date;
-        end: Date;
-        reminder: Date[];
-    };
-    const title = '';
-    const start: Date = new Date();
-    const end: Date = new Date();
-    const note = '';
+    const [todos, setTodos] = useState<Todo[]>(todoList);
 
-    const [todos, setTodos] = useState<Todo[]>([
-        {
-            eventId: 1,
-            isTodo: true,
+    const [title, setTitle] = useState('');
+    const [timeRange, setTimeRange] = useState();
+    const [note, setNote] = useState('');
+
+    const addTodo = function () {
+        const todo: Todo = {
+            eventId: todos.length + 1,
+            type: TodoType.todo,
             isDone: false,
-            tittle: 'test todo',
-            note: 'some notes',
-            start: new Date(2022, 1, 1, 1, 1, 1),
-            end: new Date(2022, 1, 1, 2, 1, 1),
+            title,
+            note,
+            start: timeRange[0],
+            end: timeRange[1],
             reminder: []
-        }
-    ]);
+        };
 
-    const addTodo = function (todo: Todo) {
+        console.log(todo);
+
         const newTodos = [...todos, todo];
         setTodos(newTodos);
     };
 
     return (
         <div className={'wrapper'}>
-            <Input insetLabel={'Title'} placeholder={'something to do...'} value={title} />
+            <Input
+                insetLabel={'Title'}
+                placeholder={'something to do...'}
+                value={title}
+                onChange={(val) => setTitle(val)}
+            />
+
             <TimePicker
                 insetLabel={'Time'}
                 type={'timeRange'}
                 defaultValue={['00:00:00', '00:00:00']}
-                value={[start, end]}
+                value={timeRange}
+                onChange={(val) => setTimeRange(val)}
             />
-            <Input insetLabel={'Note'} placeholder={'something to note...'} value={note} />
+
+            <Input
+                insetLabel={'Note'}
+                placeholder={'something to note...'}
+                value={note}
+                onChange={(val) => setNote(val)}
+            />
             <Button onClick={() => addTodo}>Add</Button>
             <div>
-                {todos.map((todo) => (
-                    <div key={todo.eventId}>
-                        <hr />
-                        <Checkbox checked={todo.isDone}>{todo.tittle}</Checkbox>
-                        <TimePicker defaultValue={[todo.start, todo.end]} disabled={true} />
-                        <br />
-                        {todo.note}
-                        <hr />
-                    </div>
-                ))}
+                <Space vertical spacing={'tight'} align={'start'}>
+                    {todos.map((todo) => (
+                        <div key={todo.eventId}>
+                            <Checkbox checked={todo.isDone} extra={todo.note}>
+                                {todo.title}
+                            </Checkbox>
+                            {/*<TimePicker defaultValue={[todo.start, todo.end]} disabled={true} />*/}
+                        </div>
+                    ))}
+                </Space>
             </div>
         </div>
     );
