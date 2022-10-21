@@ -72,12 +72,18 @@ pnpm tauri build
 - [x] commitlint
 - [x] commitizen (czg)
 
-# Modules
+## Modules
 > WIP
 
 - Todo List App
 - TodoEvent (Todo + Event) Data Structure
 - Calendar View
-- Data Persistance
+- Data Persistence
 - Prisma, Prisma client rust, LocalForge, Redux
 
+## Thoughts
+- three types: event, todo, eventodo
+- make interfaces for them
+- todo is simple, just a few words
+- drag and drop how to do it
+  - a custom event card is needed
