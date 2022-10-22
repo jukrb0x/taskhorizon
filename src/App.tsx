@@ -1,4 +1,4 @@
-import MainRouterProvider from '@/routers/MainRouterProvider';
+import MainRouterProvider from '@/routes/MainRouterProvider';
 import './index.scss';
 
 function App() {
