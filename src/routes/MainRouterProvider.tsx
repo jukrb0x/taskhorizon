@@ -1,5 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import RouteError from '@/routers/RouteError';
+import RouteError from '@/routes/RouteError';
 import CalendarView from '@/components/Calendar';
 import Calendar from '@/components/WIP/Calendar';
 import MainLayout from '@/components/MainLayout';
