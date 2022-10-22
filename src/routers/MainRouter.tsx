@@ -1,9 +1,8 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import RouteError from '@/routers/RouteError';
-import TodoApp from '@/pages/TodoApp';
-import { Calendar, ConfigProvider } from '@douyinfe/semi-ui';
-import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
 import CalendarView from '@/components/Calendar';
+import Calendar from '@/components/WIP/Calendar';
+import MainLayout from '@/components/MainLayout';
 
 export default function MainRouter() {
     const router = createBrowserRouter([
@@ -11,9 +10,14 @@ export default function MainRouter() {
         // seperate them
         {
             path: '/',
-            element: <CalendarView />,
-            errorElement: <RouteError />
-            // children
+            element: <MainLayout />,
+            errorElement: <RouteError />,
+            children: [
+                {
+                    path: '/component/cal',
+                    element: <Calendar />
+                }
+            ]
         }
     ]);
 

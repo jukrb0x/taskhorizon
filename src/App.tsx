@@ -1,8 +1,8 @@
-import MainLayout from '@/components/MainLayout';
+import MainRouter from '@/routers/MainRouter';
 import './index.scss';
 
 function App() {
-    return <MainLayout />;
+    return <MainRouter />;
 }
 
 export default App;

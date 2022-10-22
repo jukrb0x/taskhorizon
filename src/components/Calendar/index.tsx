@@ -82,8 +82,8 @@ const events = [
     },
     {
         key: '10',
-        start: new Date(2019, 6, 21, 10, 0, 0),
-        end: new Date(2019, 6, 21, 12, 0, 0),
+        start: new Date(2019, 6, 21, 10, 20, 0),
+        end: new Date(2019, 6, 21, 12, 10, 0),
         children: (
             <div style={allDayStyle}>
                 <img src={'/876-536x354.jpg'} />
@@ -97,6 +97,8 @@ export default function CalendarView() {
         <>
             <div className={'calendar-wrapper'}>
                 <Calendar
+                    // header={<>header</>}
+                    showCurrTime
                     mode={'week'}
                     events={events}
                     displayValue={new Date(2019, 6, 23, 8, 32, 0)}
@@ -104,6 +106,9 @@ export default function CalendarView() {
                     width={'100%'}
                     height={'100%'}
                     style={{ overflow: 'hidden' }}
+                    onClick={(e, date: Date) => {
+                        console.log(e, date);
+                    }}
                 />
             </div>
         </>

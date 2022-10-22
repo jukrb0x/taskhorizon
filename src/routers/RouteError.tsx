@@ -1,4 +1,5 @@
 import { Button, Empty, Notification } from '@douyinfe/semi-ui';
+import { Link } from 'react-router-dom';
 
 export default function RouteError() {
     const opts = {
@@ -10,10 +11,10 @@ export default function RouteError() {
     return (
         <div>
             <Empty title={opts.title} description={opts.content}>
-                <a href="/src/pages">
+                <Link to="/">
                     {/* Todo: use route */}
                     <Button>Go Home</Button>
-                </a>
+                </Link>
             </Empty>
         </div>
     );
