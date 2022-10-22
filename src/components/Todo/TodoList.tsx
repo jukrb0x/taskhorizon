@@ -8,7 +8,7 @@ export default function TodoList() {
     const [todos, setTodos] = useState<Todo[]>(todoList);
 
     const [title, setTitle] = useState('');
-    const [timeRange, setTimeRange] = useState();
+    const [timeRange, setTimeRange] = useState(['00:00:00', '00:00:00']);
     const [note, setNote] = useState('');
 
     const addTodo = function () {
@@ -18,8 +18,8 @@ export default function TodoList() {
             isDone: false,
             title,
             note,
-            start: timeRange[0],
-            end: timeRange[1],
+            start: new Date(timeRange[0]),
+            end: new Date(timeRange[1]),
             reminder: []
         };
 
@@ -41,9 +41,8 @@ export default function TodoList() {
             <TimePicker
                 insetLabel={'Time'}
                 type={'timeRange'}
-                defaultValue={['00:00:00', '00:00:00']}
                 value={timeRange}
-                onChange={(val) => setTimeRange(val)}
+                onChange={(val) => setTimeRange(val as string[])}
             />
 
             <Input

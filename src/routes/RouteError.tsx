@@ -2,6 +2,7 @@ import { Button, Empty, Notification } from '@douyinfe/semi-ui';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { useEffect } from 'react';
+import DebugPanel from '@/routes/components/DebugPanel';
 
 export default function RouteError() {
     const location = useLocation();
@@ -21,6 +22,7 @@ export default function RouteError() {
         height: 100vh;
     `;
     // Notification.error(opts);
+    // fixme: pops up twice
     useEffect(() => {
         console.log('error');
         Notification.error(opts);

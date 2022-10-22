@@ -6,11 +6,13 @@ import './index.scss';
 import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
 import TodoList from '@/components/Todo/TodoList';
 import { Link, NavLink, Outlet } from 'react-router-dom';
-import DebugNavbar from '@/routes/components/DebugNavbar';
+import DebugPanel from '@/routes/components/DebugPanel';
 
 export default function MainLayout() {
     const { Header, Footer, Content, Sider } = Layout;
     const [siderWidth, setSiderWidth] = useState(300);
+
+    const isDebug = import.meta.env.MODE === 'development';
 
     return (
         <ConfigProvider locale={en_GB}>
@@ -20,14 +22,13 @@ export default function MainLayout() {
                 </Sider>
                 <Resizer /> {/* resize sider */}
                 <Layout>
-                    <Header>
-                        <DebugNavbar />
-                    </Header>
+                    <Header>Header</Header>
                     <Content>
                         <Outlet />
                     </Content>
                 </Layout>
             </Layout>
+            {isDebug ? <DebugPanel /> : null}
         </ConfigProvider>
     );
 }
