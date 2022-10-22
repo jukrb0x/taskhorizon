@@ -1,11 +1,11 @@
 import { Button, Space } from '@douyinfe/semi-ui';
 import { Link, useLocation } from 'react-router-dom';
-import './index.scss';
+import styles from './index.module.scss';
 import { useState } from 'react';
 
 export default function DebugNavbar() {
     const location = useLocation();
-    const [isClose, setIsClose] = useState(false);
+    const [isCollapse, setIsCollapse] = useState(false);
     const navLinks = [
         {
             name: 'Home',
@@ -17,10 +17,10 @@ export default function DebugNavbar() {
         }
     ];
     return (
-        <div className={'debug-wrapper'}>
-            <div className={'navbar'} style={isClose ? { display: 'none' } : {}}>
+        <div className={styles.wrapper}>
+            <div className={styles.navbar} style={isCollapse ? { display: 'none' } : {}}>
                 <Space>
-                    <b>Debug</b>
+                    <b>Goto: </b>
                     {navLinks.map((item) => (
                         <Link to={item.path} key={item.path}>
                             <Button type={'primary'}>{item.name}</Button>
@@ -35,8 +35,8 @@ export default function DebugNavbar() {
             <Button
                 type={'tertiary'}
                 theme={'solid'}
-                onClick={() => setIsClose(!isClose)}
-                className={'debug-btn'}
+                onClick={() => setIsCollapse(!isCollapse)}
+                className={styles['debug-btn']}
             >
                 Debug
             </Button>

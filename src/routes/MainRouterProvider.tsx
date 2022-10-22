@@ -14,6 +14,10 @@ export default function MainRouterProvider() {
             errorElement: <RouteError />,
             children: [
                 {
+                    path: '/',
+                    element: <CalendarView />
+                },
+                {
                     path: '/component/cal',
                     element: <Calendar />
                 }

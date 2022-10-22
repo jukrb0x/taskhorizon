@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button, Checkbox, Input, TimePicker, Space } from '@douyinfe/semi-ui';
-import './index.scss';
+import styles from './index.module.scss';
 import TodoItem from '@/components/Todo/TodoItem';
 import { Todo, TodoType, todoList } from '@/components/Todo/temp-todos';
 
@@ -30,7 +30,7 @@ export default function TodoList() {
     };
 
     return (
-        <div className={'wrapper'}>
+        <div className={styles.wrapper}>
             <Input
                 insetLabel={'Title'}
                 placeholder={'something to do...'}
