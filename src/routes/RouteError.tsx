@@ -1,9 +1,10 @@
 import { Button, Empty, Notification } from '@douyinfe/semi-ui';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { useEffect } from 'react';
 
 export default function RouteError() {
+    const location = useLocation();
     const opts = {
         title: '404 Not Found',
         content: 'Seems something wrong...',
@@ -21,13 +22,14 @@ export default function RouteError() {
     `;
     // Notification.error(opts);
     useEffect(() => {
-        console.log('error')
+        console.log('error');
         Notification.error(opts);
     });
     return (
         <div>
             <Center>
                 <Empty title={opts.title} description={opts.content}>
+                    {location.pathname} is not found.
                     <Link to="/" style={{ textDecoration: 'none' }}>
                         <Button>Go Home</Button>
                     </Link>
