@@ -53,11 +53,11 @@
         "vite": "^3.0.2"
     },
     "lint-staged": {
-        "/src/*.{js,jsx,ts,tsx}": [
+        "*.{js,jsx,ts,tsx},!public/*.{js}": [
             "prettier --write",
             "eslint --fix"
         ],
-        "/src/*.{scss,css}": [
+        "*.{scss,css},!public/*.{css}": [
             "prettier --write",
             "stylelint --fix"
         ]
