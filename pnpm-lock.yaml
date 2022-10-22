@@ -1,5 +1,8 @@
 lockfileVersion: 5.4
 
+overrides:
+  styled-components: ^5
+
 specifiers:
   '@commitlint/cli': ^17.1.2
   '@commitlint/config-conventional': ^17.1.0
@@ -31,7 +34,7 @@ specifiers:
   react-dom: ^18.2.0
   react-router-dom: ^6.4.2
   sass: ^1.55.0
-  styled-components: ^5.3.6
+  styled-components: ^5
   stylelint: ^14.13.0
   stylelint-config-prettier-scss: ^0.0.1
   stylelint-config-standard-scss: ^5.0.0
