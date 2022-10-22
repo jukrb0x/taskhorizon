@@ -57,7 +57,13 @@ export default function TodoList() {
                 <Space vertical spacing={'tight'} align={'start'}>
                     {todos.map((todo) => (
                         <div key={todo.eventId}>
-                            <Checkbox checked={todo.isDone} extra={todo.note}>
+                            <Checkbox
+                                checked={todo.isDone}
+                                extra={todo.note}
+                                onChange={() => {
+                                    console.log(todo.title);
+                                }}
+                            >
                                 {todo.title}
                             </Checkbox>
                             {/*<TimePicker defaultValue={[todo.start, todo.end]} disabled={true} />*/}

@@ -1,8 +1,8 @@
-import MainRouter from '@/routers/MainRouter';
+import MainRouterProvider from '@/routers/MainRouterProvider';
 import './index.scss';
 
 function App() {
-    return <MainRouter />;
+    return <MainRouterProvider />;
 }
 
 export default App;
