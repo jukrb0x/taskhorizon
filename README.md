@@ -6,7 +6,6 @@
   </p>
 </h1>
 
-
 Project Calitdone integrates To-Do list app (tasking) with Calendar app (scheduling) to make a smooth experience for
 daily tasking and scheduling.
 
