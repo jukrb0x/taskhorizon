@@ -1,5 +1,6 @@
-// taildwindcss
-// @tailwind base;
-// @tailwind components;
-// @tailwind utilities;
 @import 'normalize.css';
+
+// tailwindcss
+@tailwind base; // prefilled is disabled
+@tailwind components;
+@tailwind utilities;
