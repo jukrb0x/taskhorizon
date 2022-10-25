@@ -1,5 +1,4 @@
 import { Button, ConfigProvider, Layout, Space } from '@douyinfe/semi-ui';
-import MainRouterProvider from '@/routes/MainRouterProvider';
 import Resizer from '@/components/Resizer';
 import { useState } from 'react';
 import './index.scss';

@@ -1,29 +1,12 @@
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { createBrowserRouter, Navigate, RouterProvider } from 'react-router-dom';
 import RouteError from '@/routes/RouteError';
 import SemiCalendar from '@/components/SemiCalendar';
 import Calendar from '@/components/Calendar';
 import MainLayout from '@/components/MainLayout';
+import { routes } from './routes';
 
 export default function MainRouterProvider() {
-    const router = createBrowserRouter([
-        // todo: the routes now are shit
-        // separate them
-        {
-            path: '/',
-            element: <MainLayout />,
-            errorElement: <RouteError />,
-            children: [
-                {
-                    path: '/',
-                    element: <SemiCalendar />
-                },
-                {
-                    path: '/component/cal',
-                    element: <Calendar />
-                }
-            ]
-        }
-    ]);
+    const router = createBrowserRouter(routes);
 
     return <RouterProvider router={router} />;
 }
