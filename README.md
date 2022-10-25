@@ -50,29 +50,37 @@ pnpm tauri dev
 pnpm tauri build
 ```
 
-## Infrastructure
-
-- [x] React (TypeScript)
-- [x] Tauri
-- [ ] Redux
-- [x] React-Router
-
 ## Framework
 
-- [x] TailwindCSS (PostCSS)
-- [x] semi-ui
-- [ ] ...
+### Infrastructure
 
-## Dev Toolchain
+| Name                                    | Description                                     |
+|-----------------------------------------|-------------------------------------------------|
+| [Tauri](https://tauri.app/)             | Cross-platform framework (Electron alternative) |
+| [React](https://reactjs.org)            | Frontend UI framework                           |
+| [Redux](https://redux.js.org)           | State management, Single Source of Truth (SSOT) |
+| [React Router](https://reactrouter.com) | Routing for React                               |
 
-- [x] husky
-- [x] lint-staged
-- [x] stylelint
-- [x] prettier
-- [x] commitlint
-- [x] commitizen (czg)
+### Frontend
+
+| Name              | Description          |
+|-------------------|----------------------|
+| Tailwind CSS      | Custom UI Components |
+| Semi-UI           | UI Components        |
+| styled-components | Custom UI Components |
+
+### DX
+
+| Name        | Description           |
+|-------------|-----------------------|
+| Prettier    | Code formatter        |
+| Stylelint   | CSS linter            |
+| Husky       | Git hooks             |
+| lint-staged | Git hooks             |
+| Commitizen  | Git commit convention |
 
 ## Modules
+
 > WIP
 
 - Todo List App
@@ -81,9 +89,6 @@ pnpm tauri build
 - Data Persistence
 - Prisma, Prisma client rust, LocalForge, Redux
 
-## Thoughts
-- three types: event, todo, eventodo
-- make interfaces for them
-- todo is simple, just a few words
-- drag and drop how to do it
-  - a custom event card is needed
+## TODO
+
+See [TODO](./TODO.md)
