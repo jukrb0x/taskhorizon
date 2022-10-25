@@ -1,15 +1,16 @@
 import { Typography, Button, Space, SideSheet, Input } from '@douyinfe/semi-ui';
+import Title from '@douyinfe/semi-ui/lib/es/typography/title';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './index.module.scss';
 import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
+// semi-ui
+const StyledTitle = styled(Title)`
+    padding-bottom: 10px;
+`;
+
 export default function DebugPanel() {
-    // semi-ui
-    const { Title } = Typography;
-    const StyledTitle = styled(Title)`
-        padding-bottom: 10px;
-    `;
     // hooks
     const location = useLocation();
     const navigate = useNavigate();

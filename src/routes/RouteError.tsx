@@ -23,10 +23,12 @@ export default function RouteError() {
     `;
     // Notification.error(opts);
     // fixme: pops up twice
+
     useEffect(() => {
         console.log('error');
         Notification.error(opts);
-    });
+    }, []);
+
     return (
         <div>
             <Center>

@@ -1,7 +1,7 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import RouteError from '@/routes/RouteError';
-import CalendarView from '@/components/Calendar';
-import Calendar from '@/components/WIP/Calendar';
+import SemiCalendar from '@/components/SemiCalendar';
+import Calendar from '@/components/Calendar';
 import MainLayout from '@/components/MainLayout';
 
 export default function MainRouterProvider() {
@@ -15,7 +15,7 @@ export default function MainRouterProvider() {
             children: [
                 {
                     path: '/',
-                    element: <CalendarView />
+                    element: <SemiCalendar />
                 },
                 {
                     path: '/component/cal',
