@@ -1,7 +1,7 @@
-import RouteError from '@/routes/RouteError';
+import RouteError from '@/routes/components/RouteError';
 import SemiCalendar from '@/components/SemiCalendar';
 import Calendar from '@/components/Calendar';
-import MainLayout from '@/components/MainLayout';
+import MainLayout from '@/pages/Home';
 import { Navigate, RouteObject } from 'react-router-dom';
 
 export const routes: RouteObject[] = [
