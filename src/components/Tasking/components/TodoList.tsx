@@ -1,5 +1,5 @@
-import { todoList } from './todos';
-import TodoItem from '@/components/Tasking/TodoItem';
+import { todoList } from '../todos';
+import TodoItem from '@/components/Tasking/components/TodoItem';
 
 export default function TodoList() {
     const todos = todoList;

@@ -1,6 +1,6 @@
 import { Checkbox } from '@douyinfe/semi-ui';
 
-import { Todo } from './todos';
+import { Todo } from '../todos';
 
 type TodoItemProps = {
     todo: Todo;

@@ -4,7 +4,7 @@ import { ConfigProvider, Layout } from '@douyinfe/semi-ui';
 import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
 import Resizer from '@/components/Resizer';
 import DebugPanel from '@/routes/components/DebugPanel';
-import TodoList from '@/components/Tasking/TodoList';
+import TodoApp from '@/components/Tasking';
 import './index.scss';
 
 export default function Home() {
@@ -17,7 +17,7 @@ export default function Home() {
         <ConfigProvider locale={en_GB}>
             <Layout hasSider className={'main-layout-wrapper'}>
                 <Sider className={'sider'}>
-                    <TodoList />
+                    <TodoApp />
                 </Sider>
                 <Resizer /> {/* todo: resize <Sider /> */}
                 <Layout>
