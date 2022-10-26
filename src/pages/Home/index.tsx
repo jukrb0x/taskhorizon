@@ -1,11 +1,11 @@
-import { Button, ConfigProvider, Layout, Space } from '@douyinfe/semi-ui';
-import Resizer from '@/components/Resizer';
 import { useState } from 'react';
-import './index.scss';
+import { Outlet } from 'react-router-dom';
+import { ConfigProvider, Layout } from '@douyinfe/semi-ui';
 import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
-import TodoList from '@/components/TodoBeta/TodoList';
-import { Link, NavLink, Outlet } from 'react-router-dom';
+import Resizer from '@/components/Resizer';
 import DebugPanel from '@/routes/components/DebugPanel';
+import TodoList from '@/components/Tasking/TodoList';
+import './index.scss';
 
 export default function Home() {
     const { Header, Footer, Content, Sider } = Layout;
@@ -19,7 +19,7 @@ export default function Home() {
                 <Sider className={'sider'}>
                     <TodoList />
                 </Sider>
-                <Resizer /> {/* resize <Sider /> */}
+                <Resizer /> {/* todo: resize <Sider /> */}
                 <Layout>
                     <Header>Header</Header>
                     <Content>
@@ -27,7 +27,10 @@ export default function Home() {
                     </Content>
                 </Layout>
             </Layout>
-            {isDebug ? <DebugPanel /> : null}
+            {
+                /* debug panel only display with development mode*/
+                isDebug ? <DebugPanel /> : null
+            }
         </ConfigProvider>
     );
 }
