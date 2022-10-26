@@ -37,6 +37,12 @@ export default function MyCalendar() {
         const cal = calRef?.current?.getInstance();
         cal?.prev();
     }
+    const array = [
+        { name: 'joe', age: 12 },
+        { name: 'doe', age: 21 }
+    ];
+    // return new array only has names
+    const names = array.map((item) => item.name);
 
     return (
         <div className={'tw-flex tw-flex-col tw-h-full tw-items-stretch'}>

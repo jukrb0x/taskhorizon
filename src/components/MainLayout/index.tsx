@@ -3,7 +3,7 @@ import Resizer from '@/components/Resizer';
 import { useState } from 'react';
 import './index.scss';
 import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
-import TodoList from '@/components/Todo/TodoList';
+import TodoList from '@/components/TodoBeta/TodoList';
 import { Link, NavLink, Outlet } from 'react-router-dom';
 import DebugPanel from '@/routes/components/DebugPanel';
 
@@ -19,7 +19,7 @@ export default function MainLayout() {
                 <Sider className={'sider'}>
                     <TodoList />
                 </Sider>
-                <Resizer /> {/* resize sider */}
+                <Resizer /> {/* resize <Sider /> */}
                 <Layout>
                     <Header>Header</Header>
                     <Content>
