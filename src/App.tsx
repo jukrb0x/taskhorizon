@@ -1,10 +1,10 @@
-import MainRouterProvider from '@/routes/MainRouterProvider';
+import AppRouterProvider from '@/routes/AppRouterProvider';
 import './index.scss';
 
 function App() {
     return (
         <>
-            <MainRouterProvider />
+            <AppRouterProvider />
         </>
     );
 }
