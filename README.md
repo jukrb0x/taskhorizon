@@ -71,13 +71,14 @@ pnpm tauri build
 
 ### DX
 
-| Name        | Description           |
-|-------------|-----------------------|
-| Prettier    | Code formatter        |
-| Stylelint   | CSS linter            |
-| Husky       | Git hooks             |
-| lint-staged | Git hooks             |
-| Commitizen  | Git commit convention |
+| Name                                                                       | Description                    |
+|----------------------------------------------------------------------------|--------------------------------|
+| Prettier                                                                   | Code formatter                 |
+| Stylelint                                                                  | CSS linter                     |
+| Husky                                                                      | Git hooks                      |
+| lint-staged                                                                | Git hooks                      |
+| Commitizen                                                                 | Git commit convention          |
+| [Tailwind Config Viewer](https://github.com/rogden/tailwind-config-viewer) | Tailwind config and cheatsheet |
 
 ## Modules
 
