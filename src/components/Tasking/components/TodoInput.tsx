@@ -1,4 +1,4 @@
-import { Button, Input, Space } from '@douyinfe/semi-ui';
+import { Button, Input } from '@douyinfe/semi-ui';
 
 export default function TodoInput() {
     return (
