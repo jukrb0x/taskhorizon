@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { Button, Checkbox, Input, TimePicker, Space } from '@douyinfe/semi-ui';
 import styles from './index.module.scss';
-import TodoItem from '@/components/TodoBeta/TodoItem';
-import { Todo, TodoType, todoList } from '@/components/TodoBeta/temp-todos';
+import TodoItem from '@/components/TodoOld/TodoItem';
+import { Todo, TodoType, todoList } from '@/components/TodoOld/temp-todos';
 
 export default function TodoList() {
     const [todos, setTodos] = useState<Todo[]>(todoList);
