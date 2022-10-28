@@ -22,11 +22,14 @@
         "normalize.css": "^8.0.1",
         "react": "^18.2.0",
         "react-dom": "^18.2.0",
-        "react-router-dom": "^6.4.2"
+        "react-redux": "^8.0.4",
+        "react-router-dom": "^6.4.2",
+        "redux": "^4.2.0"
     },
     "devDependencies": {
         "@commitlint/cli": "^17.1.2",
         "@commitlint/config-conventional": "^17.1.0",
+        "@redux-devtools/core": "^3.13.1",
         "@tauri-apps/cli": "^1.1.1",
         "@types/node": "^18.11.7",
         "@types/react": "^18.0.24",
