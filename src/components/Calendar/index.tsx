@@ -1,15 +1,15 @@
 import Calendar from '@toast-ui/react-calendar';
 import '@toast-ui/calendar/dist/toastui-calendar.min.css';
-import { useEffect, useRef } from 'react';
+import { createRef, useEffect, useRef } from 'react';
 import { Button, Notification } from '@douyinfe/semi-ui';
 import ToastUIReactCalendar from '@toast-ui/react-calendar';
 import Controller from './Controller';
-import { EventObject } from '@toast-ui/calendar';
+import { CalendarEvent } from './data-structure';
 
 const calendars = [{ id: 'default', name: 'Calendar' }];
 export default function MyCalendar() {
     const calRef = useRef<ToastUIReactCalendar>(null);
-    const events: EventObject[] = [
+    const events: CalendarEvent[] = [
         {
             id: '1',
             calendarId: 'default',
