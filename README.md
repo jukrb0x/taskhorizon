@@ -54,14 +54,15 @@ pnpm tauri build
 
 ### Infrastructure
 
-| Name                                    | Description                                     |
-|-----------------------------------------|-------------------------------------------------|
-| [Tauri](https://tauri.app/)             | Cross-platform framework (Electron alternative) |
-| [React](https://reactjs.org)            | Frontend UI framework                           |
-| [Redux](https://redux.js.org)           | State management, Single Source of Truth (SSOT) |
-| [React Router](https://reactrouter.com) | Routing for React                               |
+| Name                                          | Description                                     |
+|-----------------------------------------------|-------------------------------------------------|
+| [Tauri](https://tauri.app/)                   | Cross-platform framework (Electron alternative) |
+| [React](https://reactjs.org)                  | Frontend UI framework                           |
+| [Redux](https://redux.js.org)                 | State management, Single Source of Truth (SSOT) |
+| [Redux-Toolkit](https://redux-toolkit.js.org) | Redux toolkit (RTK) for easy state management   |
+| [React Router](https://reactrouter.com)       | Routing for React                               |
 
-### Frontend
+### User Interface
 
 | Name              | Description          |
 |-------------------|----------------------|
