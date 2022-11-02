@@ -29,7 +29,8 @@ export default function Home() {
                 </Layout>
             </Layout>
             {
-                /* debug panel only display with development mode*/
+                // debug panel only display with development mode
+                // todo: get the env inside the component, use it directly in the outer component
                 isDebug ? <DebugPanel /> : null
             }
         </SemiConfigProvider>
