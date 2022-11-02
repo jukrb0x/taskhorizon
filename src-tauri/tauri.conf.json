@@ -59,7 +59,7 @@
         "title": "calitdone",
         "width": 1200,
         "height": 800,
-        "transparent": false,
+        "transparent": true,
         "decorations": true,
         "center": true
       }

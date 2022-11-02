@@ -27,7 +27,8 @@ async fn main() -> Result<(), Box<dyn Error>> {
             let app = app.handle();
 
             app.windows().iter().for_each(|(_, window)| {
-                window.hide().unwrap();
+                // just for testing
+                // window.hide().unwrap();
 
                 #[cfg(target_os = "windows")]
                 window.set_decorations(true).unwrap();
