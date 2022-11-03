@@ -19,13 +19,13 @@ daily tasking and scheduling.
 
 ## Architecture
 
-Version `0.1 (draft)` :
+Version `0.2 (draft)` :
 
 ```mermaid
 graph TB;
     A{Tauri Core} <-- Command & Event --> B[WebView]
     A --> Notification
-    B --> React[React] <-- States & Data--> rd_store[Redux Store] -- Data Persistence --> ls[(LocalStorage)]
+    B --> React[React] <-- States & Data--> rd_store[Zustand Store] -- Data Persistence --> ls[(LocalStorage)]
     React -- Render --> vdom[VirtualDOM]
     vdom --> cv(Calendar View)
     vdom --> tv(Tasking View)
