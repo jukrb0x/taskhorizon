@@ -1,18 +1,21 @@
 import { Checkbox } from '@douyinfe/semi-ui';
 
-import { Todo } from '../todos';
+import { Todo } from '@/store/todo';
+import useTodoStore from '@/store/todo';
 
-type TodoItemProps = {
-    todo: Todo;
-};
+export default function TodoItem({ todo }: { todo: Todo }) {
+    const { toggleTodo } = useTodoStore();
 
-export default function TodoItem({ todo }: TodoItemProps) {
+    const handleToggle = () => {
+        toggleTodo && toggleTodo(todo.id);
+    };
+
     return (
         <>
             <Checkbox
-                checked={todo.isDone}
+                checked={todo.completed}
                 onChange={() => {
-                    console.log(todo);
+                    handleToggle();
                 }}
             >
                 {todo.title}
