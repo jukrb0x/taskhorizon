@@ -9,9 +9,11 @@ export default function TodoInput() {
     const [title, setTitle] = useState<string>('');
 
     const handleAdd = () => {
+        const trimmedTitle = title.trim();
+        if (trimmedTitle == '') return;
         const todo: Todo = {
             id: UUID(),
-            title: title,
+            title: trimmedTitle,
             completed: false
         };
         addTodo && addTodo(todo);
