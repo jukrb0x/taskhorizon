@@ -1,6 +1,8 @@
 import create, { StateCreator } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
+const isDev = import.meta.env.MODE === 'development';
+
 interface Todo {
     id: string;
     completed: boolean;
@@ -35,7 +37,9 @@ const TodoStore: StateCreator<TodoStoreState> = (set) => ({
         }))
 });
 
-const useTodoStore = create<TodoStoreState>()(devtools(persist(TodoStore, { name: 'todo-store' })));
+const useTodoStore = create<TodoStoreState>()(
+    devtools(persist(TodoStore, { name: 'todo-store' }), { enabled: isDev })
+);
 
 export type { Todo };
 export default useTodoStore;
