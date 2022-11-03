@@ -28,7 +28,7 @@ graph TB;
     B --> React[React] <-- States & Data--> rd_store[Redux Store] -- Data Persistence --> ls[(LocalStorage)]
     React -- Render --> vdom[VirtualDOM]
     vdom --> cv(Calendar View)
-    vdom --> tv(Todo View)
+    vdom --> tv(Tasking View)
     React -. IPC through Tauri Core .-> Notification
 
 ```
@@ -54,13 +54,12 @@ pnpm tauri build
 
 ### Infrastructure
 
-| Name                                          | Description                                     |
-|-----------------------------------------------|-------------------------------------------------|
-| [Tauri](https://tauri.app/)                   | Cross-platform framework (Electron alternative) |
-| [React](https://reactjs.org)                  | Frontend UI framework                           |
-| [Redux](https://redux.js.org)                 | State management, Single Source of Truth (SSOT) |
-| [Redux-Toolkit](https://redux-toolkit.js.org) | Redux toolkit (RTK) for easy state management   |
-| [React Router](https://reactrouter.com)       | Routing for React                               |
+| Name                                         | Description                                     |
+|----------------------------------------------|-------------------------------------------------|
+| [Tauri](https://tauri.app/)                  | Cross-platform framework (Electron alternative) |
+| [React](https://reactjs.org)                 | Frontend UI framework                           |
+| [React Router](https://reactrouter.com)      | Routing for React                               |
+| [Zustand](https://github.com/pmndrs/zustand) | State Management                                |
 
 ### User Interface
 
@@ -85,11 +84,11 @@ pnpm tauri build
 
 > WIP
 
-- Todo List App
-- TodoEvent (Todo + Event) Data Structure
+- Tasking List App
+- TodoEvent (Tasking + Event) Data Structure
 - Calendar View
 - Data Persistence
-- Prisma, Prisma client rust, LocalForge, Redux
+- Prisma, Prisma client rust, LocalForge, Zustand
 
 ## TODO
 
