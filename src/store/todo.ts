@@ -7,6 +7,7 @@ interface Todo {
     id: string;
     completed: boolean;
     title: string;
+    linkedEvents?: string[]; // todo
 }
 
 interface TodoStoreState {
