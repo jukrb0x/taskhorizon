@@ -12,7 +12,7 @@
 
 ## UI
 
-- [ ] `MVP` Basic Todo App with Redux, Storage
+- [ ] `MVP` Basic Tasking App with Redux, Storage
 - [ ] reverse engineering on amie.so calendar
 - [ ] self-maintained calendar component
 

@@ -1,4 +1,5 @@
 import './index.scss';
+import { cls } from '@/utils';
 
 export default function Resizer() {
     return (
