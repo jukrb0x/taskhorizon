@@ -1,7 +1,7 @@
 import { Checkbox } from '@douyinfe/semi-ui';
 
 import { Todo } from '@/store/todo';
-import useTodoStore from '@/store/todo';
+import { useTodoStore } from '@/store';
 
 export default function TodoItem({ todo }: { todo: Todo }) {
     const { toggleTodo } = useTodoStore();
