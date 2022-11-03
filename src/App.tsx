@@ -8,7 +8,8 @@ import { useEffect } from 'react';
 const isTauri = () => window.__TAURI__;
 
 function App() {
-    if (isTauri()) {
+    // test demo
+    if (false && isTauri()) {
         useEffect(() => {
             // invoke Tauri to show up the window
             invoke('app_ready');
