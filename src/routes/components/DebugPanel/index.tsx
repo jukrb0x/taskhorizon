@@ -58,9 +58,10 @@ export default function DebugPanel() {
                         onChange={(e) => setPath(e)}
                         prefix={'Goto'}
                         value={path}
-                        onKeyDown={(e) => {
-                            e.key == 'Enter' ? navigate(path) : {};
-                        }}
+                        // onKeyDown={(e) => {
+                        //     e.key == 'Enter' ? navigate(path) : {};
+                        // }}
+                        onEnterPress={() => navigate(path)}
                     />
                     <Button onClick={() => cleanAndReload()}>Clean Storage</Button>
                 </Space>
