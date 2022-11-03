@@ -30,6 +30,11 @@ export default function DebugPanel() {
         }
     ];
 
+    const cleanAndReload = () => {
+        localStorage.clear();
+        window.location.reload();
+    };
+
     return (
         <div className={styles.wrapper}>
             <Button onClick={() => setSideSheetVisible(!sideSheetVisible)}>Debug</Button>
@@ -57,6 +62,7 @@ export default function DebugPanel() {
                             e.key == 'Enter' ? navigate(path) : {};
                         }}
                     />
+                    <Button onClick={() => cleanAndReload()}>Clean Storage</Button>
                 </Space>
             </SideSheet>
         </div>
