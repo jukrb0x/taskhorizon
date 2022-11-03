@@ -14,7 +14,6 @@ export default function TodoInput() {
             title: title,
             completed: false
         };
-        console.log(todo);
         addTodo && addTodo(todo);
         setTitle('');
     };
