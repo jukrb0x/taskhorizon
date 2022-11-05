@@ -1,6 +1,6 @@
 import RouteError from '@/routes/components/RouteError';
 import SemiCalendar from '@/components/SemiCalendar';
-import Calendar from '@/components/Calendar';
+import Calendar from '@/components/ToastCalendar';
 import MainLayout from '@/pages/Home';
 import { Navigate, RouteObject } from 'react-router-dom';
 import BigCalendar from '@/components/BigCalendar';
