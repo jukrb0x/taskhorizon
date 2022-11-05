@@ -17,7 +17,7 @@ interface TodoStoreState {
     toggleTodo: (id: string) => void;
 }
 
-const GenerateTodoId = () => {
+const TodoIdGenerator = () => {
     return UUID() + '-todo:USERNAME';
 };
 
@@ -47,5 +47,5 @@ const useTodoStore = create<TodoStoreState>()(
 );
 
 export type { Todo };
-export { GenerateTodoId };
+export { TodoIdGenerator };
 export default useTodoStore;
