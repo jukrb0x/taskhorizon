@@ -43,7 +43,9 @@ const TodoStore: StateCreator<TodoStoreState> = (set) => ({
 });
 
 const useTodoStore = create<TodoStoreState>()(
-    devtools(persist(TodoStore, { name: 'todo-store' }), { enabled: store_env.isDev })
+    devtools(persist(TodoStore, { name: 'todo-store' }), {
+        enabled: import.meta.env.MODE === 'development'
+    })
 );
 
 export type { Todo };

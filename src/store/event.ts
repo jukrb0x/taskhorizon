@@ -47,9 +47,11 @@ const EventStore: StateCreator<EventStoreState> = (set) => ({
 });
 
 const useEventStore = create<EventStoreState>()(
-    devtools(persist(EventStore, { name: 'event-store' }), { enabled: store_env.isDev })
+    devtools(persist(EventStore, { name: 'event-store' }), {
+        enabled: import.meta.env.MODE === 'development'
+    })
 );
 
-export type { Event };
+export type { Event as CalendarEvent };
 export { EventIdGenerator };
 export default useEventStore;

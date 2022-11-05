@@ -1,9 +1,5 @@
+// stores
 import useTodoStore from '@/store/todo';
+import useEventStore from '@/store/event';
 
-const isDev = import.meta.env.MODE === 'development';
-
-export const store_env = {
-    isDev
-};
-
-export { useTodoStore };
+export { useTodoStore, useEventStore };
