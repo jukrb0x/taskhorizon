@@ -1,7 +1,6 @@
 import create, { StateCreator } from 'zustand';
 import { UUID } from '@/utils';
 import { devtools, persist } from 'zustand/middleware';
-import { withMiddleware } from '@/store/index';
 
 interface Event {
     id: string;
@@ -47,6 +46,9 @@ const EventStore: StateCreator<EventStoreState> = (set) => ({
 });
 
 const useEventStore = create<EventStoreState>()(
+    // fixme: when get from storage the Date type is string
+    // find a way to convert it back to Date and store
+    // https://docs.pmnd.rs/zustand/integrations/persisting-store-data#getstorage
     devtools(persist(EventStore, { name: 'event-store' }), {
         enabled: import.meta.env.MODE === 'development'
     })

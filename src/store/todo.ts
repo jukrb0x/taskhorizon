@@ -1,7 +1,6 @@
 import create, { StateCreator } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { UUID } from '@/utils';
-import { withMiddleware } from '@/store/index';
 
 interface Todo {
     id: string;
