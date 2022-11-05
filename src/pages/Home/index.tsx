@@ -20,19 +20,22 @@ export default function Home() {
                 </Sider>
                 <Resizer /> {/* todo: resize <Sider /> */}
                 <Layout>
-                    <Header>Header</Header>
+                    <Header className={'tw-bg-amber-100 tw-font-bold tw-text-center'}>
+                        Header
+                    </Header>
                     <Content>
                         {/* fixme: router outlet here which is not clear, too far separate with the React Router itself*/}
                         <Outlet />
                     </Content>
                 </Layout>
             </Layout>
-            <div></div>
-            {
-                // debug panel only display with development mode
-                // todo: get the env inside the component, use it directly in the outer component
-                isDebug ? <DebugPanel /> : null
-            }
+            <div className={'tw-p-2'}>
+                {
+                    // debug panel only display with development mode
+                    // todo: get the env inside the component, use it directly in the outer component
+                    isDebug ? <DebugPanel sidesheet={false} /> : null
+                }
+            </div>
         </SemiConfigProvider>
     );
 }
