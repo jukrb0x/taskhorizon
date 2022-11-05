@@ -13,8 +13,13 @@
 ## UI
 
 - [x] `MVP` Basic Tasking App with Zustand and Storage
-- [ ] reverse engineering studies on amie.so calendar
-- [ ] self-maintained calendar component (this could be hard but worth it)
+- [x] `MVP` Basic Scheduling App, CalendarView (react-big-calendar)
+- [x] reverse engineering studies on amie.so calendar
+- [ ] `DnD` Calendar drag and drop
+- [ ] Calendar event card (creating and editing)
+- [ ] `DnD` Drag and Drop for Tasking App
+- [ ] `Styling` Calendar Custom Styling
+- [ ] `next-ver`self-maintained calendar component (this could be hard but worth it)
   > Engineering is creating that wasn't there before 
 
 ## Data Structure
@@ -22,6 +27,7 @@
 - [x] store base state management (zustand)
 - [ ] storage management: local storage, indexedDB, etc.
   - still searching a better way to persist data
+- [ ] data type should be handled when get items from localStorage
 
 ## Framework
 
