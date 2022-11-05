@@ -6,6 +6,7 @@ overrides:
 specifiers:
   '@commitlint/cli': ^17.2.0
   '@commitlint/config-conventional': ^17.2.0
+  '@douyinfe/semi-icons': ^2.22.3
   '@douyinfe/semi-ui': ^2.22.3
   '@tauri-apps/api': ^1.1.0
   '@tauri-apps/cli': ^1.1.1
@@ -52,6 +53,7 @@ specifiers:
   zustand: ^4.1.4
 
 dependencies:
+  '@douyinfe/semi-icons': 2.22.3_react@18.2.0
   '@douyinfe/semi-ui': 2.22.3_biqbaboplfbrettd7655fr4n2y
   '@tauri-apps/api': 1.1.0
   '@toast-ui/calendar': 2.1.3
