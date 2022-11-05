@@ -5,7 +5,6 @@ import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
 import Resizer from '@/components/Resizer';
 import DebugPanel from '@/routes/components/DebugPanel';
 import TodoApp from '@/components/Tasking';
-import './index.scss';
 
 export default function Home() {
     const { Header, Footer, Content, Sider } = Layout;
@@ -15,8 +14,8 @@ export default function Home() {
 
     return (
         <SemiConfigProvider locale={en_GB}>
-            <Layout hasSider className={'main-layout-wrapper'}>
-                <Sider className={'sider'}>
+            <Layout hasSider className={'tw-h-screen'}>
+                <Sider className={'tw-min-[300px] tw-p-[15px]'}>
                     <TodoApp />
                 </Sider>
                 <Resizer /> {/* todo: resize <Sider /> */}
@@ -28,6 +27,7 @@ export default function Home() {
                     </Content>
                 </Layout>
             </Layout>
+            <div></div>
             {
                 // debug panel only display with development mode
                 // todo: get the env inside the component, use it directly in the outer component
