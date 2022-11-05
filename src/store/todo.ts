@@ -1,7 +1,7 @@
 import create, { StateCreator } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-
-const isDev = import.meta.env.MODE === 'development';
+import { store_env } from '@/store/index';
+import { UUID } from '@/utils';
 
 interface Todo {
     id: string;
@@ -16,6 +16,10 @@ interface TodoStoreState {
     removeTodo: (id: string) => void;
     toggleTodo: (id: string) => void;
 }
+
+const GenerateTodoId = () => {
+    return UUID() + '-todo:USERNAME';
+};
 
 const TodoStore: StateCreator<TodoStoreState> = (set) => ({
     todoList: [],
@@ -39,8 +43,9 @@ const TodoStore: StateCreator<TodoStoreState> = (set) => ({
 });
 
 const useTodoStore = create<TodoStoreState>()(
-    devtools(persist(TodoStore, { name: 'todo-store' }), { enabled: isDev })
+    devtools(persist(TodoStore, { name: 'todo-store' }), { enabled: store_env.isDev })
 );
 
 export type { Todo };
+export { GenerateTodoId };
 export default useTodoStore;
