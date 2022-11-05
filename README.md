@@ -19,6 +19,7 @@ daily tasking and scheduling.
 
 ## Architecture
 
+### Frontend
 Version `0.2 (draft)` :
 
 ```mermaid
