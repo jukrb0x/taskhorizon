@@ -1,6 +1,7 @@
 import create, { StateCreator } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { UUID } from '@/utils';
+import { withMiddleware } from '@/store/index';
 
 interface Todo {
     id: string;
@@ -46,7 +47,6 @@ const useTodoStore = create<TodoStoreState>()(
         enabled: import.meta.env.MODE === 'development'
     })
 );
-
 export type { Todo };
 export { TodoIdGenerator };
 export default useTodoStore;

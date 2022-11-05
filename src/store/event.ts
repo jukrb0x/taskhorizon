@@ -1,6 +1,7 @@
 import create, { StateCreator } from 'zustand';
 import { UUID } from '@/utils';
 import { devtools, persist } from 'zustand/middleware';
+import { withMiddleware } from '@/store/index';
 
 interface Event {
     id: string;
