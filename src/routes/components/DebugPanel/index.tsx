@@ -27,6 +27,10 @@ export default function DebugPanel() {
         {
             name: 'Calendar',
             path: '/component/cal'
+        },
+        {
+            name: 'Big Calendar',
+            path: '/component/big-cal'
         }
     ];
 
