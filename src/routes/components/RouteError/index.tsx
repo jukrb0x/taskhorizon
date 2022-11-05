@@ -28,14 +28,22 @@ export default function RouteError() {
         Notification.error(opts);
     }, []);
 
+    const cleanAndReload = () => {
+        localStorage.clear();
+        window.location.reload();
+    };
+
     return (
         <div>
             <Center>
                 <Empty title={opts.title} description={opts.content}>
                     {location.pathname} is not found.
-                    <Link to="/" style={{ textDecoration: 'none' }}>
-                        <Button>Go Home</Button>
-                    </Link>
+                    <div className={'tw-my-4 tw-space-x-3'}>
+                        <Link to="/" style={{ textDecoration: 'none' }}>
+                            <Button>Go Home</Button>
+                        </Link>
+                        <Button onClick={() => cleanAndReload()}>Clean Storage</Button>
+                    </div>
                 </Empty>
             </Center>
         </div>

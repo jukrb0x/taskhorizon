@@ -1,15 +1,14 @@
 import create, { StateCreator } from 'zustand';
-import { store_env } from '@/store/index';
 import { UUID } from '@/utils';
 import { devtools, persist } from 'zustand/middleware';
 
 interface Event {
     id: string;
     title: string;
-    description?: string;
-    startAt: Date;
-    endAt: Date;
-    isAllDay: boolean;
+    desc?: string;
+    start: Date;
+    end: Date;
+    allDay: boolean | undefined;
     linkedTodos?: string[]; // todo
 }
 

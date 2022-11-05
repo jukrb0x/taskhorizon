@@ -1,57 +1,55 @@
 // fixme: this is shit
-import { Dispatch, forwardRef, SetStateAction, useImperativeHandle, useRef, useState } from 'react';
-import { Button, DatePicker, Input, List, Modal, TextArea } from '@douyinfe/semi-ui';
+import {
+    createRef,
+    Dispatch,
+    forwardRef,
+    LegacyRef,
+    SetStateAction,
+    useImperativeHandle,
+    useRef,
+    useState
+} from 'react';
+import { Button, Checkbox, DatePicker, Input, List, Modal, TextArea } from '@douyinfe/semi-ui';
 import Icon, { IconCalendar } from '@douyinfe/semi-icons/lib/es/icons';
 import { CalendarEvent, EventIdGenerator } from '@/store/event';
 import { useEventStore } from '@/store';
 
-// eslint-disable-next-line react/display-name
-const EventCreator = forwardRef((props: { onInputChange: (canCreate: boolean) => void }, ref) => {
-    const [canCreate, setCanCreate] = useState(false);
+const EventCreator = (props: { onEventCreated: () => void }) => {
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
     const [start, setStart] = useState<Date | any>();
     const [end, setEnd] = useState<Date | any>();
+    const [allDay, setAllDay] = useState<boolean | undefined>(false);
     const { addEvent } = useEventStore();
 
-    // fixme
-    const check = (nextState: any, setter: (val: any) => void) => {
-        // change state first
-        setter(nextState);
-        // validate state
-        if (title.trim() == '' || !start || !end) {
-            console.log('when false', title, start, end);
-            setCanCreate(false);
-        } else {
-            setCanCreate(true);
-        }
-        props.onInputChange(canCreate);
-        console.log('val: ', nextState, ' can: ', canCreate);
+    const canCreateEvent = title.trim() != '' && start != null && end != null;
+
+    const handleCreate = () => {
+        createEvent();
+        props.onEventCreated();
+    };
+    const createEvent = () => {
+        if (!canCreateEvent) return;
+        const event: CalendarEvent = {
+            id: EventIdGenerator(),
+            title: title.trim(),
+            desc: description,
+            start: start,
+            end: end,
+            allDay: allDay,
+            linkedTodos: ['test']
+        };
+        addEvent(event);
     };
 
-    useImperativeHandle(ref, () => ({
-        createEvent: () => {
-            if (!canCreate) return;
-            const event: CalendarEvent = {
-                description: '',
-                endAt: end,
-                id: EventIdGenerator(),
-                isAllDay: false,
-                startAt: start,
-                title: title.trim()
-            };
-            addEvent(event);
-        }
-    }));
-
     return (
-        <div className={'tw-space-y-4'}>
+        <div className={'tw-space-y-4 tw-mb-5'}>
             <Input
                 value={title}
                 showClear={true}
                 placeholder={'Event Title'}
                 prefix={<IconCalendar />}
-                onChange={(val) => check(val.trim(), setTitle)}
+                onChange={(val) => setTitle(val)}
             />
             <TextArea
                 value={description}
@@ -65,25 +63,37 @@ const EventCreator = forwardRef((props: { onInputChange: (canCreate: boolean) =>
                     value={start}
                     placeholder={'Starts'}
                     showClear
+                    format="yyyy-MM-dd HH:mm"
                     type={'dateTime'}
-                    onChange={(val) => check(val, setStart)}
+                    onChange={(val) => setStart(val)}
                 />
                 <DatePicker
                     value={end}
                     placeholder={'Ends'}
                     showClear
                     type={'dateTime'}
-                    onChange={(val) => check(val, setEnd)}
+                    onChange={(val) => setEnd(val)}
                 />
+                <Checkbox
+                    className={'tw-flex-nowrap tw-items-center'}
+                    checked={allDay}
+                    onChange={(e) => setAllDay(e.target.checked)}
+                >
+                    24h
+                </Checkbox>
+            </div>
+            <div className={'tw-flex tw-justify-end'}>
+                <Button disabled={!canCreateEvent} onClick={() => handleCreate()}>
+                    Create
+                </Button>
             </div>
         </div>
     );
-});
+};
 
 const ModalWrapper = () => {
     const [visible, setVisible] = useState(false);
-    const [canCreate, setCanCreate] = useState(false);
-    const eventCreatorRef = useRef<any>(null);
+
     const closeModal = () => {
         setVisible(false);
     };
@@ -91,27 +101,17 @@ const ModalWrapper = () => {
         setVisible(true);
     };
 
-    const handleCreate = () => {
-        eventCreatorRef && eventCreatorRef.current?.createEvent();
-    };
-
     return (
         <>
             <Button onClick={showModal}>Add Event</Button>
             <Modal
-                header={<h3>Add New Event</h3>}
+                header={<h3>Create New Event</h3>}
                 visible={visible}
                 onOk={() => closeModal()}
                 onCancel={() => closeModal()}
-                footer={
-                    <Button disabled={!canCreate} onClick={() => handleCreate()}>
-                        Create
-                    </Button>
-                }
+                footer={null} // todo: how to get the value from child directly?
             >
-                <EventCreator ref={eventCreatorRef} onInputChange={setCanCreate} />
-
-                {canCreate ? 'ok' : 'no'}
+                <EventCreator onEventCreated={() => closeModal()} />
             </Modal>
         </>
     );

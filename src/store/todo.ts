@@ -1,6 +1,5 @@
 import create, { StateCreator } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
-import { store_env } from '@/store/index';
 import { UUID } from '@/utils';
 
 interface Todo {
