@@ -1,7 +1,7 @@
 import { devtools, persist } from 'zustand/middleware';
 
 // stores
-import useTodoStore from '@/store/todo-state';
+import useTodoStore from '@/store/todo-store';
 import useEventStore from '@/store/event-store';
 import { StateCreator } from 'zustand';
 
