@@ -20,7 +20,7 @@ const StyledTitle = cls(Title)`tw-pb-2`;
 
 const ModalDebugPanel = () => {
     const [modalVisible, setModalVisible] = useState(false);
-    const handleDebugKeyPress = useCallback((e) => {
+    const handleDebugKeyPress = useCallback((e: KeyboardEvent) => {
         if (e.key == 'p' && (e.ctrlKey || e.metaKey)) {
             e.preventDefault();
             setModalVisible(true);
