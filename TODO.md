@@ -9,6 +9,7 @@
 - drag and drop, how to do it `next-ver`
     - **important** feature to implement
     - a custom event card is needed
+- resizer
 
 ## UI
 
