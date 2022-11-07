@@ -4,6 +4,7 @@ import moment from 'moment';
 import 'react-big-calendar/lib/sass/styles.scss';
 import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss';
 import { useEventStore } from '@/store';
+import { Outlet } from 'react-router-dom';
 
 const localizer = momentLocalizer(moment);
 
@@ -21,7 +22,6 @@ export default function BigCalendar() {
                 selectable
                 dayLayoutAlgorithm="no-overlap"
                 defaultView={'week'}
-                className={'tw-p-2'}
             />
         </>
     );
