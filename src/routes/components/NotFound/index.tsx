@@ -2,7 +2,6 @@ import { Button, Empty, Notification } from '@douyinfe/semi-ui';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
 import { useEffect } from 'react';
-import DebugPanel from '@/routes/components/DebugPanel';
 
 const Center = styled.div`
     display: flex;

@@ -1,23 +1,14 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import {
-    ConfigProvider as SemiConfigProvider,
-    Layout,
-    List,
-    Modal,
-    Button
-} from '@douyinfe/semi-ui';
+import { ConfigProvider as SemiConfigProvider, Layout } from '@douyinfe/semi-ui';
 import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
 import Resizer from '@/components/Resizer';
-import DebugPanel from '@/routes/components/DebugPanel';
 import TodoApp from '@/components/Tasking';
 import EventController from '@/components/BigCalendar/EventController';
 
 export default function Home() {
     const { Header, Footer, Content, Sider } = Layout;
     const [siderWidth, setSiderWidth] = useState(300);
-
-    const isDebug = import.meta.env.MODE === 'development';
 
     return (
         <SemiConfigProvider locale={en_GB}>
@@ -37,13 +28,6 @@ export default function Home() {
                     </Content>
                 </Layout>
             </Layout>
-            <div className={''}>
-                {
-                    // debug panel only display with development mode
-                    // todo: get the env inside the component, use it directly in the outer component
-                    isDebug ? <DebugPanel /> : null
-                }
-            </div>
         </SemiConfigProvider>
     );
 }

@@ -7,7 +7,7 @@ import Controller from './Controller';
 import { CalendarEvent } from './data-structure';
 
 const calendars = [{ id: 'default', name: 'Calendar' }];
-export default function MyCalendar() {
+export default function TuiCalendar() {
     const calRef = useRef<ToastUIReactCalendar>(null);
     const events: CalendarEvent[] = [
         {
