@@ -10,10 +10,12 @@ import {
 } from '@douyinfe/semi-ui';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './index.module.scss';
-import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
+import { ReactNode, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDebugStore } from '@/store';
 import { cls } from '@/utils';
+import AppRouter from '@/routes/AppRouterWrapper';
+import routerExtractor from '@/utils/router-extractor';
 
 const { Title } = Typography;
 const StyledTitle = cls(Title)`tw-pb-2`;
@@ -72,26 +74,6 @@ const DebugPanel = () => {
     const [path, setPath] = useState('');
     const { toggleDebugPanelStyle, debugPanelStyle } = useDebugStore();
 
-    // data
-    const navLinks = [
-        {
-            name: 'Home',
-            path: '/'
-        },
-        {
-            name: 'Semi Calendar',
-            path: '/component/semi-cal'
-        },
-        {
-            name: 'Tui Calendar',
-            path: '/component/cal'
-        },
-        {
-            name: 'Big Calendar',
-            path: '/component/big-cal'
-        }
-    ];
-
     const cleanAndReload = () => {
         localStorage.clear();
         window.location.reload();
@@ -136,7 +118,7 @@ const DebugPanel = () => {
             </StyledTitle>
             <Space vertical align={'start'}>
                 <Space align={'start'}>
-                    {navLinks.map((item) => (
+                    {routerExtractor(<AppRouter />).map((item) => (
                         <Link to={item.path} key={item.path}>
                             <Button type={'primary'}>{item.name}</Button>
                         </Link>
