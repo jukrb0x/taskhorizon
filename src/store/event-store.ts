@@ -49,9 +49,23 @@ const useEventStore = create<EventStoreState>()(
     // fixme: when get from storage the Date type is string
     // find a way to convert it back to Date and store
     // https://docs.pmnd.rs/zustand/integrations/persisting-store-data#getstorage
-    devtools(persist(EventStore, { name: 'event-store' }), {
-        enabled: import.meta.env.MODE === 'development'
-    })
+    devtools(
+        persist(EventStore, {
+            name: 'event-store',
+            deserialize: (str) => {
+                const data = JSON.parse(str);
+                data.state.eventList = data.state.eventList.map((event: EventState) => {
+                    event.start = new Date(event.start);
+                    event.end = new Date(event.end);
+                    return event;
+                });
+                return data;
+            }
+        }),
+        {
+            enabled: import.meta.env.MODE === 'development'
+        }
+    )
 );
 
 export type { EventState as CalendarEvent };
