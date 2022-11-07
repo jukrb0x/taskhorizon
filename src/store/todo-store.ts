@@ -1,6 +1,7 @@
 import create, { StateCreator } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 import { UUID } from '@/utils';
+import useUserStore from '@/store/user-store';
 
 interface TodoStore {
     id: string;
@@ -17,7 +18,8 @@ interface TodoStoreState {
 }
 
 const TodoIdGenerator = () => {
-    return UUID() + '-todo:USERNAME';
+    const username = useUserStore.getState().getUsername();
+    return UUID() + `'-todo:${username}`;
 };
 
 const TodoStore: StateCreator<TodoStoreState> = (set) => ({
