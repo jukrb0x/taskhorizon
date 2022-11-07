@@ -19,7 +19,8 @@ daily tasking and scheduling.
 
 ## Architecture
 
-### Frontend
+### Client
+
 Version `0.2 (draft)` :
 
 ```mermaid
@@ -29,10 +30,18 @@ graph TB;
     B --> React[React] <-- States & Data--> rd_store[Zustand Store] -- Data Persistence --> ls[(LocalStorage)]
     React -- Render --> vdom[VirtualDOM]
     vdom --> cv(Calendar View)
-    vdom --> tv(Tasking View)
+    vdom --> tv(TodoList View)
     React -. IPC through Tauri Core .-> Notification
 
 ```
+
+### Frontend
+
+TODO
+
+### Backend
+
+TODO
 
 ## Development
 
