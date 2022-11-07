@@ -42,7 +42,9 @@ export default function RouteError() {
                         <Link to="/" style={{ textDecoration: 'none' }}>
                             <Button>Go Home</Button>
                         </Link>
-                        <Button onClick={() => cleanAndReload()}>Clean Storage</Button>
+                        <Button onClick={() => cleanAndReload()} type={'danger'}>
+                            Clean Storage
+                        </Button>
                     </div>
                 </Empty>
             </Center>

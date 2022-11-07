@@ -153,7 +153,9 @@ const DebugPanel = () => {
                     }}
                     onEnterPress={() => navigate(path)}
                 />
-                <Button onClick={() => cleanAndReload()}>Clean Storage</Button>
+                <Button onClick={() => cleanAndReload()} type={'danger'}>
+                    Clean Storage
+                </Button>
             </Space>
         </div>
     );
