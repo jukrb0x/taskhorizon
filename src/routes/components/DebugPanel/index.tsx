@@ -108,17 +108,19 @@ const DebugPanel = () => {
         <div>
             <StyledTitle heading={2}>
                 Debug Panel
-                <Button
-                    onClick={() => handlePositionChange()}
-                    size={'small'}
-                    className={'tw-ml-2 tw-p-1 tw-text-xs'}
-                >
-                    Change Panel Position
-                </Button>
+                <span className={'tw-m-2'}>
+                    <Button
+                        onClick={() => handlePositionChange()}
+                        size={'small'}
+                        className={'tw-p-1 tw-text-xs'}
+                    >
+                        Change Panel Position
+                    </Button>
+                </span>
             </StyledTitle>
             <Space vertical align={'start'}>
                 <Space align={'start'}>
-                    {routerExtractor(<AppRouter />).map((item) => (
+                    {routerExtractor(AppRouter()).map((item) => (
                         <Link to={item.path} key={item.path}>
                             <Button type={'primary'}>{item.name}</Button>
                         </Link>
