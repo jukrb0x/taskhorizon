@@ -2,7 +2,7 @@ import './index.scss';
 import { invoke } from '@tauri-apps/api';
 import { useEffect } from 'react';
 import AppRouterWrapper from '@/routes/AppRouterWrapper';
-import { HashRouter } from 'react-router-dom';
+import { BrowserRouter, HashRouter, MemoryRouter } from 'react-router-dom';
 import DebugPanelWrapper from '@/routes/components/DebugPanel';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -23,10 +23,10 @@ function App() {
     }
 
     return (
-        <HashRouter>
+        <BrowserRouter>
             <AppRouterWrapper />
             <DebugTools />
-        </HashRouter>
+        </BrowserRouter>
     );
 }
 
