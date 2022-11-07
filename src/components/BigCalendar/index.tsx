@@ -21,6 +21,7 @@ export default function BigCalendar() {
                 selectable
                 dayLayoutAlgorithm="no-overlap"
                 defaultView={'week'}
+                className={'tw-p-2'}
             />
         </>
     );

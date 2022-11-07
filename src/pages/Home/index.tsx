@@ -37,11 +37,11 @@ export default function Home() {
                     </Content>
                 </Layout>
             </Layout>
-            <div className={'tw-p-2'}>
+            <div className={''}>
                 {
                     // debug panel only display with development mode
                     // todo: get the env inside the component, use it directly in the outer component
-                    isDebug ? <DebugPanel sidesheet={false} /> : null
+                    isDebug ? <DebugPanel /> : null
                 }
             </div>
         </SemiConfigProvider>
