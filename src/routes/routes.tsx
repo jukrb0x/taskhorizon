@@ -5,6 +5,8 @@ import MainLayout from '@/pages/Home';
 import { Navigate, RouteObject } from 'react-router-dom';
 import BigCalendar from '@/components/BigCalendar';
 
+// this is from router object
+// the other way is to use createRoutesFromElements(JSX.Element) => Route[]
 export const routes: RouteObject[] = [
     {
         path: '/',
