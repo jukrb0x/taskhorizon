@@ -7,6 +7,8 @@ import { useDebugStore } from '@/store';
 import { cls } from '@/utils';
 import AppRouter from '@/routes/AppRouterWrapper';
 import routerExtractor from '@/utils/router-extractor';
+import EventCreatorWrapper from '@/components/BigCalendar/EventController';
+import { TodoInput } from '@/components/Tasking/components';
 
 const { Title } = Typography;
 const StyledTitle = cls(Title)`tw-pb-2`;
@@ -97,13 +99,15 @@ const DebugPanel = () => {
 
     return (
         <div>
-            <StyledTitle heading={2}>
+            <StyledTitle heading={3}>
                 Debug Panel
                 <span className={'tw-m-2'}>
                     <Button
                         onClick={() => handlePositionChange()}
                         size={'small'}
-                        className={'tw-p-1 tw-text-xs'}
+                        className={'tw-text-xs tw-p-0.5'} // fixme: not working now
+                        type={'secondary'}
+                        theme={'borderless'}
                     >
                         Change Panel Position
                     </Button>
@@ -118,19 +122,28 @@ const DebugPanel = () => {
                     ))}
                 </Space>
                 <Input prefix={'Current'} value={location.pathname} disabled />
-                <Input
-                    placeholder={'Enter to navigate'}
-                    onChange={(e) => setPath(e)}
-                    prefix={'Goto'}
-                    value={path}
-                    onKeyDown={(e) => {
-                        e.key == 'Enter' ? navigate(path) : {};
-                    }}
-                    onEnterPress={() => navigate(path)}
-                />
-                <Button onClick={() => cleanAndReload()} type={'danger'}>
-                    Clean Storage
-                </Button>
+                <Space>
+                    <Input
+                        placeholder={'Enter to navigate'}
+                        onChange={(e) => setPath(e)}
+                        prefix={'Goto'}
+                        value={path}
+                        onKeyDown={(e) => {
+                            e.key == 'Enter' ? navigate(path) : {};
+                        }}
+                        onEnterPress={() => navigate(path)}
+                    />
+                    <Button type={'primary'} theme={'solid'} onClick={() => navigate(path)}>
+                        Go
+                    </Button>
+                </Space>
+                <Space>
+                    {/* controllers */}
+                    <EventCreatorWrapper />
+                    <Button onClick={() => cleanAndReload()} type={'danger'}>
+                        Clean Storage
+                    </Button>
+                </Space>
             </Space>
         </div>
     );
