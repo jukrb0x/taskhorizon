@@ -11,7 +11,7 @@ import {
 } from 'react';
 import { Button, Checkbox, DatePicker, Input, List, Modal, TextArea } from '@douyinfe/semi-ui';
 import Icon, { IconCalendar } from '@douyinfe/semi-icons/lib/es/icons';
-import { CalendarEvent, EventIdGenerator } from '@/store/event';
+import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 import { useEventStore } from '@/store';
 
 const EventCreator = (props: { onEventCreated: () => void }) => {

@@ -2,7 +2,7 @@ import create, { StateCreator } from 'zustand';
 import { UUID } from '@/utils';
 import { devtools, persist } from 'zustand/middleware';
 
-interface Event {
+interface EventState {
     id: string;
     title: string;
     desc?: string;
@@ -13,9 +13,9 @@ interface Event {
 }
 
 interface EventStoreState {
-    eventList: Event[];
-    addEvent: (newEvent: Event) => void;
-    setEvent: (id: string, newEvent: Event) => void;
+    eventList: EventState[];
+    addEvent: (newEvent: EventState) => void;
+    setEvent: (id: string, newEvent: EventState) => void;
     removeEvent: (id: string) => void;
 }
 
@@ -25,11 +25,11 @@ const EventIdGenerator = () => {
 
 const EventStore: StateCreator<EventStoreState> = (set) => ({
     eventList: [],
-    addEvent: (newEvent: Event) =>
+    addEvent: (newEvent: EventState) =>
         set((state) => ({
             eventList: [...state.eventList, newEvent]
         })),
-    setEvent: (id: string, newEvent: Event) => {
+    setEvent: (id: string, newEvent: EventState) => {
         set((state) => ({
             eventList: state.eventList.map((event) =>
                 event.id === id
@@ -54,6 +54,6 @@ const useEventStore = create<EventStoreState>()(
     })
 );
 
-export type { Event as CalendarEvent };
+export type { EventState as CalendarEvent };
 export { EventIdGenerator };
 export default useEventStore;

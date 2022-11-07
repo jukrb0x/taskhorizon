@@ -1,5 +1,5 @@
 import { Button, Input } from '@douyinfe/semi-ui';
-import { TodoIdGenerator, Todo } from '@/store/todo';
+import { TodoIdGenerator, TodoState } from '@/store/todo-state';
 import { useTodoStore } from '@/store';
 import { useState } from 'react';
 
@@ -9,7 +9,7 @@ export default function TodoInput() {
 
     const handleAdd = () => {
         if (title.trim() == '') return;
-        const todo: Todo = {
+        const todo: TodoState = {
             id: TodoIdGenerator(),
             title: title.trim(),
             completed: false

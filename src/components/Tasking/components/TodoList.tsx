@@ -1,7 +1,7 @@
 import TodoItem from '@/components/Tasking/components/TodoItem';
-import { Todo } from '@/store/todo';
+import { TodoState } from '@/store/todo-state';
 
-export default function TodoList({ todos }: { todos: Todo[] }) {
+export default function TodoList({ todos }: { todos: TodoState[] }) {
     return (
         <>
             {todos.map((todo, index) => {

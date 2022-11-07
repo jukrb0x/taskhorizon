@@ -1,5 +1,5 @@
 import { TodoInput, TodoList } from '@/components/Tasking/components';
-import useTodoStore from '@/store/todo';
+import useTodoStore from '@/store/todo-state';
 
 export default function TodoApp() {
     const { todoList } = useTodoStore();

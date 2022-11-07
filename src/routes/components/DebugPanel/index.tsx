@@ -39,7 +39,11 @@ const DebugPanel = () => {
             path: '/'
         },
         {
-            name: 'Calendar',
+            name: 'Semi Calendar',
+            path: '/component/semi-cal'
+        },
+        {
+            name: 'Tui Calendar',
             path: '/component/cal'
         },
         {

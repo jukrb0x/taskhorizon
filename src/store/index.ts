@@ -1,8 +1,8 @@
 import { devtools, persist } from 'zustand/middleware';
 
 // stores
-import useTodoStore from '@/store/todo';
-import useEventStore from '@/store/event';
+import useTodoStore from '@/store/todo-state';
+import useEventStore from '@/store/event-store';
 import { StateCreator } from 'zustand';
 
 // love to separate it out, but it's not working now
