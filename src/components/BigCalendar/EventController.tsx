@@ -19,7 +19,7 @@ const EventCreator = (props: { onEventCreated: () => void }) => {
     const [description, setDescription] = useState<string>('');
     const [start, setStart] = useState<Date | any>();
     const [end, setEnd] = useState<Date | any>();
-    const [allDay, setAllDay] = useState<boolean | undefined>(false);
+    const [allDay, setAllDay] = useState<boolean>(false);
     const { addEvent } = useEventStore();
 
     const canCreateEvent = title.trim() != '' && start != null && end != null;
@@ -77,7 +77,9 @@ const EventCreator = (props: { onEventCreated: () => void }) => {
                 <Checkbox
                     className={'tw-flex-nowrap tw-items-center'}
                     checked={allDay}
-                    onChange={(e) => setAllDay(e.target.checked)}
+                    onChange={(e) =>
+                        setAllDay(e.target.checked == undefined ? false : e.target.checked)
+                    }
                 >
                     24h
                 </Checkbox>
@@ -91,7 +93,7 @@ const EventCreator = (props: { onEventCreated: () => void }) => {
     );
 };
 
-const ModalWrapper = () => {
+const EventCreatorWrapper = () => {
     const [visible, setVisible] = useState(false);
 
     const closeModal = () => {
@@ -117,4 +119,4 @@ const ModalWrapper = () => {
     );
 };
 
-export default ModalWrapper;
+export default EventCreatorWrapper;

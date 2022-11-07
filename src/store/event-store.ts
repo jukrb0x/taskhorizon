@@ -1,6 +1,7 @@
 import create, { StateCreator } from 'zustand';
 import { UUID } from '@/utils';
 import { devtools, persist } from 'zustand/middleware';
+import useUserStore from '@/store/user-store';
 
 interface EventState {
     id: string;
@@ -8,7 +9,7 @@ interface EventState {
     desc?: string;
     start: Date;
     end: Date;
-    allDay: boolean | undefined;
+    allDay: boolean;
     linkedTodos?: string[]; // todo
 }
 
@@ -20,7 +21,9 @@ interface EventStoreState {
 }
 
 const EventIdGenerator = () => {
-    return UUID() + '-event:USERNAME';
+    const username = useUserStore.getState().getUsername();
+    if (!username) throw new Error('Username not set');
+    return UUID() + `-event:${username}`;
 };
 
 const EventStore: StateCreator<EventStoreState> = (set) => ({
