@@ -14,7 +14,7 @@ const Center = styled.div`
     text-align: center;
     height: 100vh;
 `;
-export default function RouteError() {
+export default function NotFound() {
     const location = useLocation();
     const opts = {
         title: '404 Not Found',

@@ -1,11 +1,15 @@
-import AppRouterProvider from '@/routes/AppRouterProvider';
 import './index.scss';
 import { invoke } from '@tauri-apps/api';
 import { useEffect } from 'react';
+import AppRouterWrapper from '@/routes/AppRouterWrapper';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 const isTauri = () => window.__TAURI__;
+
+function DebugTools() {
+    // todo
+}
 
 function App() {
     // test demo
@@ -18,7 +22,7 @@ function App() {
 
     return (
         <>
-            <AppRouterProvider />
+            <AppRouterWrapper />
         </>
     );
 }
