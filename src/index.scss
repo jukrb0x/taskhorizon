@@ -1,0 +1,9 @@
+// global styles
+
+// normalize goes first
+@import 'normalize.css';
+
+// tailwindcss
+@tailwind base; // prefilled is disabled, some directives are not working
+@tailwind components;
+@tailwind utilities;

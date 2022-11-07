@@ -1,0 +1,16 @@
+.wrapper {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    line-height: 1.5;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: flex-end;
+    align-items: flex-end;
+    align-content: stretch;
+    z-index: 9999;
+}
+
+a {
+    text-decoration: none;
+}
