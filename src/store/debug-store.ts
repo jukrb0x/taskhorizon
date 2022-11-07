@@ -1,15 +1,16 @@
 import create, { StateCreator } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
+type DebugPanelStyle = 'side' | 'modal';
 interface DebugStoreState {
-    debugPanelStyle: 'side' | 'bottom';
+    debugPanelStyle: DebugPanelStyle;
     toggleDebugPanelStyle: () => void;
 }
 
 const DebugStore: StateCreator<DebugStoreState> = (set) => ({
-    debugPanelStyle: 'bottom',
+    debugPanelStyle: 'modal',
     toggleDebugPanelStyle: () =>
-        set((state) => ({ debugPanelStyle: state.debugPanelStyle === 'side' ? 'bottom' : 'side' }))
+        set((state) => ({ debugPanelStyle: state.debugPanelStyle === 'side' ? 'modal' : 'side' }))
 });
 
 const useDebugStore = create<DebugStoreState>()(

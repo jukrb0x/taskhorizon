@@ -5,17 +5,46 @@ import {
     SideSheet,
     Input,
     Notification,
-    Toast
+    Toast,
+    Modal
 } from '@douyinfe/semi-ui';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import styles from './index.module.scss';
-import { useEffect, useState } from 'react';
+import { FC, ReactNode, useCallback, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import { useDebugStore } from '@/store';
 import { cls } from '@/utils';
 
 const { Title } = Typography;
 const StyledTitle = cls(Title)`tw-pb-2`;
+
+const ModalDebugPanel = () => {
+    const [modalVisible, setModalVisible] = useState(false);
+    const handleDebugKeyPress = useCallback((e) => {
+        e.preventDefault();
+        if (e.key == 'p' && (e.ctrlKey || e.metaKey)) {
+            setModalVisible(true);
+        }
+    }, []);
+
+    useEffect(() => {
+        document.addEventListener('keydown', handleDebugKeyPress);
+        return () => {
+            document.removeEventListener('keypress', handleDebugKeyPress);
+        };
+    }, [handleDebugKeyPress]);
+
+    return (
+        <Modal
+            visible={modalVisible}
+            footer={null}
+            size={'large'}
+            onCancel={() => setModalVisible(false)}
+        >
+            <DebugPanel />
+        </Modal>
+    );
+};
 
 const SideSheetDebugPanel = () => {
     const [sideSheetVisible, setSideSheetVisible] = useState(false);
@@ -33,20 +62,6 @@ const SideSheetDebugPanel = () => {
                 </SideSheet>
             </div>
         </>
-    );
-};
-
-const BottomDebugPanel = () => {
-    const Wrapper = styled.div`
-        margin: 5px;
-        border: 2px solid rgba(0, 100, 250, 0.5);
-        border-radius: 10px;
-        padding: 10px;
-    `;
-    return (
-        <Wrapper>
-            <DebugPanel />
-        </Wrapper>
     );
 };
 
@@ -84,10 +99,26 @@ const DebugPanel = () => {
 
     const handlePositionChange = () => {
         toggleDebugPanelStyle();
+        const KBD = (props: { children?: ReactNode }) => (
+            <>
+                <Button className={'tw-p-0.5'} disabled size={'small'}>
+                    {props?.children}
+                </Button>
+            </>
+        );
         Toast.info({
-            content:
-                'Debug panel position changed to the ' +
-                (debugPanelStyle === 'bottom' ? 'side' : 'bottom')
+            content: (
+                <>
+                    Debug panel position changed to the{' '}
+                    {debugPanelStyle === 'modal' ? (
+                        'side'
+                    ) : (
+                        <>
+                            pop-up, use <KBD>Ctrl</KBD>+<KBD>P</KBD> to toggle it
+                        </>
+                    )}
+                </>
+            )
         });
     };
 
@@ -117,9 +148,9 @@ const DebugPanel = () => {
                     onChange={(e) => setPath(e)}
                     prefix={'Goto'}
                     value={path}
-                    // onKeyDown={(e) => {
-                    //     e.key == 'Enter' ? navigate(path) : {};
-                    // }}
+                    onKeyDown={(e) => {
+                        e.key == 'Enter' ? navigate(path) : {};
+                    }}
                     onEnterPress={() => navigate(path)}
                 />
                 <Button onClick={() => cleanAndReload()}>Clean Storage</Button>
@@ -130,5 +161,5 @@ const DebugPanel = () => {
 
 export default function DebugPanelWrapper() {
     const { debugPanelStyle } = useDebugStore();
-    return debugPanelStyle === 'side' ? <SideSheetDebugPanel /> : <BottomDebugPanel />;
+    return debugPanelStyle === 'modal' ? <ModalDebugPanel /> : <SideSheetDebugPanel />;
 }
