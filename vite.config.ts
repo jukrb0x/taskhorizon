@@ -17,7 +17,14 @@ export default defineConfig({
     // tauri expects a fixed port, fail if that port is not available
     server: {
         port: 1420,
-        strictPort: true
+        strictPort: true,
+        proxy: {
+            '/api': {
+                // todo: test demo, remove me
+                target: 'https://pokeapi.co/api/v2/pokemon',
+                changeOrigin: true
+            }
+        }
     },
     // to make use of `TAURI_DEBUG` and other env variables
     // https://tauri.studio/v1/api/config#buildconfig.beforedevcommand
