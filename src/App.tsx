@@ -30,6 +30,11 @@ function App() {
         className: 'tw-w-full tw-h-10 tw-absolute'
     }))``;
 
+    // TODO:
+    //  1. when maximized the window, the drag region (if exists) offset should be hidden
+    //  2. when not maximized the window, window title should be set to none
+    //  @ https://tauri.app/v1/api/config/#windowconfig
+
     return (
         <BrowserRouter>
             <TauriWindowDragRegion />
