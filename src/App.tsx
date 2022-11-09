@@ -33,9 +33,8 @@ function App() {
     return (
         <BrowserRouter>
             <TauriWindowDragRegion />
-            {/*<div data-tauri-drag-region> works exactly like it does today</div>*/}
             <AppRouterWrapper />
-            <DebugTools />
+            {import.meta.env.MODE === 'development' && <DebugTools />}
         </BrowserRouter>
     );
 }
