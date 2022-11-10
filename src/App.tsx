@@ -1,12 +1,11 @@
 import './index.scss';
-import { invoke, tauri } from '@tauri-apps/api';
+import { invoke } from '@tauri-apps/api';
 import { useEffect } from 'react';
 import AppRouterWrapper from '@/routes/AppRouterWrapper';
-import { BrowserRouter, HashRouter, MemoryRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import DebugPanelWrapper from '@/routes/components/DebugPanel';
 import styled from 'styled-components';
 import { Simulate } from 'react-dom/test-utils';
-import drag = Simulate.drag;
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -25,6 +24,7 @@ function App() {
         }, []);
     }
 
+    // draggable title bar
     const TauriWindowDragRegion = styled.div.attrs(() => ({
         'data-tauri-drag-region': true,
         className: 'tw-w-full tw-h-8 tw-absolute tw-z-50 tw-bg-gray-500/30'
