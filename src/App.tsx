@@ -27,7 +27,7 @@ function App() {
 
     const TauriWindowDragRegion = styled.div.attrs(() => ({
         'data-tauri-drag-region': true,
-        className: 'tw-w-full tw-h-10 tw-absolute'
+        className: 'tw-w-full tw-h-8 tw-absolute tw-z-50 tw-bg-gray-500/30'
     }))``;
 
     // TODO:
