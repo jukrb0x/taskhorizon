@@ -9,6 +9,8 @@
 Project Calitdone integrates To-Do list app (tasking) with Calendar app (scheduling) to make a smooth experience for
 daily tasking and scheduling.
 
+See [Roadmap](docs/Roadmap.md).
+
 ## Branches
 
 - `main` : stable branch
@@ -16,10 +18,6 @@ daily tasking and scheduling.
 - `feat/*` : modular feature development
 - `fix/*` : bug fix branch
 - `release/*` : release version
-
-## Roadmap
-
-TODO
 
 ## Architecture
 
@@ -103,7 +101,3 @@ pnpm tauri build
 - Calendar View
 - Data Persistence
 - Prisma, Prisma client rust, LocalForge, Zustand
-
-## TODO
-
-See [TODO](docs/TODO.md).
