@@ -61,7 +61,8 @@
         "height": 800,
         "transparent": true,
         "decorations": true,
-        "center": true
+        "center": true,
+        "titleBarStyle": "Overlay"
       }
     ]
   }

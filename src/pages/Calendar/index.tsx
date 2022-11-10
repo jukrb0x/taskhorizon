@@ -2,7 +2,7 @@ import { Outlet } from 'react-router-dom';
 
 export default function CalendarApp() {
     return (
-        <div className={'tw-p-2'}>
+        <div className={'tw-p-2 tw-h-full'}>
             <Outlet />
         </div>
     );
