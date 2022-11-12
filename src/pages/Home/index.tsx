@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { ConfigProvider as SemiConfigProvider, Layout } from '@douyinfe/semi-ui';
 import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
@@ -13,7 +13,6 @@ export default function Home() {
     const [siderWidth, setSiderWidth] = useState(350);
     const siderRef = useRef(null);
     const [isResizing, setIsResizing] = useState(false);
-
     // resize sidebar
     useEventListener(
         'mousemove',
@@ -28,23 +27,26 @@ export default function Home() {
         )
     );
 
-    // useEventListener('mouseup', () => {
-    //     setIsResizing(false);
-    // });
+    useEventListener('mouseup', () => {
+        setIsResizing(false);
+    });
 
     const DragRegionOffsetWrapper = cls.div`tw-h-5 tw-bg-red-100`;
-    const dragRegionRef = useRef(null);
-    const windowWrapperRef = useRef(null);
-    const dragRegionSize = useSize(dragRegionRef);
-    const windowSize = useSize(windowWrapperRef);
+    const dragRegionRef = useRef<HTMLDivElement>(null);
+    const [dragRegionHeight, setDragRegionHeight] = useState(0);
+    useEffect(() => {
+        dragRegionRef.current && setDragRegionHeight(dragRegionRef.current.clientHeight);
+    }, []);
 
     return (
-        <div className={'tw-select-none tw-h-screen'} ref={windowWrapperRef}>
+        <div className={'tw-select-none tw-h-screen'}>
             <DragRegionOffsetWrapper ref={dragRegionRef} />
             <SemiConfigProvider locale={en_GB}>
                 <Layout
                     hasSider
-                    style={{ height: (windowSize?.height || 1) - (dragRegionSize?.height || 0) }}
+                    style={{
+                        height: `calc(100vh - ${dragRegionHeight || 0}px)`
+                    }}
                 >
                     <Sider
                         className={'tw-min-[300px] tw-max-[600px] tw-p-[15px]'}
