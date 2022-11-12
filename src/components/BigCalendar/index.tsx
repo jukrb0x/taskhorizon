@@ -1,10 +1,10 @@
-import { Calendar, momentLocalizer } from 'react-big-calendar';
+import { Calendar, luxonLocalizer, momentLocalizer } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import moment from 'moment';
-import 'react-big-calendar/lib/sass/styles.scss';
-import 'react-big-calendar/lib/addons/dragAndDrop/styles.scss';
+// import luxon from 'luxon';
+import './styles/default/styles.scss';
+import './styles/default/dragAndDrop.scss';
 import { useEventStore } from '@/store';
-import { Outlet } from 'react-router-dom';
 
 const localizer = momentLocalizer(moment);
 
