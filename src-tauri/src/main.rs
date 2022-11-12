@@ -62,5 +62,9 @@ async fn main() -> Result<(), Box<dyn Error>> {
         }
     });
 
+    // TODO:
+    //  1. when maximized the window, the drag region (if exists) offset should be hidden
+    //  2. when not maximized the window, window title should be set to none
+    //  @ https://tauri.app/v1/api/config/#windowconfig
     Ok(())
 }

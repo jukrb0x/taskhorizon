@@ -62,7 +62,8 @@
         "transparent": true,
         "decorations": true,
         "center": true,
-        "titleBarStyle": "Overlay"
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true
       }
     ]
   }
