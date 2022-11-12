@@ -12,6 +12,8 @@
 - [ ] Calendar 2.0
     - Drag and Drop
     - Event Card (editing events)
+      > [react-popper](https://popper.js.org/react-popper/v2/)
+
     - Custom Styling
 - [ ] Component Animation and Transition
 - [ ] Drag and Drop
