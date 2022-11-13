@@ -31,7 +31,7 @@ export default function Home() {
         setIsResizing(false);
     });
 
-    const DragRegionOffsetWrapper = cls.div`tw-h-5 tw-bg-red-100`;
+    const DragRegionOffsetWrapper = cls.div`tw-h-5`;
     const dragRegionRef = useRef<HTMLDivElement>(null);
     const [dragRegionHeight, setDragRegionHeight] = useState(0);
     useEffect(() => {
@@ -40,19 +40,20 @@ export default function Home() {
 
     return (
         <div className={'tw-select-none tw-h-screen'}>
-            <DragRegionOffsetWrapper ref={dragRegionRef} />
             <SemiConfigProvider locale={en_GB}>
                 <Layout
                     hasSider
-                    style={{
-                        height: `calc(100vh - ${dragRegionHeight || 0}px)`
-                    }}
+                    className={'tw-h-screen'}
+                    // style={{
+                    //     height: `calc(100vh - ${dragRegionHeight || 0}px)`
+                    // }}
                 >
                     <Sider
                         className={'tw-min-[300px] tw-max-[600px] tw-p-[15px]'}
                         style={{ width: siderWidth }}
                         ref={siderRef}
                     >
+                        <DragRegionOffsetWrapper />
                         <TodoApp />
                     </Sider>
                     <Resizer
@@ -60,7 +61,7 @@ export default function Home() {
                         onMouseUp={() => setIsResizing(false)}
                     />
                     <Layout>
-                        <Header className={'tw-font-bold tw-text-center'}>
+                        <Header className={'tw-font-bold tw-text-center tw-z-30'}>
                             Header
                             <EventController />
                         </Header>
