@@ -22,6 +22,27 @@ export default function BigCalendar() {
                 selectable
                 dayLayoutAlgorithm="no-overlap"
                 defaultView={'week'}
+                onEventResize={(event) => {
+                    console.log('onEventResize', event);
+                }}
+                onSelectEvent={(event) => {
+                    console.log('onSelectEvent', event);
+                }}
+                onSelectSlot={(slotInfo) => {
+                    console.log('onSelectSlot', slotInfo);
+                }}
+                onDragStart={(event) => {
+                    console.log('onDragStart', event);
+                }}
+                onEventDrop={(event) => {
+                    console.log('onEventDrop', event);
+                }}
+                onDragOver={(event) => {
+                    console.log('onDragOver', event);
+                }}
+                onDropFromOutside={(event) => {
+                    console.log('onDropFromOutside', event);
+                }}
             />
         </>
     );

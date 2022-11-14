@@ -46,7 +46,7 @@ const EventCreator = (props: { onEventCreated: () => void }) => {
             start: start,
             end: end,
             allDay: allDay,
-            linkedTodos: ['test']
+            linkedTodos: []
         };
         addEvent(event);
     };
