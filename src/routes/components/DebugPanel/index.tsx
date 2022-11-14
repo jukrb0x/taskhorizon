@@ -6,7 +6,7 @@ import { useDebugStore } from '@/store';
 import { cls } from '@/utils';
 import AppRouter from '@/routes/AppRouterWrapper';
 import routerExtractor from '@/utils/router-extractor';
-import EventCreatorWrapper from '@/components/BigCalendar/EventController';
+import EventCreatorWrapper from '@/components/BigCalendar/EventCardModal';
 
 const { Title } = Typography;
 const StyledTitle = cls(Title)`tw-pb-2`;

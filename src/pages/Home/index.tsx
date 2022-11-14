@@ -4,7 +4,7 @@ import { ConfigProvider as SemiConfigProvider, Layout } from '@douyinfe/semi-ui'
 import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
 import Resizer from '@/components/Resizer';
 import TodoApp from '@/components/Tasking';
-import EventController from '@/components/BigCalendar/EventController';
+import EventCardModal from '@/components/BigCalendar/EventCardModal';
 import { cls } from '@/utils';
 import { useEventListener, useSize } from 'ahooks';
 
@@ -63,7 +63,7 @@ export default function Home() {
                     <Layout>
                         <Header className={'tw-font-bold tw-text-center tw-z-30'}>
                             Header
-                            <EventController />
+                            <EventCardModal />
                         </Header>
                         <Content>
                             {/* fixme: router outlet here which is not clear, too far separate with the React Router itself*/}

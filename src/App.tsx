@@ -16,6 +16,20 @@ function DebugTools() {
     return <DebugPanelWrapper />;
 }
 
+// draggable title bar
+const TauriWindowDragRegion = styled.div.attrs(() => ({
+    'data-tauri-drag-region': true,
+    className:
+        'tw-w-full tw-h-8 tw-absolute tw-z-50' +
+        // debug
+        ' tw-bg-gray-500/30 tw-text-center tw-font-mono tw-opacity-50 tw-text-orange-500'
+}))`
+    // debug
+    &::after {
+        content: 'Tauri Window Rrag Region';
+    }
+`;
+
 function App() {
     // test demo
     if (false && isTauri()) {
@@ -24,19 +38,6 @@ function App() {
             invoke('app_ready');
         }, []);
     }
-
-    // draggable title bar
-    const TauriWindowDragRegion = styled.div.attrs(() => ({
-        'data-tauri-drag-region': true,
-        className:
-            'tw-w-full tw-h-8 tw-absolute tw-z-50' +
-            // debug
-            ' tw-bg-gray-500/30 tw-text-center tw-font-mono tw-opacity-50 tw-text-orange-500'
-    }))`
-        &::after {
-            content: 'Tauri Window Rrag Region';
-        }
-    `;
 
     return (
         <BrowserRouter>
