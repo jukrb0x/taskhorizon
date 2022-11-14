@@ -5,6 +5,8 @@ import AppRouterWrapper from '@/routes/AppRouterWrapper';
 import { BrowserRouter } from 'react-router-dom';
 import DebugPanelWrapper from '@/routes/components/DebugPanel';
 import styled from 'styled-components';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -39,7 +41,9 @@ function App() {
     return (
         <BrowserRouter>
             <TauriWindowDragRegion />
-            <AppRouterWrapper />
+            <DndProvider backend={HTML5Backend}>
+                <AppRouterWrapper />
+            </DndProvider>
             {import.meta.env.MODE === 'development' && <DebugTools />}
         </BrowserRouter>
     );
