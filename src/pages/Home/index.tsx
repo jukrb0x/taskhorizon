@@ -3,7 +3,6 @@ import { Outlet } from 'react-router-dom';
 import { Layout } from '@douyinfe/semi-ui';
 import Resizer from '@/components/Resizer';
 import TodoApp from '@/components/Tasking';
-import EventCardModal from '@/components/BigCalendar/EventCardModal';
 import { cls } from '@/utils';
 import { useEventListener, useMove, useViewportSize } from '@mantine/hooks';
 import useAppConfigStore from '@/store/config-store';
@@ -41,9 +40,8 @@ export default function Home() {
                 </Sider>
                 <Resizer innerRef={resizerRef} isResizing={isResizing} />
                 <Layout className={'tw-relative'} style={{ left: `calc(${sidebarWidth})` }}>
-                    <Header className={'tw-font-bold tw-text-center tw-z-30'}>
+                    <Header className={'tw-font-bold tw-text-center tw-z-30 tw-bg-amber-100'}>
                         Header
-                        <EventCardModal />
                     </Header>
                     <Content>
                         {/* fixme: router outlet here which is not clear, too far separate with the React Router itself*/}

@@ -6,7 +6,7 @@ import { useDebugStore } from '@/store';
 import { cls } from '@/utils';
 import AppRouter from '@/routes/AppRouterWrapper';
 import routerExtractor from '@/utils/router-extractor';
-import EventCreatorWrapper, { EventCreator } from '@/components/BigCalendar/EventCardModal';
+import EventCreatorWrapper from '@/components/BigCalendar/EventCardModal';
 import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 
 const { Title } = Typography;
@@ -154,7 +154,6 @@ const DebugPanel = () => {
                         Clean Storage
                     </Button>
                 </Space>
-                <EventCreator defaultEvent={defaultTestEvent} />
             </Space>
         </div>
     );

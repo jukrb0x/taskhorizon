@@ -6,6 +6,9 @@ import './styles/default/styles.scss';
 import './styles/default/dragAndDrop.scss';
 import { useEventStore } from '@/store';
 import { CalendarEvent } from '@/store/event-store';
+import EventCreatorWrapper, { EventCreator } from '@/components/BigCalendar/EventCardModal';
+import { useState } from 'react';
+import { Modal, Typography } from '@douyinfe/semi-ui';
 
 const localizer = momentLocalizer(moment); // todo: use luxon, later when we need multi-timezone support, moment.js is not good enough
 
@@ -13,16 +16,43 @@ const DnDCalendar = withDragAndDrop(Calendar);
 
 export default function BigCalendar() {
     const { eventList } = useEventStore();
+    const [modalVisible, setModalVisible] = useState(false);
+    const [newEvent, setNewEvent] = useState<CalendarEvent>();
 
     const handleSelectEvent = (event: Event | CalendarEvent) => {
         console.log(event);
     };
 
+    const { Title } = Typography;
     const handleSelectSlot = (slotInfo: SlotInfo) => {
-        console.log(slotInfo);
+        const newEvent: CalendarEvent = {
+            allDay: false,
+            start: slotInfo.start,
+            end: slotInfo.end,
+            id: '',
+            title: ''
+        };
+        setNewEvent(newEvent);
+        setModalVisible(true);
     };
     return (
         <>
+            <Modal
+                header={
+                    <Title heading={4} className={'tw-py-4'}>
+                        Create New Event
+                    </Title>
+                }
+                visible={modalVisible}
+                onOk={() => setModalVisible(false)}
+                onCancel={() => setModalVisible(false)}
+                footer={null}
+            >
+                <EventCreator
+                    onEventCreated={() => setModalVisible(false)}
+                    defaultEvent={newEvent}
+                />
+            </Modal>
             <DnDCalendar
                 localizer={localizer}
                 events={eventList}
