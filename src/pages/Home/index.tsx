@@ -7,10 +7,12 @@ import { cls } from '@/utils';
 import { useMove, useViewportSize } from '@mantine/hooks';
 import useAppConfigStore from '@/store/config-store';
 import { useResizer } from '@/hooks/use-resizer';
+import { useTauriExtension } from '@/hooks/use-tauri-extension';
 
 const DragRegionOffsetWrapper = cls.div`tw-h-5`;
 
 export default function Home() {
+    const isTauri = useTauriExtension();
     const { Header, Content, Sider } = Layout;
 
     const { sidebarWidth, setSidebarWidth } = useAppConfigStore();
@@ -35,16 +37,15 @@ export default function Home() {
                     className={'tw-min-[300px] tw-max-[600px] tw-p-[15px]'}
                     style={{ width: `${sidebarWidth}px` }}
                 >
-                    <DragRegionOffsetWrapper />
+                    {isTauri && <DragRegionOffsetWrapper />}
                     <TodoApp />
                 </Sider>
-                <Resizer innerRef={resizerRef} isResizing={isResizing} />
+                <Resizer innerRef={resizerRef} active={isResizing} />
                 <Layout className={'tw-relative'} style={{ left: `calc(${sidebarWidth})` }}>
                     <Header className={'tw-font-bold tw-text-center tw-z-30 tw-bg-amber-100'}>
                         Header
                     </Header>
                     <Content>
-                        {/* fixme: router outlet here which is not clear, too far separate with the React Router itself*/}
                         <Outlet />
                     </Content>
                 </Layout>
