@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Button, Modal, Typography } from '@douyinfe/semi-ui';
 import { CalendarEvent } from '@/store/event-store';
-import { EventCreator } from '../EventCard/EventCreator';
+import { EventCreator } from './EventCreator';
 
 const EventCreatorWrapper = (props: { defaultEvent?: CalendarEvent }) => {
     const { Title } = Typography;

@@ -6,7 +6,7 @@ import './styles/default/styles.scss';
 import './styles/default/dragAndDrop.scss';
 import { useEventStore } from '@/store';
 import { CalendarEvent } from '@/store/event-store';
-import EventCreatorWrapper, { EventCreator } from '@/components/BigCalendar/EventCardModal';
+import { EventCreator } from '@/components/EventCard/EventCreator';
 import { useState } from 'react';
 import { Modal, Typography } from '@douyinfe/semi-ui';
 
@@ -16,7 +16,7 @@ const DnDCalendar = withDragAndDrop(Calendar);
 
 export default function BigCalendar() {
     const { eventList } = useEventStore();
-    const [modalVisible, setModalVisible] = useState(false);
+    const [visible, setVisible] = useState(false);
     const [newEvent, setNewEvent] = useState<CalendarEvent>();
 
     const handleSelectEvent = (event: Event | CalendarEvent) => {
@@ -33,7 +33,7 @@ export default function BigCalendar() {
             title: ''
         };
         setNewEvent(newEvent);
-        setModalVisible(true);
+        setVisible(true);
     };
     return (
         <>
@@ -43,15 +43,12 @@ export default function BigCalendar() {
                         Create New Event
                     </Title>
                 }
-                visible={modalVisible}
-                onOk={() => setModalVisible(false)}
-                onCancel={() => setModalVisible(false)}
+                visible={visible}
+                onOk={() => setVisible(false)}
+                onCancel={() => setVisible(false)}
                 footer={null}
             >
-                <EventCreator
-                    onEventCreated={() => setModalVisible(false)}
-                    defaultEvent={newEvent}
-                />
+                <EventCreator onEventCreated={() => setVisible(false)} defaultEvent={newEvent} />
             </Modal>
             <DnDCalendar
                 localizer={localizer}
