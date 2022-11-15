@@ -4,7 +4,7 @@
 - [x] Basic Tasking App
     - Todo List, adding, editing, deleting
     - basic local user data storage
-- [ ] Basic Scheduling App
+- [x] Basic Scheduling App
     - Calendar view with react-big-calendar
 - [ ] Todo 2.0
     - Drag and Drop
