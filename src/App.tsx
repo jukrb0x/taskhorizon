@@ -8,10 +8,10 @@ import styled from 'styled-components';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { MantineProvider } from '@mantine/core';
+import { useTauriExtension } from '@/hooks/useTauriExtension';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-const isTauri = () => window.__TAURI__;
 
 function DebugTools() {
     return <DebugPanelWrapper />;
@@ -32,13 +32,23 @@ const TauriWindowDragRegion = styled.div.attrs(() => ({
 `;
 
 function App() {
+    const isTauri = useTauriExtension();
     // test demo
-    if (false && isTauri()) {
-        useEffect(() => {
-            // invoke Tauri to show up the window
+    // if (isTauri) {
+    //     invoke('app_ready');
+    //     // useEffect(() => {
+    //     //     // invoke Tauri to show up the window
+    //     //     invoke('app_ready');
+    //     // }, []);
+    // }
+
+    useEffect(() => {
+        // invoke Tauri to show up the window
+        if (isTauri) {
             invoke('app_ready');
-        }, []);
-    }
+            console.log('okk');
+        }
+    }, [isTauri]);
 
     return (
         <BrowserRouter>
