@@ -9,6 +9,8 @@ import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { MantineProvider } from '@mantine/core';
 import { useTauriExtension } from '@/hooks/useTauriExtension';
+import { ConfigProvider as SemiConfigProvider } from '@douyinfe/semi-ui';
+import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -44,9 +46,11 @@ function App() {
         <BrowserRouter>
             {isTauri && <TauriWindowDragRegion />}
             <MantineProvider withGlobalStyles withNormalizeCSS>
-                <DndProvider backend={HTML5Backend}>
-                    <AppRouterWrapper />
-                </DndProvider>
+                <SemiConfigProvider locale={en_GB}>
+                    <DndProvider backend={HTML5Backend}>
+                        <AppRouterWrapper />
+                    </DndProvider>
+                </SemiConfigProvider>
             </MantineProvider>
             {import.meta.env.MODE === 'development' && <DebugTools />}
         </BrowserRouter>
