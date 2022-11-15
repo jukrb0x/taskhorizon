@@ -3,7 +3,7 @@ import { devtools, persist } from 'zustand/middleware';
 import { UUID } from '@/utils';
 import useUserStore from '@/store/user-store';
 
-interface TodoStore {
+interface Todo {
     id: string;
     completed: boolean;
     title: string;
@@ -11,8 +11,8 @@ interface TodoStore {
 }
 
 interface TodoStoreState {
-    todoList: TodoStore[];
-    addTodo: (newTodo: TodoStore) => void;
+    todoList: Todo[];
+    addTodo: (newTodo: Todo) => void;
     removeTodo: (id: string) => void;
     toggleTodo: (id: string) => void;
 }
@@ -24,7 +24,7 @@ const TodoIdGenerator = () => {
 
 const TodoStore: StateCreator<TodoStoreState> = (set) => ({
     todoList: [],
-    addTodo: (newTodo: TodoStore) =>
+    addTodo: (newTodo: Todo) =>
         set((state) => ({
             todoList: [...state.todoList, newTodo]
         })),
@@ -48,6 +48,6 @@ const useTodoStore = create<TodoStoreState>()(
         enabled: import.meta.env.MODE === 'development'
     })
 );
-export type { TodoStore };
+export type { Todo };
 export { TodoIdGenerator };
 export default useTodoStore;

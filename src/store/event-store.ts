@@ -3,7 +3,7 @@ import { UUID } from '@/utils';
 import { devtools, persist } from 'zustand/middleware';
 import useUserStore from '@/store/user-store';
 
-interface EventState {
+interface CalendarEvent {
     id: string;
     title: string;
     desc?: string;
@@ -14,9 +14,9 @@ interface EventState {
 }
 
 interface EventStoreState {
-    eventList: EventState[];
-    addEvent: (newEvent: EventState) => void;
-    setEvent: (id: string, newEvent: EventState) => void;
+    eventList: CalendarEvent[];
+    addEvent: (newEvent: CalendarEvent) => void;
+    setEvent: (id: string, newEvent: CalendarEvent) => void;
     removeEvent: (id: string) => void;
 }
 
@@ -28,11 +28,11 @@ const EventIdGenerator = () => {
 
 const EventStore: StateCreator<EventStoreState> = (set) => ({
     eventList: [],
-    addEvent: (newEvent: EventState) =>
+    addEvent: (newEvent: CalendarEvent) =>
         set((state) => ({
             eventList: [...state.eventList, newEvent]
         })),
-    setEvent: (id: string, newEvent: EventState) => {
+    setEvent: (id: string, newEvent: CalendarEvent) => {
         set((state) => ({
             eventList: state.eventList.map((event) =>
                 event.id === id
@@ -57,7 +57,7 @@ const useEventStore = create<EventStoreState>()(
             name: 'event-store',
             deserialize: (str) => {
                 const data = JSON.parse(str);
-                data.state.eventList = data.state.eventList.map((event: EventState) => {
+                data.state.eventList = data.state.eventList.map((event: CalendarEvent) => {
                     event.start = new Date(event.start);
                     event.end = new Date(event.end);
                     return event;
@@ -71,6 +71,6 @@ const useEventStore = create<EventStoreState>()(
     )
 );
 
-export type { EventState as CalendarEvent };
+export type { CalendarEvent as CalendarEvent };
 export { EventIdGenerator };
 export default useEventStore;
