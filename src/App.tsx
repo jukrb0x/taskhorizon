@@ -2,7 +2,7 @@ import './index.scss';
 import { invoke } from '@tauri-apps/api';
 import { useEffect } from 'react';
 import AppRouterWrapper from '@/routes/AppRouterWrapper';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, HashRouter } from 'react-router-dom';
 import DebugPanelWrapper from '@/routes/components/DebugPanel';
 import styled from 'styled-components';
 import { DndProvider } from 'react-dnd';
@@ -43,7 +43,7 @@ function App() {
     }, [isTauri]);
 
     return (
-        <BrowserRouter>
+        <HashRouter>
             {isTauri && <TauriWindowDragRegion />}
             <MantineProvider /*withGlobalStyles withNormalizeCSS*/>
                 <SemiConfigProvider locale={en_GB}>
@@ -53,7 +53,7 @@ function App() {
                     {import.meta.env.MODE === 'development' && <DebugTools />}
                 </SemiConfigProvider>
             </MantineProvider>
-        </BrowserRouter>
+        </HashRouter>
     );
 }
 
