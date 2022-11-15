@@ -1,11 +1,11 @@
 import { Checkbox } from '@douyinfe/semi-ui';
 
-import { TodoStore } from '@/store/todo-store';
+import { Todo } from '@/store/todo';
 import { useTodoStore } from '@/store';
 
 import { useDrag } from 'react-dnd';
 
-export default function TodoItem({ todo }: { todo: TodoStore }) {
+export default function TodoItem({ todo }: { todo: Todo }) {
     const { toggleTodo } = useTodoStore();
 
     const handleToggle = () => {

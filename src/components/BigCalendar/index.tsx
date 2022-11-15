@@ -1,10 +1,11 @@
-import { Calendar, luxonLocalizer, momentLocalizer } from 'react-big-calendar';
+import { Calendar, luxonLocalizer, momentLocalizer, SlotInfo, Event } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import moment from 'moment';
 // import luxon from 'luxon';
 import './styles/default/styles.scss';
 import './styles/default/dragAndDrop.scss';
 import { useEventStore } from '@/store';
+import { CalendarEvent } from '@/store/event-store';
 
 const localizer = momentLocalizer(moment); // todo: use luxon, later when we need multi-timezone support, moment.js is not good enough
 
@@ -13,11 +14,11 @@ const DnDCalendar = withDragAndDrop(Calendar);
 export default function BigCalendar() {
     const { eventList } = useEventStore();
 
-    const handleSelectEvent = (event) => {
+    const handleSelectEvent = (event: Event | CalendarEvent) => {
         console.log(event);
     };
 
-    const handleSelectSlot = (slotInfo) => {
+    const handleSelectSlot = (slotInfo: SlotInfo) => {
         console.log(slotInfo);
     };
     return (
