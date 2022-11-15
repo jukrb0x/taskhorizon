@@ -8,6 +8,8 @@ import { cls } from '@/utils';
 import { useEventListener, useMove, useViewportSize } from '@mantine/hooks';
 import useAppConfigStore from '@/store/config-store';
 
+const DragRegionOffsetWrapper = cls.div`tw-h-5`;
+
 export default function Home() {
     const { Header, Content, Sider } = Layout;
 
@@ -21,7 +23,6 @@ export default function Home() {
     });
     const resizerRef = useEventListener('mousedown', () => setIsResizing(true));
 
-    const DragRegionOffsetWrapper = cls.div`tw-h-5`;
     const dragRegionRef = useRef<HTMLDivElement>(null);
     const [dragRegionHeight, setDragRegionHeight] = useState(0);
     useEffect(() => {

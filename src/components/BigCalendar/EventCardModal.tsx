@@ -23,19 +23,23 @@ import Icon, { IconCalendar } from '@douyinfe/semi-icons/lib/es/icons';
 import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 import { useEventStore } from '@/store';
 
-const EventCreator = (props: { onEventCreated: () => void }) => {
+interface EventCardModalProps {
+    onEventCreated?: () => void;
+    defaultEvent?: CalendarEvent;
+}
+const EventCreator = (props: EventCardModalProps) => {
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
-    const [start, setStart] = useState<Date | any>();
-    const [end, setEnd] = useState<Date | any>();
-    const [allDay, setAllDay] = useState<boolean>(false);
+    const [start, setStart] = useState<Date | any>(props.defaultEvent?.start);
+    const [end, setEnd] = useState<Date | any>(props.defaultEvent?.end || start);
+    const [allDay, setAllDay] = useState<boolean>(props.defaultEvent?.allDay || false);
     const { addEvent } = useEventStore();
 
     const canCreateEvent = title.trim() != '' && start != null && end != null;
 
     const handleCreate = () => {
         createEvent();
-        props.onEventCreated();
+        props.onEventCreated && props.onEventCreated();
     };
     const createEvent = () => {
         if (!canCreateEvent) return;
@@ -134,4 +138,5 @@ const EventCreatorWrapper = () => {
     );
 };
 
+export { EventCreator };
 export default EventCreatorWrapper;

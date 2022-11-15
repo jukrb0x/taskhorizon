@@ -6,7 +6,8 @@ import { useDebugStore } from '@/store';
 import { cls } from '@/utils';
 import AppRouter from '@/routes/AppRouterWrapper';
 import routerExtractor from '@/utils/router-extractor';
-import EventCreatorWrapper from '@/components/BigCalendar/EventCardModal';
+import EventCreatorWrapper, { EventCreator } from '@/components/BigCalendar/EventCardModal';
+import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 
 const { Title } = Typography;
 const StyledTitle = cls(Title)`tw-pb-2`;
@@ -64,6 +65,17 @@ const DebugPanel = () => {
     const navigate = useNavigate();
     const [path, setPath] = useState('');
     const { toggleDebugPanelStyle, debugPanelStyle } = useDebugStore();
+
+    // todo dbg
+    const defaultTestEvent: CalendarEvent = {
+        id: EventIdGenerator(),
+        title: 'Test Event',
+        desc: 'This is a test event',
+        start: new Date(),
+        end: new Date(),
+        allDay: false,
+        linkedTodos: []
+    };
 
     const cleanAndReload = () => {
         localStorage.clear();
@@ -142,6 +154,7 @@ const DebugPanel = () => {
                         Clean Storage
                     </Button>
                 </Space>
+                <EventCreator defaultEvent={defaultTestEvent} />
             </Space>
         </div>
     );

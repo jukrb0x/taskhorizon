@@ -50,9 +50,9 @@ function App() {
                     <DndProvider backend={HTML5Backend}>
                         <AppRouterWrapper />
                     </DndProvider>
+                    {import.meta.env.MODE === 'development' && <DebugTools />}
                 </SemiConfigProvider>
             </MantineProvider>
-            {import.meta.env.MODE === 'development' && <DebugTools />}
         </BrowserRouter>
     );
 }
