@@ -1,16 +1,8 @@
-import {
-    BrowserRouter,
-    HashRouter,
-    MemoryRouter,
-    Navigate,
-    Route,
-    RouterProvider,
-    Routes
-} from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 import Home from '@/pages/Home';
 import BigCalendar from '@/components/BigCalendar';
-import TuiCalendar from '@/components/experimental/ToastCalendar';
-import SemiCalendar from '@/components/experimental/SemiCalendar';
+import TuiCalendar from '@/components/Experimental/ToastCalendar';
+import SemiCalendar from '@/components/Experimental/SemiCalendar';
 import NotFound from '@/routes/components/NotFound';
 import CalendarApp from '@/pages/Calendar';
 

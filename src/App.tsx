@@ -1,44 +1,53 @@
 import './index.scss';
-import { invoke, tauri } from '@tauri-apps/api';
+import { invoke } from '@tauri-apps/api';
 import { useEffect } from 'react';
 import AppRouterWrapper from '@/routes/AppRouterWrapper';
-import { BrowserRouter, HashRouter, MemoryRouter } from 'react-router-dom';
+import { BrowserRouter } from 'react-router-dom';
 import DebugPanelWrapper from '@/routes/components/DebugPanel';
 import styled from 'styled-components';
-import { Simulate } from 'react-dom/test-utils';
-import drag = Simulate.drag;
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { MantineProvider } from '@mantine/core';
+import { useTauriExtension } from '@/hooks/useTauriExtension';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-const isTauri = () => window.__TAURI__;
 
 function DebugTools() {
     return <DebugPanelWrapper />;
 }
 
-function App() {
-    // test demo
-    if (false && isTauri()) {
-        useEffect(() => {
-            // invoke Tauri to show up the window
-            invoke('app_ready');
-        }, []);
+// draggable title bar
+const TauriWindowDragRegion = styled.div.attrs(() => ({
+    'data-tauri-drag-region': true,
+    className:
+        'tw-w-full tw-h-8 tw-absolute tw-z-50' +
+        // debug
+        ' tw-bg-gray-500/30 tw-text-center tw-font-mono tw-opacity-50 tw-text-orange-500'
+}))`
+    // debug
+    &::after {
+        content: 'Tauri Window Rrag Region';
     }
+`;
 
-    const TauriWindowDragRegion = styled.div.attrs(() => ({
-        'data-tauri-drag-region': true,
-        className: 'tw-w-full tw-h-10 tw-absolute'
-    }))``;
-
-    // TODO:
-    //  1. when maximized the window, the drag region (if exists) offset should be hidden
-    //  2. when not maximized the window, window title should be set to none
-    //  @ https://tauri.app/v1/api/config/#windowconfig
+function App() {
+    const isTauri = useTauriExtension();
+    useEffect(() => {
+        if (false && isTauri) {
+            // test demo
+            invoke('app_ready'); // invoke Tauri to show up the window
+        }
+    }, [isTauri]);
 
     return (
         <BrowserRouter>
-            <TauriWindowDragRegion />
-            <AppRouterWrapper />
+            {isTauri && <TauriWindowDragRegion />}
+            <MantineProvider withGlobalStyles withNormalizeCSS>
+                <DndProvider backend={HTML5Backend}>
+                    <AppRouterWrapper />
+                </DndProvider>
+            </MantineProvider>
             {import.meta.env.MODE === 'development' && <DebugTools />}
         </BrowserRouter>
     );

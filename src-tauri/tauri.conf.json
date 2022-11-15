@@ -59,11 +59,13 @@
         "title": "calitdone",
         "width": 1200,
         "height": 800,
-        "transparent": true,
+        "transparent": false,
         "decorations": true,
         "center": true,
-        "titleBarStyle": "Overlay"
+        "titleBarStyle": "Overlay",
+        "hiddenTitle": true
       }
-    ]
+    ],
+    "macOSPrivateApi": true
   }
 }
