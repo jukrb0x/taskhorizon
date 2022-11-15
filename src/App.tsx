@@ -7,6 +7,7 @@ import DebugPanelWrapper from '@/routes/components/DebugPanel';
 import styled from 'styled-components';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
+import { MantineProvider } from '@mantine/core';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -42,9 +43,11 @@ function App() {
     return (
         <BrowserRouter>
             <TauriWindowDragRegion />
-            <DndProvider backend={HTML5Backend}>
-                <AppRouterWrapper />
-            </DndProvider>
+            <MantineProvider withGlobalStyles withNormalizeCSS>
+                <DndProvider backend={HTML5Backend}>
+                    <AppRouterWrapper />
+                </DndProvider>
+            </MantineProvider>
             {import.meta.env.MODE === 'development' && <DebugTools />}
         </BrowserRouter>
     );
