@@ -75,11 +75,12 @@ pnpm tauri build
 
 ### User Interface
 
-| Name              | Description          |
-|-------------------|----------------------|
-| Tailwind CSS      | Custom UI Components |
-| Semi-UI           | UI Components        |
-| styled-components | Custom UI Components |
+| Name              | Description              |
+|-------------------|--------------------------|
+| Tailwind CSS      | Custom UI Components     |
+| Semi-UI           | UI Components            |
+| styled-components | Custom UI Components     |
+| Mantine           | Component libs and hooks |
 
 ### DX
 
