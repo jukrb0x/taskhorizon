@@ -6,30 +6,21 @@ import Resizer from '@/components/Resizer';
 import TodoApp from '@/components/Tasking';
 import EventCardModal from '@/components/BigCalendar/EventCardModal';
 import { cls } from '@/utils';
-import { useEventListener, useSize } from 'ahooks';
+import { useEventListener, useMove, useViewportSize } from '@mantine/hooks';
+import useAppConfigStore from '@/store/config-store';
 
 export default function Home() {
-    const { Header, Footer, Content, Sider } = Layout;
-    const [siderWidth, setSiderWidth] = useState(350);
-    const siderRef = useRef(null);
-    const [isResizing, setIsResizing] = useState(false);
-    // resize sidebar
-    useEventListener(
-        'mousemove',
-        useCallback(
-            ({ clientX }: MouseEvent) => {
-                if (isResizing) {
-                    if (clientX < 300 || clientX > 500) return;
-                    setSiderWidth(clientX);
-                }
-            },
-            [isResizing]
-        )
-    );
+    const { Header, Content, Sider } = Layout;
 
-    useEventListener('mouseup', () => {
-        setIsResizing(false);
+    const { sidebarWidth, setSidebarWidth } = useAppConfigStore();
+    const [isResizing, setIsResizing] = useState(false);
+    const { width: viewportWidth } = useViewportSize();
+    const { ref: moveRef } = useMove(({ x }) => {
+        const px = Math.floor(x * viewportWidth);
+        if (!isResizing || px < 300 || px > 600) return;
+        setSidebarWidth(px);
     });
+    const resizerRef = useEventListener('mousedown', () => setIsResizing(true));
 
     const DragRegionOffsetWrapper = cls.div`tw-h-5`;
     const dragRegionRef = useRef<HTMLDivElement>(null);
@@ -39,28 +30,18 @@ export default function Home() {
     }, []);
 
     return (
-        <div className={'tw-select-none tw-h-screen'}>
+        <div className={'tw-select-none tw-h-screen'} ref={moveRef}>
             <SemiConfigProvider locale={en_GB}>
-                <Layout
-                    hasSider
-                    className={'tw-h-screen'}
-                    // style={{
-                    //     height: `calc(100vh - ${dragRegionHeight || 0}px)`
-                    // }}
-                >
+                <Layout hasSider className={'tw-h-screen'}>
                     <Sider
                         className={'tw-min-[300px] tw-max-[600px] tw-p-[15px]'}
-                        style={{ width: siderWidth }}
-                        ref={siderRef}
+                        style={{ width: `${sidebarWidth}px` }}
                     >
                         <DragRegionOffsetWrapper />
                         <TodoApp />
                     </Sider>
-                    <Resizer
-                        onMouseDown={() => setIsResizing(true)}
-                        onMouseUp={() => setIsResizing(false)}
-                    />
-                    <Layout>
+                    <Resizer innerRef={resizerRef} isResizing={isResizing} />
+                    <Layout className={'tw-relative'} style={{ left: `calc(${sidebarWidth})` }}>
                         <Header className={'tw-font-bold tw-text-center tw-z-30'}>
                             Header
                             <EventCardModal />
