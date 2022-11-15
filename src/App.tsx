@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { MantineProvider } from '@mantine/core';
-import { useTauriExtension } from '@/hooks/useTauriExtension';
+import { useTauriExtension } from '@/hooks/use-tauri-extension';
 import { ConfigProvider as SemiConfigProvider } from '@douyinfe/semi-ui';
 import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
 

@@ -1,5 +1,5 @@
 import { cls } from '@/utils';
-import { ForwardedRef, MouseEventHandler, useEffect } from 'react';
+import { MouseEventHandler, RefObject } from 'react';
 import { Simulate } from 'react-dom/test-utils';
 
 const ResizeBar = cls.div`tw-w-1.5 tw-h-full tw-cursor-col-resize
@@ -11,7 +11,7 @@ export default function Resizer({
     onMouseDown,
     onMouseUp
 }: {
-    innerRef?: ForwardedRef<any>;
+    innerRef?: RefObject<HTMLDivElement>;
     isResizing: boolean;
     onMouseDown?: MouseEventHandler;
     onMouseUp?: MouseEventHandler;
