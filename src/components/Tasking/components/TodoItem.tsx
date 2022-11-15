@@ -1,6 +1,6 @@
 import { Checkbox } from '@douyinfe/semi-ui';
 
-import { Todo } from '@/store/todo';
+import { Todo } from '@/store/todo-store';
 import { useTodoStore } from '@/store';
 
 import { useDrag } from 'react-dnd';
