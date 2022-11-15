@@ -42,7 +42,7 @@ function App() {
 
     return (
         <BrowserRouter>
-            <TauriWindowDragRegion />
+            {isTauri && <TauriWindowDragRegion />}
             <MantineProvider withGlobalStyles withNormalizeCSS>
                 <DndProvider backend={HTML5Backend}>
                     <AppRouterWrapper />
