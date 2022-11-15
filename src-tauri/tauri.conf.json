@@ -61,11 +61,8 @@
         "height": 800,
         "transparent": false,
         "decorations": true,
-        "center": true,
-        "titleBarStyle": "Overlay",
-        "hiddenTitle": true
+        "center": true
       }
-    ],
-    "macOSPrivateApi": true
+    ]
   }
 }
