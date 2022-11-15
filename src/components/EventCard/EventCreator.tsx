@@ -1,41 +1,28 @@
-// fixme: this is shit
-import {
-    createRef,
-    Dispatch,
-    forwardRef,
-    LegacyRef,
-    SetStateAction,
-    useImperativeHandle,
-    useRef,
-    useState
-} from 'react';
-import {
-    Button,
-    Checkbox,
-    DatePicker,
-    Input,
-    List,
-    Modal,
-    TextArea,
-    Typography
-} from '@douyinfe/semi-ui';
-import Icon, { IconCalendar } from '@douyinfe/semi-icons/lib/es/icons';
+import { useState } from 'react';
+import { Button, Checkbox, DatePicker, Input, TextArea } from '@douyinfe/semi-ui';
 import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
+import { IconCalendar } from '@douyinfe/semi-icons/lib/es/icons';
 import { useEventStore } from '@/store';
 
-const EventCreator = (props: { onEventCreated: () => void }) => {
+interface EventCardModalProps {
+    onEventCreated?: () => void;
+    defaultEvent?: CalendarEvent;
+}
+
+// todo: demo version
+const EventCreator = (props: EventCardModalProps) => {
     const [title, setTitle] = useState<string>('');
     const [description, setDescription] = useState<string>('');
-    const [start, setStart] = useState<Date | any>();
-    const [end, setEnd] = useState<Date | any>();
-    const [allDay, setAllDay] = useState<boolean>(false);
+    const [start, setStart] = useState<Date | any>(props.defaultEvent?.start);
+    const [end, setEnd] = useState<Date | any>(props.defaultEvent?.end || start);
+    const [allDay, setAllDay] = useState<boolean>(props.defaultEvent?.allDay || false);
     const { addEvent } = useEventStore();
 
     const canCreateEvent = title.trim() != '' && start != null && end != null;
 
     const handleCreate = () => {
         createEvent();
-        props.onEventCreated();
+        props.onEventCreated && props.onEventCreated();
     };
     const createEvent = () => {
         if (!canCreateEvent) return;
@@ -102,36 +89,4 @@ const EventCreator = (props: { onEventCreated: () => void }) => {
     );
 };
 
-const EventCreatorWrapper = () => {
-    const { Title } = Typography;
-
-    const [visible, setVisible] = useState(false);
-
-    const closeModal = () => {
-        setVisible(false);
-    };
-    const showModal = () => {
-        setVisible(true);
-    };
-
-    return (
-        <>
-            <Button onClick={showModal}>Add Event</Button>
-            <Modal
-                header={
-                    <Title heading={4} className={'tw-py-4'}>
-                        Create New Event
-                    </Title>
-                }
-                visible={visible}
-                onOk={() => closeModal()}
-                onCancel={() => closeModal()}
-                footer={null} // todo: how to get the value from child directly?
-            >
-                <EventCreator onEventCreated={() => closeModal()} />
-            </Modal>
-        </>
-    );
-};
-
-export default EventCreatorWrapper;
+export { EventCreator };

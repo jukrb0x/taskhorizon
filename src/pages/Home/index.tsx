@@ -1,37 +1,27 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import { ConfigProvider as SemiConfigProvider, Layout } from '@douyinfe/semi-ui';
-import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
+import { Layout } from '@douyinfe/semi-ui';
 import Resizer from '@/components/Resizer';
 import TodoApp from '@/components/Tasking';
-import EventCardModal from '@/components/BigCalendar/EventCardModal';
 import { cls } from '@/utils';
-import { useEventListener, useSize } from 'ahooks';
+import { useMove, useViewportSize } from '@mantine/hooks';
+import useAppConfigStore from '@/store/config-store';
+import { useResizer } from '@/hooks/use-resizer';
+
+const DragRegionOffsetWrapper = cls.div`tw-h-5`;
 
 export default function Home() {
-    const { Header, Footer, Content, Sider } = Layout;
-    const [siderWidth, setSiderWidth] = useState(350);
-    const siderRef = useRef(null);
-    const [isResizing, setIsResizing] = useState(false);
-    // resize sidebar
-    useEventListener(
-        'mousemove',
-        useCallback(
-            ({ clientX }: MouseEvent) => {
-                if (isResizing) {
-                    if (clientX < 300 || clientX > 500) return;
-                    setSiderWidth(clientX);
-                }
-            },
-            [isResizing]
-        )
-    );
+    const { Header, Content, Sider } = Layout;
 
-    useEventListener('mouseup', () => {
-        setIsResizing(false);
+    const { sidebarWidth, setSidebarWidth } = useAppConfigStore();
+    const { width: viewportWidth } = useViewportSize();
+    const { ref: moveRef } = useMove(({ x }) => {
+        const px = Math.floor(x * viewportWidth);
+        if (!isResizing || px < 300 || px > 600) return;
+        setSidebarWidth(px);
     });
+    const { isResizing, ref: resizerRef } = useResizer();
 
-    const DragRegionOffsetWrapper = cls.div`tw-h-5`;
     const dragRegionRef = useRef<HTMLDivElement>(null);
     const [dragRegionHeight, setDragRegionHeight] = useState(0);
     useEffect(() => {
@@ -39,39 +29,26 @@ export default function Home() {
     }, []);
 
     return (
-        <div className={'tw-select-none tw-h-screen'}>
-            <SemiConfigProvider locale={en_GB}>
-                <Layout
-                    hasSider
-                    className={'tw-h-screen'}
-                    // style={{
-                    //     height: `calc(100vh - ${dragRegionHeight || 0}px)`
-                    // }}
+        <div className={'tw-select-none tw-h-screen'} ref={moveRef}>
+            <Layout hasSider className={'tw-h-screen'}>
+                <Sider
+                    className={'tw-min-[300px] tw-max-[600px] tw-p-[15px]'}
+                    style={{ width: `${sidebarWidth}px` }}
                 >
-                    <Sider
-                        className={'tw-min-[300px] tw-max-[600px] tw-p-[15px]'}
-                        style={{ width: siderWidth }}
-                        ref={siderRef}
-                    >
-                        <DragRegionOffsetWrapper />
-                        <TodoApp />
-                    </Sider>
-                    <Resizer
-                        onMouseDown={() => setIsResizing(true)}
-                        onMouseUp={() => setIsResizing(false)}
-                    />
-                    <Layout>
-                        <Header className={'tw-font-bold tw-text-center tw-z-30'}>
-                            Header
-                            <EventCardModal />
-                        </Header>
-                        <Content>
-                            {/* fixme: router outlet here which is not clear, too far separate with the React Router itself*/}
-                            <Outlet />
-                        </Content>
-                    </Layout>
+                    <DragRegionOffsetWrapper />
+                    <TodoApp />
+                </Sider>
+                <Resizer innerRef={resizerRef} isResizing={isResizing} />
+                <Layout className={'tw-relative'} style={{ left: `calc(${sidebarWidth})` }}>
+                    <Header className={'tw-font-bold tw-text-center tw-z-30 tw-bg-amber-100'}>
+                        Header
+                    </Header>
+                    <Content>
+                        {/* fixme: router outlet here which is not clear, too far separate with the React Router itself*/}
+                        <Outlet />
+                    </Content>
                 </Layout>
-            </SemiConfigProvider>
+            </Layout>
         </div>
     );
 }

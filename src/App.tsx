@@ -2,13 +2,15 @@ import './index.scss';
 import { invoke } from '@tauri-apps/api';
 import { useEffect } from 'react';
 import AppRouterWrapper from '@/routes/AppRouterWrapper';
-import { BrowserRouter } from 'react-router-dom';
+import { BrowserRouter, HashRouter } from 'react-router-dom';
 import DebugPanelWrapper from '@/routes/components/DebugPanel';
 import styled from 'styled-components';
 import { DndProvider } from 'react-dnd';
 import { HTML5Backend } from 'react-dnd-html5-backend';
 import { MantineProvider } from '@mantine/core';
-import { useTauriExtension } from '@/hooks/useTauriExtension';
+import { useTauriExtension } from '@/hooks/use-tauri-extension';
+import { ConfigProvider as SemiConfigProvider } from '@douyinfe/semi-ui';
+import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -41,15 +43,17 @@ function App() {
     }, [isTauri]);
 
     return (
-        <BrowserRouter>
+        <HashRouter>
             {isTauri && <TauriWindowDragRegion />}
-            <MantineProvider withGlobalStyles withNormalizeCSS>
-                <DndProvider backend={HTML5Backend}>
-                    <AppRouterWrapper />
-                </DndProvider>
+            <MantineProvider /*withGlobalStyles withNormalizeCSS*/>
+                <SemiConfigProvider locale={en_GB}>
+                    <DndProvider backend={HTML5Backend}>
+                        <AppRouterWrapper />
+                    </DndProvider>
+                    {import.meta.env.MODE === 'development' && <DebugTools />}
+                </SemiConfigProvider>
             </MantineProvider>
-            {import.meta.env.MODE === 'development' && <DebugTools />}
-        </BrowserRouter>
+        </HashRouter>
     );
 }
 

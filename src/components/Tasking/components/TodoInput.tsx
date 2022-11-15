@@ -1,5 +1,5 @@
 import { Button, Input } from '@douyinfe/semi-ui';
-import { TodoIdGenerator, Todo } from '@/store/todo';
+import { TodoIdGenerator, Todo } from '@/store/todo-store';
 import { useTodoStore } from '@/store';
 import { useState } from 'react';
 

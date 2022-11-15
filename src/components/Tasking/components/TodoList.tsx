@@ -1,5 +1,5 @@
 import TodoItem from '@/components/Tasking/components/TodoItem';
-import { Todo } from '@/store/todo';
+import { Todo } from '@/store/todo-store';
 
 export default function TodoList({ todos }: { todos: Todo[] }) {
     return (
