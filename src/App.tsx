@@ -33,20 +33,10 @@ const TauriWindowDragRegion = styled.div.attrs(() => ({
 
 function App() {
     const isTauri = useTauriExtension();
-    // test demo
-    // if (isTauri) {
-    //     invoke('app_ready');
-    //     // useEffect(() => {
-    //     //     // invoke Tauri to show up the window
-    //     //     invoke('app_ready');
-    //     // }, []);
-    // }
-
     useEffect(() => {
-        // invoke Tauri to show up the window
-        if (isTauri) {
-            invoke('app_ready');
-            console.log('okk');
+        if (false && isTauri) {
+            // test demo
+            invoke('app_ready'); // invoke Tauri to show up the window
         }
     }, [isTauri]);
 
