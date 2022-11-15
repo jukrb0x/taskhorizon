@@ -1,0 +1,16 @@
+{
+  "framework": "vite",
+  "buildCommand": "vite build",
+  "outputDirectory": "./dist",
+  "installCommand": "pnpm install",
+  "git": {
+    "deploymentEnabled": {
+      "main": true,
+      "dev": true
+    }
+  },
+  "github": {
+    "enabled": true
+  },
+  "public": false
+}
