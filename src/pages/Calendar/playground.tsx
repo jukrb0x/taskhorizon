@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Button as MButton } from '@mantine/core';
-import { Button } from '@/components/Button';
+import { Button, StylishButton } from '@/components/Button';
 
 const EventCard = () => {
     return (
@@ -13,28 +13,16 @@ const EventCard = () => {
 export const Playground = () => {
     const [isShowing, setIsShowing] = useState(false);
     return (
-        <div className={''}>
+        <div className={'tw-space-x-2'}>
             ok
-            {/*
-            <MButton
-                variant={'default'}
-                // className={'tw-drop-shadow-md'}
-                color={'gray.4'}
-                styles={(theme) => ({
-                    root: {
-                        '&:hover': {
-                            backgroundColor: theme.colors.gray[4]
-                        }
-                    }
-                })}
-            >
-                Show
-            </MButton>
-*/}
-            <Button variant={'filled'} color={'green'} onClick={() => setIsShowing(!isShowing)}>
+            <Button className={'tw-shadow-md'}>ok</Button>
+            <StylishButton>ok</StylishButton>
+            <StylishButton preset={'red'} shadow={'md'}>
                 ok
-            </Button>
-            <Button variant={'default'}>ok</Button>
+            </StylishButton>
+            <StylishButton preset={'green'} shadow={'xl'}>
+                ok
+            </StylishButton>
             <EventCard />
         </div>
     );

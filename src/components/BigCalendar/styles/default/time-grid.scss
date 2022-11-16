@@ -45,6 +45,7 @@
     }
 
     .rbc-row {
+        user-select: none;
         box-sizing: border-box;
         min-height: 20px;
     }
@@ -127,7 +128,6 @@
 
     > .rbc-day-slot {
         width: 100%;
-        user-select: none;
         user-select: none;
     }
 }
