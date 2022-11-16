@@ -3,6 +3,7 @@ import Home from '@/pages/Home';
 import BigCalendar from '@/components/BigCalendar';
 import NotFound from '@/routes/components/NotFound';
 import CalendarApp from '@/pages/Calendar';
+import { Playground } from '@/pages/Calendar/playground';
 
 export default function AppRouter() {
     return (
@@ -11,6 +12,7 @@ export default function AppRouter() {
                 <Route index element={<Navigate to={'/calendar'} />} />
                 <Route path="/calendar" element={<CalendarApp />}>
                     <Route index element={<BigCalendar />} />
+                    <Route path={'playground'} element={<Playground />} />
                 </Route>
             </Route>
             <Route path={'*'} element={<NotFound />} />

@@ -1,7 +1,7 @@
 import './index.scss';
 import { invoke } from '@tauri-apps/api';
 import { useEffect } from 'react';
-import AppRouterWrapper from '@/routes/AppRouterWrapper';
+import AppRouter from '@/routes/AppRouter';
 import { BrowserRouter, HashRouter } from 'react-router-dom';
 import DebugPanelWrapper from '@/routes/components/DebugPanel';
 import styled from 'styled-components';
@@ -45,10 +45,10 @@ function App() {
     return (
         <HashRouter>
             {isTauri && <TauriWindowDragRegion />}
-            <MantineProvider /*withGlobalStyles withNormalizeCSS*/>
+            <MantineProvider withGlobalStyles withNormalizeCSS>
                 <SemiConfigProvider locale={en_GB}>
                     <DndProvider backend={HTML5Backend}>
-                        <AppRouterWrapper />
+                        <AppRouter />
                     </DndProvider>
                     {import.meta.env.MODE === 'development' && <DebugTools />}
                 </SemiConfigProvider>

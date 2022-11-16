@@ -4,7 +4,7 @@ import styles from './index.module.scss';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { useDebugStore } from '@/store';
 import { cls } from '@/utils';
-import AppRouter from '@/routes/AppRouterWrapper';
+import AppRouter from '@/routes/AppRouter';
 import routerExtractor from '@/utils/router-extractor';
 import EventCreatorWrapper from '@/components/EventCard/EventCardModal';
 import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
