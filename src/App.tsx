@@ -33,6 +33,11 @@ const TauriWindowDragRegion = styled.div.attrs(() => ({
     }
 `;
 
+const mantineTheme = {
+    fontFamily: 'Inter, sans-serif',
+    defaultRadius: 'md'
+};
+
 function App() {
     const isTauri = useTauriExtension();
     useEffect(() => {
@@ -45,7 +50,7 @@ function App() {
     return (
         <HashRouter>
             {isTauri && <TauriWindowDragRegion />}
-            <MantineProvider withGlobalStyles withNormalizeCSS>
+            <MantineProvider withGlobalStyles withNormalizeCSS theme={mantineTheme}>
                 <SemiConfigProvider locale={en_GB}>
                     <DndProvider backend={HTML5Backend}>
                         <AppRouter />
