@@ -12,6 +12,7 @@ specifiers:
   '@formkit/auto-animate': 1.0.0-beta.3
   '@headlessui/react': ^1.7.4
   '@mantine/core': ^5.7.2
+  '@mantine/dates': ^5.8.0
   '@mantine/hooks': ^5.7.2
   '@tailwindcss/typography': ^0.5.8
   '@tauri-apps/api': ^1.2.0
@@ -31,6 +32,7 @@ specifiers:
   clsx: ^1.2.1
   cz-git: ^1.3.12
   czg: ^1.3.12
+  date-fns: ^2.29.3
   eslint: ^8.27.0
   eslint-config-prettier: ^8.5.0
   eslint-config-standard-with-typescript: ^23.0.0
@@ -69,12 +71,14 @@ dependencies:
   '@formkit/auto-animate': 1.0.0-beta.3
   '@headlessui/react': 1.7.4_biqbaboplfbrettd7655fr4n2y
   '@mantine/core': 5.7.2_s42f3uthtxnh7bllormamvwjhq
+  '@mantine/dates': 5.8.0_tkwtvtil3a5wynvu2oqdmkkaii
   '@mantine/hooks': 5.7.2_react@18.2.0
   '@tauri-apps/api': 1.2.0
   '@toast-ui/calendar': 2.1.3
   '@toast-ui/react-calendar': 2.1.3_react@18.2.0
   ahooks: 3.7.2_react@18.2.0
   clsx: 1.2.1
+  date-fns: 2.29.3
   luxon: 3.1.0
   moment: 2.29.4
   normalize.css: 8.0.1
@@ -984,6 +988,20 @@ packages:
       - '@types/react'
     dev: false
 
+  /@mantine/dates/5.8.0_tkwtvtil3a5wynvu2oqdmkkaii:
+    resolution: {integrity: sha512-w8pc/cCUXiITBnAi9hy3My8ML9/Y/ANDTHkJpPsiMLMSt+JbC1eqcytXMv3CGGLhWdkwRy5E43J7yv1rAs89fQ==}
+    peerDependencies:
+      '@mantine/core': 5.8.0
+      '@mantine/hooks': 5.8.0
+      dayjs: '>=1.0.0'
+      react: '>=16.8.0'
+    dependencies:
+      '@mantine/core': 5.7.2_s42f3uthtxnh7bllormamvwjhq
+      '@mantine/hooks': 5.7.2_react@18.2.0
+      '@mantine/utils': 5.8.0_react@18.2.0
+      react: 18.2.0
+    dev: false
+
   /@mantine/hooks/5.7.2_react@18.2.0:
     resolution: {integrity: sha512-g+fxcnQwEeVM/5h+SAX/rDNL2s1652DGbP4xxfNg6yFqqhQzmtxQN7xsmkZ+ffx8wKhbsP5z13x6WZoxuJQh9Q==}
     peerDependencies:
@@ -1008,6 +1026,14 @@ packages:
 
   /@mantine/utils/5.7.2_react@18.2.0:
     resolution: {integrity: sha512-LE/ckEX+d1f5GOP1ARNEldUYybOp3Tualx5IYgeV06oyBOaeJaXs9Tco2NTM6j+opZwUbNuYEUmtp4bkArhpOg==}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
+    dev: false
+
+  /@mantine/utils/5.8.0_react@18.2.0:
+    resolution: {integrity: sha512-gVE4U3apoE53MUWgKqst9H0iWgurzBccZNSSGRv3kD62vAFcI1JJhxxuW7X271bc9IMhKjgezEH14ApH1jlwCA==}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:
