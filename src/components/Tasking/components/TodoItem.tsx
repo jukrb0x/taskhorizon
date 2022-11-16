@@ -1,4 +1,4 @@
-import { Checkbox } from '@douyinfe/semi-ui';
+import { Checkbox } from '@mantine/core';
 
 import { Todo } from '@/store/todo-store';
 import { useTodoStore } from '@/store';
@@ -29,9 +29,15 @@ export default function TodoItem({ todo }: { todo: Todo }) {
                 onChange={() => {
                     handleToggle();
                 }}
-            >
-                {todo.title}
-            </Checkbox>
+                label={todo.title}
+                styles={(theme) => ({
+                    root: {
+                        input: {
+                            borderRadius: theme.radius.sm
+                        }
+                    }
+                })}
+            ></Checkbox>
         </div>
     );
 }

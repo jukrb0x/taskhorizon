@@ -1,14 +1,15 @@
 import { Button, ButtonProps } from './Button';
-import { ReactNode } from 'react';
+import { HTMLAttributes, ReactNode } from 'react';
 import clsx from 'clsx';
 
-interface StyledButtonProps extends ButtonProps {
+interface StylishButtonProps extends ButtonProps {
     children: ReactNode;
     preset?: 'green' | 'red' | 'gray';
     shadow?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'none' | undefined;
+    [x: string]: any; // to accept any other props
 }
 
-const StylishButton = (props: StyledButtonProps) => {
+const StylishButton = (props: StylishButtonProps) => {
     let { shadow } = props;
     if (!shadow) {
         shadow = 'none';
@@ -25,4 +26,4 @@ const StylishButton = (props: StyledButtonProps) => {
     );
 };
 
-export { Button, StylishButton };
+export { Button /*StylishButton*/ };

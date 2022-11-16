@@ -5,31 +5,27 @@ import {
     ButtonProps as MButtonProps,
     useMantineTheme
 } from '@mantine/core';
+import clsx from 'clsx';
 
-export interface ButtonProps extends Omit<MButtonProps, 'variant'> {
+export interface ButtonProps extends MButtonProps {
     children: ReactNode;
-    variant?: 'default' | 'link' | 'filled' | undefined;
+    shadow?: 'sm' | 'md' | 'lg' | 'xl' | '2xl' | 'none' | undefined;
 }
 
 const _Button = forwardRef<HTMLButtonElement, ButtonProps>(({ children, ...props }, ref) => {
-    let colorHex: string;
-    if (!props.color) {
-        props.color = 'gray.1';
-    }
-    const color = props.color.split('.')[0];
-    const shade = parseInt(props.color.split('.')[1]);
-    colorHex = useMantineTheme().colors[color][6]; // mantine default shade
-    if (shade) {
-        colorHex = useMantineTheme().colors[color][shade];
-    }
-    const darkenColorHex = useMantineTheme().fn.darken(colorHex, 0.04);
+    let { color, shadow } = props;
+    if (!color) color = 'gray.3';
+    if (!shadow) shadow = 'none';
+    const colorName = color.split('.')[0];
+    const shade = parseInt(color.split('.')[1]) || 6;
+    const colorHex = useMantineTheme().colors[colorName][shade];
+    const darkenColorHex =
+        props.variant !== 'outline' ? useMantineTheme().fn.darken(colorHex, 0.04) : '';
     return (
         <MButton
-            // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-            // @ts-ignore
             variant={props.variant || 'default'}
-            // className={'tw-drop-shadow-md'}
-            color={props.color}
+            className={clsx(`tw-drop-shadow-${shadow}`, props.className)}
+            color={color}
             styles={() => ({
                 root: {
                     borderColor: colorHex,

@@ -1,11 +1,14 @@
 import { useState } from 'react';
-import { Button as MButton } from '@mantine/core';
-import { Button, StylishButton } from '@/components/Button';
+import { Checkbox } from '@mantine/core';
+import { Button } from '@/components/Button';
 
 const EventCard = () => {
     return (
         <>
-            <div className="tw-h-80 tw-w-96 tw-rounded-md tw-bg-white tw-shadow-lg" />
+            <div className="tw-h-80 tw-w-96 tw-rounded-2xl tw-bg-white tw-drop-shadow-md">
+                <Checkbox />
+                <div className="tw-h-1/3 tw-w-full tw-rounded-t-2xl tw-bg-gray-100"></div>
+            </div>
         </>
     );
 };
@@ -13,16 +16,18 @@ const EventCard = () => {
 export const Playground = () => {
     const [isShowing, setIsShowing] = useState(false);
     return (
-        <div className={'tw-space-x-2'}>
-            ok
-            <Button className={'tw-shadow-md'}>ok</Button>
-            <StylishButton>ok</StylishButton>
-            <StylishButton preset={'red'} shadow={'md'}>
-                ok
-            </StylishButton>
-            <StylishButton preset={'green'} shadow={'xl'}>
-                ok
-            </StylishButton>
+        <div className={'tw-space-x-2 tw-space-y-2'}>
+            <Button variant={'default'} onClick={() => setIsShowing(!isShowing)}>
+                Show
+            </Button>
+            <Button variant={'filled'}>OK</Button>
+            <Button variant={'filled'} color={'red'} shadow={'md'}>
+                Red
+            </Button>
+            <Button variant={'filled'} color={'green'} className={'tw-p-2'}>
+                Green
+            </Button>
+
             <EventCard />
         </div>
     );

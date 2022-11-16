@@ -34,7 +34,6 @@ const TauriWindowDragRegion = styled.div.attrs(() => ({
 `;
 
 const mantineTheme = {
-    fontFamily: 'Inter, sans-serif',
     defaultRadius: 'md'
 };
 
