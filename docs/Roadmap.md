@@ -10,7 +10,7 @@
 - [ ] Calendar 2.0
     - Drag and Drop
     - Event Card (editing events)
-      > [react-popper](https://popper.js.org/react-popper/v2/) | update: maybe no need
+      > [react-popper](https://popper.js.org/react-popper/v2/)
 
     - Custom Styling
 - [ ] Todo 2.0
