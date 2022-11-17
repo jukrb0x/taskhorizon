@@ -9,6 +9,7 @@ import { CalendarEvent } from '@/store/event-store';
 import { EventCreator } from '@/components/EventCardOld/EventCreator';
 import { useState } from 'react';
 import { Modal, Typography } from '@douyinfe/semi-ui';
+import { EventCard } from '@/components/EventCard';
 
 const localizer = momentLocalizer(moment); // todo: use luxon, later when we need multi-timezone support, moment.js is not good enough
 
@@ -21,6 +22,16 @@ export default function BigCalendar() {
 
     const handleSelectEvent = (event: Event | CalendarEvent) => {
         console.log(event);
+        const newEvent: CalendarEvent = {
+            allDay: false,
+            start: event.start || new Date(),
+            end: event.end || new Date(),
+            id: event.id || '',
+            title: event.title || '',
+            desc: event.desc || ''
+        };
+        setNewEvent(newEvent);
+        setVisible(true);
     };
 
     const { Title } = Typography;
@@ -43,12 +54,21 @@ export default function BigCalendar() {
                         Create New Event
                     </Title>
                 }
-                visible={visible}
+                // visible={visible}
                 onOk={() => setVisible(false)}
                 onCancel={() => setVisible(false)}
                 footer={null}
             >
                 <EventCreator onEventCreated={() => setVisible(false)} defaultEvent={newEvent} />
+            </Modal>
+
+            <Modal
+                visible={visible}
+                onOk={() => setVisible(false)}
+                onCancel={() => setVisible(false)}
+                footer={null}
+            >
+                <EventCard defaultEvent={newEvent} />
             </Modal>
             <DnDCalendar
                 localizer={localizer}

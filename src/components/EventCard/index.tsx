@@ -1,18 +1,26 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Checkbox, Group, TextInput, Textarea, Select } from '@mantine/core';
 import { Button } from '@/components/Button';
 import { DatePicker, TimeInput } from '@mantine/dates';
 import { Input, TimePicker } from '@douyinfe/semi-ui';
 import * as dateFns from 'date-fns';
 import { DatetimePicker } from './DatetimePicker';
+import { CalendarEvent } from '@/store/event-store';
 
-export default function EventCard() {
-    const [title, setTitle] = useState<string>('');
-    const [startTime, setStartTime] = useState<Date | any>(new Date());
-    const [startDate, setStartDate] = useState<Date | null>(new Date());
-    const [endTime, setEndTime] = useState<Date | any>(new Date());
-    const [endDate, setEndDate] = useState<Date | null>(new Date());
-    const [description, setDescription] = useState<string>('');
+interface EventCardProps {
+    defaultEvent?: CalendarEvent;
+}
+
+const EventCard = (props: EventCardProps) => {
+    const defaultEvent = props.defaultEvent;
+    console.log('de', defaultEvent);
+
+    const [title, setTitle] = useState<string>(defaultEvent?.title || '');
+    const [startTime, setStartTime] = useState<Date | any>(defaultEvent?.start || new Date());
+    const [startDate, setStartDate] = useState<Date | null>(defaultEvent?.start || new Date());
+    const [endTime, setEndTime] = useState<Date | any>(defaultEvent?.end || new Date());
+    const [endDate, setEndDate] = useState<Date | null>(defaultEvent?.end || new Date());
+    const [description, setDescription] = useState<string>(defaultEvent?.desc || '');
 
     const handleStartChange = (date: Date | null, time: Date | any) => {
         setStartTime(time);
@@ -75,4 +83,6 @@ export default function EventCard() {
             </div>
         </>
     );
-}
+};
+
+export { EventCard };

@@ -4,7 +4,7 @@ import { Button } from '@/components/Button';
 import { DatePicker, TimeInput } from '@mantine/dates';
 import { Input, TimePicker } from '@douyinfe/semi-ui';
 import * as dateFns from 'date-fns';
-import EventCard from '@/components/EventCard';
+import { EventCard } from '@/components/EventCard';
 
 const TestEventCard = () => {
     const [title, setTitle] = useState<string>('');
