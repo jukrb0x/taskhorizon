@@ -12,6 +12,7 @@ export default function EventCard() {
     const [startDate, setStartDate] = useState<Date | null>(new Date());
     const [endTime, setEndTime] = useState<Date | any>(new Date());
     const [endDate, setEndDate] = useState<Date | null>(new Date());
+    const [description, setDescription] = useState<string>('');
 
     const handleStartChange = (date: Date | null, time: Date | any) => {
         setStartTime(time);
@@ -63,7 +64,13 @@ export default function EventCard() {
                         />
                     </div>
 
-                    <Textarea variant={'filled'} placeholder={'Description'} radius={'md'} />
+                    <Textarea
+                        variant={'filled'}
+                        placeholder={'Description'}
+                        radius={'md'}
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
                 </div>
             </div>
         </>

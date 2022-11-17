@@ -1,5 +1,8 @@
 import { DatePicker, TimeInput } from '@mantine/dates';
 import { TimePicker } from '@douyinfe/semi-ui';
+import { TextInput } from '@mantine/core';
+import * as dateFns from 'date-fns';
+import { ChangeEvent } from 'react';
 
 interface DatetimePickerProps {
     label: string;
@@ -9,6 +12,19 @@ interface DatetimePickerProps {
 }
 
 const DatetimePicker = (props: DatetimePickerProps) => {
+    const handleTimeInputChange = (e: ChangeEvent<HTMLInputElement>) => {
+        const time = e.target.value;
+        const [hours, minutes] = time.split(':').map((t) => parseInt(t));
+        // test if time is valid
+        // fixme: buggy but prevent crash, improve it later
+        const isValid = hours && minutes && hours < 24 && minutes < 60;
+        if (isValid) {
+            const newTime = new Date();
+            newTime.setHours(hours);
+            newTime.setMinutes(minutes);
+            props.onChange(props.date, newTime);
+        }
+    };
     return (
         <div className={'tw-flex-col tw-rounded-[8px] tw-bg-gray-100 tw-p-1.5'}>
             <div className={'tw-font-bold tw-text-gray-400 tw-px-0.5 tw-text-sm'}>
@@ -23,9 +39,11 @@ const DatetimePicker = (props: DatetimePickerProps) => {
                 onChange={(time) => props.onChange(props.date, time)}
                 format={'HH:mm'}
                 triggerRender={() => (
-                    <TimeInput
-                        onChange={(time) => props.onChange(props.date, time)}
-                        value={props.time}
+                    <TextInput
+                        onChange={(e) => {
+                            handleTimeInputChange(e);
+                        }}
+                        value={dateFns.format(props.time, 'HH:mm')}
                         variant={'filled'}
                         styles={(theme) => ({
                             root: {
@@ -45,7 +63,7 @@ const DatetimePicker = (props: DatetimePickerProps) => {
                                 padding: '0 0.5px',
                                 // border: 'none',
                                 '&:focus': {
-                                    borderColor: theme.colors.gray[5]
+                                    // borderColor: theme.colors.gray[5]
                                 }
                             }
                         })}
