@@ -6,7 +6,7 @@ import './styles/default/styles.scss';
 import './styles/default/dragAndDrop.scss';
 import { useEventStore } from '@/store';
 import { CalendarEvent } from '@/store/event-store';
-import { EventCreator } from '@/components/EventCard/EventCreator';
+import { EventCreator } from '@/components/EventCardOld/EventCreator';
 import { useState } from 'react';
 import { Modal, Typography } from '@douyinfe/semi-ui';
 

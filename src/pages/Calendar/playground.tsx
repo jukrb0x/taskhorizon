@@ -12,7 +12,7 @@ const EventCard = () => {
     return (
         <>
             <div className="tw-h-80 tw-w-96 tw-p-2 tw-rounded-2xl tw-bg-white tw-drop-shadow-lg">
-                <div className={'tw-flex tw-row-auto tw-items-center tw-space-x-1 tw-pb-1'}>
+                <div className={'tw-flex tw-row-auto tw-items-center tw-pb-1'}>
                     <Checkbox size={'sm'} className={'tw-flex tw-justify-center'} />
                     <TextInput
                         variant={'unstyled'}
@@ -20,6 +20,7 @@ const EventCard = () => {
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder={'New Event'}
                         size={'xs'}
+                        className={'tw-px-1'}
                         styles={(theme) => ({
                             root: {
                                 input: {
