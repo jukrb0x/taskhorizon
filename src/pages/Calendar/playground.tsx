@@ -31,16 +31,13 @@ const EventCard = () => {
                     />
                 </div>
                 <div className={'tw-flex tw-row-auto tw-space-x-4'}>
-                    <div>
-                        <DatePicker
-                            placeholder={'start date'}
-                            inputFormat={'MMM DD YYYY'}
-                            clearable={false}
-                            variant={'filled'}
-                            size={'xs'}
-                        />
+                    <div className={'tw-flex-col tw-rounded-lg tw-bg-gray-100 tw-p-1.5'}>
+                        <div className={'tw-font-bold tw-text-gray-300 tw-px-0.5 tw-text-sm'}>
+                            Start
+                        </div>
                         <TimePicker
-                            style={{ display: 'block' }}
+                            // style={{ display: 'block' }}
+                            // onOpenChange={(open) => { console.log("op", open); }}
                             showClear={false}
                             minuteStep={30}
                             value={startTime}
@@ -50,8 +47,48 @@ const EventCard = () => {
                                 <TimeInput
                                     onChange={(time) => setStartTime(time)}
                                     value={startTime}
+                                    variant={'filled'}
+                                    // size={'xs'}
+                                    styles={(theme) => ({
+                                        root: {
+                                            input: {
+                                                fontSize: theme.fontSizes.md,
+                                                fontWeight: 700
+                                            }
+                                        },
+                                        input: {
+                                            padding: '0 0.5px',
+                                            '&:focus': {
+                                                borderColor: theme.colors.gray[5]
+                                            }
+                                        },
+                                        controls: {
+                                            // height: 0
+                                        }
+                                    })}
                                 />
                             )}
+                        />
+                        <DatePicker
+                            placeholder={'start date'}
+                            inputFormat={'MMM DD YYYY'}
+                            clearable={false}
+                            variant={'filled'}
+                            size={'xs'}
+                            styles={(theme) => ({
+                                root: {
+                                    input: {
+                                        fontSize: theme.fontSizes.sm,
+                                        fontWeight: 700
+                                    }
+                                },
+                                input: {
+                                    padding: '0 2px'
+                                    // '&:focus': {
+                                    //     borderColor: theme.colors.gray[5]
+                                    // }
+                                }
+                            })}
                         />
                     </div>
                     <div>
@@ -77,7 +114,7 @@ const EventCard = () => {
                 </div>
 
                 <div>
-                    <Textarea variant={'filled'} placeholder={'Description'} radius={'sm'} />
+                    <Textarea variant={'filled'} placeholder={'Description'} radius={'md'} />
                 </div>
                 {/*<div className=" tw-h-1/3 tw-w-full tw-rounded-t-2xl tw-bg-gray-100">
     </div>
