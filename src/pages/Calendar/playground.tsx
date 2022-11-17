@@ -4,8 +4,9 @@ import { Button } from '@/components/Button';
 import { DatePicker, TimeInput } from '@mantine/dates';
 import { Input, TimePicker } from '@douyinfe/semi-ui';
 import * as dateFns from 'date-fns';
+import EventCard from '@/components/EventCard';
 
-const EventCard = () => {
+const TestEventCard = () => {
     const [title, setTitle] = useState<string>('');
     const [startTime, setStartTime] = useState<Date | any>(new Date());
     const [endTime, setEndTime] = useState<Date | any>(new Date());
@@ -195,6 +196,8 @@ export const Playground = () => {
                 Green
             </Button>
 
+            {/*<TestEventCard />*/}
+            {/*<br/>*/}
             <EventCard />
         </div>
     );
