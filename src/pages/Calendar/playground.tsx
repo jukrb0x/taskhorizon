@@ -30,95 +30,150 @@ const EventCard = () => {
                         })}
                     />
                 </div>
-                <div className={'tw-flex tw-row-auto tw-space-x-4'}>
-                    <div className={'tw-flex-col tw-rounded-lg tw-bg-gray-100 tw-p-1.5'}>
-                        <div className={'tw-font-bold tw-text-gray-300 tw-px-0.5 tw-text-sm'}>
-                            Start
-                        </div>
-                        <TimePicker
-                            // style={{ display: 'block' }}
-                            // onOpenChange={(open) => { console.log("op", open); }}
-                            showClear={false}
-                            minuteStep={30}
-                            value={startTime}
-                            onChange={(time) => setStartTime(time)}
-                            format={'HH:mm'}
-                            triggerRender={() => (
-                                <TimeInput
-                                    onChange={(time) => setStartTime(time)}
-                                    value={startTime}
-                                    variant={'filled'}
-                                    // size={'xs'}
-                                    styles={(theme) => ({
-                                        root: {
-                                            input: {
-                                                fontSize: theme.fontSizes.md,
-                                                fontWeight: 700
-                                            }
-                                        },
-                                        input: {
-                                            padding: '0 0.5px',
-                                            '&:focus': {
-                                                borderColor: theme.colors.gray[5]
-                                            }
-                                        },
-                                        controls: {
-                                            // height: 0
-                                        }
-                                    })}
-                                />
-                            )}
-                        />
-                        <DatePicker
-                            placeholder={'start date'}
-                            inputFormat={'MMM DD YYYY'}
-                            clearable={false}
-                            variant={'filled'}
-                            size={'xs'}
-                            styles={(theme) => ({
-                                root: {
-                                    input: {
-                                        fontSize: theme.fontSizes.sm,
-                                        fontWeight: 700
-                                    }
-                                },
-                                input: {
-                                    padding: '0 2px'
-                                    // '&:focus': {
-                                    //     borderColor: theme.colors.gray[5]
-                                    // }
-                                }
-                            })}
-                        />
-                    </div>
-                    <div>
-                        <DatePicker
-                            placeholder={'end date'}
-                            inputFormat={'MMM DD YYYY'}
-                            clearable={false}
-                            variant={'filled'}
-                            size={'xs'}
-                        />
-                        <TimePicker
-                            style={{ display: 'block' }}
-                            showClear={false}
-                            minuteStep={30}
-                            value={endTime}
-                            onChange={(time) => setEndTime(time)}
-                            format={'HH:mm'}
-                            triggerRender={() => (
-                                <TimeInput onChange={(time) => setEndTime(time)} value={endTime} />
-                            )}
-                        />
-                    </div>
-                </div>
 
-                <div>
+                <div className={'tw-row-auto tw-space-y-1.5'}>
+                    <div className={'tw-flex tw-row-auto tw-space-x-1.5'}>
+                        <div className={'tw-flex-col tw-rounded-lg tw-bg-gray-100 tw-p-1.5'}>
+                            <div className={'tw-font-bold tw-text-gray-300 tw-px-0.5 tw-text-sm'}>
+                                Start
+                            </div>
+                            <TimePicker
+                                // style={{ display: 'block' }}
+                                // onOpenChange={(open) => { console.log("op", open); }}
+                                showClear={false}
+                                minuteStep={30}
+                                value={startTime}
+                                onChange={(time) => setStartTime(time)}
+                                format={'HH:mm'}
+                                triggerRender={() => (
+                                    <TimeInput
+                                        onChange={(time) => setStartTime(time)}
+                                        value={startTime}
+                                        variant={'filled'}
+                                        styles={(theme) => ({
+                                            root: {
+                                                // height: 0,
+                                                input: {
+                                                    fontSize: theme.fontSizes.md,
+                                                    fontWeight: 700
+                                                }
+                                            },
+                                            controls: {
+                                                height: '100%'
+                                            },
+                                            input: {
+                                                height: '100%',
+                                                minHeight: '100%',
+                                                lineHeight: '100%',
+                                                padding: '0 0.5px',
+                                                // border: 'none',
+                                                '&:focus': {
+                                                    borderColor: theme.colors.gray[5]
+                                                }
+                                            }
+                                        })}
+                                    />
+                                )}
+                            />
+                            <DatePicker
+                                placeholder={'start date'}
+                                inputFormat={'MMM DD YYYY'}
+                                clearable={false}
+                                variant={'filled'}
+                                size={'xs'}
+                                styles={(theme) => ({
+                                    root: {
+                                        input: {
+                                            fontSize: theme.fontSizes.sm,
+                                            fontWeight: 700,
+                                            color: theme.colors.gray[6]
+                                        }
+                                    },
+                                    controls: {
+                                        height: '100%'
+                                    },
+                                    input: {
+                                        height: '100%',
+                                        minHeight: '100%',
+                                        lineHeight: '100%',
+                                        padding: '0 2px'
+                                    }
+                                })}
+                            />
+                        </div>
+
+                        <div className={'tw-flex-col tw-rounded-lg tw-bg-gray-100 tw-p-1.5'}>
+                            <div className={'tw-font-bold tw-text-gray-300 tw-px-0.5 tw-text-sm'}>
+                                End
+                            </div>
+                            <TimePicker
+                                // style={{ display: 'block' }}
+                                // onOpenChange={(open) => { console.log("op", open); }}
+                                showClear={false}
+                                minuteStep={30}
+                                value={endTime}
+                                onChange={(time) => setEndTime(time)}
+                                format={'HH:mm'}
+                                triggerRender={() => (
+                                    <TimeInput
+                                        onChange={(time) => setEndTime(time)}
+                                        value={endTime}
+                                        variant={'filled'}
+                                        styles={(theme) => ({
+                                            root: {
+                                                // height: 0,
+                                                input: {
+                                                    fontSize: theme.fontSizes.md,
+                                                    fontWeight: 700
+                                                }
+                                            },
+                                            controls: {
+                                                height: '100%'
+                                            },
+                                            input: {
+                                                height: '100%',
+                                                minHeight: '100%',
+                                                lineHeight: '100%',
+                                                padding: '0 0.5px',
+                                                // border: 'none',
+                                                '&:focus': {
+                                                    borderColor: theme.colors.gray[5]
+                                                }
+                                            }
+                                        })}
+                                    />
+                                )}
+                            />
+                            <DatePicker
+                                placeholder={'end date'}
+                                inputFormat={'MMM DD YYYY'}
+                                clearable={false}
+                                variant={'filled'}
+                                size={'xs'}
+                                styles={(theme) => ({
+                                    root: {
+                                        input: {
+                                            fontSize: theme.fontSizes.sm,
+                                            fontWeight: 700,
+                                            color: theme.colors.gray[6]
+                                        }
+                                    },
+                                    controls: {
+                                        height: '100%'
+                                    },
+                                    input: {
+                                        height: '100%',
+                                        minHeight: '100%',
+                                        lineHeight: '100%',
+                                        padding: '0 2px'
+                                    }
+                                })}
+                            />
+                        </div>
+                    </div>
+
                     <Textarea variant={'filled'} placeholder={'Description'} radius={'md'} />
                 </div>
-                {/*<div className=" tw-h-1/3 tw-w-full tw-rounded-t-2xl tw-bg-gray-100">
-    </div>
-    */}
             </div>
         </>
     );
