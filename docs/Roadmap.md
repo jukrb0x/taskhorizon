@@ -2,23 +2,31 @@
 
 ## Major Features
 
+### MVP (0.x.x)
+
+- [x] Project Startup
+    - App Shell and Frameworks
+    - Routers
 - [x] Basic Tasking App
     - Todo List, adding, editing, deleting
-    - basic local user data storage
+    - Basic local user data storage
 - [x] Basic Scheduling App
     - Calendar view with react-big-calendar
-- [ ] Calendar 2.0
+    - Sidebar Resizer
+- [x] Calendar 2.0
     - Drag and Drop
     - Event Card (editing events)
-      > [react-popper](https://popper.js.org/react-popper/v2/)
-
-    - Custom Styling
+- [ ] Calendar and Event Card
+    - Modes: create, update (edit, delete)
+    - Stylish calendar
 - [ ] Todo 2.0
     - Drag and Drop
-    - App Resizer (Sider)
-- [ ] Component Animation and Transition
+    - Update (edit, delete)
 - [ ] Drag and Drop
     - Drag todo to calendar to create an event
+
+### 1.0.0
+
 - [ ] Todo 3.0
     - Order and priority
     - Categories
