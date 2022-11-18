@@ -16,7 +16,7 @@ const DatetimePicker = (props: DatetimePickerProps) => {
     const handleTimeInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const time = e.target.value;
         const [hours, minutes] = time.split(':').map((t) => parseInt(t));
-        // test if time is valid
+
         // fixme: buggy but prevent crash, improve it later
         const isValid = hours && minutes && hours < 24 && minutes < 60;
         if (isValid) {

@@ -29,7 +29,8 @@ const localizer = momentLocalizer(moment); // todo: use luxon, later when we nee
 
 const DnDCalendar = withDragAndDrop(Calendar);
 
-// todo: make a wrapper for Floating Event Card
+// todo: (low priority) make a wrapper for Floating Event Card
+//     not easy to do, they are deeply coupled.
 export default function BigCalendar() {
     const { eventList } = useEventStore();
     const [popEvent, setPopEvent] = useState<CalendarEvent>();
@@ -56,7 +57,8 @@ export default function BigCalendar() {
             bounds = document // todo: better not to search in the whole document
                 .getElementsByClassName('rbc-slot-selection')[0]
                 .getBoundingClientRect();
-        } else {
+        } else if (slotInfo.action === 'click') {
+            // todo: double click
             const els = document.getElementsByClassName(slotInfo.start.toISOString());
             for (let i = 0; i < els.length; i++) {
                 if (els[i].closest('.rbc-day-slot')) {
@@ -65,7 +67,6 @@ export default function BigCalendar() {
                 }
             }
         }
-        console.table(bounds);
         const x = bounds.x;
         const y = bounds.y;
         const top = bounds.top;
@@ -137,13 +138,13 @@ export default function BigCalendar() {
         };
     }, [visible, selectable]);
 
-    const eventCardRef = useRef(null);
+    const eventCardWrapperRef = useRef(null);
     return (
         <>
             <CSSTransition
                 // todo: workaround animation, not perfect
                 in={visible}
-                nodeRef={eventCardRef}
+                nodeRef={eventCardWrapperRef}
                 timeout={150}
                 classNames="event-card-anim"
                 onEnter={() => setVisible(true)}
@@ -164,7 +165,7 @@ export default function BigCalendar() {
                                         }
                                     })}
                                 >
-                                    <div ref={eventCardRef}>
+                                    <div ref={eventCardWrapperRef}>
                                         <EventCard
                                             defaultEvent={popEvent}
                                             onEventCreated={() => setVisible(false)}
@@ -177,7 +178,10 @@ export default function BigCalendar() {
                 </FloatingPortal>
             </CSSTransition>
 
-            {/* fixme: Month View is buggy */}
+            {/*
+            fixme: Month View is buggy, event card is overlapping 
+                why not just disable month view
+            */}
             <DnDCalendar
                 step={15}
                 timeslots={4}

@@ -62,9 +62,6 @@ const EventStore: StateCreator<EventStoreState> = (set) => ({
 });
 
 const useEventStore = create<EventStoreState>()(
-    // fixme: when get from storage the Date type is string
-    // find a way to convert it back to Date and store
-    // https://docs.pmnd.rs/zustand/integrations/persisting-store-data#getstorage
     devtools(
         persist(EventStore, {
             name: 'event-store',

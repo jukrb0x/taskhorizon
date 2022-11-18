@@ -103,7 +103,7 @@ const DebugPanel = () => {
                     <Button
                         onClick={() => handlePositionChange()}
                         size={'small'}
-                        className={'tw-text-xs tw-p-0.5'} // fixme: not working now
+                        className={'tw-text-xs tw-p-0.5'}
                         type={'secondary'}
                         theme={'borderless'}
                     >
