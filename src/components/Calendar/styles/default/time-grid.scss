@@ -110,7 +110,7 @@
     align-items: flex-start;
     width: 100%;
     border-top: 2px solid $calendar-border;
-    overflow-y: auto;
+    overflow-y: visible;
     position: relative;
 
     > .rbc-time-gutter {
