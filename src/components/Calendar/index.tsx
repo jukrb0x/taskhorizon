@@ -6,7 +6,7 @@ import './styles/default/styles.scss';
 import './styles/default/dragAndDrop.scss';
 import { useEventStore } from '@/store';
 import { CalendarEvent } from '@/store/event-store';
-import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { SyntheticEvent, useEffect, useState } from 'react';
 import { EventCard } from '@/components/EventCard';
 import {
     flip,
@@ -22,7 +22,6 @@ import {
     autoUpdate,
     ClientRectObject
 } from '@floating-ui/react-dom-interactions';
-import { useMouse } from '@mantine/hooks';
 
 const localizer = momentLocalizer(moment); // todo: use luxon, later when we need multi-timezone support, moment.js is not good enough
 
@@ -37,7 +36,6 @@ export default function BigCalendar() {
 
     const handleSelectEvent = (event: CalendarEvent, base: SyntheticEvent) => {
         setSelectable(false);
-        console.log(base.target);
         // const newEvent: CalendarEvent = {
         //     completed: event.completed,
         //     allDay: event.allDay,
@@ -60,8 +58,29 @@ export default function BigCalendar() {
     };
 
     const handleSelectSlot = (slotInfo: SlotInfo) => {
-        console.table(slotInfo.bounds);
         setSelectable(false);
+        // todo: make it unselectable (freeze selection)
+
+        // let x = 0;
+        // let y = 0;
+        // let top = 0;
+        // let left = 0;
+        // let right = 0;
+        // let bottom = 0;
+        // let height = 0;
+        // let width = 0;
+
+        const bounds = document // todo: better not to search in the whole document
+            .getElementsByClassName('rbc-slot-selection')[0]
+            .getBoundingClientRect();
+        const x = bounds.x;
+        const y = bounds.y;
+        const top = bounds.top;
+        const left = bounds.left;
+        const right = bounds.right;
+        const bottom = bounds.bottom;
+        const height = bounds.height;
+        const width = bounds.width;
         const newEvent: CalendarEvent = {
             completed: false,
             allDay: false,
@@ -74,22 +93,7 @@ export default function BigCalendar() {
 
         reference({
             getBoundingClientRect(): ClientRectObject {
-                let x, y, top, left, right, bottom;
-                x = y = top = left = right = bottom = 0;
                 // todo: make it floating base on the calendar box
-                if (slotInfo.box) {
-                    right = x = slotInfo.box.x;
-                    top = y = slotInfo.box.y;
-                    left = x - 10;
-                    bottom = y - 10;
-                } else if (slotInfo.bounds) {
-                    x = slotInfo.bounds.x;
-                    y = slotInfo.bounds.y;
-                    top = slotInfo.bounds.top;
-                    bottom = slotInfo.bounds.bottom;
-                    left = slotInfo.bounds.left;
-                    right = slotInfo.bounds.right;
-                }
                 return {
                     x,
                     y,
@@ -97,8 +101,8 @@ export default function BigCalendar() {
                     right,
                     left,
                     bottom,
-                    width: 0,
-                    height: 0
+                    width,
+                    height
                 };
             }
         });
@@ -167,7 +171,6 @@ export default function BigCalendar() {
             <DnDCalendar
                 step={15}
                 timeslots={4}
-                // ref={ref}
                 localizer={localizer}
                 events={eventList}
                 draggableAccessor={(event) => true} // todo
