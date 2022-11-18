@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { MutableRefObject, useMemo, useState } from 'react';
 import { IconDelete } from '@douyinfe/semi-icons';
 import { Checkbox, Button as MButton, TextInput, Textarea } from '@mantine/core';
 import { Button } from '@/components/Button';

@@ -6,7 +6,7 @@ import './styles/default/styles.scss';
 import './styles/default/dragAndDrop.scss';
 import { useEventStore } from '@/store';
 import { CalendarEvent } from '@/store/event-store';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { EventCard } from '@/components/EventCard';
 import {
     flip,
@@ -22,6 +22,8 @@ import {
     autoUpdate,
     ClientRectObject
 } from '@floating-ui/react-dom-interactions';
+import { CSSTransition } from 'react-transition-group';
+import './styles/animation.scss';
 
 const localizer = momentLocalizer(moment); // todo: use luxon, later when we need multi-timezone support, moment.js is not good enough
 
@@ -124,32 +126,46 @@ export default function BigCalendar() {
         };
     }, [visible, selectable]);
 
+    const eventCardRef = useRef(null);
     return (
         <>
-            <FloatingPortal>
-                {visible && (
-                    <FloatingOverlay lockScroll>
-                        <FloatingFocusManager context={context}>
-                            <div
-                                {...getFloatingProps({
-                                    className: '',
-                                    ref: floating,
-                                    style: {
-                                        position: strategy,
-                                        top: y ?? 0,
-                                        left: x ?? 0
-                                    }
-                                })}
-                            >
-                                <EventCard
-                                    defaultEvent={popEvent}
-                                    onEventCreated={() => setVisible(false)}
-                                />
-                            </div>
-                        </FloatingFocusManager>
-                    </FloatingOverlay>
-                )}
-            </FloatingPortal>
+            <CSSTransition
+                // todo: workaround animation, not perfect
+                in={visible}
+                nodeRef={eventCardRef}
+                timeout={150}
+                classNames="event-card-anim"
+                onEnter={() => setVisible(true)}
+                onExited={() => setVisible(false)}
+            >
+                <FloatingPortal>
+                    {visible && (
+                        <FloatingOverlay lockScroll>
+                            <FloatingFocusManager context={context}>
+                                <div
+                                    {...getFloatingProps({
+                                        className: '',
+                                        ref: floating,
+                                        style: {
+                                            position: strategy,
+                                            top: y ?? 0,
+                                            left: x ?? 0
+                                        }
+                                    })}
+                                >
+                                    <div ref={eventCardRef}>
+                                        <EventCard
+                                            defaultEvent={popEvent}
+                                            onEventCreated={() => setVisible(false)}
+                                        />
+                                    </div>
+                                </div>
+                            </FloatingFocusManager>
+                        </FloatingOverlay>
+                    )}
+                </FloatingPortal>
+            </CSSTransition>
+
             {/* fixme: Month View is buggy */}
             <DnDCalendar
                 step={15}
