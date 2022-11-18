@@ -47,6 +47,8 @@ TODO
 
 ## Development
 
+Setup Tauri development [prerequisites](https://tauri.app/v1/guides/getting-started/prerequisites) first.
+
 ```shell
 # install dependencies
 pnpm i
