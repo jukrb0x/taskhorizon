@@ -65,17 +65,6 @@ const DebugPanel = () => {
     const [path, setPath] = useState('');
     const { toggleDebugPanelStyle, debugPanelStyle } = useDebugStore();
 
-    // todo dbg
-    const defaultTestEvent: CalendarEvent = {
-        id: EventIdGenerator(),
-        title: 'Test Event',
-        desc: 'This is a test event',
-        start: new Date(),
-        end: new Date(),
-        allDay: false,
-        linkedTodos: []
-    };
-
     const cleanAndReload = () => {
         localStorage.clear();
         window.location.reload();
