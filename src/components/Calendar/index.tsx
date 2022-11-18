@@ -32,19 +32,8 @@ export default function BigCalendar() {
     const { eventList } = useEventStore();
     const [popEvent, setPopEvent] = useState<CalendarEvent>();
 
-    // todo: get bounds of event for floating event card
-
     const handleSelectEvent = (event: CalendarEvent, base: SyntheticEvent) => {
         setSelectable(false);
-        // const newEvent: CalendarEvent = {
-        //     completed: event.completed,
-        //     allDay: event.allDay,
-        //     start: event.start,
-        //     end: event.end,
-        //     id: event.id,
-        //     title: event.title,
-        //     desc: event.desc
-        // };
         setPopEvent(event);
 
         const { x, y, top, right, left, bottom, height, width } =
@@ -58,18 +47,9 @@ export default function BigCalendar() {
     };
 
     const handleSelectSlot = (slotInfo: SlotInfo) => {
+        if (slotInfo.action !== 'select') return; // it's not easy to get the bounds clicked time slot, we give it up for now.
         setSelectable(false);
         // todo: make it unselectable (freeze selection)
-
-        // let x = 0;
-        // let y = 0;
-        // let top = 0;
-        // let left = 0;
-        // let right = 0;
-        // let bottom = 0;
-        // let height = 0;
-        // let width = 0;
-
         const bounds = document // todo: better not to search in the whole document
             .getElementsByClassName('rbc-slot-selection')[0]
             .getBoundingClientRect();
@@ -167,7 +147,7 @@ export default function BigCalendar() {
                     </FloatingOverlay>
                 )}
             </FloatingPortal>
-            {/* Month View is buggy */}
+            {/* fixme: Month View is buggy */}
             <DnDCalendar
                 step={15}
                 timeslots={4}
