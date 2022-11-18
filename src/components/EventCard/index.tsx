@@ -74,6 +74,9 @@ const EventCard = (props: EventCardProps) => {
         <>
             <div className="tw-h-auto tw-w-72 tw-p-2 tw-rounded-2xl tw-bg-white tw-drop-shadow-lg tw-z-50">
                 <div className={'tw-flex tw-row-auto tw-items-center tw-pb-1.5'}>
+                    <input // this will prevent autofocus on the checkbox
+                        style={{ display: 'none' }}
+                    />
                     <Checkbox
                         size={'sm'}
                         className={'tw-flex tw-justify-center'}
@@ -88,7 +91,7 @@ const EventCard = (props: EventCardProps) => {
                         // }}
                     />
                     <TextInput
-                        autoFocus={false} // todo: only for new event
+                        autoFocus={!title} // todo: only for new event
                         variant={'unstyled'}
                         value={title}
                         onChange={(e) => setTitle(e.target.value)}
