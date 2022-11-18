@@ -75,23 +75,23 @@ pnpm tauri build
 
 ### User Interface
 
-| Name              | Description              |
-|-------------------|--------------------------|
-| Tailwind CSS      | Custom UI Components     |
-| Semi-UI           | UI Components            |
-| styled-components | Custom UI Components     |
-| Mantine           | Component libs and hooks |
+| Name              | Description            |
+|-------------------|------------------------|
+| Tailwind CSS      | Custom UI Components   |
+| Mantine           | UI Component and hooks |
+| styled-components | Custom UI Components   |
+| Semi-UI           | UI Components          |
 
 ### DX
 
-| Name                                                                       | Description                    |
-|----------------------------------------------------------------------------|--------------------------------|
-| Prettier                                                                   | Code formatter                 |
-| Stylelint                                                                  | CSS linter                     |
-| Husky                                                                      | Git hooks                      |
-| lint-staged                                                                | Git hooks                      |
-| Commitizen                                                                 | Git commit convention          |
-| [Tailwind Config Viewer](https://github.com/rogden/tailwind-config-viewer) | Tailwind config and cheatsheet |
+| Name                   | Description                    |
+|------------------------|--------------------------------|
+| Prettier               | Code formatter                 |
+| Stylelint              | CSS linter                     |
+| Husky                  | Git hooks                      |
+| lint-staged            | Git hooks                      |
+| Commitizen             | Git commit convention          |
+| Tailwind Config Viewer | Tailwind config and cheatsheet |
 
 ## Modules
 

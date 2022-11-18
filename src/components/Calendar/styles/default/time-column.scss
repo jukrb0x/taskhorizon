@@ -17,6 +17,9 @@
     display: flex;
     flex-flow: column nowrap;
 }
+.rbc-time-gutter > .rbc-timeslot-group {
+    border: none;
+}
 
 .rbc-time-gutter,
 .rbc-header-gutter {

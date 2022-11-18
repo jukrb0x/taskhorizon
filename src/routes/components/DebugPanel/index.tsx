@@ -6,7 +6,6 @@ import { useDebugStore } from '@/store';
 import { cls } from '@/utils';
 import AppRouter from '@/routes/AppRouter';
 import routerExtractor from '@/utils/router-extractor';
-import EventCreatorWrapper from '@/components/EventCardOld/EventCardModal';
 import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 
 const { Title } = Typography;
@@ -149,7 +148,9 @@ const DebugPanel = () => {
                 </Space>
                 <Space>
                     {/* controllers */}
-                    <EventCreatorWrapper />
+                    <Button onClick={() => window.location.reload()} type={'warning'}>
+                        Reload
+                    </Button>
                     <Button onClick={() => cleanAndReload()} type={'danger'}>
                         Clean Storage
                     </Button>

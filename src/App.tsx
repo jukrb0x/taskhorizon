@@ -46,6 +46,9 @@ function App() {
         }
     }, [isTauri]);
 
+    // disable context menu in desktop app
+    isTauri && document.addEventListener('contextmenu', (event) => event.preventDefault());
+
     return (
         <HashRouter>
             {isTauri && <TauriWindowDragRegion />}

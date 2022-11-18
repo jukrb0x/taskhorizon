@@ -110,7 +110,7 @@
     align-items: flex-start;
     width: 100%;
     border-top: 2px solid $calendar-border;
-    overflow-y: auto;
+    overflow-y: visible;
     position: relative;
 
     > .rbc-time-gutter {
@@ -134,7 +134,9 @@
 
 .rbc-current-time-indicator {
     position: absolute;
-    z-index: 3;
+
+    // prevent overlap with event card
+    // z-index: 3;
     left: 0;
     right: 0;
     height: 1px;
