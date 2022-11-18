@@ -23,7 +23,7 @@ function DebugTools() {
 const TauriWindowDragRegion = styled.div.attrs(() => ({
     'data-tauri-drag-region': true,
     className:
-        'tw-w-full tw-h-8 tw-absolute tw-z-50' +
+        'tw-w-full tw-h-8 tw-absolute tw-z-[999]' +
         // debug
         ' tw-bg-gray-500/30 tw-text-center tw-font-mono tw-opacity-50 tw-text-orange-500'
 }))`
@@ -48,7 +48,7 @@ function App() {
 
     return (
         <HashRouter>
-            {isTauri && <TauriWindowDragRegion />}
+            {false && isTauri && <TauriWindowDragRegion />}
             <MantineProvider withGlobalStyles withNormalizeCSS theme={mantineTheme}>
                 <SemiConfigProvider locale={en_GB}>
                     <DndProvider backend={HTML5Backend}>

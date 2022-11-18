@@ -69,7 +69,7 @@ const EventCard = (props: EventCardProps) => {
 
     return (
         <>
-            <div className="tw-h-auto tw-w-72 tw-p-2 tw-rounded-2xl tw-bg-white tw-drop-shadow-lg">
+            <div className="tw-h-auto tw-w-72 tw-p-2 tw-rounded-2xl tw-bg-white tw-drop-shadow-lg tw-z-50">
                 <div className={'tw-flex tw-row-auto tw-items-center tw-pb-1.5'}>
                     <Checkbox
                         size={'sm'}
