@@ -9,10 +9,12 @@ import { useEventStore } from '@/store';
 
 interface EventCardProps {
     defaultEvent?: CalendarEvent;
+    onEventCreated?: () => void;
 }
 
 const EventCard = (props: EventCardProps) => {
     const defaultEvent = props.defaultEvent;
+    const onEventCreated = props.onEventCreated;
 
     // states
     const [title, setTitle] = useState<string>(defaultEvent?.title || '');
@@ -65,6 +67,7 @@ const EventCard = (props: EventCardProps) => {
             linkedTodos: []
         };
         addEvent(event);
+        onEventCreated && onEventCreated();
     };
 
     return (

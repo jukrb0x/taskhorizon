@@ -141,7 +141,10 @@ export default function BigCalendar() {
                                     }
                                 })}
                             >
-                                <EventCard defaultEvent={popEvent} />
+                                <EventCard
+                                    defaultEvent={popEvent}
+                                    onEventCreated={() => setVisible(false)}
+                                />
                             </div>
                         </FloatingFocusManager>
                     </FloatingOverlay>
