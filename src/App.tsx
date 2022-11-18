@@ -48,7 +48,7 @@ function App() {
 
     return (
         <HashRouter>
-            {false && isTauri && <TauriWindowDragRegion />}
+            {isTauri && <TauriWindowDragRegion />}
             <MantineProvider withGlobalStyles withNormalizeCSS theme={mantineTheme}>
                 <SemiConfigProvider locale={en_GB}>
                     <DndProvider backend={HTML5Backend}>
