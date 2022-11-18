@@ -49,12 +49,23 @@ export default function BigCalendar() {
     };
 
     const handleSelectSlot = (slotInfo: SlotInfo) => {
-        if (slotInfo.action !== 'select') return; // it's not easy to get the bounds clicked time slot, we give it up for now.
         setSelectable(false);
         // todo: make it unselectable (freeze selection)
-        const bounds = document // todo: better not to search in the whole document
-            .getElementsByClassName('rbc-slot-selection')[0]
-            .getBoundingClientRect();
+        let bounds: DOMRect = new DOMRect();
+        if (slotInfo.action === 'select') {
+            bounds = document // todo: better not to search in the whole document
+                .getElementsByClassName('rbc-slot-selection')[0]
+                .getBoundingClientRect();
+        } else {
+            const els = document.getElementsByClassName(slotInfo.start.toISOString());
+            for (let i = 0; i < els.length; i++) {
+                if (els[i].closest('.rbc-day-slot')) {
+                    // there are two elements has exact same class name but one is time gutter
+                    bounds = els[i].getBoundingClientRect();
+                }
+            }
+        }
+        console.table(bounds);
         const x = bounds.x;
         const y = bounds.y;
         const top = bounds.top;
@@ -177,6 +188,7 @@ export default function BigCalendar() {
                 selectable={selectable}
                 dayLayoutAlgorithm="no-overlap"
                 defaultView={'week'}
+                slotPropGetter={(date) => ({ className: date.toISOString() })}
                 onEventResize={(event) => {
                     console.log('onEventResize', event);
                 }}
