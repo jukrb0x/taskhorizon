@@ -21,15 +21,14 @@ export default function BigCalendar() {
     const [visible, setVisible] = useState(false);
     const [newEvent, setNewEvent] = useState<CalendarEvent>();
 
-    const handleSelectEvent = (event: Event | CalendarEvent) => {
-        console.log(event);
+    const handleSelectEvent = (event: CalendarEvent) => {
         const newEvent: CalendarEvent = {
-            allDay: false,
-            start: event.start || new Date(),
-            end: event.end || new Date(),
-            id: event.id || '',
-            title: event.title || '',
-            desc: event.desc || ''
+            allDay: event.allDay,
+            start: event.start,
+            end: event.end,
+            id: event.id,
+            title: event.title,
+            desc: event.desc
         };
         setNewEvent(newEvent);
         setVisible(true);
@@ -86,7 +85,7 @@ export default function BigCalendar() {
                 onEventResize={(event) => {
                     console.log('onEventResize', event);
                 }}
-                onSelectEvent={handleSelectEvent}
+                onSelectEvent={(e) => handleSelectEvent(e as CalendarEvent)}
                 onSelectSlot={handleSelectSlot}
                 onDragStart={(event) => {
                     console.log('onDragStart', event);

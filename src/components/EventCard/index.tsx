@@ -15,6 +15,7 @@ interface EventCardProps {
 const EventCard = (props: EventCardProps) => {
     const defaultEvent = props.defaultEvent;
 
+    // states
     const [title, setTitle] = useState<string>(defaultEvent?.title || '');
     const [startTime, setStartTime] = useState<Date>(defaultEvent?.start || new Date());
     const [startDate, setStartDate] = useState<Date>(defaultEvent?.start || new Date());
@@ -35,6 +36,7 @@ const EventCard = (props: EventCardProps) => {
         [endDate, endTime]
     );
 
+    // methods
     const handleStartChange = (date: Date | null, time: Date | any) => {
         if (!date) date = new Date();
         setStartTime(time);
@@ -48,7 +50,6 @@ const EventCard = (props: EventCardProps) => {
     };
 
     const canCreateEvent = title.trim() != '' && startDate != null && endDate != null;
-
     const { addEvent } = useEventStore();
     const createEvent = () => {
         if (!canCreateEvent) return;
