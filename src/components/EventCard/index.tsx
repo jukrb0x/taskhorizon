@@ -66,9 +66,6 @@ const EventCard = (props: EventCardProps) => {
         };
         addEvent(event);
     };
-    {
-        console.log('comp', completed);
-    }
 
     return (
         <>

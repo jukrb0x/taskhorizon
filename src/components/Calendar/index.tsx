@@ -36,6 +36,7 @@ export default function BigCalendar() {
 
     // todo: get bounds of event for floating event card
     const handleSelectEvent = (event: CalendarEvent, base: SyntheticEvent) => {
+        setSelectable(false);
         console.log(base.target);
         const newEvent: CalendarEvent = {
             completed: event.completed,
@@ -50,12 +51,13 @@ export default function BigCalendar() {
         setVisible(true);
     };
 
-    const handleSelectSlot = (slotInfo: SlotInfo, b: SyntheticEvent) => {
-        if (visible) {
-            // b.preventDefault() // fixme: chrome, should dismiss before next selecting
-            // setVisible(false);
-            // return;
-        }
+    const handleSelectSlot = (slotInfo: SlotInfo) => {
+        setSelectable(false);
+        console.log(slotInfo);
+        // if (slotInfo.action === 'click') {
+        //     return;
+        // }
+        // fixme: chrome, should dismiss before next selecting
         const newEvent: CalendarEvent = {
             completed: false,
             allDay: false,
@@ -72,6 +74,7 @@ export default function BigCalendar() {
 
     // floating event card
     const [visible, setVisible] = useState(false);
+
     const { x, y, reference, floating, strategy, refs, update, context } = useFloating({
         open: visible,
         onOpenChange: setVisible,
@@ -83,11 +86,27 @@ export default function BigCalendar() {
         if (visible && refs.reference.current && refs.floating.current) {
             return autoUpdate(refs.reference.current, refs.floating.current, update);
         }
-    }, [open, update, refs.reference, refs.floating]);
+    }, [visible, update, refs.reference, refs.floating]);
+
+    // prevent selecting anything until popover is dismissed
+    const [selectable, setSelectable] = useState(true);
+    useEffect(() => {
+        document.addEventListener('mouseup', () => {
+            setSelectable(true);
+        });
+        return () => {
+            document.removeEventListener('mouseup', () => {
+                setSelectable(true);
+            });
+        };
+    }, [visible, selectable]);
 
     const { getFloatingProps } = useInteractions([
-        // useRole(context, { role: "menu" }),
-        useDismiss(context)
+        useRole(context, { role: 'dialog' }),
+        useDismiss(context, {
+            // outsidePress: false
+            referencePressEvent: 'click'
+        })
     ]);
 
     const { height, width } = useViewportSize();
@@ -114,7 +133,7 @@ export default function BigCalendar() {
                     </FloatingOverlay>
                 )}
             </FloatingPortal>
-
+            {/* Month View is buggy */}
             <DnDCalendar
                 step={15}
                 timeslots={4}
@@ -123,7 +142,7 @@ export default function BigCalendar() {
                 events={eventList}
                 draggableAccessor={(event) => true} // todo
                 resizable
-                selectable
+                selectable={selectable}
                 dayLayoutAlgorithm="no-overlap"
                 defaultView={'week'}
                 onEventResize={(event) => {
@@ -132,7 +151,7 @@ export default function BigCalendar() {
                 onSelectEvent={(e, b) => {
                     handleSelectEvent(e as CalendarEvent, b);
                 }}
-                onSelectSlot={(e, b) => handleSelectSlot(e, b)}
+                onSelectSlot={handleSelectSlot}
                 onDragStart={(event) => {
                     console.log('onDragStart', event);
                 }}
