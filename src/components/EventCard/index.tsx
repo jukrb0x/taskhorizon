@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
-import { Checkbox, Button as MButton, TextInput, Textarea, Popover } from '@mantine/core';
+import { useMemo, useState } from 'react';
+import { IconDelete } from '@douyinfe/semi-icons';
+import { Checkbox, Button as MButton, TextInput, Textarea } from '@mantine/core';
 import { Button } from '@/components/Button';
-import { DatePicker, TimeInput } from '@mantine/dates';
-import { Input, TimePicker } from '@douyinfe/semi-ui';
 import * as dateFns from 'date-fns';
 import { DatetimePicker } from './DatetimePicker';
 import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 import { useEventStore } from '@/store';
-import { IconDelete } from '@douyinfe/semi-icons';
+import { useFloating } from '@floating-ui/react-dom';
 
 interface EventCardProps {
     defaultEvent?: CalendarEvent;
@@ -17,19 +16,33 @@ const EventCard = (props: EventCardProps) => {
     const defaultEvent = props.defaultEvent;
 
     const [title, setTitle] = useState<string>(defaultEvent?.title || '');
-    // todo: merge start time and date to one state
-    const [startTime, setStartTime] = useState<Date | any>(defaultEvent?.start || new Date());
-    const [startDate, setStartDate] = useState<Date | null>(defaultEvent?.start || new Date());
-    const [endTime, setEndTime] = useState<Date | any>(defaultEvent?.end || new Date());
-    const [endDate, setEndDate] = useState<Date | null>(defaultEvent?.end || new Date());
+    const [startTime, setStartTime] = useState<Date>(defaultEvent?.start || new Date());
+    const [startDate, setStartDate] = useState<Date>(defaultEvent?.start || new Date());
+    const [endTime, setEndTime] = useState<Date>(defaultEvent?.end || new Date());
+    const [endDate, setEndDate] = useState<Date>(defaultEvent?.end || new Date());
     const [description, setDescription] = useState<string>(defaultEvent?.desc || '');
+    const start = useMemo(
+        () =>
+            dateFns.setHours(
+                dateFns.setMinutes(startDate, startTime.getMinutes()),
+                startTime.getHours()
+            ),
+        [startDate, startTime]
+    );
+    const end = useMemo(
+        () =>
+            dateFns.setHours(dateFns.setMinutes(endDate, endTime.getMinutes()), endTime.getHours()),
+        [endDate, endTime]
+    );
 
     const handleStartChange = (date: Date | null, time: Date | any) => {
+        if (!date) date = new Date();
         setStartTime(time);
         setStartDate(date);
     };
 
     const handleEndChange = (date: Date | null, time: Date | any) => {
+        if (!date) date = new Date();
         setEndTime(time);
         setEndDate(date);
     };
@@ -43,14 +56,8 @@ const EventCard = (props: EventCardProps) => {
             id: EventIdGenerator(),
             title: title.trim(),
             desc: description,
-            start: dateFns.setHours(
-                dateFns.setMinutes(startDate, startTime.getMinutes()),
-                startTime.getHours()
-            ),
-            end: dateFns.setHours(
-                dateFns.setMinutes(endDate, endTime.getMinutes()),
-                endTime.getHours()
-            ),
+            start: start,
+            end: end,
             allDay: false,
             linkedTodos: []
         };

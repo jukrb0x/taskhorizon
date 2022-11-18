@@ -10,10 +10,7 @@ import { EventCreator } from '@/components/EventCardOld/EventCreator';
 import { useState } from 'react';
 import { Modal, Typography } from '@douyinfe/semi-ui';
 import { EventCard } from '@/components/EventCard';
-import { usePopper } from 'react-popper';
-import { Popover } from '@headlessui/react';
 import { Button } from '@/components/Button';
-import { createPortal } from 'react-dom';
 
 const localizer = momentLocalizer(moment); // todo: use luxon, later when we need multi-timezone support, moment.js is not good enough
 
@@ -50,15 +47,6 @@ export default function BigCalendar() {
         setNewEvent(newEvent);
         setVisible(true);
     };
-
-    const [referenceElement, setReferenceElement] = useState(null);
-    const [popperElement, setPopperElement] = useState(null);
-    const [arrowElement, setArrowElement] = useState(null);
-    const { styles, attributes } = usePopper(referenceElement, popperElement, {
-        modifiers: [{ name: 'arrow', options: { element: arrowElement } }]
-    });
-
-    const [some, setSome] = useState(false);
 
     return (
         <>

@@ -11,6 +11,7 @@ interface DatetimePickerProps {
     onChange: (date: Date | null, time: string | Date | string[] | Date[]) => void;
 }
 
+// todo: merge date and time into one prop
 const DatetimePicker = (props: DatetimePickerProps) => {
     const handleTimeInputChange = (e: ChangeEvent<HTMLInputElement>) => {
         const time = e.target.value;
