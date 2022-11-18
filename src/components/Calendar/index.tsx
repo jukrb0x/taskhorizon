@@ -8,7 +8,6 @@ import { useEventStore } from '@/store';
 import { CalendarEvent } from '@/store/event-store';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { EventCard } from '@/components/EventCard';
-import { Button } from '@/components/Button';
 import {
     flip,
     offset,
@@ -19,45 +18,50 @@ import {
     useInteractions,
     useRole,
     useDismiss,
-    useTypeahead,
-    useListNavigation,
     FloatingOverlay,
-    autoUpdate
+    autoUpdate,
+    ClientRectObject
 } from '@floating-ui/react-dom-interactions';
-import { useViewportSize } from '@mantine/hooks';
+import { useMouse } from '@mantine/hooks';
 
 const localizer = momentLocalizer(moment); // todo: use luxon, later when we need multi-timezone support, moment.js is not good enough
 
 const DnDCalendar = withDragAndDrop(Calendar);
 
+// todo: make a wrapper for Floating Event Card
 export default function BigCalendar() {
     const { eventList } = useEventStore();
-    const [newEvent, setNewEvent] = useState<CalendarEvent>();
+    const [popEvent, setPopEvent] = useState<CalendarEvent>();
 
     // todo: get bounds of event for floating event card
+
     const handleSelectEvent = (event: CalendarEvent, base: SyntheticEvent) => {
         setSelectable(false);
         console.log(base.target);
-        const newEvent: CalendarEvent = {
-            completed: event.completed,
-            allDay: event.allDay,
-            start: event.start,
-            end: event.end,
-            id: event.id,
-            title: event.title,
-            desc: event.desc
-        };
-        setNewEvent(newEvent);
+        // const newEvent: CalendarEvent = {
+        //     completed: event.completed,
+        //     allDay: event.allDay,
+        //     start: event.start,
+        //     end: event.end,
+        //     id: event.id,
+        //     title: event.title,
+        //     desc: event.desc
+        // };
+        setPopEvent(event);
+
+        const { x, y, top, right, left, bottom, height, width } =
+            base.currentTarget.getBoundingClientRect();
+        reference({
+            getBoundingClientRect(): ClientRectObject {
+                return { x, y, top, right, left, bottom, height, width };
+            }
+        });
         setVisible(true);
     };
 
     const handleSelectSlot = (slotInfo: SlotInfo) => {
+        console.table(slotInfo.bounds);
         setSelectable(false);
-        console.log(slotInfo);
-        // if (slotInfo.action === 'click') {
-        //     return;
-        // }
-        // fixme: chrome, should dismiss before next selecting
         const newEvent: CalendarEvent = {
             completed: false,
             allDay: false,
@@ -66,11 +70,41 @@ export default function BigCalendar() {
             id: '',
             title: ''
         };
-        setNewEvent(newEvent);
+        setPopEvent(newEvent);
+
+        reference({
+            getBoundingClientRect(): ClientRectObject {
+                let x, y, top, left, right, bottom;
+                x = y = top = left = right = bottom = 0;
+                // todo: make it floating base on the calendar box
+                if (slotInfo.box) {
+                    right = x = slotInfo.box.x;
+                    top = y = slotInfo.box.y;
+                    left = x - 10;
+                    bottom = y - 10;
+                } else if (slotInfo.bounds) {
+                    x = slotInfo.bounds.x;
+                    y = slotInfo.bounds.y;
+                    top = slotInfo.bounds.top;
+                    bottom = slotInfo.bounds.bottom;
+                    left = slotInfo.bounds.left;
+                    right = slotInfo.bounds.right;
+                }
+                return {
+                    x,
+                    y,
+                    top,
+                    right,
+                    left,
+                    bottom,
+                    width: 0,
+                    height: 0
+                };
+            }
+        });
+
         setVisible(true);
     };
-
-    const calendarRef = useRef(null);
 
     // floating event card
     const [visible, setVisible] = useState(false);
@@ -78,7 +112,7 @@ export default function BigCalendar() {
     const { x, y, reference, floating, strategy, refs, update, context } = useFloating({
         open: visible,
         onOpenChange: setVisible,
-        middleware: [offset({ mainAxis: 5, alignmentAxis: 4 }), flip(), shift()],
+        middleware: [offset({ mainAxis: 7, alignmentAxis: 0 }), flip(), shift()],
         placement: 'right-start'
     });
 
@@ -87,6 +121,11 @@ export default function BigCalendar() {
             return autoUpdate(refs.reference.current, refs.floating.current, update);
         }
     }, [visible, update, refs.reference, refs.floating]);
+
+    const { getFloatingProps } = useInteractions([
+        useRole(context, { role: 'dialog' }),
+        useDismiss(context)
+    ]);
 
     // prevent selecting anything until popover is dismissed
     const [selectable, setSelectable] = useState(true);
@@ -101,15 +140,6 @@ export default function BigCalendar() {
         };
     }, [visible, selectable]);
 
-    const { getFloatingProps } = useInteractions([
-        useRole(context, { role: 'dialog' }),
-        useDismiss(context, {
-            // outsidePress: false
-            referencePressEvent: 'click'
-        })
-    ]);
-
-    const { height, width } = useViewportSize();
     return (
         <>
             <FloatingPortal>
@@ -122,12 +152,12 @@ export default function BigCalendar() {
                                     ref: floating,
                                     style: {
                                         position: strategy,
-                                        top: y ?? height / 2,
-                                        left: x ?? width / 2
+                                        top: y ?? 0,
+                                        left: x ?? 0
                                     }
                                 })}
                             >
-                                <EventCard defaultEvent={newEvent} />
+                                <EventCard defaultEvent={popEvent} />
                             </div>
                         </FloatingFocusManager>
                     </FloatingOverlay>
@@ -137,7 +167,7 @@ export default function BigCalendar() {
             <DnDCalendar
                 step={15}
                 timeslots={4}
-                ref={calendarRef}
+                // ref={ref}
                 localizer={localizer}
                 events={eventList}
                 draggableAccessor={(event) => true} // todo
