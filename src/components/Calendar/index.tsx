@@ -6,9 +6,25 @@ import './styles/default/styles.scss';
 import './styles/default/dragAndDrop.scss';
 import { useEventStore } from '@/store';
 import { CalendarEvent } from '@/store/event-store';
-import { SyntheticEvent, useRef, useState } from 'react';
+import { SyntheticEvent, useEffect, useRef, useState } from 'react';
 import { EventCard } from '@/components/EventCard';
 import { Button } from '@/components/Button';
+import {
+    flip,
+    offset,
+    shift,
+    useFloating,
+    FloatingPortal,
+    FloatingFocusManager,
+    useInteractions,
+    useRole,
+    useDismiss,
+    useTypeahead,
+    useListNavigation,
+    FloatingOverlay,
+    autoUpdate
+} from '@floating-ui/react-dom-interactions';
+import { useViewportSize } from '@mantine/hooks';
 
 const localizer = momentLocalizer(moment); // todo: use luxon, later when we need multi-timezone support, moment.js is not good enough
 
@@ -16,11 +32,11 @@ const DnDCalendar = withDragAndDrop(Calendar);
 
 export default function BigCalendar() {
     const { eventList } = useEventStore();
-    const [visible, setVisible] = useState(false);
     const [newEvent, setNewEvent] = useState<CalendarEvent>();
 
+    // todo: get bounds of event for floating event card
     const handleSelectEvent = (event: CalendarEvent, base: SyntheticEvent) => {
-        console.log('calref', calendarRef);
+        console.log(base.target);
         const newEvent: CalendarEvent = {
             allDay: event.allDay,
             start: event.start,
@@ -33,7 +49,12 @@ export default function BigCalendar() {
         setVisible(true);
     };
 
-    const handleSelectSlot = (slotInfo: SlotInfo) => {
+    const handleSelectSlot = (slotInfo: SlotInfo, b: SyntheticEvent) => {
+        if (visible) {
+            // b.preventDefault() // fixme: chrome, should dismiss before next selecting
+            // setVisible(false);
+            // return;
+        }
         const newEvent: CalendarEvent = {
             allDay: false,
             start: slotInfo.start,
@@ -47,9 +68,50 @@ export default function BigCalendar() {
 
     const calendarRef = useRef(null);
 
+    // floating event card
+    const [visible, setVisible] = useState(false);
+    const { x, y, reference, floating, strategy, refs, update, context } = useFloating({
+        open: visible,
+        onOpenChange: setVisible,
+        middleware: [offset({ mainAxis: 5, alignmentAxis: 4 }), flip(), shift()],
+        placement: 'right-start'
+    });
+
+    useEffect(() => {
+        if (visible && refs.reference.current && refs.floating.current) {
+            return autoUpdate(refs.reference.current, refs.floating.current, update);
+        }
+    }, [open, update, refs.reference, refs.floating]);
+
+    const { getFloatingProps } = useInteractions([
+        // useRole(context, { role: "menu" }),
+        useDismiss(context)
+    ]);
+
+    const { height, width } = useViewportSize();
     return (
         <>
-            {visible && <EventCard defaultEvent={newEvent} />}
+            <FloatingPortal>
+                {visible && (
+                    <FloatingOverlay lockScroll>
+                        <FloatingFocusManager context={context}>
+                            <div
+                                {...getFloatingProps({
+                                    className: '',
+                                    ref: floating,
+                                    style: {
+                                        position: strategy,
+                                        top: y ?? height / 2,
+                                        left: x ?? width / 2
+                                    }
+                                })}
+                            >
+                                <EventCard defaultEvent={newEvent} />
+                            </div>
+                        </FloatingFocusManager>
+                    </FloatingOverlay>
+                )}
+            </FloatingPortal>
 
             <DnDCalendar
                 step={15}
@@ -68,7 +130,7 @@ export default function BigCalendar() {
                 onSelectEvent={(e, b) => {
                     handleSelectEvent(e as CalendarEvent, b);
                 }}
-                onSelectSlot={handleSelectSlot}
+                onSelectSlot={(e, b) => handleSelectSlot(e, b)}
                 onDragStart={(event) => {
                     console.log('onDragStart', event);
                 }}
