@@ -10,6 +10,7 @@ interface CalendarEvent {
     start: Date;
     end: Date;
     allDay: boolean;
+    completed: boolean;
     linkedTodos?: string[]; // todo
 }
 
@@ -18,6 +19,7 @@ interface EventStoreState {
     addEvent: (newEvent: CalendarEvent) => void;
     setEvent: (id: string, newEvent: CalendarEvent) => void;
     removeEvent: (id: string) => void;
+    toggleCompleted: (id: string) => void;
 }
 
 const EventIdGenerator = () => {
@@ -45,7 +47,18 @@ const EventStore: StateCreator<EventStoreState> = (set) => ({
         }));
     },
     removeEvent: (id: string) =>
-        set((state) => ({ eventList: state.eventList.filter((event) => event.id !== id) }))
+        set((state) => ({ eventList: state.eventList.filter((event) => event.id !== id) })),
+    toggleCompleted: (id: string) =>
+        set((state) => ({
+            eventList: state.eventList.map((event) =>
+                event.id === id
+                    ? {
+                        ...event,
+                        completed: event.completed
+                    }
+                    : event
+            )
+        }))
 });
 
 const useEventStore = create<EventStoreState>()(

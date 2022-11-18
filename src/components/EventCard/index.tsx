@@ -18,6 +18,7 @@ const EventCard = (props: EventCardProps) => {
     const [title, setTitle] = useState<string>(defaultEvent?.title || '');
     const [allDay, setAllDay] = useState<boolean>(false); // todo
     const [description, setDescription] = useState<string>(defaultEvent?.desc || '');
+    const [completed, setCompleted] = useState<boolean>(defaultEvent?.completed || false);
     const [startTime, setStartTime] = useState<Date>(defaultEvent?.start || new Date());
     const [startDate, setStartDate] = useState<Date>(defaultEvent?.start || new Date());
     const [endTime, setEndTime] = useState<Date>(defaultEvent?.end || new Date());
@@ -54,6 +55,7 @@ const EventCard = (props: EventCardProps) => {
     const createEvent = () => {
         if (!canCreateEvent) return;
         const event: CalendarEvent = {
+            completed: completed,
             id: EventIdGenerator(),
             title: title.trim(),
             desc: description,
@@ -64,6 +66,9 @@ const EventCard = (props: EventCardProps) => {
         };
         addEvent(event);
     };
+    {
+        console.log('comp', completed);
+    }
 
     return (
         <>
@@ -72,6 +77,8 @@ const EventCard = (props: EventCardProps) => {
                     <Checkbox
                         size={'sm'}
                         className={'tw-flex tw-justify-center'}
+                        checked={completed}
+                        onChange={(e) => setCompleted(e.currentTarget.checked)}
                         // todo: fix later
                         data-autofocus={false}
                         autoFocus={false}

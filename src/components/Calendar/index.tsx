@@ -38,6 +38,7 @@ export default function BigCalendar() {
     const handleSelectEvent = (event: CalendarEvent, base: SyntheticEvent) => {
         console.log(base.target);
         const newEvent: CalendarEvent = {
+            completed: event.completed,
             allDay: event.allDay,
             start: event.start,
             end: event.end,
@@ -56,6 +57,7 @@ export default function BigCalendar() {
             // return;
         }
         const newEvent: CalendarEvent = {
+            completed: false,
             allDay: false,
             start: slotInfo.start,
             end: slotInfo.end,
