@@ -57,6 +57,10 @@
     min-height: 0;
     border-bottom: 1px solid $cell-border;
 
+    & > button {
+        user-select: none;
+    }
+
     & + & {
         border-left: 1px solid $cell-border;
     }
@@ -89,7 +93,6 @@
 .rbc-row-content {
     position: relative;
     user-select: none;
-    -webkit-user-select: none;
     z-index: 4;
 }
 
