@@ -6,7 +6,6 @@ import * as dateFns from 'date-fns';
 import { DatetimePicker } from './DatetimePicker';
 import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 import { useEventStore } from '@/store';
-import { useFloating } from '@floating-ui/react-dom';
 
 interface EventCardProps {
     defaultEvent?: CalendarEvent;
@@ -17,11 +16,12 @@ const EventCard = (props: EventCardProps) => {
 
     // states
     const [title, setTitle] = useState<string>(defaultEvent?.title || '');
+    const [allDay, setAllDay] = useState<boolean>(false); // todo
+    const [description, setDescription] = useState<string>(defaultEvent?.desc || '');
     const [startTime, setStartTime] = useState<Date>(defaultEvent?.start || new Date());
     const [startDate, setStartDate] = useState<Date>(defaultEvent?.start || new Date());
     const [endTime, setEndTime] = useState<Date>(defaultEvent?.end || new Date());
     const [endDate, setEndDate] = useState<Date>(defaultEvent?.end || new Date());
-    const [description, setDescription] = useState<string>(defaultEvent?.desc || '');
     const start = useMemo(
         () =>
             dateFns.setHours(

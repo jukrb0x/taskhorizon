@@ -1,4 +1,4 @@
-import { Calendar, luxonLocalizer, momentLocalizer, SlotInfo, Event } from 'react-big-calendar';
+import { Calendar, luxonLocalizer, momentLocalizer, SlotInfo } from 'react-big-calendar';
 import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
 import moment from 'moment';
 // import luxon from 'luxon';
@@ -6,9 +6,7 @@ import './styles/default/styles.scss';
 import './styles/default/dragAndDrop.scss';
 import { useEventStore } from '@/store';
 import { CalendarEvent } from '@/store/event-store';
-import { EventCreator } from '@/components/EventCardOld/EventCreator';
-import { useState } from 'react';
-import { Modal, Typography } from '@douyinfe/semi-ui';
+import { SyntheticEvent, useRef, useState } from 'react';
 import { EventCard } from '@/components/EventCard';
 import { Button } from '@/components/Button';
 
@@ -21,7 +19,8 @@ export default function BigCalendar() {
     const [visible, setVisible] = useState(false);
     const [newEvent, setNewEvent] = useState<CalendarEvent>();
 
-    const handleSelectEvent = (event: CalendarEvent) => {
+    const handleSelectEvent = (event: CalendarEvent, base: SyntheticEvent) => {
+        console.log('calref', calendarRef);
         const newEvent: CalendarEvent = {
             allDay: event.allDay,
             start: event.start,
@@ -34,7 +33,6 @@ export default function BigCalendar() {
         setVisible(true);
     };
 
-    const { Title } = Typography;
     const handleSelectSlot = (slotInfo: SlotInfo) => {
         const newEvent: CalendarEvent = {
             allDay: false,
@@ -47,34 +45,16 @@ export default function BigCalendar() {
         setVisible(true);
     };
 
+    const calendarRef = useRef(null);
+
     return (
         <>
-            {/*       debug      */}
-            <Modal
-                header={
-                    <Title heading={4} className={'tw-py-4'}>
-                        Create New Event
-                    </Title>
-                }
-                // visible={visible}
-                onOk={() => setVisible(false)}
-                onCancel={() => setVisible(false)}
-                footer={null}
-            >
-                <EventCreator onEventCreated={() => setVisible(false)} defaultEvent={newEvent} />
-            </Modal>
-
-            <Modal
-                // visible={visible}
-                onOk={() => setVisible(false)}
-                onCancel={() => setVisible(false)}
-                footer={null}
-            >
-                <EventCard defaultEvent={newEvent} />
-            </Modal>
             {visible && <EventCard defaultEvent={newEvent} />}
 
             <DnDCalendar
+                step={15}
+                timeslots={4}
+                ref={calendarRef}
                 localizer={localizer}
                 events={eventList}
                 draggableAccessor={(event) => true} // todo
@@ -85,7 +65,9 @@ export default function BigCalendar() {
                 onEventResize={(event) => {
                     console.log('onEventResize', event);
                 }}
-                onSelectEvent={(e) => handleSelectEvent(e as CalendarEvent)}
+                onSelectEvent={(e, b) => {
+                    handleSelectEvent(e as CalendarEvent, b);
+                }}
                 onSelectSlot={handleSelectSlot}
                 onDragStart={(event) => {
                     console.log('onDragStart', event);

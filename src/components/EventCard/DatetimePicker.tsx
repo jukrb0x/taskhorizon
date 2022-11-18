@@ -35,7 +35,7 @@ const DatetimePicker = (props: DatetimePickerProps) => {
                 // style={{ display: 'block' }}
                 // onOpenChange={(open) => { console.log("op", open); }}
                 showClear={false}
-                minuteStep={30}
+                minuteStep={15}
                 value={props.time}
                 onChange={(time) => props.onChange(props.date, time)}
                 format={'HH:mm'}

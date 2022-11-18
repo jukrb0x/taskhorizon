@@ -10,6 +10,7 @@ specifiers:
   '@douyinfe/semi-ui': ^2.22.3
   '@emotion/react': ^11.10.5
   '@floating-ui/react-dom': ^1.0.1
+  '@floating-ui/react-dom-interactions': ^0.11.0
   '@formkit/auto-animate': 1.0.0-beta.3
   '@headlessui/react': ^1.7.4
   '@mantine/core': ^5.7.2
@@ -70,6 +71,7 @@ dependencies:
   '@douyinfe/semi-ui': 2.23.3_biqbaboplfbrettd7655fr4n2y
   '@emotion/react': 11.10.5_fan5qbzahqtxlm5dzefqlqx5ia
   '@floating-ui/react-dom': 1.0.1_biqbaboplfbrettd7655fr4n2y
+  '@floating-ui/react-dom-interactions': 0.11.0_2zx2umvpluuhvlq44va5bta2da
   '@formkit/auto-animate': 1.0.0-beta.3
   '@headlessui/react': 1.7.4_biqbaboplfbrettd7655fr4n2y
   '@mantine/core': 5.7.2_s42f3uthtxnh7bllormamvwjhq
@@ -853,6 +855,20 @@ packages:
 
   /@floating-ui/react-dom-interactions/0.10.3_2zx2umvpluuhvlq44va5bta2da:
     resolution: {integrity: sha512-UEHqdnzyoiWNU5az/tAljr9iXFzN18DcvpMqW+/cXz4FEhDEB1ogLtWldOWCujLerPBnSRocADALafelOReMpw==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@floating-ui/react-dom': 1.0.1_biqbaboplfbrettd7655fr4n2y
+      aria-hidden: 1.2.2_fan5qbzahqtxlm5dzefqlqx5ia
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+    transitivePeerDependencies:
+      - '@types/react'
+    dev: false
+
+  /@floating-ui/react-dom-interactions/0.11.0_2zx2umvpluuhvlq44va5bta2da:
+    resolution: {integrity: sha512-LQh607tGyme3fFv6QQU3/v1fXGOb8XIz3AnFBXq4pAlOKFg6OrKONjhsPZCP8ZOmxTW/P29grd8D312oeEN8zA==}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'

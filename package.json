@@ -17,7 +17,7 @@
         "@douyinfe/semi-icons": "^2.22.3",
         "@douyinfe/semi-ui": "^2.22.3",
         "@emotion/react": "^11.10.5",
-        "@floating-ui/react-dom": "^1.0.1",
+        "@floating-ui/react-dom-interactions": "^0.11.0",
         "@formkit/auto-animate": "1.0.0-beta.3",
         "@headlessui/react": "^1.7.4",
         "@mantine/core": "^5.7.2",
