@@ -13,7 +13,7 @@
 
 ![demo](./docs/background-demo.jpg)
 
-Project Calitdone integrates To-Do list app (tasking) with Calendar app (scheduling) to make a smooth experience for
+Project Calitdone integrates Todo-list and Calendar to create e a smooth experience for
 daily tasking and scheduling.
 
 See [Planned Roadmap](docs/Roadmap.md) and [Project real-time Roadmap](https://jabriel.notion.site/404ec6d1dd084c17a4a877afc327ee47) for latest updates.
