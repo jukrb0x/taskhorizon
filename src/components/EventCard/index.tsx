@@ -7,14 +7,21 @@ import {
     Textarea,
     ActionIcon,
     Text,
-    Tooltip
+    Tooltip,
+    Menu
 } from '@mantine/core';
 import { Button } from '@/components/Button';
 import * as dateFns from 'date-fns';
 import { DatetimePicker } from './DatetimePicker';
 import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 import { useEventStore } from '@/store';
-import { IconFlare } from '@tabler/icons';
+import {
+    IconArrowDown,
+    IconChevronDown,
+    IconChevronsDown,
+    IconFlare,
+    IconTrash
+} from '@tabler/icons';
 
 interface EventCardProps {
     defaultEvent?: CalendarEvent;
@@ -172,20 +179,30 @@ const EventCard = (props: EventCardProps) => {
                                     onClick={createEvent}
                                     variant={'filled'}
                                     color={'green'}
+                                    className={'tw-px-2 tw-shadow-none tw-drop-shadow-none'}
                                 >
                                     Create
                                 </Button>
                                 {/*
                                 todo: should be a dropdown with delete option
                             */}
-                                <Button
-                                    disabled
-                                    color={'red'}
-                                    variant={'outline'}
-                                    className={'tw-px-1.5'}
-                                >
-                                    <IconDelete />
-                                </Button>
+                                <Menu transition={'scale-y'}>
+                                    <Menu.Target>
+                                        <Button
+                                            // disabled
+                                            color={'green'}
+                                            variant={'filled'}
+                                            className={'tw-px-1'}
+                                        >
+                                            <IconChevronDown size={17} />
+                                        </Button>
+                                    </Menu.Target>
+                                    <Menu.Dropdown>
+                                        <Menu.Item color="red" icon={<IconTrash size={14} />}>
+                                            Delete my account
+                                        </Menu.Item>
+                                    </Menu.Dropdown>
+                                </Menu>
                             </MButton.Group>
                         </div>
                     </div>
