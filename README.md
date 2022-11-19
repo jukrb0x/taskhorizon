@@ -5,6 +5,11 @@
     </samp>
   </p>
 </h1>
+<p align="center">
+  <em>
+    Schedule your todos and events in one place.
+  </em>
+</p>
 
 Project Calitdone integrates To-Do list app (tasking) with Calendar app (scheduling) to make a smooth experience for
 daily tasking and scheduling.
