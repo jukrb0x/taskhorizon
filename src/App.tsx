@@ -11,6 +11,12 @@ import { MantineProvider } from '@mantine/core';
 import { useTauriExtension } from '@/hooks/use-tauri-extension';
 import { ConfigProvider as SemiConfigProvider } from '@douyinfe/semi-ui';
 import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
+import resolveConfig from 'tailwindcss/resolveConfig';
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import tailwindConfig from '~/tailwind.config';
+
+const tailwindFullConfig = resolveConfig(tailwindConfig);
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -34,7 +40,12 @@ const TauriWindowDragRegion = styled.div.attrs(() => ({
 `;
 
 const mantineTheme = {
-    defaultRadius: 'md'
+    defaultRadius: 'md',
+    other: {
+        tailwind: {
+            ...tailwindFullConfig
+        }
+    }
 };
 
 function App() {
