@@ -88,6 +88,7 @@ pnpm tauri build
 
 | Name                   | Description                    |
 |------------------------|--------------------------------|
+| ESLint                 | Linting                        |
 | Prettier               | Code formatter                 |
 | Stylelint              | CSS linter                     |
 | Husky                  | Git hooks                      |
