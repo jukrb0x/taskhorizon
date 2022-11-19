@@ -1,15 +1,25 @@
 import { MutableRefObject, useMemo, useState } from 'react';
 import { IconDelete } from '@douyinfe/semi-icons';
-import { Checkbox, Button as MButton, TextInput, Textarea } from '@mantine/core';
+import {
+    Checkbox,
+    Button as MButton,
+    TextInput,
+    Textarea,
+    ActionIcon,
+    Text,
+    Tooltip
+} from '@mantine/core';
 import { Button } from '@/components/Button';
 import * as dateFns from 'date-fns';
 import { DatetimePicker } from './DatetimePicker';
 import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 import { useEventStore } from '@/store';
+import { IconFlare } from '@tabler/icons';
 
 interface EventCardProps {
     defaultEvent?: CalendarEvent;
     onEventCreated?: () => void;
+    mode?: 'create' | 'edit'; // todo
 }
 
 const EventCard = (props: EventCardProps) => {
@@ -18,7 +28,7 @@ const EventCard = (props: EventCardProps) => {
 
     // states
     const [title, setTitle] = useState<string>(defaultEvent?.title || '');
-    const [allDay, setAllDay] = useState<boolean>(false); // todo
+    const [allDay, setAllDay] = useState<boolean>(defaultEvent?.allDay || false); // todo: cannot set allDay if the day range is more than 1
     const [description, setDescription] = useState<string>(defaultEvent?.desc || '');
     const [completed, setCompleted] = useState<boolean>(defaultEvent?.completed || false);
     const [startTime, setStartTime] = useState<Date>(defaultEvent?.start || new Date());
@@ -63,7 +73,7 @@ const EventCard = (props: EventCardProps) => {
             desc: description,
             start: start,
             end: end,
-            allDay: false,
+            allDay: allDay,
             linkedTodos: []
         };
         addEvent(event);
@@ -134,35 +144,50 @@ const EventCard = (props: EventCardProps) => {
                         onChange={(e) => setDescription(e.target.value)}
                     />
 
-                    <div
-                        className={'tw-flex tw-justify-end'}
-                        // style={{ display: defaultEvent ? 'none' : '' }}
-                    >
-                        {/* todo:
+                    <div className={'tw-flex tw-place-content-between tw-place-content-center'}>
+                        <div className={'tw-flex tw-items-center'}>
+                            <Tooltip label={'All day'} position={'bottom'} withArrow>
+                                <ActionIcon
+                                    variant={allDay ? 'filled' : 'subtle'}
+                                    color={'blue.5'}
+                                    onClick={() => setAllDay(!allDay)}
+                                >
+                                    <Text fz={'xs'} fw={700}>
+                                        24h
+                                    </Text>
+                                </ActionIcon>
+                            </Tooltip>
+                        </div>
+                        <div
+                            className={'tw-flex tw-justify-end tw-items-center'}
+                            // style={{ display: defaultEvent ? 'none' : '' }}
+                        >
+                            {/* todo:
                                 update event
                                 delete event
                          */}
-                        <MButton.Group>
-                            <Button
-                                disabled={!canCreateEvent}
-                                onClick={createEvent}
-                                variant={'filled'}
-                                color={'green'}
-                            >
-                                Create
-                            </Button>
-                            {/*
+                            <MButton.Group>
+                                <Button
+                                    disabled={!canCreateEvent}
+                                    onClick={createEvent}
+                                    variant={'filled'}
+                                    color={'green'}
+                                >
+                                    Create
+                                </Button>
+                                {/*
                                 todo: should be a dropdown with delete option
                             */}
-                            <Button
-                                disabled
-                                color={'red'}
-                                variant={'outline'}
-                                className={'tw-px-1.5'}
-                            >
-                                <IconDelete />
-                            </Button>
-                        </MButton.Group>
+                                <Button
+                                    disabled
+                                    color={'red'}
+                                    variant={'outline'}
+                                    className={'tw-px-1.5'}
+                                >
+                                    <IconDelete />
+                                </Button>
+                            </MButton.Group>
+                        </div>
                     </div>
                 </div>
             </div>
