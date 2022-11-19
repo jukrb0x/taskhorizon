@@ -1,8 +1,12 @@
 # Roadmap
 
+See [Roadmap on Notion](https://jabriel.notion.site/404ec6d1dd084c17a4a877afc327ee47) fot latest updates.
+
+The Planned Roadmap:
+
 ## Major Features
 
-### MVP (0.x.x)
+### Alpha 1
 
 - [x] Project Startup
     - App Shell and Frameworks
@@ -25,7 +29,7 @@
 - [ ] Drag and Drop
     - Drag todo to calendar to create an event
 
-### 1.0.0
+### Alpha 2
 
 - [ ] Todo 3.0
     - Order and priority
