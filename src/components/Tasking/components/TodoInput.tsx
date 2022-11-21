@@ -11,7 +11,6 @@ export default function TodoInput() {
     const handleAdd = () => {
         if (title.trim() == '') return;
         const todo: Todo = {
-            id: TodoIdGenerator(),
             title: title.trim(),
             completed: false
         };

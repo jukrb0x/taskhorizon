@@ -4,14 +4,17 @@ import { UUID } from '@/utils';
 import useUserStore from '@/store/user-store';
 
 interface Todo {
-    id: string;
     completed: boolean;
     title: string;
     linkedEvents?: string[]; // todo
 }
 
+interface ITodo extends Todo {
+    id: string;
+}
+
 interface TodoStoreState {
-    todoList: Todo[];
+    todoList: ITodo[];
     addTodo: (newTodo: Todo) => void;
     removeTodo: (id: string) => void;
     toggleTodo: (id: string) => void;
@@ -25,9 +28,10 @@ const TodoIdGenerator = () => {
 const TodoStore: StateCreator<TodoStoreState> = (set) => ({
     todoList: [],
     addTodo: (newTodo: Todo) =>
-        set((state) => ({
-            todoList: [...state.todoList, newTodo]
-        })),
+        set((state) => {
+            const t: ITodo = { ...newTodo, id: TodoIdGenerator() };
+            return { todoList: [...state.todoList, t] };
+        }),
     removeTodo: (id: string) =>
         set((state) => ({ todoList: state.todoList.filter((todo) => todo.id !== id) })),
     toggleTodo: (id: string) =>

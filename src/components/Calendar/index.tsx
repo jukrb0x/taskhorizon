@@ -35,26 +35,28 @@ export default function BigCalendar() {
     const { eventList } = useEventStore();
     const [popEvent, setPopEvent] = useState<CalendarEvent>();
 
+    // Calendar Event Handlers
     const handleSelectEvent = (event: CalendarEvent, base: SyntheticEvent) => {
         setSelectable(false);
         setPopEvent(event);
 
         const { x, y, top, right, left, bottom, height, width } =
             base.currentTarget.getBoundingClientRect();
-        reference({
+        popReference({
             getBoundingClientRect(): ClientRectObject {
                 return { x, y, top, right, left, bottom, height, width };
             }
         });
         setVisible(true);
-    };
+    }; /* handleSelectEvent */
 
     const handleSelectSlot = (slotInfo: SlotInfo) => {
         setSelectable(false);
         // todo: make it unselectable (freeze selection)
         let bounds: DOMRect = new DOMRect();
         if (slotInfo.action === 'select') {
-            bounds = document // todo: better not to search in the whole document
+            // todo: better not to search in the whole document
+            bounds = document
                 .getElementsByClassName('rbc-slot-selection')[0]
                 .getBoundingClientRect();
         } else if (slotInfo.action === 'click') {
@@ -67,27 +69,25 @@ export default function BigCalendar() {
                 }
             }
         }
-        const x = bounds.x;
-        const y = bounds.y;
-        const top = bounds.top;
-        const left = bounds.left;
-        const right = bounds.right;
-        const bottom = bounds.bottom;
-        const height = bounds.height;
-        const width = bounds.width;
+        const x = bounds.x,
+            y = bounds.y,
+            top = bounds.top,
+            left = bounds.left,
+            right = bounds.right,
+            bottom = bounds.bottom,
+            height = bounds.height,
+            width = bounds.width;
         const newEvent: CalendarEvent = {
             completed: false,
             allDay: false,
             start: slotInfo.start,
             end: slotInfo.end,
-            id: '',
             title: ''
         };
         setPopEvent(newEvent);
 
-        reference({
+        popReference({
             getBoundingClientRect(): ClientRectObject {
-                // todo: make it floating base on the calendar box
                 return {
                     x,
                     y,
@@ -102,12 +102,21 @@ export default function BigCalendar() {
         });
 
         setVisible(true);
-    };
+    }; /* handleSelectSlot */
 
     // floating event card
     const [visible, setVisible] = useState(false);
 
-    const { x, y, reference, floating, strategy, refs, update, context } = useFloating({
+    const {
+        x,
+        y,
+        reference: popReference,
+        floating,
+        strategy,
+        refs,
+        update,
+        context
+    } = useFloating({
         open: visible,
         onOpenChange: setVisible,
         middleware: [offset({ mainAxis: 7, alignmentAxis: 0 }), flip(), shift()],
@@ -138,7 +147,7 @@ export default function BigCalendar() {
         };
     }, [visible, selectable]);
 
-    const eventCardWrapperRef = useRef(null);
+    const eventCardWrapperRef = useRef(null); // css transition ref
     return (
         <>
             <CSSTransition

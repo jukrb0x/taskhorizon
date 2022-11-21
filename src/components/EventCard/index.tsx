@@ -1,5 +1,4 @@
-import { MutableRefObject, useMemo, useState } from 'react';
-import { IconDelete } from '@douyinfe/semi-icons';
+import { useMemo, useState } from 'react';
 import {
     Checkbox,
     Button as MButton,
@@ -15,13 +14,7 @@ import * as dateFns from 'date-fns';
 import { DatetimePicker } from './DatetimePicker';
 import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 import { useEventStore } from '@/store';
-import {
-    IconArrowDown,
-    IconChevronDown,
-    IconChevronsDown,
-    IconFlare,
-    IconTrash
-} from '@tabler/icons';
+import { IconChevronDown, IconTrash } from '@tabler/icons';
 
 interface EventCardProps {
     defaultEvent?: CalendarEvent;
@@ -75,7 +68,6 @@ const EventCard = (props: EventCardProps) => {
         if (!canCreateEvent) return;
         const event: CalendarEvent = {
             completed: completed,
-            id: EventIdGenerator(),
             title: title.trim(),
             desc: description,
             start: start,
@@ -89,8 +81,8 @@ const EventCard = (props: EventCardProps) => {
 
     return (
         <>
-            <div className="tw-h-auto tw-w-72 tw-p-2 tw-rounded-2xl tw-bg-white tw-drop-shadow-lg tw-z-50">
-                <div className={'tw-flex tw-row-auto tw-items-center tw-pb-1.5'}>
+            <div className="tw-h-auto tw-w-72 tw-p-2 tw-rounded-2xl tw-bg-white tw-space-y-1.5 tw-drop-shadow-lg tw-shadow tw-z-50 tw-select-none">
+                <div className={'tw-flex tw-row-auto tw-items-center tw-px-0.5'}>
                     <input // this will prevent autofocus on the checkbox
                         style={{ display: 'none' }}
                     />
@@ -99,15 +91,10 @@ const EventCard = (props: EventCardProps) => {
                         className={'tw-flex tw-justify-center'}
                         checked={completed}
                         onChange={(e) => setCompleted(e.currentTarget.checked)}
-                        // todo: fix later
                         data-autofocus={false}
                         autoFocus={false}
-                        // this is not ok, we need only the first paint (auto focus on first element)
-                        // onFocus={(e) => {
-                        //     e.target.blur();
-                        // }}
                     />
-                    <TextInput
+                    <TextInput // todo: use div instead of input, no wrap
                         autoFocus={!title} // todo: only for new event
                         variant={'unstyled'}
                         value={title}
@@ -150,61 +137,66 @@ const EventCard = (props: EventCardProps) => {
                         value={description}
                         onChange={(e) => setDescription(e.target.value)}
                     />
-
-                    <div className={'tw-flex tw-place-content-between tw-place-content-center'}>
-                        <div className={'tw-flex tw-items-center'}>
-                            <Tooltip label={'All day'} position={'bottom'} withArrow>
-                                <ActionIcon
-                                    variant={allDay ? 'filled' : 'subtle'}
-                                    color={'blue.5'}
-                                    onClick={() => setAllDay(!allDay)}
-                                >
-                                    <Text fz={'xs'} fw={700}>
-                                        24h
-                                    </Text>
-                                </ActionIcon>
-                            </Tooltip>
-                        </div>
-                        <div
-                            className={'tw-flex tw-justify-end tw-items-center'}
-                            // style={{ display: defaultEvent ? 'none' : '' }}
-                        >
-                            {/* todo:
+                </div>
+                <div
+                    className={'tw-flex tw-place-content-between tw-place-content-center tw-px-0.5'}
+                >
+                    <div className={'tw-flex tw-items-center'}>
+                        <Tooltip label={'All day'} position={'bottom'} withArrow>
+                            <ActionIcon
+                                color={allDay ? 'blue.5' : 'gray.5'}
+                                onClick={() => setAllDay(!allDay)}
+                            >
+                                <Text fz={'xs'} fw={700}>
+                                    24h
+                                </Text>
+                            </ActionIcon>
+                        </Tooltip>
+                    </div>
+                    <div
+                        className={'tw-flex tw-justify-end tw-items-center'}
+                        // style={{ display: defaultEvent ? 'none' : '' }}
+                    >
+                        {/* todo:
                                 update event
                                 delete event
                          */}
-                            <MButton.Group>
-                                <Button
-                                    disabled={!canCreateEvent}
-                                    onClick={createEvent}
-                                    variant={'filled'}
-                                    color={'green'}
-                                    className={'tw-px-2 tw-shadow-none tw-drop-shadow-none'}
-                                >
-                                    Create
-                                </Button>
-                                {/*
-                                todo: should be a dropdown with delete option
-                            */}
-                                <Menu transition={'scale-y'}>
-                                    <Menu.Target>
-                                        <Button
-                                            // disabled
-                                            color={'green'}
-                                            variant={'filled'}
-                                            className={'tw-px-1'}
-                                        >
-                                            <IconChevronDown size={17} />
-                                        </Button>
-                                    </Menu.Target>
-                                    <Menu.Dropdown>
-                                        <Menu.Item color="red" icon={<IconTrash size={14} />}>
-                                            Delete my account
-                                        </Menu.Item>
-                                    </Menu.Dropdown>
-                                </Menu>
-                            </MButton.Group>
-                        </div>
+                        <MButton.Group>
+                            <Button
+                                disabled={!canCreateEvent}
+                                onClick={createEvent}
+                                variant={'filled'}
+                                color={'green'}
+                                className={'tw-px-2'}
+                                size={'xs'}
+                            >
+                                Create
+                            </Button>
+                            <Menu transition={'scale-y'}>
+                                <Menu.Target>
+                                    <Button
+                                        // disabled
+                                        color={'green'}
+                                        variant={'filled'}
+                                        className={'tw-px-1 tw-drop-shadow-none'}
+                                        size={'xs'}
+                                    >
+                                        <IconChevronDown size={17} />
+                                    </Button>
+                                </Menu.Target>
+                                <Menu.Dropdown>
+                                    <Menu.Item
+                                        color="red"
+                                        icon={<IconTrash size={14} />}
+                                        onClick={() => {
+                                            //
+                                        }}
+                                    >
+                                        Delete
+                                    </Menu.Item>
+                                </Menu.Dropdown>
+                            </Menu>
+                        </MButton.Group>
                     </div>
                 </div>
             </div>
