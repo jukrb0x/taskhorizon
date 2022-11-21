@@ -6,7 +6,7 @@ import './styles/default/styles.scss';
 import './styles/default/dragAndDrop.scss';
 import { useEventStore } from '@/store';
 import { CalendarEvent } from '@/store/event-store';
-import { SyntheticEvent, useEffect, useRef, useState } from 'react';
+import { SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { EventCard, EventCardMode } from '@/components/EventCard';
 import {
     flip,
@@ -108,23 +108,23 @@ export default function BigCalendar() {
         setEvent(event.id, event);
     }; /* handleEventResize */
 
-    const handleSelectEvent = (event: CalendarEvent, base: SyntheticEvent) => {
+    const handleSelectEvent = useCallback((event: CalendarEvent, base: SyntheticEvent) => {
         setSelectable(false);
         setPopEventCard(event, 'edit', base.currentTarget.getBoundingClientRect());
         setVisible(true);
-    }; /* handleSelectEvent */
+    }, []); /* handleSelectEvent */
 
-    const handleSelectSlot = (slotInfo: SlotInfo) => {
+    const handleSelectSlot = useCallback((slotInfo: SlotInfo) => {
         setSelectable(false);
         // todo: make it unselectable (freeze selection)
         let bounds: DOMRect = new DOMRect();
-        if (slotInfo.action === 'select') {
-            // todo: better not to search in the whole document
+        switch (slotInfo.action) {
+        case 'select': // todo: better not to search in the whole document
             bounds = document
                 .getElementsByClassName('rbc-slot-selection')[0]
                 .getBoundingClientRect();
-        } else if (slotInfo.action === 'click') {
-            // todo: double click
+            break;
+        case 'click':
             const els = document.getElementsByClassName(slotInfo.start.toISOString());
             for (let i = 0; i < els.length; i++) {
                 if (els[i].closest('.rbc-day-slot')) {
@@ -132,6 +132,9 @@ export default function BigCalendar() {
                     bounds = els[i].getBoundingClientRect();
                 }
             }
+            break;
+        case 'doubleClick':
+            return;
         }
         const newEvent: CalendarEvent = {
             id: 'new event id',
@@ -143,7 +146,7 @@ export default function BigCalendar() {
         };
         setPopEventCard(newEvent, 'create', bounds);
         setVisible(true);
-    }; /* handleSelectSlot */
+    }, []); /* handleSelectSlot */
 
     const eventCardWrapperRef = useRef(null); // css transition ref
     return (
