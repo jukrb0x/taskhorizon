@@ -6,7 +6,6 @@ import { useDebugStore } from '@/store';
 import { cls } from '@/utils';
 import AppRouter from '@/routes/AppRouter';
 import routerExtractor from '@/utils/router-extractor';
-import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 
 const { Title } = Typography;
 const StyledTitle = cls(Title)`tw-pb-2`;

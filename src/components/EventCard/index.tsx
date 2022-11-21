@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, useCallback, useMemo, useState } from 'react';
 import {
     Checkbox,
     Button as MButton,
@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components/Button';
 import * as dateFns from 'date-fns';
 import { DatetimePicker } from './DatetimePicker';
-import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
+import { CalendarEvent } from '@/store/event-store';
 import { useEventStore } from '@/store';
 import { IconChevronDown, IconDots, IconTrash } from '@tabler/icons';
 import { useEventListener } from '@mantine/hooks';
@@ -83,7 +83,7 @@ const EventCard = (props: EventCardProps) => {
         setEndDate(date);
     };
 
-    const handleCheckboxChange = useCallback((e) => {
+    const handleCheckboxChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         if (props.mode == 'create') {
             setCompleted(e.currentTarget.checked);
         } else if (props.mode == 'edit') {
