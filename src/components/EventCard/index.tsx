@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import {
     Checkbox,
     Button as MButton,
@@ -7,27 +7,33 @@ import {
     ActionIcon,
     Text,
     Tooltip,
-    Menu
+    Menu,
+    Transition
 } from '@mantine/core';
 import { Button } from '@/components/Button';
 import * as dateFns from 'date-fns';
 import { DatetimePicker } from './DatetimePicker';
 import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 import { useEventStore } from '@/store';
-import { IconChevronDown, IconTrash } from '@tabler/icons';
+import { IconChevronDown, IconDots, IconTrash } from '@tabler/icons';
 
 type EventCardMode = 'edit' | 'create';
+
 interface EventCardProps {
     value?: CalendarEvent;
     onEventCreated?: () => void;
+    onDismissed?: () => void;
     mode?: EventCardMode;
 }
 
+// todo: this component is too much nested, need decompose
 const EventCard = (props: EventCardProps) => {
     const defaultEvent = props.value;
-    const onEventCreated = props.onEventCreated;
 
-    // states
+    // ----- STORE -----
+    const { addEvent, setEvent, removeEvent } = useEventStore();
+
+    // ----- STATES -----
     const [title, setTitle] = useState<string>(defaultEvent?.title || '');
     const [allDay, setAllDay] = useState<boolean>(defaultEvent?.allDay || false); // todo: cannot set allDay if the day range is more than 1
     const [description, setDescription] = useState<string>(defaultEvent?.desc || '');
@@ -62,24 +68,23 @@ const EventCard = (props: EventCardProps) => {
             defaultEvent.allDay != allDay
         );
     }, [defaultEvent, title, description, completed, start, end, allDay]);
+    const isValidEvent = title.trim() != '' && startDate != null && endDate != null;
 
-    // Component Methods
-    const handleStartChange = (date: Date | null, time: Date | any) => {
+    // ----- COMPONENT METHODS -----
+    const handleStartChange = (date: Date, time: Date) => {
         if (!date) date = new Date();
         setStartTime(time);
         setStartDate(date);
     };
 
-    const handleEndChange = (date: Date | null, time: Date | any) => {
+    const handleEndChange = (date: Date, time: Date) => {
         if (!date) date = new Date();
         setEndTime(time);
         setEndDate(date);
     };
 
-    const canCreateEvent = title.trim() != '' && startDate != null && endDate != null;
-    const { addEvent, setEvent } = useEventStore();
     const createEvent = () => {
-        if (!canCreateEvent) return;
+        if (!isValidEvent) return;
         const event: CalendarEvent = {
             id: 'new event id will be generated',
             completed: completed,
@@ -91,21 +96,33 @@ const EventCard = (props: EventCardProps) => {
             linkedTodos: []
         };
         addEvent(event);
-        onEventCreated && onEventCreated();
+        props.onEventCreated && props.onEventCreated();
     };
 
     const updateEvent = () => {
-        if (!isEdited) return;
-        // todo
-        // const event: CalendarEvent = {
-        //     // id: defaultEvent.id
-        // };
-        // setEvent(event.id, event);
+        if (!isEdited || !defaultEvent || !isValidEvent) return;
+        const event: CalendarEvent = {
+            id: defaultEvent.id, // do not change id
+            completed: completed,
+            title: title.trim(),
+            desc: description,
+            start: start,
+            end: end,
+            allDay: allDay,
+            linkedTodos: []
+        };
+        setEvent(defaultEvent.id, event);
+        props.onDismissed && props.onDismissed();
+    };
+
+    const deleteEvent = () => {
+        if (props.mode !== 'edit' || !defaultEvent) return;
+        removeEvent(defaultEvent.id);
+        props.onDismissed && props.onDismissed();
     };
 
     return (
         <>
-            {isEdited && 'yesyes'}
             <div className="tw-h-auto tw-w-72 tw-p-2 tw-rounded-2xl tw-bg-white tw-space-y-1.5 tw-drop-shadow-lg tw-shadow tw-z-50 tw-select-none">
                 <div className={'tw-flex tw-row-auto tw-items-center tw-px-0.5'}>
                     <input // this will prevent autofocus on the checkbox
@@ -144,14 +161,14 @@ const EventCard = (props: EventCardProps) => {
                             label={'Start'}
                             time={startTime}
                             date={startDate}
-                            onChange={(date, time) => handleStartChange(date, time)}
+                            onChange={(date, time) => handleStartChange(date as Date, time as Date)}
                         />
 
                         <DatetimePicker
                             label={'End'}
                             time={endTime}
                             date={endDate}
-                            onChange={(date, time) => handleEndChange(date, time)}
+                            onChange={(date, time) => handleEndChange(date as Date, time as Date)}
                         />
                     </div>
 
@@ -182,13 +199,9 @@ const EventCard = (props: EventCardProps) => {
                         className={'tw-flex tw-justify-end tw-items-center'}
                         // style={{ display: defaultEvent ? 'none' : '' }}
                     >
-                        {/* todo:
-                                update event
-                                delete event
-                         */}
-                        <MButton.Group>
+                        {props.mode === 'create' && (
                             <Button
-                                disabled={!canCreateEvent}
+                                disabled={!isValidEvent}
                                 onClick={createEvent}
                                 variant={'filled'}
                                 color={'green'}
@@ -197,31 +210,83 @@ const EventCard = (props: EventCardProps) => {
                             >
                                 Create
                             </Button>
-                            <Menu transition={'scale-y'}>
-                                <Menu.Target>
-                                    <Button
-                                        // disabled
-                                        color={'green'}
-                                        variant={'filled'}
-                                        className={'tw-px-1 tw-drop-shadow-none'}
-                                        size={'xs'}
-                                    >
-                                        <IconChevronDown size={17} />
-                                    </Button>
-                                </Menu.Target>
-                                <Menu.Dropdown>
-                                    <Menu.Item
-                                        color="red"
-                                        icon={<IconTrash size={14} />}
-                                        onClick={() => {
-                                            //
-                                        }}
-                                    >
-                                        Delete
-                                    </Menu.Item>
-                                </Menu.Dropdown>
-                            </Menu>
-                        </MButton.Group>
+                        )}
+                        {props.mode === 'edit' && (
+                            <>
+                                <Transition
+                                    mounted={isEdited}
+                                    transition={'slide-left'}
+                                    duration={150}
+                                >
+                                    {(styles) => (
+                                        <div style={{ ...styles }}>
+                                            <MButton.Group>
+                                                <Button
+                                                    disabled={!isEdited || !isValidEvent}
+                                                    onClick={updateEvent}
+                                                    variant={'filled'}
+                                                    color={'green'}
+                                                    className={'tw-px-2'}
+                                                    size={'xs'}
+                                                >
+                                                    Update
+                                                </Button>
+                                                <Menu transition={'scale-y'}>
+                                                    <Menu.Target>
+                                                        <Button
+                                                            // disabled
+                                                            color={'green'}
+                                                            variant={'filled'}
+                                                            className={
+                                                                'tw-px-1 tw-drop-shadow-none'
+                                                            }
+                                                            size={'xs'}
+                                                        >
+                                                            <IconChevronDown size={17} />
+                                                        </Button>
+                                                    </Menu.Target>
+                                                    <Menu.Dropdown>
+                                                        <Menu.Item
+                                                            color="red"
+                                                            icon={<IconTrash size={14} />}
+                                                            onClick={() => deleteEvent()}
+                                                        >
+                                                            Delete
+                                                        </Menu.Item>
+                                                    </Menu.Dropdown>
+                                                </Menu>
+                                            </MButton.Group>
+                                        </div>
+                                    )}
+                                </Transition>
+                                <Transition
+                                    mounted={!isEdited}
+                                    transition={'slide-left'}
+                                    duration={50}
+                                >
+                                    {(styles) => (
+                                        <div style={{ ...styles }}>
+                                            <Menu transition={'scale-y'}>
+                                                <Menu.Target>
+                                                    <ActionIcon>
+                                                        <IconDots size={17} />
+                                                    </ActionIcon>
+                                                </Menu.Target>
+                                                <Menu.Dropdown>
+                                                    <Menu.Item
+                                                        color="red"
+                                                        icon={<IconTrash size={14} />}
+                                                        onClick={() => deleteEvent()}
+                                                    >
+                                                        Delete
+                                                    </Menu.Item>
+                                                </Menu.Dropdown>
+                                            </Menu>
+                                        </div>
+                                    )}
+                                </Transition>
+                            </>
+                        )}
                     </div>
                 </div>
             </div>

@@ -33,10 +33,9 @@ const DnDCalendar = withDragAndDrop(Calendar);
 //     not easy to do, they are deeply coupled.
 export default function BigCalendar() {
     const { eventList, setEvent } = useEventStore();
-    const [popEvent, setPopEvent] = useState<CalendarEvent>();
-    const [popMode, setPopMode] = useState<'create' | 'edit'>('create');
-
     // Floating Event Card (Pop-up)
+    const [popEvent, setPopEvent] = useState<CalendarEvent>();
+    const [popMode, setPopMode] = useState<EventCardMode>('create');
     const [visible, setVisible] = useState(false);
 
     const {
@@ -116,11 +115,11 @@ export default function BigCalendar() {
 
     const handleSelectSlot = useCallback((slotInfo: SlotInfo) => {
         setSelectable(false);
-        // todo: make it unselectable (freeze selection)
+        // todo: (mid priority) make it unselectable (freeze selection)
         let bounds: DOMRect = new DOMRect();
         switch (slotInfo.action) {
-        case 'select': // todo: better not to search in the whole document
-            bounds = document
+        case 'select':
+            bounds = document // todo: better not to search in the whole document
                 .getElementsByClassName('rbc-slot-selection')[0]
                 .getBoundingClientRect();
             break;
@@ -179,6 +178,7 @@ export default function BigCalendar() {
                                         <EventCard
                                             value={popEvent}
                                             onEventCreated={() => setVisible(false)}
+                                            onDismissed={() => setVisible(false)}
                                             mode={popMode}
                                         />
                                     </div>

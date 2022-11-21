@@ -1,16 +1,12 @@
 import { TodoInput, TodoList } from '@/components/Tasking/components';
 import useTodoStore from '@/store/todo-store';
-import { useEffect, useRef } from 'react';
-import autoAnimate from '@formkit/auto-animate';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 
 export default function TodoApp() {
     const { todoList } = useTodoStore();
-    const appRef = useRef(null);
-    useEffect(() => {
-        appRef.current && autoAnimate(appRef.current);
-    }, [appRef]);
+    const [ref] = useAutoAnimate<HTMLDivElement>();
     return (
-        <div ref={appRef}>
+        <div ref={ref}>
             <TodoInput />
             <TodoList todos={todoList} />
         </div>
