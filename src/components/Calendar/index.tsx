@@ -24,6 +24,7 @@ import {
 } from '@floating-ui/react-dom-interactions';
 import { CSSTransition } from 'react-transition-group';
 import './styles/animation.scss';
+import { useEventListener } from '@mantine/hooks';
 
 const localizer = momentLocalizer(moment); // todo: use luxon, later when we need multi-timezone support, moment.js is not good enough
 
@@ -81,16 +82,9 @@ export default function BigCalendar() {
 
     // prevent selecting anything until popover is dismissed
     const [selectable, setSelectable] = useState(true);
-    useEffect(() => {
-        document.addEventListener('mouseup', () => {
-            setSelectable(true);
-        });
-        return () => {
-            document.removeEventListener('mouseup', () => {
-                setSelectable(true);
-            });
-        };
-    }, [visible, selectable]);
+    const calendarRef = useEventListener('mouseup', () => {
+        setSelectable(true);
+    });
 
     // Calendar Event Handlers
     const handleEventResize = ({
@@ -193,37 +187,39 @@ export default function BigCalendar() {
             fixme: Month View is buggy, event card is overlapping
                 why not just disable month view
             */}
-            <DnDCalendar
-                step={15}
-                timeslots={4}
-                localizer={localizer}
-                events={eventList}
-                draggableAccessor={(event) => true} // todo
-                resizable
-                selectable={selectable}
-                dayLayoutAlgorithm="no-overlap"
-                defaultView={'week'}
-                slotPropGetter={(date) => ({ className: date.toISOString() })}
-                onEventResize={(val) =>
-                    handleEventResize(val as { event: CalendarEvent; start: Date; end: Date })
-                }
-                onSelectEvent={(e, b) => {
-                    handleSelectEvent(e as CalendarEvent, b);
-                }}
-                onSelectSlot={handleSelectSlot}
-                onDragStart={(event) => {
-                    console.log('onDragStart', event);
-                }}
-                onEventDrop={(event) => {
-                    console.log('onEventDrop', event);
-                }}
-                onDragOver={(event) => {
-                    console.log('onDragOver', event);
-                }}
-                onDropFromOutside={(event) => {
-                    console.log('onDropFromOutside', event);
-                }}
-            />
+            <div ref={calendarRef}>
+                <DnDCalendar
+                    step={15}
+                    timeslots={4}
+                    localizer={localizer}
+                    events={eventList}
+                    draggableAccessor={(event) => true} // todo
+                    resizable
+                    selectable={selectable}
+                    dayLayoutAlgorithm="no-overlap"
+                    defaultView={'week'}
+                    slotPropGetter={(date) => ({ className: date.toISOString() })}
+                    onEventResize={(val) =>
+                        handleEventResize(val as { event: CalendarEvent; start: Date; end: Date })
+                    }
+                    onSelectEvent={(e, b) => {
+                        handleSelectEvent(e as CalendarEvent, b);
+                    }}
+                    onSelectSlot={handleSelectSlot}
+                    onDragStart={(event) => {
+                        console.log('onDragStart', event);
+                    }}
+                    onEventDrop={(event) => {
+                        console.log('onEventDrop', event);
+                    }}
+                    onDragOver={(event) => {
+                        console.log('onDragOver', event);
+                    }}
+                    onDropFromOutside={(event) => {
+                        console.log('onDropFromOutside', event);
+                    }}
+                />
+            </div>
         </>
     );
 }

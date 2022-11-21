@@ -16,6 +16,7 @@ import { DatetimePicker } from './DatetimePicker';
 import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 import { useEventStore } from '@/store';
 import { IconChevronDown, IconDots, IconTrash } from '@tabler/icons';
+import { useEventListener } from '@mantine/hooks';
 
 type EventCardMode = 'edit' | 'create';
 
@@ -121,6 +122,23 @@ const EventCard = (props: EventCardProps) => {
         props.onDismissed && props.onDismissed();
     };
 
+    const ref = useEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            if (props.mode === 'create') {
+                createEvent();
+            } else if (props.mode === 'edit') {
+                updateEvent();
+            }
+        } else if (e.key === 'Backspace') {
+            console.log(document.activeElement);
+            if (props.mode === 'edit' && document.activeElement === document.body) {
+                deleteEvent();
+            }
+        }
+    });
+    ref.current = document.body;
+
+    // ----- RENDER -----
     return (
         <>
             <div className="tw-h-auto tw-w-72 tw-p-2 tw-rounded-2xl tw-bg-white tw-space-y-1.5 tw-drop-shadow-lg tw-shadow tw-z-50 tw-select-none">
