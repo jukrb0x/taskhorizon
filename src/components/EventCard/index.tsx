@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
     Checkbox,
     Button as MButton,
@@ -16,14 +16,15 @@ import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 import { useEventStore } from '@/store';
 import { IconChevronDown, IconTrash } from '@tabler/icons';
 
+type EventCardMode = 'edit' | 'create';
 interface EventCardProps {
-    defaultEvent?: CalendarEvent;
+    value?: CalendarEvent;
     onEventCreated?: () => void;
-    mode?: 'create' | 'edit'; // todo
+    mode?: EventCardMode;
 }
 
 const EventCard = (props: EventCardProps) => {
-    const defaultEvent = props.defaultEvent;
+    const defaultEvent = props.value;
     const onEventCreated = props.onEventCreated;
 
     // states
@@ -49,7 +50,20 @@ const EventCard = (props: EventCardProps) => {
         [endDate, endTime]
     );
 
-    // methods
+    // determine if the default event is changed
+    const isEdited = useMemo(() => {
+        if (props.mode != 'edit' || !defaultEvent?.id) return false; // ensure event exists
+        return (
+            defaultEvent.title != title ||
+            defaultEvent.desc != description ||
+            defaultEvent.completed != completed ||
+            defaultEvent.start.toISOString() != start.toISOString() ||
+            defaultEvent.end.toISOString() != end.toISOString() ||
+            defaultEvent.allDay != allDay
+        );
+    }, [defaultEvent, title, description, completed, start, end, allDay]);
+
+    // Component Methods
     const handleStartChange = (date: Date | null, time: Date | any) => {
         if (!date) date = new Date();
         setStartTime(time);
@@ -63,10 +77,11 @@ const EventCard = (props: EventCardProps) => {
     };
 
     const canCreateEvent = title.trim() != '' && startDate != null && endDate != null;
-    const { addEvent } = useEventStore();
+    const { addEvent, setEvent } = useEventStore();
     const createEvent = () => {
         if (!canCreateEvent) return;
         const event: CalendarEvent = {
+            id: 'new event id will be generated',
             completed: completed,
             title: title.trim(),
             desc: description,
@@ -79,8 +94,18 @@ const EventCard = (props: EventCardProps) => {
         onEventCreated && onEventCreated();
     };
 
+    const updateEvent = () => {
+        if (!isEdited) return;
+        // todo
+        // const event: CalendarEvent = {
+        //     // id: defaultEvent.id
+        // };
+        // setEvent(event.id, event);
+    };
+
     return (
         <>
+            {isEdited && 'yesyes'}
             <div className="tw-h-auto tw-w-72 tw-p-2 tw-rounded-2xl tw-bg-white tw-space-y-1.5 tw-drop-shadow-lg tw-shadow tw-z-50 tw-select-none">
                 <div className={'tw-flex tw-row-auto tw-items-center tw-px-0.5'}>
                     <input // this will prevent autofocus on the checkbox
@@ -205,3 +230,4 @@ const EventCard = (props: EventCardProps) => {
 };
 
 export { EventCard };
+export type { EventCardMode };

@@ -1,4 +1,4 @@
-import { TodoIdGenerator, Todo } from '@/store/todo-store';
+import { Todo } from '@/store/todo-store';
 import { useTodoStore } from '@/store';
 import { useState } from 'react';
 import { TextInput } from '@mantine/core';
@@ -11,6 +11,7 @@ export default function TodoInput() {
     const handleAdd = () => {
         if (title.trim() == '') return;
         const todo: Todo = {
+            id: 'new todo id will be generated',
             title: title.trim(),
             completed: false
         };

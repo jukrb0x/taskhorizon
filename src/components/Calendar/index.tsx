@@ -7,7 +7,7 @@ import './styles/default/dragAndDrop.scss';
 import { useEventStore } from '@/store';
 import { CalendarEvent } from '@/store/event-store';
 import { SyntheticEvent, useEffect, useRef, useState } from 'react';
-import { EventCard } from '@/components/EventCard';
+import { EventCard, EventCardMode } from '@/components/EventCard';
 import {
     flip,
     offset,
@@ -32,79 +32,11 @@ const DnDCalendar = withDragAndDrop(Calendar);
 // todo: (low priority) make a wrapper for Floating Event Card
 //     not easy to do, they are deeply coupled.
 export default function BigCalendar() {
-    const { eventList } = useEventStore();
+    const { eventList, setEvent } = useEventStore();
     const [popEvent, setPopEvent] = useState<CalendarEvent>();
+    const [popMode, setPopMode] = useState<'create' | 'edit'>('create');
 
-    // Calendar Event Handlers
-    const handleSelectEvent = (event: CalendarEvent, base: SyntheticEvent) => {
-        setSelectable(false);
-        setPopEvent(event);
-
-        const { x, y, top, right, left, bottom, height, width } =
-            base.currentTarget.getBoundingClientRect();
-        popReference({
-            getBoundingClientRect(): ClientRectObject {
-                return { x, y, top, right, left, bottom, height, width };
-            }
-        });
-        setVisible(true);
-    }; /* handleSelectEvent */
-
-    const handleSelectSlot = (slotInfo: SlotInfo) => {
-        setSelectable(false);
-        // todo: make it unselectable (freeze selection)
-        let bounds: DOMRect = new DOMRect();
-        if (slotInfo.action === 'select') {
-            // todo: better not to search in the whole document
-            bounds = document
-                .getElementsByClassName('rbc-slot-selection')[0]
-                .getBoundingClientRect();
-        } else if (slotInfo.action === 'click') {
-            // todo: double click
-            const els = document.getElementsByClassName(slotInfo.start.toISOString());
-            for (let i = 0; i < els.length; i++) {
-                if (els[i].closest('.rbc-day-slot')) {
-                    // there are two elements has exact same class name but one is time gutter
-                    bounds = els[i].getBoundingClientRect();
-                }
-            }
-        }
-        const x = bounds.x,
-            y = bounds.y,
-            top = bounds.top,
-            left = bounds.left,
-            right = bounds.right,
-            bottom = bounds.bottom,
-            height = bounds.height,
-            width = bounds.width;
-        const newEvent: CalendarEvent = {
-            completed: false,
-            allDay: false,
-            start: slotInfo.start,
-            end: slotInfo.end,
-            title: ''
-        };
-        setPopEvent(newEvent);
-
-        popReference({
-            getBoundingClientRect(): ClientRectObject {
-                return {
-                    x,
-                    y,
-                    top,
-                    right,
-                    left,
-                    bottom,
-                    width,
-                    height
-                };
-            }
-        });
-
-        setVisible(true);
-    }; /* handleSelectSlot */
-
-    // floating event card
+    // Floating Event Card (Pop-up)
     const [visible, setVisible] = useState(false);
 
     const {
@@ -122,6 +54,20 @@ export default function BigCalendar() {
         middleware: [offset({ mainAxis: 7, alignmentAxis: 0 }), flip(), shift()],
         placement: 'right-start'
     });
+
+    const setPopEventCard = (
+        event: CalendarEvent,
+        mode: EventCardMode,
+        popRect: ClientRectObject | DOMRect
+    ) => {
+        setPopEvent(event);
+        setPopMode(mode);
+        popReference({
+            getBoundingClientRect(): ClientRectObject {
+                return popRect;
+            }
+        });
+    };
 
     useEffect(() => {
         if (visible && refs.reference.current && refs.floating.current) {
@@ -146,6 +92,58 @@ export default function BigCalendar() {
             });
         };
     }, [visible, selectable]);
+
+    // Calendar Event Handlers
+    const handleEventResize = ({
+        event,
+        start,
+        end
+    }: {
+        event: CalendarEvent;
+        start: Date;
+        end: Date;
+    }) => {
+        event.start = start;
+        event.end = end;
+        setEvent(event.id, event);
+    }; /* handleEventResize */
+
+    const handleSelectEvent = (event: CalendarEvent, base: SyntheticEvent) => {
+        setSelectable(false);
+        setPopEventCard(event, 'edit', base.currentTarget.getBoundingClientRect());
+        setVisible(true);
+    }; /* handleSelectEvent */
+
+    const handleSelectSlot = (slotInfo: SlotInfo) => {
+        setSelectable(false);
+        // todo: make it unselectable (freeze selection)
+        let bounds: DOMRect = new DOMRect();
+        if (slotInfo.action === 'select') {
+            // todo: better not to search in the whole document
+            bounds = document
+                .getElementsByClassName('rbc-slot-selection')[0]
+                .getBoundingClientRect();
+        } else if (slotInfo.action === 'click') {
+            // todo: double click
+            const els = document.getElementsByClassName(slotInfo.start.toISOString());
+            for (let i = 0; i < els.length; i++) {
+                if (els[i].closest('.rbc-day-slot')) {
+                    // there are two elements has exact same class name but one is time gutter
+                    bounds = els[i].getBoundingClientRect();
+                }
+            }
+        }
+        const newEvent: CalendarEvent = {
+            id: 'new event id',
+            completed: false,
+            allDay: false,
+            start: slotInfo.start,
+            end: slotInfo.end,
+            title: ''
+        };
+        setPopEventCard(newEvent, 'create', bounds);
+        setVisible(true);
+    }; /* handleSelectSlot */
 
     const eventCardWrapperRef = useRef(null); // css transition ref
     return (
@@ -176,8 +174,9 @@ export default function BigCalendar() {
                                 >
                                     <div ref={eventCardWrapperRef}>
                                         <EventCard
-                                            defaultEvent={popEvent}
+                                            value={popEvent}
                                             onEventCreated={() => setVisible(false)}
+                                            mode={popMode}
                                         />
                                     </div>
                                 </div>
@@ -188,7 +187,7 @@ export default function BigCalendar() {
             </CSSTransition>
 
             {/*
-            fixme: Month View is buggy, event card is overlapping 
+            fixme: Month View is buggy, event card is overlapping
                 why not just disable month view
             */}
             <DnDCalendar
@@ -202,9 +201,9 @@ export default function BigCalendar() {
                 dayLayoutAlgorithm="no-overlap"
                 defaultView={'week'}
                 slotPropGetter={(date) => ({ className: date.toISOString() })}
-                onEventResize={(event) => {
-                    console.log('onEventResize', event);
-                }}
+                onEventResize={(val) =>
+                    handleEventResize(val as { event: CalendarEvent; start: Date; end: Date })
+                }
                 onSelectEvent={(e, b) => {
                     handleSelectEvent(e as CalendarEvent, b);
                 }}
