@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { TextInput } from '@mantine/core';
 import { Button } from '@/components/Button';
 
-export default function TodoInput() {
+export default function Input() {
     const { addTodo } = useTodoStore();
     const [title, setTitle] = useState<string>('');
 

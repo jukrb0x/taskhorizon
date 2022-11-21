@@ -1,4 +1,4 @@
-import { TodoInput, TodoList } from '@/components/Tasking/components';
+import { TodoInput, TodoList } from '@/components/Todo/components';
 import useTodoStore from '@/store/todo-store';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
 
