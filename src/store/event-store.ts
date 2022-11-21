@@ -62,7 +62,7 @@ const EventStore: StateCreator<EventStoreState> = (set) => ({
                 event.id === id
                     ? {
                         ...event,
-                        completed: event.completed
+                        completed: !event.completed
                     }
                     : event
             )

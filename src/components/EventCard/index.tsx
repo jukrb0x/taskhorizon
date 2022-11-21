@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import {
     Checkbox,
     Button as MButton,
@@ -32,7 +32,7 @@ const EventCard = (props: EventCardProps) => {
     const defaultEvent = props.value;
 
     // ----- STORE -----
-    const { addEvent, setEvent, removeEvent } = useEventStore();
+    const { addEvent, setEvent, removeEvent, toggleCompleted } = useEventStore();
 
     // ----- STATES -----
     const [title, setTitle] = useState<string>(defaultEvent?.title || '');
@@ -63,7 +63,6 @@ const EventCard = (props: EventCardProps) => {
         return (
             defaultEvent.title != title ||
             defaultEvent.desc != description ||
-            defaultEvent.completed != completed ||
             defaultEvent.start.toISOString() != start.toISOString() ||
             defaultEvent.end.toISOString() != end.toISOString() ||
             defaultEvent.allDay != allDay
@@ -83,6 +82,15 @@ const EventCard = (props: EventCardProps) => {
         setEndTime(time);
         setEndDate(date);
     };
+
+    const handleCheckboxChange = useCallback((e) => {
+        if (props.mode == 'create') {
+            setCompleted(e.currentTarget.checked);
+        } else if (props.mode == 'edit') {
+            setCompleted(e.currentTarget.checked);
+            defaultEvent && toggleCompleted(defaultEvent?.id);
+        }
+    }, []);
 
     const createEvent = () => {
         if (!isValidEvent) return;
@@ -122,6 +130,7 @@ const EventCard = (props: EventCardProps) => {
         props.onDismissed && props.onDismissed();
     };
 
+    // keyboard bindings
     const ref = useEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
             if (props.mode === 'create') {
@@ -150,7 +159,7 @@ const EventCard = (props: EventCardProps) => {
                         size={'sm'}
                         className={'tw-flex tw-justify-center'}
                         checked={completed}
-                        onChange={(e) => setCompleted(e.currentTarget.checked)}
+                        onChange={handleCheckboxChange}
                         data-autofocus={false}
                         autoFocus={false}
                     />
