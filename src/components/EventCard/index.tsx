@@ -151,32 +151,34 @@ const EventCard = (props: EventCardProps) => {
     return (
         <>
             <div className="tw-h-auto tw-w-72 tw-p-2 tw-rounded-2xl tw-bg-white tw-space-y-1.5 tw-drop-shadow-lg tw-shadow tw-z-50 tw-select-none">
-                <div className={'tw-flex tw-row-auto tw-items-center tw-px-0.5'}>
+                <div className={'tw-flex tw-row-auto tw-px-0.5 -tw-mb-1'}>
                     <input // this will prevent autofocus on the checkbox
                         style={{ display: 'none' }}
                     />
                     <Checkbox
                         size={'sm'}
-                        className={'tw-flex tw-justify-center'}
+                        className={'tw-text-2xl'}
                         checked={completed}
                         onChange={handleCheckboxChange}
                         data-autofocus={false}
                         autoFocus={false}
                     />
-                    <TextInput // todo: use div instead of input, no wrap
+                    <Textarea // todo: use div instead of input, no wrap
                         autoFocus={!title} // todo: only for new event
                         variant={'unstyled'}
                         value={title}
+                        autosize
                         onChange={(e) => setTitle(e.target.value)}
                         placeholder={'New Event'}
-                        size={'xs'}
-                        className={'tw-px-1'}
+                        // size={'xs'}
+                        className={'tw-px-1 tw-py-1 tw-flex-grow'}
                         styles={(theme) => ({
-                            root: {
-                                input: {
-                                    fontSize: theme.fontSizes.lg,
-                                    fontWeight: 700
-                                }
+                            input: {
+                                fontSize: theme.fontSizes.lg,
+                                fontWeight: 700,
+                                paddingTop: '0!important',
+                                paddingBottom: '0!important',
+                                lineHeight: '1.5rem'
                             }
                         })}
                     />
@@ -245,10 +247,10 @@ const EventCard = (props: EventCardProps) => {
                                     duration={200}
                                 >
                                     {(styles) => (
-                                        <div style={{ ...styles }}>
+                                        <div style={{ ...styles }} className={'tw-absolute'}>
                                             <MButton.Group>
                                                 <Button
-                                                    disabled={!isEdited || !isValidEvent}
+                                                    disabled={!isValidEvent}
                                                     onClick={updateEvent}
                                                     variant={'filled'}
                                                     color={'green'}
@@ -288,10 +290,10 @@ const EventCard = (props: EventCardProps) => {
                                 <Transition
                                     mounted={!isEdited}
                                     transition={'slide-left'}
-                                    duration={150}
+                                    duration={100}
                                 >
                                     {(styles) => (
-                                        <div style={{ ...styles }}>
+                                        <div style={{ ...styles }} className={'tw-absolute'}>
                                             <Menu transition={'scale-y'}>
                                                 <Menu.Target>
                                                     <ActionIcon>

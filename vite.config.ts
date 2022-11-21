@@ -1,7 +1,6 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
-import postcss from './postcss.config';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -12,9 +11,6 @@ export default defineConfig({
         }
     },
     plugins: [react()],
-    css: {
-        postcss
-    },
     // Vite optons tailored for Tauri development and only applied in `tauri dev` or `tauri build`
     // prevent vite from obscuring rust errors
     clearScreen: false,
