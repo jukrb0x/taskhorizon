@@ -181,7 +181,9 @@ const EventCard = (props: EventCardProps) => {
                     />
                 </div>
                 <div
-                    className={'tw-flex tw-place-content-between tw-place-content-center tw-px-0.5'}
+                    className={
+                        'tw-flex tw-place-content-between tw-place-content-center tw-px-0.5 tw-h-8'
+                    }
                 >
                     <div className={'tw-flex tw-items-center'}>
                         <Tooltip label={'All day'} position={'bottom'} withArrow>
@@ -195,10 +197,7 @@ const EventCard = (props: EventCardProps) => {
                             </ActionIcon>
                         </Tooltip>
                     </div>
-                    <div
-                        className={'tw-flex tw-justify-end tw-items-center'}
-                        // style={{ display: defaultEvent ? 'none' : '' }}
-                    >
+                    <div className={'tw-flex tw-justify-end tw-items-center'}>
                         {props.mode === 'create' && (
                             <Button
                                 disabled={!isValidEvent}
@@ -216,7 +215,7 @@ const EventCard = (props: EventCardProps) => {
                                 <Transition
                                     mounted={isEdited}
                                     transition={'slide-left'}
-                                    duration={150}
+                                    duration={200}
                                 >
                                     {(styles) => (
                                         <div style={{ ...styles }}>
@@ -262,7 +261,7 @@ const EventCard = (props: EventCardProps) => {
                                 <Transition
                                     mounted={!isEdited}
                                     transition={'slide-left'}
-                                    duration={50}
+                                    duration={150}
                                 >
                                     {(styles) => (
                                         <div style={{ ...styles }}>
