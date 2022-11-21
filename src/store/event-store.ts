@@ -4,6 +4,7 @@ import { devtools, persist } from 'zustand/middleware';
 import useUserStore from '@/store/user-store';
 
 interface CalendarEvent {
+    id: string; // generate inside store
     title: string;
     desc?: string;
     start: Date;
@@ -13,12 +14,8 @@ interface CalendarEvent {
     linkedTodos?: string[]; // todo
 }
 
-interface ICalendarEvent extends CalendarEvent {
-    id: string;
-}
-
 interface EventStoreState {
-    eventList: ICalendarEvent[];
+    eventList: CalendarEvent[];
     addEvent: (newEvent: CalendarEvent) => void;
     setEvent: (id: string, newEvent: CalendarEvent) => void;
     removeEvent: (id: string) => void;
@@ -35,8 +32,15 @@ const EventStore: StateCreator<EventStoreState> = (set) => ({
     eventList: [],
     addEvent: (newEvent: CalendarEvent) =>
         set((state) => {
-            const e: ICalendarEvent = { ...newEvent, id: EventIdGenerator() };
-            return { eventList: [...state.eventList, e] };
+            return {
+                eventList: [
+                    ...state.eventList,
+                    {
+                        ...newEvent,
+                        id: EventIdGenerator()
+                    }
+                ]
+            };
         }),
     setEvent: (id: string, newEvent: CalendarEvent) => {
         set((state) => ({
@@ -85,6 +89,6 @@ const useEventStore = create<EventStoreState>()(
     )
 );
 
-export type { CalendarEvent as CalendarEvent };
+export type { CalendarEvent };
 export { EventIdGenerator };
 export default useEventStore;
