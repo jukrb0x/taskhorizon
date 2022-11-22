@@ -151,7 +151,7 @@ const EventCard = (props: EventCardProps) => {
     return (
         <>
             <div className="tw-h-auto tw-w-72 tw-p-2 tw-rounded-2xl tw-bg-white tw-space-y-1.5 tw-drop-shadow-lg tw-shadow tw-z-50 tw-select-none">
-                <div className={'tw-flex tw-row-auto tw-px-0.5 -tw-mb-1'}>
+                <div className={'tw-flex tw-row-auto tw-px-0.5'}>
                     <input // this will prevent autofocus on the checkbox
                         style={{ display: 'none' }}
                     />
@@ -178,7 +178,9 @@ const EventCard = (props: EventCardProps) => {
                                 fontWeight: 700,
                                 paddingTop: '0!important',
                                 paddingBottom: '0!important',
-                                lineHeight: '1.5rem'
+                                lineHeight: '1.5rem',
+                                overflow: 'hidden',
+                                minHeight: 'auto'
                             }
                         })}
                     />
