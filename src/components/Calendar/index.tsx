@@ -106,63 +106,65 @@ export default function BigCalendar() {
             setEvent && setEvent(event.id, nextEvent);
         },
         [setEvent]
-    );
+    ); /* handleEventDrop */
+
     // resize to reschedule event
-    const handleEventResize = ({
-        event,
-        start,
-        end
-    }: {
-        event: CalendarEvent;
-        start: Date;
-        end: Date;
-    }) => {
-        event.start = start;
-        event.end = end;
-        setEvent(event.id, event);
-    }; /* handleEventResize */
+    const handleEventResize = useCallback(
+        ({ event, start, end }: { event: CalendarEvent; start: Date; end: Date }) => {
+            event.start = start;
+            event.end = end;
+            setEvent(event.id, event);
+        },
+        [setEvent]
+    ); /* handleEventResize */
 
     // edit event
-    const handleSelectEvent = useCallback((event: CalendarEvent, base: SyntheticEvent) => {
-        setSelectable(false);
-        setPopEventCard(event, 'edit', base.currentTarget.getBoundingClientRect());
-        setVisible(true);
-    }, []); /* handleSelectEvent */
+    const handleSelectEvent = useCallback(
+        (event: CalendarEvent, base: SyntheticEvent) => {
+            setSelectable(false);
+            setPopEventCard(event, 'edit', base.currentTarget.getBoundingClientRect());
+            setVisible(true);
+        },
+        [setSelectable, setVisible]
+    ); /* handleSelectEvent */
 
     // create event
-    const handleSelectSlot = useCallback((slotInfo: SlotInfo) => {
-        setSelectable(false);
-        // todo: (mid priority) make it unselectable (freeze selection)
-        let bounds: DOMRect = new DOMRect();
-        switch (slotInfo.action) {
-        case 'select':
-            bounds = document // todo: better not to search in the whole document
-                .getElementsByClassName('rbc-slot-selection')[0]
-                .getBoundingClientRect();
-            break;
-        case 'click':
-            const els = document.getElementsByClassName(slotInfo.start.toISOString());
-            for (let i = 0; i < els.length; i++) {
-                if (els[i].closest('.rbc-day-slot')) {
-                    // there are two elements has exact same class name but one is time gutter
-                    bounds = els[i].getBoundingClientRect();
+    const handleSelectSlot = useCallback(
+        (slotInfo: SlotInfo) => {
+            setSelectable(false);
+            // todo: (mid priority) make it unselectable (freeze selection)
+            let bounds: DOMRect = new DOMRect();
+            switch (slotInfo.action) {
+            case 'select':
+                bounds = document // todo: better not to search in the whole document
+                    .getElementsByClassName('rbc-slot-selection')[0]
+                    .getBoundingClientRect();
+                break;
+            case 'click':
+                const els = document.getElementsByClassName(slotInfo.start.toISOString());
+                for (let i = 0; i < els.length; i++) {
+                    if (els[i].closest('.rbc-day-slot')) {
+                        // there are two elements has exact same class name but one is time gutter
+                        bounds = els[i].getBoundingClientRect();
+                    }
                 }
+                break;
+            case 'doubleClick':
+                return;
             }
-            break;
-        case 'doubleClick':
-            return;
-        }
-        const newEvent: CalendarEvent = {
-            id: 'new event id',
-            completed: false,
-            allDay: false,
-            start: slotInfo.start,
-            end: slotInfo.end,
-            title: ''
-        };
-        setPopEventCard(newEvent, 'create', bounds);
-        setVisible(true);
-    }, []); /* handleSelectSlot */
+            const newEvent: CalendarEvent = {
+                id: 'new event id',
+                completed: false,
+                allDay: false,
+                start: slotInfo.start,
+                end: slotInfo.end,
+                title: ''
+            };
+            setPopEventCard(newEvent, 'create', bounds);
+            setVisible(true);
+        },
+        [setVisible, , setSelectable, setPopEventCard]
+    ); /* handleSelectSlot */
 
     const eventCardWrapperRef = useRef(null); // css transition ref
     return (
