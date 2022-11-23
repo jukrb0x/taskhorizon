@@ -19,16 +19,10 @@ export default function Home() {
     const { width: viewportWidth } = useViewportSize();
     const { ref: moveRef } = useMove(({ x }) => {
         const px = Math.floor(x * viewportWidth);
-        if (!isResizing || px < 300 || px > 600) return;
+        if (!isResizing || /* resizing range */ px < 300 || px > 600) return;
         setSidebarWidth(px);
     });
     const { isResizing, ref: resizerRef } = useResizer();
-
-    const dragRegionRef = useRef<HTMLDivElement>(null);
-    const [dragRegionHeight, setDragRegionHeight] = useState(0);
-    useEffect(() => {
-        dragRegionRef.current && setDragRegionHeight(dragRegionRef.current.clientHeight);
-    }, []);
 
     return (
         <div className={'tw-select-none tw-h-screen'} ref={moveRef}>
