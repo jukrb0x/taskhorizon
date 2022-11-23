@@ -139,7 +139,6 @@ const EventCard = (props: EventCardProps) => {
                 updateEvent();
             }
         } else if (e.key === 'Backspace') {
-            console.log(document.activeElement);
             if (props.mode === 'edit' && document.activeElement === document.body) {
                 deleteEvent();
             }

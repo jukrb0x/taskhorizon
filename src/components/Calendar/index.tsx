@@ -86,7 +86,28 @@ export default function BigCalendar() {
         setSelectable(true);
     });
 
-    // Calendar Event Handlers
+    // --- Calendar Event Handlers ---
+    // move to reschedule event
+    interface EventDropProps {
+        event: CalendarEvent;
+        start: Date;
+        end: Date;
+        isAllDay: boolean;
+    }
+
+    const handleEventDrop = useCallback(
+        ({ event, start, end, isAllDay }: EventDropProps) => {
+            const nextEvent: CalendarEvent = {
+                ...event,
+                start: start,
+                end: end,
+                allDay: isAllDay
+            };
+            setEvent && setEvent(event.id, nextEvent);
+        },
+        [setEvent]
+    );
+    // resize to reschedule event
     const handleEventResize = ({
         event,
         start,
@@ -101,12 +122,14 @@ export default function BigCalendar() {
         setEvent(event.id, event);
     }; /* handleEventResize */
 
+    // edit event
     const handleSelectEvent = useCallback((event: CalendarEvent, base: SyntheticEvent) => {
         setSelectable(false);
         setPopEventCard(event, 'edit', base.currentTarget.getBoundingClientRect());
         setVisible(true);
     }, []); /* handleSelectEvent */
 
+    // create event
     const handleSelectSlot = useCallback((slotInfo: SlotInfo) => {
         setSelectable(false);
         // todo: (mid priority) make it unselectable (freeze selection)
@@ -209,9 +232,7 @@ export default function BigCalendar() {
                     onDragStart={(event) => {
                         console.log('onDragStart', event);
                     }}
-                    onEventDrop={(event) => {
-                        console.log('onEventDrop', event);
-                    }}
+                    onEventDrop={(val) => handleEventDrop(val as EventDropProps)}
                     onDragOver={(event) => {
                         console.log('onDragOver', event);
                     }}
