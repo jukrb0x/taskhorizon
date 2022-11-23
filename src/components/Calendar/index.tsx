@@ -24,7 +24,8 @@ import {
 } from '@floating-ui/react-dom-interactions';
 import { CSSTransition } from 'react-transition-group';
 import './styles/animation.scss';
-import { useEventListener } from '@mantine/hooks';
+import { useEventListener, useMergedRef } from '@mantine/hooks';
+import { useDrag, useDrop } from 'react-dnd';
 
 const localizer = momentLocalizer(moment); // todo: use luxon, later when we need multi-timezone support, moment.js is not good enough
 
@@ -87,6 +88,10 @@ export default function BigCalendar() {
     });
 
     // --- Calendar Handlers ---
+
+    const handleDropFromOutside = useCallback((e) => {
+        console.log(e);
+    }, []);
 
     // cache dragged event
     const [draggedEvent, setDraggedEvent] = useState<CalendarEvent>();
@@ -184,6 +189,20 @@ export default function BigCalendar() {
     ); /* handleSelectSlot */
 
     const eventCardWrapperRef = useRef(null); // css transition ref
+
+    const [{ opacity }, dragRef] = useDrag(
+        () => ({
+            type: 'todo',
+            // item: { todo },
+            collect: (monitor) => ({
+                opacity: monitor.isDragging() ? 0.5 : 1
+            })
+        }),
+        []
+    );
+    const [collectedProps, dropRef] = useDrop(() => ({
+        accept: 'ok'
+    }));
     return (
         <>
             <CSSTransition
@@ -224,22 +243,22 @@ export default function BigCalendar() {
                     )}
                 </FloatingPortal>
             </CSSTransition>
-
             {/*
             fixme: Month View is buggy, event card is overlapping
                 why not just disable month view
             */}
             <div ref={calendarRef}>
                 <DnDCalendar
+                    defaultView={'week'}
+                    views={['week', 'day']}
                     step={15}
                     timeslots={4}
                     localizer={localizer}
                     events={eventList}
-                    draggableAccessor={(event) => true} // todo
+                    draggableAccessor={(event) => true} // determine the event is draggable
                     resizable
                     selectable={selectable}
                     dayLayoutAlgorithm="no-overlap"
-                    defaultView={'week'}
                     slotPropGetter={(date) => ({ className: date.toISOString() })}
                     onEventResize={(val) =>
                         handleEventResize(val as { event: CalendarEvent; start: Date; end: Date })
@@ -251,11 +270,16 @@ export default function BigCalendar() {
                     onDragStart={(val) => handleDragStart(val as DraggedEvent)}
                     onEventDrop={(val) => handleEventDrop(val as EventDropProps)}
                     onDragOver={(event) => {
-                        console.log('onDragOver', event);
+                        event.preventDefault();
+                        // console.log('onDragOver', event);
                     }}
-                    onDropFromOutside={(event) => {
-                        console.log('onDropFromOutside', event);
-                    }}
+                    // onDropFromOutside={(event) => {
+                    //     console.log('ok');
+                    //     console.log('onDropFromOutside', event);
+                    // }}
+                    onDropFromOutside={handleDropFromOutside}
+                    // toolbar={false} // todo: custom toolbar component
+                    // dragFromOutsideItem={draggedEvent ? draggedEvent?.start : new Date()}
                 />
             </div>
         </>
