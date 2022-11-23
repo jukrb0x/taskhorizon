@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import { Layout } from '@douyinfe/semi-ui';
 import Resizer from '@/components/Resizer';
-import TodoApp from '@/components/Tasking';
+import TodoApp from '@/components/Todo';
 import { cls } from '@/utils';
 import { useMove, useViewportSize } from '@mantine/hooks';
 import useAppConfigStore from '@/store/config-store';

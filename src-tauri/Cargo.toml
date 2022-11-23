@@ -1,7 +1,7 @@
 [package]
 name = "calitdone"
-version = "0.2.1"
-description = "Schedule your to-do and calendar in one place"
+version = "0.2.2-alpha"
+description = "Schedule your todos and events in one place"
 authors = ["Jabriel"]
 license = ""
 repository = ""

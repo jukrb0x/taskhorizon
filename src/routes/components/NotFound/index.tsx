@@ -20,8 +20,6 @@ export default function NotFound() {
         content: 'Seems something wrong...',
         duration: 3
     };
-    // Notification.error(opts);
-    // fixme: pops up twice
 
     useEffect(() => {
         Notification.error(opts);

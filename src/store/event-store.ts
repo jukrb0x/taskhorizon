@@ -4,7 +4,7 @@ import { devtools, persist } from 'zustand/middleware';
 import useUserStore from '@/store/user-store';
 
 interface CalendarEvent {
-    id: string;
+    id: string; // generate inside store
     title: string;
     desc?: string;
     start: Date;
@@ -31,9 +31,17 @@ const EventIdGenerator = () => {
 const EventStore: StateCreator<EventStoreState> = (set) => ({
     eventList: [],
     addEvent: (newEvent: CalendarEvent) =>
-        set((state) => ({
-            eventList: [...state.eventList, newEvent]
-        })),
+        set((state) => {
+            return {
+                eventList: [
+                    ...state.eventList,
+                    {
+                        ...newEvent,
+                        id: EventIdGenerator()
+                    }
+                ]
+            };
+        }),
     setEvent: (id: string, newEvent: CalendarEvent) => {
         set((state) => ({
             eventList: state.eventList.map((event) =>
@@ -54,7 +62,7 @@ const EventStore: StateCreator<EventStoreState> = (set) => ({
                 event.id === id
                     ? {
                         ...event,
-                        completed: event.completed
+                        completed: !event.completed
                     }
                     : event
             )
@@ -62,9 +70,6 @@ const EventStore: StateCreator<EventStoreState> = (set) => ({
 });
 
 const useEventStore = create<EventStoreState>()(
-    // fixme: when get from storage the Date type is string
-    // find a way to convert it back to Date and store
-    // https://docs.pmnd.rs/zustand/integrations/persisting-store-data#getstorage
     devtools(
         persist(EventStore, {
             name: 'event-store',
@@ -84,6 +89,6 @@ const useEventStore = create<EventStoreState>()(
     )
 );
 
-export type { CalendarEvent as CalendarEvent };
+export type { CalendarEvent };
 export { EventIdGenerator };
 export default useEventStore;

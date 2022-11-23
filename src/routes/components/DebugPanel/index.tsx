@@ -4,9 +4,8 @@ import styles from './index.module.scss';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { useDebugStore } from '@/store';
 import { cls } from '@/utils';
-import AppRouter from '@/routes/AppRouter';
+import AppRoute from '@/routes/AppRoute';
 import routerExtractor from '@/utils/router-extractor';
-import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 
 const { Title } = Typography;
 const StyledTitle = cls(Title)`tw-pb-2`;
@@ -65,17 +64,6 @@ const DebugPanel = () => {
     const [path, setPath] = useState('');
     const { toggleDebugPanelStyle, debugPanelStyle } = useDebugStore();
 
-    // todo dbg
-    const defaultTestEvent: CalendarEvent = {
-        id: EventIdGenerator(),
-        title: 'Test Event',
-        desc: 'This is a test event',
-        start: new Date(),
-        end: new Date(),
-        allDay: false,
-        linkedTodos: []
-    };
-
     const cleanAndReload = () => {
         localStorage.clear();
         window.location.reload();
@@ -114,7 +102,7 @@ const DebugPanel = () => {
                     <Button
                         onClick={() => handlePositionChange()}
                         size={'small'}
-                        className={'tw-text-xs tw-p-0.5'} // fixme: not working now
+                        className={'tw-text-xs tw-p-0.5'}
                         type={'secondary'}
                         theme={'borderless'}
                     >
@@ -124,7 +112,7 @@ const DebugPanel = () => {
             </StyledTitle>
             <Space vertical align={'start'}>
                 <Space align={'start'}>
-                    {routerExtractor(AppRouter()).map((item) => (
+                    {routerExtractor(AppRoute()).map((item) => (
                         <Link to={item.path} key={item.path}>
                             <Button type={'primary'}>{item.name}</Button>
                         </Link>

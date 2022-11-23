@@ -13,6 +13,7 @@ interface Todo {
 interface TodoStoreState {
     todoList: Todo[];
     addTodo: (newTodo: Todo) => void;
+    setTodo: (id: string, newTodo: Todo) => void;
     removeTodo: (id: string) => void;
     toggleTodo: (id: string) => void;
 }
@@ -25,9 +26,29 @@ const TodoIdGenerator = () => {
 const TodoStore: StateCreator<TodoStoreState> = (set) => ({
     todoList: [],
     addTodo: (newTodo: Todo) =>
+        set((state) => {
+            return {
+                todoList: [
+                    ...state.todoList,
+                    {
+                        ...newTodo,
+                        id: TodoIdGenerator()
+                    }
+                ]
+            };
+        }),
+    setTodo: (id, newTodo) => {
         set((state) => ({
-            todoList: [...state.todoList, newTodo]
-        })),
+            todoList: state.todoList.map((todo) =>
+                todo.id === id
+                    ? {
+                        ...todo,
+                        ...newTodo
+                    }
+                    : todo
+            )
+        }));
+    },
     removeTodo: (id: string) =>
         set((state) => ({ todoList: state.todoList.filter((todo) => todo.id !== id) })),
     toggleTodo: (id: string) =>

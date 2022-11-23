@@ -1,17 +1,17 @@
-import { TodoIdGenerator, Todo } from '@/store/todo-store';
+import { Todo } from '@/store/todo-store';
 import { useTodoStore } from '@/store';
 import { useState } from 'react';
 import { TextInput } from '@mantine/core';
 import { Button } from '@/components/Button';
 
-export default function TodoInput() {
+export default function Input() {
     const { addTodo } = useTodoStore();
     const [title, setTitle] = useState<string>('');
 
     const handleAdd = () => {
         if (title.trim() == '') return;
         const todo: Todo = {
-            id: TodoIdGenerator(),
+            id: 'new todo id will be generated',
             title: title.trim(),
             completed: false
         };
