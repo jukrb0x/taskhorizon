@@ -197,7 +197,7 @@ dependencies = [
 
 [[package]]
 name = "calitdone"
-version = "0.2.2-alpha"
+version = "0.2.2"
 dependencies = [
  "serde",
  "serde_json",

@@ -1,6 +1,6 @@
 [package]
 name = "calitdone"
-version = "0.2.2-alpha"
+version = "0.2.2"
 description = "Schedule your todos and events in one place"
 authors = ["Jabriel"]
 license = ""
