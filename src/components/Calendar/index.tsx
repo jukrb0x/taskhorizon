@@ -55,20 +55,20 @@ export default function BigCalendar() {
         placement: 'right-start'
     });
 
-    const setPopEventCard = (
-        event: CalendarEvent,
-        mode: EventCardMode,
-        popRect: ClientRectObject | DOMRect
-    ) => {
-        setPopEvent(event);
-        setPopMode(mode);
-        popReference({
-            getBoundingClientRect(): ClientRectObject {
-                return popRect;
-            }
-        });
-    };
+    const setPopEventCard = useCallback(
+        (event: CalendarEvent, mode: EventCardMode, popRect: ClientRectObject | DOMRect) => {
+            setPopEvent(event);
+            setPopMode(mode);
+            popReference({
+                getBoundingClientRect(): ClientRectObject {
+                    return popRect;
+                }
+            });
+        },
+        [setPopEvent, setPopMode, popReference]
+    );
 
+    // auto update floating event card position
     useEffect(() => {
         if (visible && refs.reference.current && refs.floating.current) {
             return autoUpdate(refs.reference.current, refs.floating.current, update);
@@ -86,7 +86,24 @@ export default function BigCalendar() {
         setSelectable(true);
     });
 
-    // --- Calendar Event Handlers ---
+    // --- Calendar Handlers ---
+
+    // cache dragged event
+    const [draggedEvent, setDraggedEvent] = useState<CalendarEvent>();
+
+    interface DraggedEvent {
+        event: CalendarEvent;
+        action: 'resize' | 'move';
+        direction: 'UP' | 'DOWN' | 'LEFT' | 'RIGHT';
+    }
+
+    const handleDragStart = useCallback(
+        ({ event, action, direction }: DraggedEvent) => {
+            setDraggedEvent(event);
+        },
+        [setDraggedEvent]
+    );
+
     // move to reschedule event
     interface EventDropProps {
         event: CalendarEvent;
@@ -103,12 +120,12 @@ export default function BigCalendar() {
                 end: end,
                 allDay: isAllDay
             };
-            setEvent && setEvent(event.id, nextEvent);
+            setEvent(event.id, nextEvent);
         },
         [setEvent]
     ); /* handleEventDrop */
 
-    // resize to reschedule event
+    // resize event to reschedule
     const handleEventResize = useCallback(
         ({ event, start, end }: { event: CalendarEvent; start: Date; end: Date }) => {
             event.start = start;
@@ -118,7 +135,7 @@ export default function BigCalendar() {
         [setEvent]
     ); /* handleEventResize */
 
-    // edit event
+    // select event to edit
     const handleSelectEvent = useCallback(
         (event: CalendarEvent, base: SyntheticEvent) => {
             setSelectable(false);
@@ -231,9 +248,7 @@ export default function BigCalendar() {
                         handleSelectEvent(e as CalendarEvent, b);
                     }}
                     onSelectSlot={handleSelectSlot}
-                    onDragStart={(event) => {
-                        console.log('onDragStart', event);
-                    }}
+                    onDragStart={(val) => handleDragStart(val as DraggedEvent)}
                     onEventDrop={(val) => handleEventDrop(val as EventDropProps)}
                     onDragOver={(event) => {
                         console.log('onDragOver', event);
