@@ -1,7 +1,7 @@
 import './index.scss';
 import { invoke } from '@tauri-apps/api';
 import { useEffect } from 'react';
-import AppRouter from '@/routes/AppRouter';
+import AppRoute from '@/routes/AppRoute';
 import { BrowserRouter, HashRouter } from 'react-router-dom';
 import DebugPanelWrapper from '@/routes/components/DebugPanel';
 import styled from 'styled-components';
@@ -55,7 +55,7 @@ function App() {
             <MantineProvider withGlobalStyles withNormalizeCSS theme={mantineTheme}>
                 <SemiConfigProvider locale={en_GB}>
                     <DndProvider backend={HTML5Backend}>
-                        <AppRouter />
+                        <AppRoute />
                     </DndProvider>
                     {import.meta.env.MODE === 'development' && <DebugTools />}
                 </SemiConfigProvider>

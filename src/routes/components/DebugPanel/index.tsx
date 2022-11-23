@@ -4,7 +4,7 @@ import styles from './index.module.scss';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
 import { useDebugStore } from '@/store';
 import { cls } from '@/utils';
-import AppRouter from '@/routes/AppRouter';
+import AppRoute from '@/routes/AppRoute';
 import routerExtractor from '@/utils/router-extractor';
 
 const { Title } = Typography;
@@ -112,7 +112,7 @@ const DebugPanel = () => {
             </StyledTitle>
             <Space vertical align={'start'}>
                 <Space align={'start'}>
-                    {routerExtractor(AppRouter()).map((item) => (
+                    {routerExtractor(AppRoute()).map((item) => (
                         <Link to={item.path} key={item.path}>
                             <Button type={'primary'}>{item.name}</Button>
                         </Link>

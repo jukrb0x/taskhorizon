@@ -5,7 +5,7 @@ import NotFound from '@/routes/components/NotFound';
 import CalendarApp from '@/pages/Calendar';
 import { Playground } from '@/pages/Calendar/playground';
 
-export default function AppRouter() {
+export default function AppRoute() {
     return (
         <Routes>
             <Route path="/" element={<Home />}>
