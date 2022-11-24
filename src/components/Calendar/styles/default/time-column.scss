@@ -21,6 +21,10 @@
     border: none;
 }
 
+.rbc-time-gutter > .rbc-timeslot-group > .rbc-timeslot:first-child {
+    display: none;
+}
+
 .rbc-time-gutter,
 .rbc-header-gutter {
     flex: none;
