@@ -15,10 +15,12 @@ interface TodoStoreState {
     addTodo: (newTodo: Todo) => void;
     setTodo: (id: string, newTodo: Todo) => void;
     removeTodo: (id: string) => void;
-    toggleTodo: (id: string) => void;
+    getTodoById: (id: string) => Todo | undefined;
+    toggleCompleted: (id: string) => void;
     dragItem: Todo | null;
     setDragItem: (item: Todo) => void;
     clearDragItem: () => void;
+    addLinkedEvent: (id: string, eventId: string) => void;
 }
 
 const TodoIdGenerator = () => {
@@ -26,7 +28,7 @@ const TodoIdGenerator = () => {
     return UUID() + `'-todo:${username}`;
 };
 
-const TodoStore: StateCreator<TodoStoreState> = (set) => ({
+const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({
     todoList: [],
     addTodo: (newTodo: Todo) =>
         set((state) => {
@@ -41,6 +43,7 @@ const TodoStore: StateCreator<TodoStoreState> = (set) => ({
             };
         }),
     setTodo: (id, newTodo) => {
+        // TODO updateLinkedEvents
         set((state) => ({
             todoList: state.todoList.map((todo) =>
                 todo.id === id
@@ -54,7 +57,7 @@ const TodoStore: StateCreator<TodoStoreState> = (set) => ({
     },
     removeTodo: (id: string) =>
         set((state) => ({ todoList: state.todoList.filter((todo) => todo.id !== id) })),
-    toggleTodo: (id: string) =>
+    toggleCompleted: (id: string) =>
         set((state) => ({
             todoList: state.todoList.map((todo) =>
                 todo.id === id
@@ -65,9 +68,22 @@ const TodoStore: StateCreator<TodoStoreState> = (set) => ({
                     : todo
             )
         })),
+    getTodoById: (id: string) => get().todoList.find((todo) => todo.id === id),
     dragItem: null,
     setDragItem: (item: Todo) => set(() => ({ dragItem: item })),
-    clearDragItem: () => set(() => ({ dragItem: null }))
+    clearDragItem: () => set(() => ({ dragItem: null })),
+    addLinkedEvent: (id: string, eventId: string) => {
+        set((state) => ({
+            todoList: state.todoList.map((todo) =>
+                todo.id === id
+                    ? {
+                        ...todo,
+                        linkedEvents: [...(todo.linkedEvents || []), eventId]
+                    }
+                    : todo
+            )
+        }));
+    }
 });
 
 const useTodoStore = create<TodoStoreState>()(

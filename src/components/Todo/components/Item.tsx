@@ -7,14 +7,16 @@ import { IconTrash, IconX } from '@tabler/icons';
 import { useDraggable } from '@dnd-kit/core';
 
 export default function Item({ todo }: { todo: Todo }) {
-    const { setTodo, toggleTodo, removeTodo, setDragItem, clearDragItem } = useTodoStore();
+    const { setTodo, toggleCompleted, removeTodo, setDragItem, clearDragItem } = useTodoStore();
     const [isActive, setIsActive] = useState<boolean>(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [title, setTitle] = useState<string>(todo.title || '');
 
+    // const re
+
     const handleToggle = useCallback(() => {
-        toggleTodo(todo.id);
-    }, [todo, toggleTodo]);
+        toggleCompleted(todo.id);
+    }, [todo, toggleCompleted]);
 
     const handleRemove = useCallback(() => {
         removeTodo(todo.id);
@@ -22,7 +24,7 @@ export default function Item({ todo }: { todo: Todo }) {
 
     const handleEdit = useCallback(
         (e: MouseEvent) => {
-            e.detail == 2 && setIsEdit(true);
+            e.detail == 2 /* double click*/ && setIsEdit(true);
         },
         [setIsEdit]
     );
@@ -56,11 +58,11 @@ export default function Item({ todo }: { todo: Todo }) {
                 'tw-bg-gray-200': isEdit || isActive,
                 'hover:tw-bg-gray-100': !isEdit || !isActive
             })}
-            // draggable={true}
+            draggable={true}
             onDragStart={handleDragStart}
-            ref={setNodeRef}
-            {...listeners}
-            {...attributes}
+            // ref={setNodeRef}
+            // {...listeners}
+            // {...attributes}
         >
             <div
                 className={'tw-flex tw-items-start tw-items-center'}
@@ -102,6 +104,7 @@ export default function Item({ todo }: { todo: Todo }) {
                         {todo.title}
                     </Text>
                 ) : (
+                    // edit zone
                     <Textarea
                         autoFocus={true}
                         onFocus={(e) => {

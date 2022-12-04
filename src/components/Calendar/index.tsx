@@ -33,8 +33,8 @@ const DnDCalendar = withDragAndDrop(Calendar);
 //     not easy to do, they are deeply coupled.
 //     this function is too long, need to be refactored.
 export default function BigCalendar() {
-    const { eventList, setEvent } = useEventStore();
-    const { dragItem, clearDragItem } = useTodoStore();
+    const { eventList, setEvent, addEvent, addLinkedTodo } = useEventStore();
+    const { dragItem, clearDragItem, addLinkedEvent } = useTodoStore();
     // Floating Event Card (Pop-up)
     const [popEvent, setPopEvent] = useState<CalendarEvent>();
     const [popMode, setPopMode] = useState<EventCardMode>('create');
@@ -90,26 +90,21 @@ export default function BigCalendar() {
     // --- Calendar Handlers ---
 
     // handle dragged to-do to create Calendar event
-    const handleDropFromOutside = useCallback(
+    const createEventFromTodo = useCallback(
         (e: { start: Date; end: Date; allDay: boolean }) => {
-            if (dragItem !== null) {
-                const event: CalendarEvent = {
-                    id: 'new event id will be generated',
-                    title: dragItem.title,
-                    start: e.start,
-                    end: e.end,
-                    allDay: e.allDay,
-                    completed: dragItem.completed,
-                    linkedTodos: [dragItem.id]
-                };
-                setPopEventCard(
-                    event,
-                    'create',
-                    getElementFromStartTime(e.start)?.getBoundingClientRect() || new DOMRect()
-                );
-                setPopVisible(true);
-                clearDragItem();
-            }
+            if (dragItem === null) return;
+            const event: CalendarEvent = {
+                id: 'new event id will be generated',
+                title: dragItem.title.trim(),
+                start: e.start,
+                end: e.end,
+                allDay: e.allDay,
+                completed: dragItem.completed,
+                linkedTodos: [dragItem.id]
+            };
+            const createdEventId = addEvent(event);
+            addLinkedEvent(dragItem.id, createdEventId);
+            clearDragItem();
         },
         [setPopVisible, setPopEventCard, dragItem, clearDragItem]
     );
@@ -295,7 +290,7 @@ export default function BigCalendar() {
                     }}
                     /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
                     // @ts-ignore
-                    onDropFromOutside={handleDropFromOutside}
+                    onDropFromOutside={createEventFromTodo}
                     // toolbar={false} // todo: custom toolbar component
                     // dragFromOutsideItem={()=>true} todo: visual assistance
                 />

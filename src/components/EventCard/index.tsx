@@ -43,6 +43,7 @@ const EventCard = (props: EventCardProps) => {
     const [startDate, setStartDate] = useState<Date>(defaultEvent?.start || new Date());
     const [endTime, setEndTime] = useState<Date>(defaultEvent?.end || new Date());
     const [endDate, setEndDate] = useState<Date>(defaultEvent?.end || new Date());
+    const [linkedTodos, setLinkedTodos] = useState<string[]>(defaultEvent?.linkedTodos || []);
     const start = useMemo(
         () =>
             dateFns.setHours(
@@ -92,7 +93,7 @@ const EventCard = (props: EventCardProps) => {
         }
     }, []);
 
-    const createEvent = () => {
+    const createEvent = useCallback(() => {
         if (!isValidEvent) return;
         const event: CalendarEvent = {
             id: 'new event id will be generated',
@@ -102,11 +103,11 @@ const EventCard = (props: EventCardProps) => {
             start: start,
             end: end,
             allDay: allDay,
-            linkedTodos: []
+            linkedTodos: linkedTodos
         };
         addEvent(event);
         props.onEventCreated && props.onEventCreated();
-    };
+    }, [addEvent, completed, title, description, start, end, allDay, linkedTodos]);
 
     const updateEvent = () => {
         if (!isEdited || !defaultEvent || !isValidEvent) return;
@@ -118,7 +119,7 @@ const EventCard = (props: EventCardProps) => {
             start: start,
             end: end,
             allDay: allDay,
-            linkedTodos: []
+            linkedTodos: linkedTodos
         };
         setEvent(defaultEvent.id, event);
         props.onDismissed && props.onDismissed();
