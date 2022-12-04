@@ -5,8 +5,8 @@ import AppRoute from '@/routes/AppRoute';
 import { BrowserRouter, HashRouter } from 'react-router-dom';
 import DebugPanelWrapper from '@/routes/components/DebugPanel';
 import styled from 'styled-components';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
+// import { DndProvider } from 'react-dnd';
+// import { HTML5Backend } from 'react-dnd-html5-backend';
 import { MantineProvider } from '@mantine/core';
 import { useTauriExtension } from '@/hooks/use-tauri-extension';
 import { ConfigProvider as SemiConfigProvider } from '@douyinfe/semi-ui';
@@ -24,13 +24,15 @@ const TauriWindowDragRegion = styled.div.attrs(() => ({
     'data-tauri-drag-region': true,
     className:
         'tw-w-full tw-h-8 tw-absolute tw-z-[999]' +
-        // debug
-        ' tw-bg-gray-500/30 tw-text-center tw-font-mono tw-opacity-50 tw-text-orange-500'
+        // debug start
+        ' tw-bg-gray-500/30 tw-text-center tw-font-mono tw-opacity-50 tw-text-gray-500' // debug end
 }))`
-    // debug
+    // debug start
     &::after {
         content: 'Tauri Window Rrag Region';
     }
+
+    // debug end
 `;
 
 const mantineTheme = {
@@ -54,9 +56,7 @@ function App() {
             {isTauri && <TauriWindowDragRegion />}
             <MantineProvider withGlobalStyles withNormalizeCSS theme={mantineTheme}>
                 <SemiConfigProvider locale={en_GB}>
-                    <DndProvider backend={HTML5Backend}>
-                        <AppRoute />
-                    </DndProvider>
+                    <AppRoute />
                     {import.meta.env.MODE === 'development' && <DebugTools />}
                 </SemiConfigProvider>
             </MantineProvider>

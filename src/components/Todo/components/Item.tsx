@@ -1,13 +1,13 @@
 import { Text, Checkbox, Textarea, ActionIcon, Menu } from '@mantine/core';
 import { Todo } from '@/store/todo-store';
 import { useTodoStore } from '@/store';
-import { useDrag } from 'react-dnd';
+// import { useDrag } from 'react-dnd';
 import { useCallback, useState, MouseEvent } from 'react';
 import clsx from 'clsx';
 import { IconTrash, IconX } from '@tabler/icons';
 
 export default function Item({ todo }: { todo: Todo }) {
-    const { setTodo, toggleTodo, removeTodo } = useTodoStore();
+    const { setTodo, toggleTodo, removeTodo, setDragItem, clearDragItem } = useTodoStore();
     const [isActive, setIsActive] = useState<boolean>(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [title, setTitle] = useState<string>(todo.title || '');
@@ -38,26 +38,22 @@ export default function Item({ todo }: { todo: Todo }) {
         setTodo(todo.id, newTodo);
     }, [setIsEdit, setTodo, todo, title]);
 
-    // todo: test dnd
-    const [{ opacity }, dragRef] = useDrag(
-        () => ({
-            type: 'todo',
-            item: { todo },
-            collect: (monitor) => ({
-                opacity: monitor.isDragging() ? 0.5 : 1
-            })
-        }),
-        []
+    const handleDragStart = useCallback(
+        (e: MouseEvent) => {
+            setDragItem(todo);
+            console.log('drag start', todo);
+        },
+        [todo]
     );
 
     return (
         <div
-            ref={dragRef}
             className={clsx('tw-p-1 tw-rounded-md', {
                 'tw-bg-gray-200': isEdit || isActive,
                 'hover:tw-bg-gray-100': !isEdit || !isActive
             })}
-            onDragStart={() => console.log('todo testing...')} // todo
+            draggable={true}
+            onDragStart={handleDragStart}
         >
             <div
                 className={'tw-flex tw-items-start tw-items-center'}

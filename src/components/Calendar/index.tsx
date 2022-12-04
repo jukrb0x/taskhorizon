@@ -4,7 +4,7 @@ import moment from 'moment';
 // import luxon from 'luxon';
 import './styles/default/styles.scss';
 import './styles/default/dragAndDrop.scss';
-import { useEventStore } from '@/store';
+import { useEventStore, useTodoStore } from '@/store';
 import { CalendarEvent } from '@/store/event-store';
 import { SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { EventCard, EventCardMode } from '@/components/EventCard';
@@ -24,21 +24,21 @@ import {
 } from '@floating-ui/react-dom-interactions';
 import { CSSTransition } from 'react-transition-group';
 import './styles/animation.scss';
-import { useEventListener, useMergedRef } from '@mantine/hooks';
-import { useDrag, useDrop } from 'react-dnd';
+import { useEventListener } from '@mantine/hooks';
+import { getElementFromStartTime } from './utils';
 
 const localizer = momentLocalizer(moment); // todo: use luxon, later when we need multi-timezone support, moment.js is not good enough
 
 const DnDCalendar = withDragAndDrop(Calendar);
-
 // todo: (low priority) make a wrapper for Floating Event Card
 //     not easy to do, they are deeply coupled.
 export default function BigCalendar() {
     const { eventList, setEvent } = useEventStore();
+    const { dragItem, clearDragItem } = useTodoStore();
     // Floating Event Card (Pop-up)
     const [popEvent, setPopEvent] = useState<CalendarEvent>();
     const [popMode, setPopMode] = useState<EventCardMode>('create');
-    const [visible, setVisible] = useState(false);
+    const [popVisible, setPopVisible] = useState(false);
 
     const {
         x,
@@ -50,8 +50,8 @@ export default function BigCalendar() {
         update,
         context
     } = useFloating({
-        open: visible,
-        onOpenChange: setVisible,
+        open: popVisible,
+        onOpenChange: setPopVisible,
         middleware: [offset({ mainAxis: 7, alignmentAxis: 0 }), flip(), shift()],
         placement: 'right-start'
     });
@@ -71,10 +71,10 @@ export default function BigCalendar() {
 
     // auto update floating event card position
     useEffect(() => {
-        if (visible && refs.reference.current && refs.floating.current) {
+        if (popVisible && refs.reference.current && refs.floating.current) {
             return autoUpdate(refs.reference.current, refs.floating.current, update);
         }
-    }, [visible, update, refs.reference, refs.floating]);
+    }, [popVisible, update, refs.reference, refs.floating]);
 
     const { getFloatingProps } = useInteractions([
         useRole(context, { role: 'dialog' }),
@@ -89,9 +89,30 @@ export default function BigCalendar() {
 
     // --- Calendar Handlers ---
 
-    const handleDropFromOutside = useCallback((e) => {
-        console.log(e);
-    }, []);
+    // handle dragged to-do to create Calendar event
+    const handleDropFromOutside = useCallback(
+        (e: { start: Date; end: Date; allDay: boolean }) => {
+            if (dragItem !== null) {
+                const event: CalendarEvent = {
+                    id: 'new event id will be generated',
+                    title: dragItem.title,
+                    start: e.start,
+                    end: e.end,
+                    allDay: e.allDay,
+                    completed: dragItem.completed,
+                    linkedTodos: [dragItem.id]
+                };
+                setPopEventCard(
+                    event,
+                    'create',
+                    getElementFromStartTime(e.start)?.getBoundingClientRect() || new DOMRect()
+                );
+                setPopVisible(true);
+                clearDragItem();
+            }
+        },
+        [setPopVisible, setPopEventCard, dragItem, clearDragItem]
+    );
 
     // cache dragged event
     const [draggedEvent, setDraggedEvent] = useState<CalendarEvent>();
@@ -145,11 +166,21 @@ export default function BigCalendar() {
         (event: CalendarEvent, base: SyntheticEvent) => {
             setSelectable(false);
             setPopEventCard(event, 'edit', base.currentTarget.getBoundingClientRect());
-            setVisible(true);
+            setPopVisible(true);
         },
-        [setSelectable, setVisible]
+        [setSelectable, setPopVisible]
     ); /* handleSelectEvent */
 
+    // return the element of the time slot
+    const getElementFromStartTime = useCallback((startTime: Date) => {
+        const els = document.getElementsByClassName(startTime.toISOString());
+        for (let i = 0; i < els.length; i++) {
+            if (els[i].closest('.rbc-day-slot')) {
+                // there are two elements has exact same class name but one is time gutter
+                return els[i];
+            }
+        }
+    }, []);
     // create event
     const handleSelectSlot = useCallback(
         (slotInfo: SlotInfo) => {
@@ -163,12 +194,17 @@ export default function BigCalendar() {
                     .getBoundingClientRect();
                 break;
             case 'click':
-                const els = document.getElementsByClassName(slotInfo.start.toISOString());
-                for (let i = 0; i < els.length; i++) {
-                    if (els[i].closest('.rbc-day-slot')) {
-                        // there are two elements has exact same class name but one is time gutter
-                        bounds = els[i].getBoundingClientRect();
-                    }
+                // const els = document.getElementsByClassName(slotInfo.start.toISOString());
+                // for (let i = 0; i < els.length; i++) {
+                //     if (els[i].closest('.rbc-day-slot')) {
+                //         // there are two elements has exact same class name but one is time gutter
+                //         bounds = els[i].getBoundingClientRect();
+                //     }
+                // }
+                if (slotInfo) {
+                    bounds =
+                            getElementFromStartTime(slotInfo.start)?.getBoundingClientRect() ||
+                            new DOMRect();
                 }
                 break;
             case 'doubleClick':
@@ -183,39 +219,26 @@ export default function BigCalendar() {
                 title: ''
             };
             setPopEventCard(newEvent, 'create', bounds);
-            setVisible(true);
+            setPopVisible(true);
         },
-        [setVisible, , setSelectable, setPopEventCard]
+        [setPopVisible, setSelectable, setPopEventCard]
     ); /* handleSelectSlot */
 
     const eventCardWrapperRef = useRef(null); // css transition ref
 
-    const [{ opacity }, dragRef] = useDrag(
-        () => ({
-            type: 'todo',
-            // item: { todo },
-            collect: (monitor) => ({
-                opacity: monitor.isDragging() ? 0.5 : 1
-            })
-        }),
-        []
-    );
-    const [collectedProps, dropRef] = useDrop(() => ({
-        accept: 'ok'
-    }));
     return (
         <>
             <CSSTransition
                 // todo: workaround animation, not perfect
-                in={visible}
+                in={popVisible}
                 nodeRef={eventCardWrapperRef}
                 timeout={150}
                 classNames="event-card-anim"
-                onEnter={() => setVisible(true)}
-                onExited={() => setVisible(false)}
+                onEnter={() => setPopVisible(true)}
+                onExited={() => setPopVisible(false)}
             >
                 <FloatingPortal>
-                    {visible && (
+                    {popVisible && (
                         <FloatingOverlay lockScroll>
                             <FloatingFocusManager context={context}>
                                 <div
@@ -232,8 +255,8 @@ export default function BigCalendar() {
                                     <div ref={eventCardWrapperRef}>
                                         <EventCard
                                             value={popEvent}
-                                            onEventCreated={() => setVisible(false)}
-                                            onDismissed={() => setVisible(false)}
+                                            onEventCreated={() => setPopVisible(false)}
+                                            onDismissed={() => setPopVisible(false)}
                                             mode={popMode}
                                         />
                                     </div>
@@ -243,10 +266,7 @@ export default function BigCalendar() {
                     )}
                 </FloatingPortal>
             </CSSTransition>
-            {/*
-            fixme: Month View is buggy, event card is overlapping
-                why not just disable month view
-            */}
+
             <div ref={calendarRef}>
                 <DnDCalendar
                     defaultView={'week'}
@@ -271,15 +291,13 @@ export default function BigCalendar() {
                     onEventDrop={(val) => handleEventDrop(val as EventDropProps)}
                     onDragOver={(event) => {
                         event.preventDefault();
-                        // console.log('onDragOver', event);
+                        console.log('onDragOver', event);
                     }}
-                    // onDropFromOutside={(event) => {
-                    //     console.log('ok');
-                    //     console.log('onDropFromOutside', event);
-                    // }}
+                    /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
+                    // @ts-ignore
                     onDropFromOutside={handleDropFromOutside}
                     // toolbar={false} // todo: custom toolbar component
-                    // dragFromOutsideItem={draggedEvent ? draggedEvent?.start : new Date()}
+                    // dragFromOutsideItem={()=>true} todo: visual assistance
                 />
             </div>
         </>

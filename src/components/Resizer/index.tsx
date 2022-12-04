@@ -1,7 +1,5 @@
 import { cls } from '@/utils';
 import { MutableRefObject, useEffect } from 'react';
-import { Simulate } from 'react-dom/test-utils';
-import input = Simulate.input;
 import { useResizer } from '@/hooks/use-resizer';
 import { useMergedRef } from '@mantine/hooks';
 

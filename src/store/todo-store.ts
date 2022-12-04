@@ -16,6 +16,9 @@ interface TodoStoreState {
     setTodo: (id: string, newTodo: Todo) => void;
     removeTodo: (id: string) => void;
     toggleTodo: (id: string) => void;
+    dragItem: Todo | null;
+    setDragItem: (item: Todo) => void;
+    clearDragItem: () => void;
 }
 
 const TodoIdGenerator = () => {
@@ -61,13 +64,24 @@ const TodoStore: StateCreator<TodoStoreState> = (set) => ({
                     }
                     : todo
             )
-        }))
+        })),
+    dragItem: null,
+    setDragItem: (item: Todo) => set(() => ({ dragItem: item })),
+    clearDragItem: () => set(() => ({ dragItem: null }))
 });
 
 const useTodoStore = create<TodoStoreState>()(
-    devtools(persist(TodoStore, { name: 'todo-store' }), {
-        enabled: import.meta.env.MODE === 'development'
-    })
+    devtools(
+        persist(TodoStore, {
+            name: 'todo-store',
+            partialize: (state) => ({
+                todoList: state.todoList
+            })
+        }),
+        {
+            enabled: import.meta.env.MODE === 'development'
+        }
+    )
 );
 export type { Todo };
 export { TodoIdGenerator };
