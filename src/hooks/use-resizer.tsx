@@ -1,34 +1,39 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { clamp } from '@/utils/clamp';
+import useAppConfigStore from '@/store/config-store';
 
 export const useResizer = () => {
-    const [isResizing, setIsResizing] = useState(false);
     const ref = useRef<HTMLDivElement | null>(null);
+    const { setSidebarWidth } = useAppConfigStore();
+    const [isResizing, setIsResizing] = useState(false);
+
+    const startResizing = useCallback(() => {
+        setIsResizing(true);
+    }, [setIsResizing]);
+
+    const stopResizing = useCallback(() => {
+        setIsResizing(false);
+    }, [setIsResizing]);
+
+    const onMouseMove = useCallback(
+        (e: MouseEvent) => {
+            if (isResizing) {
+                setSidebarWidth(clamp(e.clientX, 300, 600));
+            }
+        },
+        [isResizing, setSidebarWidth]
+    );
 
     useEffect(() => {
-        if (ref.current) {
-            ref.current?.addEventListener('mousedown', () => {
-                setIsResizing(true);
-            });
-            document.addEventListener(
-                'mouseup',
-                () => {
-                    setIsResizing(false);
-                },
-                { once: true }
-            );
-        }
+        ref.current?.addEventListener('mousedown', startResizing);
+        document.addEventListener('mousemove', onMouseMove);
+        document.addEventListener('mouseup', stopResizing);
+
         return () => {
-            ref.current?.removeEventListener('mousedown', () => {
-                setIsResizing(true);
-            });
-            document.addEventListener(
-                'mouseup',
-                () => {
-                    setIsResizing(false);
-                },
-                { once: true }
-            );
+            ref.current?.removeEventListener('mousedown', startResizing);
+            document.removeEventListener('mousemove', onMouseMove);
+            document.removeEventListener('mouseup', stopResizing);
         };
-    }, [isResizing, setIsResizing]);
-    return { isResizing, ref };
+    }, [startResizing, onMouseMove, stopResizing]);
+    return { ref };
 };
