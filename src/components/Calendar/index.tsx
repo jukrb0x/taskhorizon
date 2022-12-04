@@ -25,13 +25,13 @@ import {
 import { CSSTransition } from 'react-transition-group';
 import './styles/animation.scss';
 import { useEventListener } from '@mantine/hooks';
-import { getElementFromStartTime } from './utils';
 
 const localizer = momentLocalizer(moment); // todo: use luxon, later when we need multi-timezone support, moment.js is not good enough
 
 const DnDCalendar = withDragAndDrop(Calendar);
 // todo: (low priority) make a wrapper for Floating Event Card
 //     not easy to do, they are deeply coupled.
+//     this function is too long, need to be refactored.
 export default function BigCalendar() {
     const { eventList, setEvent } = useEventStore();
     const { dragItem, clearDragItem } = useTodoStore();

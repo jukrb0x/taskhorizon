@@ -65,7 +65,8 @@
         "center": true,
         "titleBarStyle": "Overlay",
         "hiddenTitle": true,
-        "center": true
+        "center": true,
+        "fileDropEnabled": false
       }
     ]
   }

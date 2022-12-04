@@ -1,10 +1,10 @@
 import { Text, Checkbox, Textarea, ActionIcon, Menu } from '@mantine/core';
 import { Todo } from '@/store/todo-store';
 import { useTodoStore } from '@/store';
-// import { useDrag } from 'react-dnd';
 import { useCallback, useState, MouseEvent } from 'react';
 import clsx from 'clsx';
 import { IconTrash, IconX } from '@tabler/icons';
+import { useDraggable } from '@dnd-kit/core';
 
 export default function Item({ todo }: { todo: Todo }) {
     const { setTodo, toggleTodo, removeTodo, setDragItem, clearDragItem } = useTodoStore();
@@ -46,14 +46,21 @@ export default function Item({ todo }: { todo: Todo }) {
         [todo]
     );
 
+    const { attributes, listeners, setNodeRef, transform } = useDraggable({
+        id: 'unique-id'
+    });
+
     return (
         <div
             className={clsx('tw-p-1 tw-rounded-md', {
                 'tw-bg-gray-200': isEdit || isActive,
                 'hover:tw-bg-gray-100': !isEdit || !isActive
             })}
-            draggable={true}
+            // draggable={true}
             onDragStart={handleDragStart}
+            ref={setNodeRef}
+            {...listeners}
+            {...attributes}
         >
             <div
                 className={'tw-flex tw-items-start tw-items-center'}
