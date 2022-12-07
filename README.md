@@ -18,6 +18,9 @@ daily tasking and scheduling. Currently, we are working on the `web` and `macOS`
 
 See [Planned Roadmap](docs/Roadmap.md) and [Project real-time Roadmap](https://jabriel.notion.site/404ec6d1dd084c17a4a877afc327ee47) for latest updates.
 
+### Monorepo
+- `client` the Tauri x web app
+- `server` the backend server based on ts.ed and express.js
 ## Branches
 
 - `main` : stable branch
