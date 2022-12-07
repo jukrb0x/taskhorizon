@@ -1,19 +1,19 @@
 <h1>
   <p align="center">
     <samp>
-      Calitdone
+      Task Horizon
     </samp>
   </p>
 </h1>
 <p align="center">
   <em>
-    Schedule your todos and events in one place.
+    Schedule your tasks and events in one place.
   </em>
 </p>
 
 ![demo](./docs/background-demo.jpg)
 
-Project Calitdone integrates Todo-list and Calendar to create e a smooth experience for
+Project TaskHorizon integrates Todo-list and Calendar to create e a smooth experience for
 daily tasking and scheduling. Currently, we are working on the `web` and `macOS` version of the app. Features are coming from the future!
 
 See [Planned Roadmap](docs/Roadmap.md) and [Project real-time Roadmap](https://jabriel.notion.site/404ec6d1dd084c17a4a877afc327ee47) for latest updates.
