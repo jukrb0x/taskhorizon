@@ -4,30 +4,33 @@
 #   https://github.com/evilmartians/lefthook/blob/master/docs/configuration.md
 #
 pre-push:
+  exclude_tags:
+    - disabled
   parallel: true
   commands:
     packages-audit:
       tags: frontend security
-      run: yarn audit
-    gems-audit:
-      tags: backend security
-      run: bundle audit
+      run: pnpm audit
 
 pre-commit:
+  exclude_tags:
+    - disabled
   parallel: true
   commands:
-    prettier-all:
-      glob: "*.{js,ts,jsx,tsx,scss,css}"
-      run: pnpm prettier --write {staged_files}
-    eslint-frontend:
-      tag: frontend
+    prettier:
+      tags: frontend
+      root: "client/"
+      glob: "*.{js,ts,jsx,tsx,scss,css,json,md,yml,yaml}"
+      run: pnpm --filter "@th/web" prettier --write {staged_files}
+    eslint:
+      tags: frontend
       root: "client/"
       glob: "*.{js,ts,jsx,tsx}"
-      run: pnpm eslint --fix {staged_files}
-    stylelint-frontend:
-      tag: frontend
+      run: pnpm --filter "@th/web" eslint --fix {staged_files}
+    stylelint:
       root: "client/"
+      tags: frontend
       glob: "*.{scss,css}"
-      run: pnpm stylelint --fix
+      run: pnpm --filter "@th/web" stylelint --fix {staged_files}
     commitzen:
       interactive: true

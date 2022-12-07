@@ -25,7 +25,7 @@ export default function Input() {
                 <TextInput
                     className={'tw-flex-auto'}
                     // ref={inputRef}
-                    placeholder={'something to do...'}
+                       placeholder={'something to do...'}
                     onChange={(e) => setTitle(e.target.value)}
                     onKeyDown={(e) => {
                         if (e.key === 'Enter') {
