@@ -2,20 +2,48 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+    provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
 }
 
 generator tsed {
-  provider = "tsed-prisma"
+    provider = "tsed-prisma"
 }
 
 model User {
-  id    Int     @default(autoincrement()) @id
-  email String  @unique
-  name  String?
+    id    Int     @id @default(autoincrement())
+    email String  @unique
+    name  String?
+    Todo  Todo[]
+    Event Event[]
+}
+
+model Todo {
+    id           Int     @id @default(autoincrement())
+    uuid         String  @unique
+    title        String
+    completed    Boolean @default(false)
+    user         User    @relation(fields: [userId], references: [id])
+    userId       Int
+    linkedEvents Event[]
+    //    Event        Event?  @relation(fields: [eventId], references: [id])
+    //    eventId      Int?
+}
+
+model Event {
+    id          Int      @id @default(autoincrement())
+    uuid        String   @unique
+    title       String
+    description String?
+    start       DateTime
+    end         DateTime
+    allDay      Boolean  @default(false)
+    completed   Boolean  @default(false)
+    linkedTodos Todo[]
+    user        User     @relation(fields: [userId], references: [id])
+    userId      Int
 }

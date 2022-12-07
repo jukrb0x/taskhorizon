@@ -21,7 +21,7 @@ WORKDIR /opt
 
 COPY package.json yarn.lock tsconfig.json tsconfig.compile.json .barrelsby.json ./
 
-RUN yarn install --pure-lockfile
+RUN pnpm install --pure-lockfile
 
 
 COPY ./src ./src
@@ -33,11 +33,11 @@ ENV WORKDIR /opt
 WORKDIR $WORKDIR
 
 RUN apk update && apk add build-base git curl
-RUN npm install -g pm2
+RUN yarn install -g pm2
 
 COPY --from=build /opt .
 
-RUN yarn install --pure-lockfile --production
+RUN pnpm install --pure-lockfile --production
 COPY ./prisma ./prisma
 COPY ./views ./views
 COPY processes.config.js .

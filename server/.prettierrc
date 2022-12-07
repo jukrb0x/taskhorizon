@@ -1,10 +1,11 @@
 {
   "printWidth": 140,
-  "singleQuote": false,
+  "singleQuote": true,
   "jsxSingleQuote": true,
   "semi": true,
-  "tabWidth": 2,
+  "tabWidth": 4,
   "bracketSpacing": true,
   "arrowParens": "always",
-  "trailingComma": "none"
+  "trailingComma": "none",
+  "plugins": ["prettier-plugin-prisma"]
 }
