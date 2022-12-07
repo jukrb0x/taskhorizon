@@ -11,8 +11,7 @@
     "prisma:generate": "npx prisma generate",
     "test:lint": "eslint '**/*.{ts,js}'",
     "test:lint:fix": "eslint '**/*.{ts,js}' --fix",
-    "prettier": "prettier '**/*.{ts,js,json,md,yml,yaml}' --write",
-    "prepare": "is-ci || husky install"
+    "prettier": "prettier '**/*.{ts,js,json,md,yml,yaml}' --write"
   },
   "dependencies": {
     "@prisma/client": "^4.7.1",
@@ -70,8 +69,6 @@
     "eslint": "^8.29.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "husky": "^8.0.2",
-    "is-ci": "^3.0.1",
     "lint-staged": "^13.1.0",
     "prettier": "^2.8.0",
     "prisma": "^4.7.1",
