@@ -17,6 +17,9 @@ pre-commit:
     - disabled
   parallel: true
   commands:
+    frontend-lint-staged:
+      root: "client/"
+      run: pnpm --filter "@th/web" lint-staged
     prettier:
       tags: frontend
       root: "client/"
