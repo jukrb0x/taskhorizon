@@ -22,6 +22,13 @@
   },
   "homepage": "https://github.com/jukrb0x/taskhorizon#readme",
   "devDependencies": {
+    "@evilmartians/lefthook": "^1.2.4",
     "turbo": "^1.6.3"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "pnpm": ">=7.17.0",
+    "npm": "pnpm",
+    "yarn": "pnpm"
   }
 }

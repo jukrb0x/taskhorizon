@@ -1,12 +1,22 @@
 lockfileVersion: 5.4
 
 specifiers:
+  '@evilmartians/lefthook': ^1.2.4
   turbo: ^1.6.3
 
 devDependencies:
+  '@evilmartians/lefthook': 1.2.4
   turbo: 1.6.3
 
 packages:
+
+  /@evilmartians/lefthook/1.2.4:
+    resolution: {integrity: sha512-dZb/eleGFas3vs2qXtpcs85LzVUHt9f43D9MY6/DB1IFNIkFDhnTYzrZ25jTabqH1laiJ5hVHtpeH/xXOhMcnA==}
+    cpu: [x64, arm64, ia32]
+    os: [darwin, linux, win32]
+    hasBin: true
+    requiresBuild: true
+    dev: true
 
   /turbo-darwin-64/1.6.3:
     resolution: {integrity: sha512-QmDIX0Yh1wYQl0bUS0gGWwNxpJwrzZU2GIAYt3aOKoirWA2ecnyb3R6ludcS1znfNV2MfunP+l8E3ncxUHwtjA==}

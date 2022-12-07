@@ -1,0 +1,33 @@
+# EXAMPLE USAGE:
+#
+#   Refer for explanation to following link:
+#   https://github.com/evilmartians/lefthook/blob/master/docs/configuration.md
+#
+pre-push:
+  parallel: true
+  commands:
+    packages-audit:
+      tags: frontend security
+      run: yarn audit
+    gems-audit:
+      tags: backend security
+      run: bundle audit
+
+pre-commit:
+  parallel: true
+  commands:
+    prettier-all:
+      glob: "*.{js,ts,jsx,tsx,scss,css}"
+      run: pnpm prettier --write {staged_files}
+    eslint-frontend:
+      tag: frontend
+      root: "client/"
+      glob: "*.{js,ts,jsx,tsx}"
+      run: pnpm eslint --fix {staged_files}
+    stylelint-frontend:
+      tag: frontend
+      root: "client/"
+      glob: "*.{scss,css}"
+      run: pnpm stylelint --fix
+    commitzen:
+      interactive: true
