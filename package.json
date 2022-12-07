@@ -1,0 +1,39 @@
+{
+  "name": "@th/root",
+  "version": "0.0.0",
+  "directories": {
+    "doc": "docs"
+  },
+  "scripts": {
+    "build": "turbo run build",
+    "build:app": "pnpm --filter @th/web build",
+    "start:web": "pnpm --filter @th/web start",
+    "start:app": "pnpm --filter @th/web start:app",
+    "start:server": "pnpm --filter @th/server start"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jukrb0x/taskhorizon.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jukrb0x/taskhorizon/issues"
+  },
+  "homepage": "https://github.com/jukrb0x/taskhorizon#readme",
+  "devDependencies": {
+    "@evilmartians/lefthook": "^1.2.4",
+    "turbo": "^1.6.3"
+  },
+  "engines": {
+    "node": ">=16.0.0",
+    "pnpm": ">=7.17.0",
+    "npm": "pnpm",
+    "yarn": "pnpm"
+  },
+  "dependencies": {
+    "eslint": "^8.29.0",
+    "prettier": "^2.8.0",
+    "stylelint": "^14.16.0"
+  }
+}
