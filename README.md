@@ -11,7 +11,7 @@
   </em>
 </p>
 
-![demo](./client/docs/background-demo.jpg)
+![demo](./docs/background-demo.jpg)
 
 Project Calitdone integrates Todo-list and Calendar to create e a smooth experience for
 daily tasking and scheduling. Currently, we are working on the `web` and `macOS` version of the app. Features are coming from the future!
