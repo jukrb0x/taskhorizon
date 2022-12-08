@@ -12,7 +12,6 @@ export class UserModel implements User {
   @Property(String)
   @Required()
   @Emial()
-  @Required()
   @Description("Email of the user")
   email: string;
 

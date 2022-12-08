@@ -12,12 +12,12 @@ export class EventModel implements Event {
   @Property(Date)
   @Format("date-time")
   @Required()
-  updatedTime: Date;
+  updatedAt: Date;
 
   @Property(Date)
   @Format("date-time")
   @Required()
-  createdTime: Date;
+  createdAt: Date;
 
   @Property(String)
   @Required()

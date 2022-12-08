@@ -12,12 +12,12 @@ export class TodoModel implements Todo {
   @Property(Date)
   @Format("date-time")
   @Required()
-  updatedTime: Date;
+  updatedAt: Date;
 
   @Property(Date)
   @Format("date-time")
   @Required()
-  createdTime: Date;
+  createdAt: Date;
 
   @Property(String)
   @Required()

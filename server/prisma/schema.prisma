@@ -18,7 +18,6 @@ generator tsed {
 model User {
     id    Int     @id @default(autoincrement())
     /// @TsED.Emial()
-    /// @TsED.Required()
     /// @TsED.Description("Email of the user")
     email String  @unique
     name  String?
@@ -28,8 +27,8 @@ model User {
 
 model Todo {
     id           Int      @id @default(autoincrement())
-    updatedTime  DateTime @default(now())
-    createdTime  DateTime @default(now())
+    updatedAt  DateTime @default(now())
+    createdAt  DateTime @default(now())
     // ------
     uuid         String   @unique
     title        String
@@ -42,8 +41,8 @@ model Todo {
 
 model Event {
     id          Int      @id @default(autoincrement())
-    updatedTime DateTime @default(now())
-    createdTime DateTime @default(now())
+    updatedAt DateTime @default(now())
+    createdAt DateTime @default(now())
     // ------
     uuid        String   @unique
     title       String
