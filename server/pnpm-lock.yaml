@@ -15,6 +15,7 @@ specifiers:
     '@tsed/json-mapper': 7.8.2
     '@tsed/logger': ^6.3.3
     '@tsed/logger-file': ^6.3.3
+    '@tsed/openspec': ^7.8.2
     '@tsed/passport': 7.8.2
     '@tsed/platform-cache': 7.8.2
     '@tsed/platform-exceptions': 7.8.2
@@ -68,7 +69,7 @@ dependencies:
     '@prisma/client': 4.7.1_prisma@4.7.1
     '@tsed/ajv': 7.8.2_t54xtcrdshy6vklwjdopicuejy
     '@tsed/cli-core': 4.2.4_xvw5aarpx2544zrj3sgaim2zeu
-    '@tsed/common': 7.8.2_b7tsxajaf2neklxkp55uksvztq
+    '@tsed/common': 7.8.2_hptd6c3rel6dcbhysre537bz74
     '@tsed/core': 7.8.2
     '@tsed/di': 7.8.2_jfwzrrtrkldb2ymiqj3ok5rwjm
     '@tsed/engines': 7.8.2
@@ -76,17 +77,18 @@ dependencies:
     '@tsed/json-mapper': 7.8.2_5cxfblajj3gkwqajyrbpn7ddee
     '@tsed/logger': 6.3.3
     '@tsed/logger-file': 6.3.3_@tsed+logger@6.3.3
+    '@tsed/openspec': 7.8.2
     '@tsed/passport': 7.8.2_ejl7ghr64ir5ue6qnl64yesuc4
     '@tsed/platform-cache': 7.8.2_ylnhvjvdotj3oei6l7povnwg7a
     '@tsed/platform-exceptions': 7.8.2_i74vkwfwdp3kjmy5s7xu7j3txy
-    '@tsed/platform-express': 7.8.2_skxx4kxgna456z7dlilfyswb6e
+    '@tsed/platform-express': 7.8.2_jdtovtfgtpcgo3u5xeddn4t2dq
     '@tsed/platform-log-middleware': 7.8.2_dczxioytasu3rfjqfxglq4vxe4
     '@tsed/platform-middlewares': 7.8.2_4n5ygsb3lilifpqkrqpynskbhe
     '@tsed/platform-params': 7.8.2_inerh32awaejusx2yptyulvfqq
     '@tsed/platform-response-filter': 7.8.2_inerh32awaejusx2yptyulvfqq
     '@tsed/platform-views': 7.8.2_hiusyjf6vrshespvq5cjuv75ay
     '@tsed/prisma': 7.8.2_rzrzrsqahxlyokjw3ts5ornot4
-    '@tsed/schema': 7.8.2_@tsed+core@7.8.2
+    '@tsed/schema': 7.8.2_yozm2e6bqqr2uuydw44qyzmzfy
     '@tsed/swagger': 7.8.2_@tsed+common@7.8.2
     ajv: 8.11.2
     barrelsby: 2.5.1
@@ -528,7 +530,7 @@ packages:
             '@tsed/core': 7.8.2
             '@tsed/di': 7.8.2_jfwzrrtrkldb2ymiqj3ok5rwjm
             '@tsed/exceptions': 7.8.2
-            '@tsed/schema': 7.8.2_@tsed+core@7.8.2
+            '@tsed/schema': 7.8.2_yozm2e6bqqr2uuydw44qyzmzfy
             ajv: 8.11.2
             ajv-formats: 2.1.1_ajv@8.11.2
             tslib: 2.4.0
@@ -654,7 +656,7 @@ packages:
             tslib: 2.3.1
         dev: true
 
-    /@tsed/common/7.8.2_b7tsxajaf2neklxkp55uksvztq:
+    /@tsed/common/7.8.2_hptd6c3rel6dcbhysre537bz74:
         resolution: { integrity: sha512-zYUAs5DwcLLcis5J3R4kULUeg7rVe38IlBQ2Ms8hfBoIImG9Ewo0fI2RzYllDShssHF0b+AQMPOANlDniRDNeg== }
         peerDependencies:
             '@tsed/logger': '>=6.2.2'
@@ -674,12 +676,13 @@ packages:
             '@tsed/platform-response-filter': 7.8.2_inerh32awaejusx2yptyulvfqq
             '@tsed/platform-router': 7.8.2_qlzr42nmsabuw35w25zmnswple
             '@tsed/platform-views': 7.8.2_hiusyjf6vrshespvq5cjuv75ay
-            '@tsed/schema': 7.8.2_@tsed+core@7.8.2
+            '@tsed/schema': 7.8.2_yozm2e6bqqr2uuydw44qyzmzfy
             '@types/json-schema': 7.0.11
             tslib: 2.4.0
             uuid: 8.3.2
         transitivePeerDependencies:
             - '@tsed/engines'
+            - '@tsed/openspec'
         dev: false
 
     /@tsed/core/7.8.2:
@@ -699,7 +702,7 @@ packages:
         dependencies:
             '@tsed/core': 7.8.2
             '@tsed/logger': 6.3.3
-            '@tsed/schema': 7.8.2_@tsed+core@7.8.2
+            '@tsed/schema': 7.8.2_yozm2e6bqqr2uuydw44qyzmzfy
             tslib: 2.4.0
         dev: false
 
@@ -727,7 +730,7 @@ packages:
         dependencies:
             '@tsed/core': 7.8.2
             '@tsed/exceptions': 7.8.2
-            '@tsed/schema': 7.8.2_@tsed+core@7.8.2
+            '@tsed/schema': 7.8.2_yozm2e6bqqr2uuydw44qyzmzfy
             tslib: 2.4.0
         dev: false
 
@@ -762,7 +765,7 @@ packages:
             '@tsed/common': ^7.8.2
             passport: '>=0.4.1'
         dependencies:
-            '@tsed/common': 7.8.2_b7tsxajaf2neklxkp55uksvztq
+            '@tsed/common': 7.8.2_hptd6c3rel6dcbhysre537bz74
             passport: 0.6.0
             tslib: 2.4.0
         dev: false
@@ -786,7 +789,7 @@ packages:
             '@tsed/core': 7.8.2
             '@tsed/di': 7.8.2_jfwzrrtrkldb2ymiqj3ok5rwjm
             '@tsed/json-mapper': 7.8.2_5cxfblajj3gkwqajyrbpn7ddee
-            '@tsed/schema': 7.8.2_@tsed+core@7.8.2
+            '@tsed/schema': 7.8.2_yozm2e6bqqr2uuydw44qyzmzfy
             cache-manager: 5.1.4
             micromatch: 4.0.5
             tslib: 2.4.0
@@ -803,11 +806,11 @@ packages:
             '@tsed/core': 7.8.2
             '@tsed/di': 7.8.2_jfwzrrtrkldb2ymiqj3ok5rwjm
             '@tsed/exceptions': 7.8.2
-            '@tsed/schema': 7.8.2_@tsed+core@7.8.2
+            '@tsed/schema': 7.8.2_yozm2e6bqqr2uuydw44qyzmzfy
             tslib: 2.4.0
         dev: false
 
-    /@tsed/platform-express/7.8.2_skxx4kxgna456z7dlilfyswb6e:
+    /@tsed/platform-express/7.8.2_jdtovtfgtpcgo3u5xeddn4t2dq:
         resolution: { integrity: sha512-3ZVTAZ9kGCJGdH6SI6IAxBTFmOmCHuNiFsEai2vHEBTq3q4icJTT/Ab5b3XNJ4KkeyTLmtiP99whaM0AUQcbQA== }
         peerDependencies:
             '@tsed/common': ^7.8.2
@@ -824,13 +827,14 @@ packages:
             '@tsed/platform-views':
                 optional: true
         dependencies:
-            '@tsed/common': 7.8.2_b7tsxajaf2neklxkp55uksvztq
+            '@tsed/common': 7.8.2_hptd6c3rel6dcbhysre537bz74
             '@tsed/core': 7.8.2
             '@tsed/di': 7.8.2_jfwzrrtrkldb2ymiqj3ok5rwjm
             '@tsed/json-mapper': 7.8.2_5cxfblajj3gkwqajyrbpn7ddee
             '@tsed/logger': 6.3.3
+            '@tsed/openspec': 7.8.2
             '@tsed/platform-views': 7.8.2_hiusyjf6vrshespvq5cjuv75ay
-            '@tsed/schema': 7.8.2_@tsed+core@7.8.2
+            '@tsed/schema': 7.8.2_yozm2e6bqqr2uuydw44qyzmzfy
             '@types/multer': 1.4.7
             body-parser: 1.20.1
             express: 4.18.2
@@ -869,7 +873,7 @@ packages:
         dependencies:
             '@tsed/core': 7.8.2
             '@tsed/di': 7.8.2_jfwzrrtrkldb2ymiqj3ok5rwjm
-            '@tsed/schema': 7.8.2_@tsed+core@7.8.2
+            '@tsed/schema': 7.8.2_yozm2e6bqqr2uuydw44qyzmzfy
             tslib: 2.4.0
         dev: false
 
@@ -886,7 +890,7 @@ packages:
             '@tsed/di': 7.8.2_jfwzrrtrkldb2ymiqj3ok5rwjm
             '@tsed/exceptions': 7.8.2
             '@tsed/json-mapper': 7.8.2_5cxfblajj3gkwqajyrbpn7ddee
-            '@tsed/schema': 7.8.2_@tsed+core@7.8.2
+            '@tsed/schema': 7.8.2_yozm2e6bqqr2uuydw44qyzmzfy
             tslib: 2.4.0
         dev: false
 
@@ -903,7 +907,7 @@ packages:
             '@tsed/di': 7.8.2_jfwzrrtrkldb2ymiqj3ok5rwjm
             '@tsed/exceptions': 7.8.2
             '@tsed/json-mapper': 7.8.2_5cxfblajj3gkwqajyrbpn7ddee
-            '@tsed/schema': 7.8.2_@tsed+core@7.8.2
+            '@tsed/schema': 7.8.2_yozm2e6bqqr2uuydw44qyzmzfy
             tslib: 2.4.0
         dev: false
 
@@ -922,7 +926,7 @@ packages:
             '@tsed/exceptions': 7.8.2
             '@tsed/json-mapper': 7.8.2_5cxfblajj3gkwqajyrbpn7ddee
             '@tsed/platform-params': 7.8.2_inerh32awaejusx2yptyulvfqq
-            '@tsed/schema': 7.8.2_@tsed+core@7.8.2
+            '@tsed/schema': 7.8.2_yozm2e6bqqr2uuydw44qyzmzfy
             tslib: 2.4.0
         dev: false
 
@@ -939,7 +943,7 @@ packages:
             '@tsed/di': 7.8.2_jfwzrrtrkldb2ymiqj3ok5rwjm
             '@tsed/engines': 7.8.2
             '@tsed/exceptions': 7.8.2
-            '@tsed/schema': 7.8.2_@tsed+core@7.8.2
+            '@tsed/schema': 7.8.2_yozm2e6bqqr2uuydw44qyzmzfy
             ejs: 3.1.8
             tslib: 2.4.0
         dev: false
@@ -960,7 +964,7 @@ packages:
             '@tsed/core': 7.8.2
             '@tsed/di': 7.8.2_jfwzrrtrkldb2ymiqj3ok5rwjm
             '@tsed/json-mapper': 7.8.2_5cxfblajj3gkwqajyrbpn7ddee
-            '@tsed/schema': 7.8.2_@tsed+core@7.8.2
+            '@tsed/schema': 7.8.2_yozm2e6bqqr2uuydw44qyzmzfy
             change-case: 4.1.2
             fs-extra: 10.1.0
             pluralize: 8.0.0
@@ -971,10 +975,11 @@ packages:
             - supports-color
         dev: false
 
-    /@tsed/schema/7.8.2_@tsed+core@7.8.2:
+    /@tsed/schema/7.8.2_yozm2e6bqqr2uuydw44qyzmzfy:
         resolution: { integrity: sha512-khdOOJ0u2axj5R8CphZpD9yWYGaHS+vmUJEfFeSemLvrbk18Rz/5qdnzMSo+qeovD4cutY1LBMiWoVUZY45oqQ== }
         peerDependencies:
             '@tsed/core': ^7.8.2
+            '@tsed/openspec': ^7.8.2
         dependencies:
             '@tsed/core': 7.8.2
             '@tsed/openspec': 7.8.2
@@ -991,7 +996,7 @@ packages:
         peerDependencies:
             '@tsed/common': ^7.8.2
         dependencies:
-            '@tsed/common': 7.8.2_b7tsxajaf2neklxkp55uksvztq
+            '@tsed/common': 7.8.2_hptd6c3rel6dcbhysre537bz74
             '@tsed/openspec': 7.8.2
             fs-extra: 10.0.1
             micromatch: 4.0.5
