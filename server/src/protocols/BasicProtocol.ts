@@ -11,6 +11,8 @@ import { Inject } from '@tsed/di';
     settings: {}
 })
 export class BasicProtocol implements OnVerify, OnInstall {
+    // this will not be used, just for testing
+
     @Inject()
     private useRepo: UsersRepository;
 
