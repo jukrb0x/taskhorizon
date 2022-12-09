@@ -7,36 +7,47 @@
 #
 # FIXME: not working correctly for now
 pre-push:
-  exclude_tags:
-    - disabled
-  parallel: true
-  commands:
-    packages-audit:
-      tags: frontend security
-      run: pnpm audit
+    exclude_tags:
+        - disabled
+    parallel: true
+    commands:
+        packages-audit:
+            tags: frontend backend security
+            run: pnpm audit
 
 pre-commit:
-  exclude_tags:
-    - disabled
-  parallel: true
-  commands:
-    frontend-lint-staged:
-      root: "client/"
-      run: pnpm --filter "@th/web" lint-staged
-    prettier:
-      tags: frontend
-      root: "client/"
-      glob: "*.{js,ts,jsx,tsx,scss,css,json,md,yml,yaml}"
-      run: pnpm --filter "@th/web" prettier --write {staged_files}
-    eslint:
-      tags: frontend
-      root: "client/"
-      glob: "*.{js,ts,jsx,tsx}"
-      run: pnpm --filter "@th/web" eslint --fix {staged_files}
-    stylelint:
-      root: "client/"
-      tags: frontend
-      glob: "*.{scss,css}"
-      run: pnpm --filter "@th/web" stylelint --fix {staged_files}
-    commitzen:
-      interactive: true
+    exclude_tags:
+        - disabled
+    parallel: true
+    commands:
+        frontend-prettier:
+            tags: frontend
+            root: 'client/'
+            glob: '*.{js,ts,jsx,tsx,scss,css,json,md,yml,yaml}'
+            run: pnpm prettier --write {staged_files}
+        frontend-eslint:
+            tags: frontend
+            root: 'client/'
+            glob: '*.{js,ts,jsx,tsx}'
+            run: pnpm eslint --fix {staged_files}
+        frontend-stylelint:
+            root: 'client/'
+            tags: frontend
+            glob: '*.{scss,css}'
+            run: pnpm stylelint --fix {staged_files}
+        root-prettier:
+            tags: root
+            glob: '*.{js,ts,json,yml,yaml}'
+            exclude: 'client|server'
+            run: pnpm prettier --write {staged_files}
+
+commit-msg:
+  scripts:
+    "commitlint.sh":
+      runner: bash
+
+commit: # why not `pnpm commit`
+    commands:
+        commitzen:
+            interactive: true
+            run: pnpm run commit
