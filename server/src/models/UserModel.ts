@@ -17,7 +17,7 @@ export class UserModel implements User {
 
     @Property(String)
     @Allow(null)
-    name: string | null;
+    username: string | null;
 
     @CollectionOf(() => TodoModel)
     @Required()

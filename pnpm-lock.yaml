@@ -207,6 +207,7 @@ importers:
       lint-staged: ^13.1.0
       method-override: ^3.0.0
       passport: ^0.6.0
+      passport-local: ^1.0.0
       prettier: ^2.8.0
       prettier-plugin-prisma: ^4.4.0
       prisma: ^4.7.1
@@ -253,6 +254,7 @@ importers:
       express: 4.18.2
       method-override: 3.0.0
       passport: 0.6.0
+      passport-local: 1.0.0
     devDependencies:
       '@tsed/cli-plugin-eslint': 4.2.4
       '@tsed/cli-plugin-passport': 4.2.4
@@ -7288,6 +7290,13 @@ packages:
     dependencies:
       no-case: 3.0.4
       tslib: 2.4.1
+
+  /passport-local/1.0.0:
+    resolution: {integrity: sha512-9wCE6qKznvf9mQYYbgJ3sVOHmCWoUNMVFoZzNoznmISbhnNNPhN9xfY3sLmScHMetEJeoY7CXwfhCe7argfQow==}
+    engines: {node: '>= 0.4.0'}
+    dependencies:
+      passport-strategy: 1.0.0
+    dev: false
 
   /passport-strategy/1.0.0:
     resolution: {integrity: sha512-CB97UUvDKJde2V0KDWWB3lyf6PC3FaZP7YxZ2G8OAtn9p4HI9j9JLP9qjOGZFvyl8uwNT8qM+hGnz/n16NI7oA==}
