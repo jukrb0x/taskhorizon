@@ -1,5 +1,5 @@
 import { User } from "../client";
-import { Integer, Required, Property, Emial, Description, Allow, CollectionOf } from "@tsed/schema";
+import { Integer, Required, Property, Email, Description, Allow, CollectionOf } from "@tsed/schema";
 import { TodoModel } from "./TodoModel";
 import { EventModel } from "./EventModel";
 
@@ -11,7 +11,7 @@ export class UserModel implements User {
 
   @Property(String)
   @Required()
-  @Emial()
+  @Email()
   @Description("Email of the user")
   email: string;
 

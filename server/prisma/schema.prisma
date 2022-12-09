@@ -17,7 +17,7 @@ generator tsed {
 
 model User {
     id    Int     @id @default(autoincrement())
-    /// @TsED.Emial()
+    /// @TsED.Email()
     /// @TsED.Description("Email of the user")
     email String  @unique
     name  String?
