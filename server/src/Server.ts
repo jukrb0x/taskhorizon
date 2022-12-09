@@ -7,6 +7,7 @@ import '@tsed/swagger';
 import { config } from './config';
 import * as rest from './controllers/rest/index';
 import * as pages from './controllers/pages/index';
+// import session from 'express-session';
 
 @Configuration({
     ...config,

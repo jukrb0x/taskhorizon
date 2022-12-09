@@ -5,11 +5,11 @@ const prisma = new PrismaClient();
 
 const users: Prisma.UserCreateInput[] = [
     {
-        name: 'Alice',
+        username: 'Alice',
         email: 'alice@a.com'
     },
     {
-        name: 'Bob',
+        username: 'Bob',
         email: 'bob@b.com'
     }
 ];
@@ -64,7 +64,7 @@ async function main() {
         const newUser = await prisma.user.create({
             data: user
         });
-        console.log(`Created new user: ${newUser.name} (ID: ${newUser.id})`);
+        console.log(`Created new user: ${newUser.username} (ID: ${newUser.id})`);
     }
 
     for (const todo of todos) {

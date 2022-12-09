@@ -16,14 +16,16 @@ generator tsed {
 }
 
 model User {
-    id       Int     @id @default(autoincrement())
+    id        Int      @id @default(autoincrement())
+    updatedAt DateTime @default(now())
+    createdAt DateTime @default(now())
+    // ------
     /// @TsED.Email()
     /// @TsED.Description("Email of the user")
     email    String  @unique
-    username String?
+    username String
     Todo     Todo[]
     Event    Event[]
-
 }
 
 model Todo {

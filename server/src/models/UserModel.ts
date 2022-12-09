@@ -1,5 +1,5 @@
 import { User } from '../client';
-import { Integer, Required, Property, Email, Description, Allow, CollectionOf } from '@tsed/schema';
+import { Integer, Required, Property, Format, Email, Description, CollectionOf } from '@tsed/schema';
 import { TodoModel } from './TodoModel';
 import { EventModel } from './EventModel';
 
@@ -9,6 +9,16 @@ export class UserModel implements User {
     @Required()
     id: number;
 
+    @Property(Date)
+    @Format('date-time')
+    @Required()
+    updatedAt: Date;
+
+    @Property(Date)
+    @Format('date-time')
+    @Required()
+    createdAt: Date;
+
     @Property(String)
     @Required()
     @Email()
@@ -16,8 +26,8 @@ export class UserModel implements User {
     email: string;
 
     @Property(String)
-    @Allow(null)
-    username: string | null;
+    @Required()
+    username: string;
 
     @CollectionOf(() => TodoModel)
     @Required()
