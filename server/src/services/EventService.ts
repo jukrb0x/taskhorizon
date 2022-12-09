@@ -11,7 +11,6 @@ export class EventService {
 
     async getEventsByUsername(username: string) {
         const user = await this.userService.findByUsername(username);
-        const events = await this.eventRepository.findMany({ where: { userId: user.id } });
-        return events;
+        return await this.eventRepository.findMany({ where: { userId: user.id } });
     }
 }

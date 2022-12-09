@@ -1,8 +1,8 @@
 import { Controller, Inject } from '@tsed/di';
 import { Get, In, Security } from '@tsed/schema';
 import { TodosRepository, UsersRepository } from '@/repositories';
-import { Authorize } from '@tsed/passport';
-import { $log, Req } from '@tsed/common';
+import { Arg, Authorize } from '@tsed/passport';
+import { $log, PathParams, Req } from '@tsed/common';
 import { JwtAuth } from '@/decorators/JwtAuth';
 import { EventService } from '@/services/EventService';
 
@@ -37,8 +37,8 @@ export class HelloWorldController {
     }
 
     @Get('/events/:username')
-    async getEventsByUsername(@Req() req: Req) {
-        const events = await this.eventService.getEventsByUsername(req.params.username);
+    async getEventsByUsername(@Req() req: Req, @PathParams('username') username: string) {
+        const events = await this.eventService.getEventsByUsername(username);
         return events;
     }
 
