@@ -10,7 +10,7 @@ import { Inject } from '@tsed/di';
     settings: {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
         secretOrKey: 'some-secret',
-        issuer: 'accounts.task.horizon',
+        issuer: 'task.horizon',
         audience: 'task.horizon'
     }
 })

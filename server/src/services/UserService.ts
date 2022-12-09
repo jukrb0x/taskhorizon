@@ -1,9 +1,9 @@
-import { Inject } from '@tsed/di';
+import { Inject, Injectable } from '@tsed/di';
 import { UsersRepository } from '@/repositories';
-import { use } from 'passport';
 import { $log } from '@tsed/common';
 import { BadRequest } from '@tsed/exceptions';
 
+@Injectable()
 export class UserService {
     @Inject()
     private userRepo: UsersRepository;

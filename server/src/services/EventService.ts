@@ -1,7 +1,8 @@
-import { Inject } from '@tsed/di';
+import { Inject, Injectable } from '@tsed/di';
 import { EventsRepository } from '@/repositories';
 import { UserService } from '@/services/UserService';
 
+@Injectable()
 export class EventService {
     @Inject()
     private eventRepository: EventsRepository;
