@@ -1,5 +1,5 @@
 import { join } from 'path';
-import { Configuration, Inject } from '@tsed/di';
+import { Configuration, Inject, Injectable } from '@tsed/di';
 import { PlatformApplication } from '@tsed/common';
 import '@tsed/platform-express'; // /!\ keep this import
 import '@tsed/ajv';
@@ -7,7 +7,7 @@ import '@tsed/swagger';
 import { config } from './config';
 import * as rest from './controllers/rest/index';
 import * as pages from './controllers/pages/index';
-// import session from 'express-session';
+import session from 'express-session';
 
 @Configuration({
     ...config,
@@ -47,4 +47,19 @@ export class Server {
 
     @Configuration()
     protected settings: Configuration;
+
+    $beforeRoutesInit() {
+        this.app.use(
+            session({
+                secret: 'some secret',
+                resave: true,
+                saveUninitialized: true,
+                cookie: {
+                    path: '/',
+                    // httpOnly: true,
+                    secure: false
+                }
+            })
+        );
+    }
 }
