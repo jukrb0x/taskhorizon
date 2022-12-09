@@ -16,12 +16,14 @@ import { UserModel } from '@/models';
 import cors from 'cors';
 import { specOS3 } from '@/spec/specOS3';
 
+const rootDir = __dirname;
+
 @Configuration({
     ...config,
     acceptMimes: ['application/json'],
     httpPort: process.env.PORT || 8083,
     httpsPort: false, // CHANGE
-    componentsScan: false,
+    componentsScan: [`${rootDir}/services/**/*.ts`, `${rootDir}/protocols/**/*.ts`],
     mount: {
         '/rest': [...Object.values(rest)],
         '/': [...Object.values(pages)]

@@ -4,11 +4,18 @@ import { TodosRepository, UsersRepository } from '@/repositories';
 import { Authorize } from '@tsed/passport';
 import { $log, Req } from '@tsed/common';
 import { JwtAuth } from '@/decorators/JwtAuth';
+import { EventService } from '@/services/EventService';
 
+/**
+ * THIS CONTROLLER IS FOR TESTING PURPOSES ONLY
+ */
 @Controller('/hello-world')
 export class HelloWorldController {
     @Inject()
     private todoRepository: TodosRepository;
+
+    @Inject()
+    private eventService: EventService;
 
     @Get('/')
     get() {
@@ -27,6 +34,12 @@ export class HelloWorldController {
 
         console.log(todo);
         return JSON.stringify(todo);
+    }
+
+    @Get('/events/:username')
+    async getEventsByUsername(@Req() req: Req) {
+        const events = await this.eventService.getEventsByUsername(req.params.username);
+        return events;
     }
 
     // @Get('/user')
