@@ -22,10 +22,11 @@ model User {
     // ------
     /// @TsED.Email()
     /// @TsED.Description("Email of the user")
-    email    String  @unique
-    username String
-    Todo     Todo[]
-    Event    Event[]
+    email     String   @unique
+    username  String   @unique
+    password  String
+    Todo      Todo[]
+    Event     Event[]
 }
 
 model Todo {

@@ -29,6 +29,10 @@ export class UserModel implements User {
     @Required()
     username: string;
 
+    @Property(String)
+    @Required()
+    password: string;
+
     @CollectionOf(() => TodoModel)
     @Required()
     Todo: TodoModel[];

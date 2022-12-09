@@ -7,17 +7,26 @@ import '@tsed/swagger';
 import { config } from './config';
 import * as rest from './controllers/rest/index';
 import * as pages from './controllers/pages/index';
+import * as protocols from './protocols/index';
 import session from 'express-session';
+import cookieParser from 'cookie-parser';
+import methodOverride from 'method-override';
+import bodyParser from 'body-parser';
+import { UserModel } from '@/models';
+import cors from 'cors';
+
+const rootDir = __dirname;
 
 @Configuration({
     ...config,
     acceptMimes: ['application/json'],
     httpPort: process.env.PORT || 8083,
     httpsPort: false, // CHANGE
-    componentsScan: false,
+    componentsScan: [`${rootDir}/services/**/*.ts`, `${rootDir}/protocols/**/*.ts`],
     mount: {
         '/rest': [...Object.values(rest)],
-        '/': [...Object.values(pages)]
+        '/': [...Object.values(pages)],
+        '/protocols': [...Object.values(protocols)]
     },
     swagger: [
         {
@@ -39,7 +48,10 @@ import session from 'express-session';
             ejs: 'ejs'
         }
     },
-    exclude: ['**/*.spec.ts']
+    exclude: ['**/*.spec.ts'],
+    passport: {
+        userInfoModel: UserModel
+    }
 })
 export class Server {
     @Inject()
@@ -49,17 +61,27 @@ export class Server {
     protected settings: Configuration;
 
     $beforeRoutesInit() {
-        this.app.use(
-            session({
-                secret: 'some secret',
-                resave: true,
-                saveUninitialized: true,
-                cookie: {
-                    path: '/',
-                    // httpOnly: true,
-                    secure: false
-                }
-            })
-        );
+        this.app
+            .use(cors())
+            .use(cookieParser())
+            .use(methodOverride())
+            .use(bodyParser.json())
+            .use(
+                bodyParser.urlencoded({
+                    extended: true
+                })
+            )
+            .use(
+                session({
+                    secret: 'some secret',
+                    resave: true,
+                    saveUninitialized: true,
+                    cookie: {
+                        path: '/',
+                        // httpOnly: true,
+                        secure: false
+                    }
+                })
+            );
     }
 }
