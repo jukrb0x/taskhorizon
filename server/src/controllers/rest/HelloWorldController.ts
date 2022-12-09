@@ -1,11 +1,12 @@
 import { Controller, Inject } from '@tsed/di';
-import { Get } from '@tsed/schema';
+import { Get, In, Security } from '@tsed/schema';
 import { TodosRepository, UsersRepository } from '@/repositories';
 import { Authorize } from '@tsed/passport';
+import { $log, Req } from '@tsed/common';
+import { JwtAuth } from '@/decorators/JwtAuth';
 
 @Controller('/hello-world')
 export class HelloWorldController {
-    // private todoRepository = new PrismaClient().todo;
     @Inject()
     private todoRepository: TodosRepository;
 
@@ -15,8 +16,11 @@ export class HelloWorldController {
     }
 
     @Get('/todo')
-    @Authorize('jwt')
-    async getTodo() {
+    // @Authorize('jwt')
+    // @Security('jwt') // what is this
+    @JwtAuth()
+    async getTodo(@Req() req: Req) {
+        $log.info(req);
         const todo = await this.todoRepository.findMany({ where: { id: 1 } }).catch((err) => {
             return err;
         });

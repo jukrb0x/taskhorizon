@@ -14,6 +14,7 @@ import methodOverride from 'method-override';
 import bodyParser from 'body-parser';
 import { UserModel } from '@/models';
 import cors from 'cors';
+import { specOS3 } from '@/spec/specOS3';
 
 @Configuration({
     ...config,
@@ -30,9 +31,7 @@ import cors from 'cors';
         {
             path: '/doc',
             specVersion: '3.0.1',
-            options: {
-                authorize: true
-            }
+            spec: specOS3
         }
     ],
     middlewares: [

@@ -19,7 +19,7 @@ export class JwtProtocol implements OnVerify {
     private userService: UserService;
 
     async $onVerify(@Req() request: Req, @Arg(0) payload: any) {
-        $log.info('jwt payload', payload);
+        $log.info('jwt header', request.header);
         const user = await this.userService.findByUsername(payload.sub);
         return user ? user : false;
     }
