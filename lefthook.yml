@@ -5,14 +5,13 @@
 #
 #
 #
-# FIXME: not working correctly for now
 pre-push:
     exclude_tags:
         - disabled
     parallel: true
     commands:
         packages-audit:
-            tags: frontend backend security
+            tags: frontend security
             run: pnpm audit
 
 pre-commit:

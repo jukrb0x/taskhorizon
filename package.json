@@ -5,6 +5,7 @@
         "doc": "docs"
     },
     "scripts": {
+        "dev": "turbo run dev",
         "build": "turbo run build",
         "build:app": "pnpm --filter @th/web -- build",
         "start:web": "pnpm --filter @th/web -- start",
