@@ -23,7 +23,7 @@ const todos: Prisma.TodoCreateInput[] = [
             connect: {
                 email: 'alice@a.com'
             }
-        },
+        }
     },
     {
         uuid: 'seeding-todo-2',
@@ -57,7 +57,7 @@ const events: Prisma.EventCreateInput[] = [
             }
         }
     }
-  ]
+];
 
 async function main() {
     for (const user of users) {

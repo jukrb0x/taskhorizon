@@ -1,5 +1,6 @@
 import { Command, CommandProvider, QuestionOptions } from '@tsed/cli-core';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 export interface HelloCommandContext {}
 
 @Command({
@@ -13,6 +14,7 @@ export class HelloCommand implements CommandProvider {
     /**
      *  Ask questions with Inquirer. Return an empty array or don't implement the method to skip this step
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async $prompt(initialOptions: Partial<HelloCommandContext>): Promise<QuestionOptions> {
         return [];
     }
@@ -29,6 +31,7 @@ export class HelloCommand implements CommandProvider {
     /**
      *  This step run your tasks with Listr module
      */
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     async $exec(ctx: HelloCommandContext): Promise<any> {
         return [
             {

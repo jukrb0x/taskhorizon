@@ -12,7 +12,6 @@ pre-push:
     commands:
         packages-audit:
             tags: security
-            exclude_tags: backend
             run: pnpm audit
 
 pre-commit:
@@ -35,6 +34,16 @@ pre-commit:
             tags: frontend
             glob: '*.{scss,css}'
             run: pnpm stylelint --fix {staged_files}
+        backend-prettier:
+            root: 'server/'
+            tags: backend
+            glob: '*.{ts,js,json,md,yml,yaml}'
+            run: pnpm prettier
+        backend-eslint:
+            root: 'server/'
+            tags: backend
+            glob: '*.{ts,js}'
+            run: pnpm test:lint:fix
         root-prettier:
             tags: root
             glob: '*.{js,ts,json,yml,yaml}'

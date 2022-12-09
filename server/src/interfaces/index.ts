@@ -1,9 +1,9 @@
-import { Prisma } from "../client";
+import { Prisma } from '../client';
 
 declare global {
-  namespace TsED {
-    interface Configuration {
-      prisma?: Prisma.PrismaClientOptions;
+    namespace TsED {
+        interface Configuration {
+            prisma?: Prisma.PrismaClientOptions;
+        }
     }
-  }
 }
