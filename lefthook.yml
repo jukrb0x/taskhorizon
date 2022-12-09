@@ -42,9 +42,9 @@ pre-commit:
             run: pnpm prettier --write {staged_files}
 
 commit-msg:
-  scripts:
-    "commitlint.sh":
-      runner: bash
+    scripts:
+        'commitlint.sh':
+            runner: bash
 
 commit: # why not `pnpm commit`
     commands:

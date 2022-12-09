@@ -21,13 +21,7 @@
             "~/*": ["./*"]
         }
     },
-    "include": [
-        "src",
-        "vite.config.ts",
-        "commitlint.config.js",
-        "tailwind.config.js",
-        "postcss.config.js"
-    ],
+    "include": ["src", "vite.config.ts", "tailwind.config.js", "postcss.config.js"],
     "references": [
         {
             "path": "./tsconfig.node.json"
