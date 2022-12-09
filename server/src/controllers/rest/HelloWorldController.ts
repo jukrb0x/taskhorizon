@@ -15,7 +15,7 @@ export class HelloWorldController {
     }
 
     @Get('/todo')
-    @Authorize('basic')
+    @Authorize('jwt')
     async getTodo() {
         const todo = await this.todoRepository.findMany({ where: { id: 1 } }).catch((err) => {
             return err;

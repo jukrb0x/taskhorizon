@@ -3,3 +3,4 @@
  */
 
 export * from './BasicProtocol';
+export * from './JwtProtocol';

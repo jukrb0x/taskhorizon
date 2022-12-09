@@ -15,23 +15,24 @@ import bodyParser from 'body-parser';
 import { UserModel } from '@/models';
 import cors from 'cors';
 
-const rootDir = __dirname;
-
 @Configuration({
     ...config,
     acceptMimes: ['application/json'],
     httpPort: process.env.PORT || 8083,
     httpsPort: false, // CHANGE
-    componentsScan: [`${rootDir}/services/**/*.ts`, `${rootDir}/protocols/**/*.ts`],
+    componentsScan: false,
     mount: {
         '/rest': [...Object.values(rest)],
-        '/': [...Object.values(pages)],
-        '/protocols': [...Object.values(protocols)]
+        '/': [...Object.values(pages)]
     },
+    imports: [...Object.values(protocols)],
     swagger: [
         {
             path: '/doc',
-            specVersion: '3.0.1'
+            specVersion: '3.0.1',
+            options: {
+                authorize: true
+            }
         }
     ],
     middlewares: [
