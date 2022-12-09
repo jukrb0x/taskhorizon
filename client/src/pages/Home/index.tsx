@@ -1,4 +1,4 @@
-import { Outlet } from 'react-router-dom';
+import { Navigate, Outlet } from 'react-router-dom';
 import { Layout } from '@douyinfe/semi-ui';
 import Resizer from '@/components/Resizer';
 import TodoApp from '@/components/Todo';
@@ -10,11 +10,17 @@ import { DndContext } from '@dnd-kit/core';
 
 const DragRegionOffsetWrapper = cls.div`tw-h-5`;
 
-export default function Home() {
+export default function HomeLayout() {
     const isTauri = useTauriExtension();
     const { Header, Content, Sider } = Layout;
 
     const { sidebarWidth } = useAppConfigStore();
+
+    // todo: auth login
+    if (false) {
+        return <Navigate to="/login" />;
+    }
+
     return (
         <DndContext>
             <div className={'tw-select-none tw-h-screen'}>
@@ -32,7 +38,9 @@ export default function Home() {
                             Header
                         </Header>
                         <Content>
-                            <Outlet />
+                            <div className={'tw-p-2 tw-h-full'}>
+                                <Outlet />
+                            </div>
                         </Content>
                     </Layout>
                 </Layout>

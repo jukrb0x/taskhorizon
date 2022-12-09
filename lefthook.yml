@@ -23,22 +23,22 @@ pre-commit:
             tags: frontend
             root: 'client/'
             glob: '*.{js,ts,jsx,tsx,scss,css,json,md,yml,yaml}'
-            run: pnpm prettier --write {staged_files}
+            run: pnpm prettier --write {staged_files} && git add {staged_files}
         frontend-eslint:
             tags: frontend
             root: 'client/'
             glob: '*.{js,ts,jsx,tsx}'
-            run: pnpm eslint --fix {staged_files}
+            run: pnpm eslint --fix {staged_files} && git add {staged_files}
         frontend-stylelint:
             root: 'client/'
             tags: frontend
             glob: '*.{scss,css}'
-            run: pnpm stylelint --fix {staged_files}
+            run: pnpm stylelint --fix {staged_files} && git add {staged_files}
         backend-prettier:
             root: 'server/'
             tags: backend
             glob: '*.{ts,js,json,md,yml,yaml}'
-            run: pnpm prettier
+            run: pnpm prettier && git add {staged_files}
         backend-eslint:
             root: 'server/'
             tags: backend
@@ -47,7 +47,7 @@ pre-commit:
         root-prettier:
             tags: root
             glob: '*.{js,ts,json,yml,yaml}'
-            run: pnpm prettier --write {staged_files}
+            run: pnpm prettier --write {staged_files} && git add {staged_files}
 
 commit-msg:
     scripts:

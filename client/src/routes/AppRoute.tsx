@@ -1,23 +1,24 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import Home from '@/pages/Home';
+import HomeLayout from '@/pages/Home';
 import BigCalendar from '@/components/Calendar';
 import NotFound from '@/routes/components/NotFound';
-import CalendarApp from '@/pages/Calendar';
 import { Playground } from '@/pages/Calendar/playground';
 import TodoApp from '@/components/Todo';
+import StartLayout from '@/pages/Auth';
 
 export default function AppRoute() {
     return (
         <Routes>
-            <Route path="/" element={<Home />}>
-                <Route index element={<Navigate to={'/calendar'} />} />
-                <Route path="/calendar" element={<CalendarApp />}>
+            <Route path="/">
+                <Route index element={<Navigate to={'/login'} />} />
+                <Route path="login" element={<StartLayout />} />
+
+                <Route path="calendar" element={<HomeLayout />}>
                     <Route index element={<BigCalendar />} />
-                    <Route path={'playground'} element={<Playground />} />
+                    <Route path="playground" element={<Playground />} />
                 </Route>
             </Route>
-            <Route path="/test" element={<TodoApp />} />
-            <Route path={'*'} element={<NotFound />} />
+            <Route path="*" element={<NotFound />} />
         </Routes>
     );
 }

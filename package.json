@@ -11,7 +11,8 @@
         "start:web": "pnpm --filter @th/web -- start",
         "start:app": "pnpm --filter @th/web -- start:app",
         "start:server": "pnpm --filter @th/server -- start",
-        "commit": "czg"
+        "commit": "czg",
+        "prepare": "lefthook install"
     },
     "repository": {
         "type": "git",
