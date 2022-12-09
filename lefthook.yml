@@ -11,7 +11,8 @@ pre-push:
     parallel: true
     commands:
         packages-audit:
-            tags: frontend security
+            tags: security
+            exclude_tags: backend
             run: pnpm audit
 
 pre-commit:
