@@ -42,5 +42,10 @@
         "commitizen": {
             "path": "node_modules/cz-git"
         }
+    },
+    "pnpm": {
+        "overrides": {
+            "got@<11.8.5": ">=11.8.5"
+        }
     }
 }

@@ -47,7 +47,6 @@ pre-commit:
         root-prettier:
             tags: root
             glob: '*.{js,ts,json,yml,yaml}'
-            exclude: 'client|server'
             run: pnpm prettier --write {staged_files}
 
 commit-msg:
