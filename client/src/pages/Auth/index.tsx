@@ -30,7 +30,7 @@ export default function AuthLayout() {
                         ref={ref}
                         className={clsx(
                             'tw-flex-grow tw-h-80 tw-justify-center tw-items-center tw-flex',
-                            'tw-w-96' // Safari Webview workaround
+                            'tw-w-72' // Safari Webview workaround
                         )}
                     >
                         <Outlet />
