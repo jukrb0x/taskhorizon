@@ -5,7 +5,7 @@ import NotFound from '@/routes/components/NotFound';
 import { Playground } from '@/pages/Calendar/playground';
 import WelcomeLayout from '@/pages/Welcome';
 import AuthLayout from '@/pages/Auth';
-import { Login, Register } from '@/components/Auth';
+import { Login, Signup } from '@/components/Auth';
 
 export default function AppRoute() {
     return (
@@ -15,7 +15,7 @@ export default function AppRoute() {
                 <Route path="auth" element={<AuthLayout />}>
                     <Route index element={<Navigate to={'login'} />} />
                     <Route path="login" element={<Login />} />
-                    <Route path="register" element={<Register />} />
+                    <Route path="signup" element={<Signup />} />
                 </Route>
 
                 <Route path="calendar" element={<HomeLayout />}>

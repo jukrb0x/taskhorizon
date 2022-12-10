@@ -11,7 +11,7 @@ export default function WelcomeLayout() {
                     <NavLink to={'/auth/login'}>
                         <Button>Login</Button>
                     </NavLink>
-                    <NavLink to={'/auth/register'}>
+                    <NavLink to={'/auth/signup'}>
                         <Button variant={'filled'} color={'red.5'}>
                             Try for Free
                         </Button>
