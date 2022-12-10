@@ -1,6 +1,6 @@
 [package]
 name = "taskhorizon"
-version = "0.2.2"
+version = "0.2.3"
 description = "Schedule your tasks and events in one place"
 authors = ["Jabriel"]
 license = ""
