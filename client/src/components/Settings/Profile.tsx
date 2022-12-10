@@ -18,7 +18,7 @@ export const Profile = () => {
                 {/* Modal content */}
                 asa
             </Modal>
-            <Button onClick={() => setOpened(true)}>Open modal</Button>
+            <Button onClick={() => setOpened(true)}>Profile</Button>
         </div>
     );
 };
