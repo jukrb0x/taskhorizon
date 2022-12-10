@@ -3,9 +3,11 @@
 <p align="center">
     <img width="310" alt="image" src="docs/logo.png" />
     <br />
+<!--
     <samp>
       TaskHorizon
     </samp>
+-->
   </p>
 </h1>
 <p align="center">
