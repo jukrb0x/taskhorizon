@@ -1,0 +1,62 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+generator tsed {
+    provider = "tsed-prisma"
+    output   = "../prisma/generated/tsed"
+}
+
+model User {
+    id        Int      @id @default(autoincrement())
+    updatedAt DateTime @default(now())
+    createdAt DateTime @default(now())
+    // ------
+    /// @TsED.Email()
+    /// @TsED.Description("Email of the user")
+    email     String   @unique
+    username  String   @unique
+    password  String
+    Todo      Todo[]
+    Event     Event[]
+}
+
+model Todo {
+    id           Int      @id @default(autoincrement())
+    updatedAt    DateTime @default(now())
+    createdAt    DateTime @default(now())
+    // ------
+    uuid         String   @unique
+    title        String
+    completed    Boolean  @default(false)
+    linkedEvents Event[]
+    // ------
+    User         User     @relation(fields: [userId], references: [id])
+    userId       Int
+}
+
+model Event {
+    id          Int      @id @default(autoincrement())
+    updatedAt   DateTime @default(now())
+    createdAt   DateTime @default(now())
+    // ------
+    uuid        String   @unique
+    title       String
+    description String?
+    start       DateTime
+    end         DateTime
+    allDay      Boolean  @default(false)
+    completed   Boolean  @default(false)
+    linkedTodos Todo[]
+    // ------
+    User        User     @relation(fields: [userId], references: [id])
+    userId      Int
+}

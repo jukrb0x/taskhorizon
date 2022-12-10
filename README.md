@@ -1,23 +1,29 @@
+
 <h1>
-  <p align="center">
+<p align="center">
+    <img width="310" alt="image" src="https://user-images.githubusercontent.com/15688641/206841113-0246670d-c86b-4f3b-9540-e1b72dce3af0.png" />
+    <br />
     <samp>
-      Calitdone
+      TaskHorizon
     </samp>
   </p>
 </h1>
 <p align="center">
   <em>
-    Schedule your todos and events in one place.
+    Schedule your tasks and events in one place.
   </em>
 </p>
 
 ![demo](./docs/background-demo.jpg)
 
-Project Calitdone integrates Todo-list and Calendar to create e a smooth experience for
+Project TaskHorizon integrates Todo-list and Calendar to create e a smooth experience for
 daily tasking and scheduling. Currently, we are working on the `web` and `macOS` version of the app. Features are coming from the future!
 
 See [Planned Roadmap](docs/Roadmap.md) and [Project real-time Roadmap](https://jabriel.notion.site/404ec6d1dd084c17a4a877afc327ee47) for latest updates.
 
+### Monorepo
+- `client` the Tauri x web app
+- `server` the backend server based on ts.ed and express.js
 ## Branches
 
 - `main` : stable branch
