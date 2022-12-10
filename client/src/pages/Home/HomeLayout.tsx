@@ -8,7 +8,7 @@ import { useResizer } from '@/hooks/use-resizer';
 import { useTauriExtension } from '@/hooks/use-tauri-extension';
 import { DndContext } from '@dnd-kit/core';
 import { Button } from '@/components/Button';
-import { Space } from '@mantine/core';
+import { Divider, Space } from '@mantine/core';
 import { Spacer } from '@/components/Spacer';
 import { Profile } from '@/components/Settings';
 

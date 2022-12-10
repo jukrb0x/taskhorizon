@@ -9,10 +9,7 @@ export default function AuthLayout() {
     const ref = useRef(null);
 
     useEffect(() => {
-        ref.current &&
-            autoAnimate(ref.current, {
-                easing: 'linear'
-            });
+        ref.current && autoAnimate(ref.current);
     }, [ref]);
 
     return (
@@ -27,7 +24,10 @@ export default function AuthLayout() {
                         </div>
                     </div>
                     <Divider orientation="vertical" className={'tw-mx-10'} />
-                    <div ref={ref}>
+                    <div
+                        ref={ref}
+                        className={'tw-flex-grow tw-h-80 tw-justify-center tw-items-center tw-flex'}
+                    >
                         <Outlet />
                     </div>
                 </div>
