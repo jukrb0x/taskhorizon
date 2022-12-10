@@ -1,7 +1,10 @@
+
 <h1>
-  <p align="center">
+<p align="center">
+    <img width="310" alt="image" src="https://user-images.githubusercontent.com/15688641/206841113-0246670d-c86b-4f3b-9540-e1b72dce3af0.png" />
+    <br />
     <samp>
-      Task Horizon
+      TaskHorizon
     </samp>
   </p>
 </h1>
