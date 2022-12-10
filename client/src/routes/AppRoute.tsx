@@ -1,5 +1,5 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
-import HomeLayout from '@/pages/Home';
+import { HomeLayout } from '@/pages/Home';
 import BigCalendar from '@/components/Calendar';
 import NotFound from '@/routes/components/NotFound';
 import { Playground } from '@/pages/Calendar/playground';
