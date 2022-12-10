@@ -38,9 +38,21 @@ model Todo {
     title        String
     completed    Boolean  @default(false)
     linkedEvents Event[]
+    Category     TodoCategory @relation(fields: [categoryId], references: [id])
+    categoryId   Int?
+    Order        Int? // Order in the list
     // ------
     User         User     @relation(fields: [userId], references: [id])
     userId       Int
+}
+
+model TodoCategory {
+    id        Int      @id @default(autoincrement())
+    updatedAt DateTime @default(now())
+    createdAt DateTime @default(now())
+    // ------
+    name      String   @unique
+    Todo      Todo[]
 }
 
 model Event {
