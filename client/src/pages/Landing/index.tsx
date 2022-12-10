@@ -5,7 +5,7 @@ import { Divider } from '@mantine/core';
 import { CopyrightBar } from '@/components/Heros/CopyrightBar';
 import { OpeningTransition } from '@/components/Transition';
 
-export default function WelcomeLayout() {
+export default function LandingLayout() {
     return (
         <OpeningTransition>
             <div className={'tw-flex tw-items-center tw-justify-center tw-h-screen'}>
