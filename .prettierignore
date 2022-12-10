@@ -1,4 +1,4 @@
 dist/
-./client/
-./server/
+client/
+server/
 *-lock.*
