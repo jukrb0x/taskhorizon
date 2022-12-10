@@ -29,6 +29,7 @@
         "@tabler/icons": "^1.112.0",
         "@tauri-apps/api": "^1.2.0",
         "@types/react-transition-group": "^4.4.5",
+        "axios": "^1.2.1",
         "clsx": "^1.2.1",
         "date-fns": "^2.29.3",
         "dayjs": "^1.11.6",
@@ -42,6 +43,7 @@
         "react-dom": "^18.2.0",
         "react-router-dom": "^6.4.3",
         "react-transition-group": "^4.4.5",
+        "swr": "^2.0.0",
         "zustand": "^4.1.4"
     },
     "devDependencies": {
