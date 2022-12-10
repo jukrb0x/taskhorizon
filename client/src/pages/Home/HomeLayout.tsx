@@ -33,8 +33,8 @@ export const HomeLayout = () => {
                         className={'tw-min-[300px] tw-max-[600px] tw-p-[15px]'}
                         style={{ width: `${sidebarWidth}px` }}
                     >
-                        {isTauri && <DragRegionOffsetWrapper />}
                         <div className={'tw-flex tw-flex-col tw-h-full'}>
+                            {isTauri && <DragRegionOffsetWrapper />}
                             <TodoApp />
                             <Spacer />
                             <div className={'tw-bottom-0'}>

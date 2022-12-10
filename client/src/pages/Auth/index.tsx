@@ -5,6 +5,7 @@ import autoAnimate from '@formkit/auto-animate';
 import { useEffect, useRef, useState } from 'react';
 import { Divider, Transition } from '@mantine/core';
 import { OpeningTransition } from '@/components/Transition';
+import clsx from 'clsx';
 
 export default function AuthLayout() {
     const ref = useRef(null);
@@ -27,7 +28,10 @@ export default function AuthLayout() {
                     <Divider orientation="vertical" className={'tw-mx-10'} />
                     <div
                         ref={ref}
-                        className={'tw-flex-grow tw-h-80 tw-justify-center tw-items-center tw-flex'}
+                        className={clsx(
+                            'tw-flex-grow tw-h-80 tw-justify-center tw-items-center tw-flex',
+                            'tw-w-96' // Safari Webview workaround
+                        )}
                     >
                         <Outlet />
                     </div>
