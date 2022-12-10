@@ -1,7 +1,9 @@
 import { Inject, Injectable } from '@tsed/di';
 import { UsersRepository } from '@/repositories';
-import { $log } from '@tsed/common';
 import { BadRequest } from '@tsed/exceptions';
+import { Session } from '@tsed/platform-params';
+import { $log } from '@tsed/common';
+import session from 'express-session';
 
 @Injectable()
 export class UserService {
@@ -49,6 +51,8 @@ export class UserService {
         }
         if (user.password !== password) {
             throw new BadRequest('Incorrect password');
+        } else {
+            // session store
         }
         return user;
     }
