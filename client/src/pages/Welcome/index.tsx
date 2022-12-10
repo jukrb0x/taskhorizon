@@ -1,6 +1,8 @@
 import { Button } from '@/components/Button';
-import { WelcomeTitle } from '@/components/Heros/Welcome';
+import { SocialIcons, WelcomeTitle } from '@/components/Heros';
 import { Navigate, NavLink } from 'react-router-dom';
+import { Divider } from '@mantine/core';
+import { CopyrightBar } from '@/components/Heros/CopyrightBar';
 
 export default function WelcomeLayout() {
     return (
@@ -17,6 +19,8 @@ export default function WelcomeLayout() {
                         </Button>
                     </NavLink>
                 </div>
+                <Divider className={'tw-mt-5 tw-mb-2'} />
+                <CopyrightBar />
             </div>
         </div>
     );

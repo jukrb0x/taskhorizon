@@ -1,4 +1,4 @@
-import { Title } from '@mantine/core';
+import { Badge, Title } from '@mantine/core';
 
 const WelcomeTitle = () => {
     return (
@@ -11,6 +11,11 @@ const WelcomeTitle = () => {
                     }
                 >
                     TaskHorizon
+                </span>
+                <span className={'tw-relative -tw-top-5'}>
+                    <Badge variant="gradient" gradient={{ from: 'orange', to: 'red' }} size={'xs'}>
+                        Preview
+                    </Badge>
                 </span>
             </Title>
             <Title order={5} weight={500}>

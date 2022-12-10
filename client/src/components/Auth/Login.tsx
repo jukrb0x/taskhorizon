@@ -18,7 +18,6 @@ const Login = () => {
                 </NavLink>
                 <NavLink to={'/auth/signup'}>
                     <MButton variant={'subtle'} color={'gray'} size={'xs'} className={'tw-px-1'}>
-                        {' '}
                         Sign up a new account
                     </MButton>
                 </NavLink>

@@ -10,6 +10,7 @@ const Signup = () => {
             <Title order={2}>Sign up</Title>
             <div className={'tw-my-5 tw-space-y-2'}>
                 <TextInput placeholder="Enter your username..." label="Username" />
+                <TextInput placeholder="you@email.com" label="Email" />
                 <PasswordInput placeholder="Password" label="Password" />
             </div>
             <div className={'tw-space-x-2'}>
