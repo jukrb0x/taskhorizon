@@ -1,11 +1,8 @@
 
 <h1>
 <p align="center">
-    <img width="310" alt="image" src="https://user-images.githubusercontent.com/15688641/206841113-0246670d-c86b-4f3b-9540-e1b72dce3af0.png">
+    <img width="310" alt="image" src="https://user-images.githubusercontent.com/15688641/206841113-0246670d-c86b-4f3b-9540-e1b72dce3af0.png" />
     <br>
-    <samp>
-      Task Horizon
-    </samp>
   </p>
 </h1>
 <p align="center">
@@ -15,7 +12,11 @@
 </p>
 
 ![demo](./docs/background-demo.jpg)
-
+<h1>
+    <samp>
+      TaskHorizon
+    </samp>
+</h1>
 Project TaskHorizon integrates Todo-list and Calendar to create e a smooth experience for
 daily tasking and scheduling. Currently, we are working on the `web` and `macOS` version of the app. Features are coming from the future!
 
