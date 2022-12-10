@@ -2,8 +2,9 @@ import { NavLink, Outlet } from 'react-router-dom';
 import { Button } from '@/components/Button';
 import { SocialIcons, WelcomeTitle } from '@/components/Heros';
 import autoAnimate from '@formkit/auto-animate';
-import { useEffect, useRef } from 'react';
-import { Divider } from '@mantine/core';
+import { useEffect, useRef, useState } from 'react';
+import { Divider, Transition } from '@mantine/core';
+import { OpeningTransition } from '@/components/Transition';
 
 export default function AuthLayout() {
     const ref = useRef(null);
