@@ -22,7 +22,7 @@ function DebugTools() {
 // draggable title bar
 const TauriWindowDragRegion = styled.div.attrs(() => ({
     'data-tauri-drag-region': true,
-    className:
+    'className':
         'tw-w-full tw-h-8 tw-absolute tw-z-[999]' +
         // debug start
         ' tw-bg-gray-500/30 tw-text-center tw-font-mono tw-opacity-50 tw-text-gray-500' // debug end
@@ -52,7 +52,7 @@ function App() {
     isTauri && document.addEventListener('contextmenu', (event) => event.preventDefault());
 
     return (
-        <HashRouter>
+        <BrowserRouter>
             {isTauri && <TauriWindowDragRegion />}
             <MantineProvider withGlobalStyles withNormalizeCSS theme={mantineTheme}>
                 <SemiConfigProvider locale={en_GB}>
@@ -60,7 +60,7 @@ function App() {
                     {import.meta.env.MODE === 'development' && <DebugTools />}
                 </SemiConfigProvider>
             </MantineProvider>
-        </HashRouter>
+        </BrowserRouter>
     );
 }
 
