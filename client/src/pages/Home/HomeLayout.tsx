@@ -1,14 +1,11 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { Layout } from '@douyinfe/semi-ui';
-import Resizer from '@/components/Resizer';
-import TodoApp from '@/components/Todo';
+import { Resizer } from '@/components/Resizer';
+import { TodoApp } from '@/components/Todo';
 import { cls } from '@/utils';
 import useAppConfigStore from '@/store/config-store';
-import { useResizer } from '@/hooks/use-resizer';
 import { useTauriExtension } from '@/hooks/use-tauri-extension';
 import { DndContext } from '@dnd-kit/core';
-import { Button } from '@/components/Button';
-import { Divider, Space } from '@mantine/core';
 import { Spacer } from '@/components/Spacer';
 import { Profile } from '@/components/Settings';
 

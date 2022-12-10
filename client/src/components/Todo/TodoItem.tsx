@@ -6,7 +6,7 @@ import clsx from 'clsx';
 import { IconTrash, IconX } from '@tabler/icons';
 import { useDraggable } from '@dnd-kit/core';
 
-export default function Item({ todo }: { todo: Todo }) {
+export const TodoItem = ({ todo }: { todo: Todo }) => {
     const { setTodo, toggleCompleted, removeTodo, setDragItem, clearDragItem } = useTodoStore();
     const [isActive, setIsActive] = useState<boolean>(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
@@ -116,15 +116,15 @@ export default function Item({ todo }: { todo: Todo }) {
                         className={'tw-flex-grow'}
                         styles={(theme) => ({
                             input: {
-                                color: theme.colors.gray[7],
-                                padding: '0!important',
-                                fontSize: theme.fontSizes.sm,
-                                minHeight: 'auto',
-                                backgroundColor: 'transparent',
+                                'color': theme.colors.gray[7],
+                                'padding': '0!important',
+                                'fontSize': theme.fontSizes.sm,
+                                'minHeight': 'auto',
+                                'backgroundColor': 'transparent',
                                 '&:focus': {
                                     outline: 'none'
                                 },
-                                overflow: 'hidden'
+                                'overflow': 'hidden'
                             }
                         })}
                         variant={'unstyled'}
@@ -160,4 +160,4 @@ export default function Item({ todo }: { todo: Todo }) {
             </div>
         </div>
     );
-}
+};

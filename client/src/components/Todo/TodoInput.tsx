@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { TextInput } from '@mantine/core';
 import { Button } from '@/components/Button';
 
-export default function Input() {
+export const TodoInput = () => {
     const { addTodo } = useTodoStore();
     const [title, setTitle] = useState<string>('');
 
@@ -56,4 +56,4 @@ export default function Input() {
             </div>
         </>
     );
-}
+};
