@@ -1,7 +1,7 @@
 [package]
-name = "calitdone"
+name = "taskhorizon"
 version = "0.2.2"
-description = "Schedule your todos and events in one place"
+description = "Schedule your tasks and events in one place"
 authors = ["Jabriel"]
 license = ""
 repository = ""

@@ -196,18 +196,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "calitdone"
-version = "0.2.2"
-dependencies = [
- "serde",
- "serde_json",
- "tauri",
- "tauri-build",
- "tokio",
- "tracing",
-]
-
-[[package]]
 name = "cargo_toml"
 version = "0.13.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2687,6 +2675,18 @@ dependencies = [
  "filetime",
  "libc",
  "xattr",
+]
+
+[[package]]
+name = "taskhorizon"
+version = "0.2.2"
+dependencies = [
+ "serde",
+ "serde_json",
+ "tauri",
+ "tauri-build",
+ "tokio",
+ "tracing",
 ]
 
 [[package]]
