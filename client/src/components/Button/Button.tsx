@@ -28,7 +28,7 @@ const _Button = forwardRef<HTMLButtonElement, ButtonProps>(({ children, ...props
             color={color}
             styles={() => ({
                 root: {
-                    borderColor: colorHex,
+                    'borderColor': colorHex,
                     '&:hover': {
                         backgroundColor: darkenColorHex,
                         borderColor: darkenColorHex
