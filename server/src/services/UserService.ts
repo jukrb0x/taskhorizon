@@ -1,11 +1,9 @@
 import { Inject, Injectable } from '@tsed/di';
 import { UsersRepository } from '@/repositories';
-import { BadRequest } from '@tsed/exceptions';
-import { Session } from '@tsed/platform-params';
-import { $log } from '@tsed/common';
-import session from 'express-session';
+import { BadRequest, InternalServerError } from '@tsed/exceptions';
 import jwt from 'jsonwebtoken';
 import { envs } from '@/config/envs';
+import { JwtOptions, jwtSign } from '@/config/jwt';
 
 @Injectable()
 export class UserService {
@@ -16,17 +14,21 @@ export class UserService {
         const REG_EMAIL =
             /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (REG_EMAIL.test(email)) {
-            return true;
+            return Promise.resolve(true);
         } else {
             throw new Error('Invalid email');
         }
     }
 
     async checkUserExists(username: string, email: string) {
-        this.checkEmail(email);
+        this.checkEmail(email).catch((e) => {
+            throw new BadRequest(e.message);
+        });
         const byUsername = await this.userRepo.findUnique({ where: { username: username } });
         const byEmail = await this.userRepo.findUnique({ where: { email: email } });
-        return byUsername !== null || byEmail !== null;
+        if (byUsername !== null || byEmail !== null) {
+            throw new BadRequest('User already exists');
+        }
     }
 
     async findByUsername(username: string) {
@@ -38,35 +40,35 @@ export class UserService {
     }
 
     async signup(username: string, email: string, password: string) {
-        const userExists = await this.checkUserExists(username, email);
-        if (userExists) {
-            throw new BadRequest('User already exists');
-        }
+        await this.checkUserExists(username, email);
         const user = await this.userRepo.create({ data: { email, username, password } });
-        return user;
+        // const res = await this.login(username, password) // AUTO LOGIN
+
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { password: pwd, updatedAt, createdAt, ...res } = user;
+        return res;
     }
 
     async login(username: string, password: string) {
         const user = await this.userRepo.findUnique({ where: { username: username } });
+        let token: string;
         if (user === null) {
             throw new BadRequest('User not found');
         } else if (user.password !== password) {
             throw new BadRequest('Incorrect password');
         } else {
             // sign jwt with username, email, user id
-            if (!envs.JWT_SECRET) {
-                throw new Error('JWT_SECRET not set');
-            }
-            const token = jwt.sign(
-                {
-                    username: user.username,
-                    email: user.email,
-                    id: user.id
-                },
-                envs.JWT_SECRET,
-                { expiresIn: '1h' }
-            );
+
+            token = jwtSign({
+                username: user.username,
+                email: user.email,
+                id: user.id
+            });
+            // token = jwt.sign(envs.JWT_SECRET, JwtOptions);
         }
-        return user;
+        return {
+            user: { username: user.username, email: user.email, id: user.id },
+            token: token
+        };
     }
 }

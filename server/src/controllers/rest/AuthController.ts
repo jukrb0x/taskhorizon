@@ -13,15 +13,7 @@ export class AuthController {
 
     @Post('/login')
     login(@Req() req: Req, @BodyParams('email') email: string, @BodyParams('password') password: string) {
-        this.userService
-            .login(email, password)
-            .then((r) => {
-                return $log.info(r);
-            })
-            .catch((e) => {
-                // todo
-                $log.error(e);
-            });
+        return this.userService.login(email, password);
     }
 
     @Post('/signup')
