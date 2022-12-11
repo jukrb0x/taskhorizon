@@ -17,7 +17,7 @@ export class AuthController {
     }
 
     @Post('/signup')
-    register(
+    signup(
         @Req() req: Req,
         @BodyParams('username') username: string,
         @BodyParams('email') email: string,
