@@ -1,9 +1,13 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Button } from '@/components';
 import { Text, PasswordInput, TextInput, Title, Button as MButton } from '@mantine/core';
 import { login } from '@/apis';
 import { useCallback, useState } from 'react';
 import { useForm } from '@mantine/form';
+import { useUser } from '@/hooks';
+import useUserStore from '@/store/user-store';
+import { showNotification } from '@mantine/notifications';
+import { IconCheck } from '@tabler/icons';
 
 interface LoginFormValues {
     username: string;
@@ -11,6 +15,7 @@ interface LoginFormValues {
 }
 
 const Login = () => {
+    const navigate = useNavigate();
     const form = useForm<LoginFormValues>({
         initialValues: {
             username: '',
@@ -33,7 +38,17 @@ const Login = () => {
     });
 
     const handleLogin = useCallback(async () => {
-        await login(form.values.username, form.values.password);
+        const { data } = await login(form.values.username, form.values.password);
+        if (data) {
+            useUserStore.setState({ ...data.user, token: data.token });
+            showNotification({
+                title: `${data.user.username}, Welcome back!`,
+                message: 'You have successfully logged in',
+                color: 'teal',
+                icon: <IconCheck />
+            });
+            navigate('/');
+        }
     }, [login, form.values]);
 
     return (

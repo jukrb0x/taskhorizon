@@ -19,8 +19,8 @@ const beforeRequest = (config: AxiosRequestConfig) => {
     return config;
 };
 
-const responseSuccess = async (response: AxiosResponse) => {
-    return await response.data;
+const responseSuccess = (response: AxiosResponse) => {
+    return response;
 };
 
 interface BadRequest extends Error {

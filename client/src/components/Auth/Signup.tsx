@@ -1,10 +1,12 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { Button } from '@/components';
 import { Text, PasswordInput, TextInput, Title, Button as MButton, Tooltip } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useCallback } from 'react';
 import { REG_EMAIL } from '@/utils/common-regex';
 import { signup } from '@/apis';
+import { showNotification } from '@mantine/notifications';
+import { IconCheck } from '@tabler/icons';
 
 interface SignupFormValues {
     username: string;
@@ -14,6 +16,7 @@ interface SignupFormValues {
 }
 
 const Signup = () => {
+    const navigate = useNavigate();
     const form = useForm<SignupFormValues>({
         initialValues: {
             username: '',
@@ -60,7 +63,18 @@ const Signup = () => {
     });
 
     const handleSignup = useCallback(async () => {
-        await signup(form.values.username, form.values.email, form.values.password);
+        const res = await signup(form.values.username, form.values.email, form.values.password);
+        if (res) {
+            showNotification({
+                title: 'Signup successful',
+                message: 'You will be redirected to login page in 3 seconds...',
+                color: 'teal',
+                icon: <IconCheck size={18} />
+            });
+            setTimeout(() => {
+                navigate('/auth/login');
+            }, 3000);
+        }
     }, [form.values, signup]);
 
     return (
