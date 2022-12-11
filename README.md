@@ -23,7 +23,7 @@ TaskHorizon is a productivity app that combines To-do and Calendar functionality
 See [Planned Roadmap](docs/Roadmap.md) and [Project real-time Roadmap](https://jabriel.notion.site/404ec6d1dd084c17a4a877afc327ee47) for latest updates.
 
 ### Monorepo
-- `client` the Tauri x eb app
+- `client` the Tauri x Web app
 - `server` the backend server based on ts.ed and express.js
 ## Branches
 
