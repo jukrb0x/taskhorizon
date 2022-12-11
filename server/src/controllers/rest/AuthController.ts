@@ -12,8 +12,8 @@ export class AuthController {
     private userService: UserService;
 
     @Post('/login')
-    login(@Req() req: Req, @BodyParams('email') email: string, @BodyParams('password') password: string) {
-        return this.userService.login(email, password);
+    login(@Req() req: Req, @BodyParams('username') username: string, @BodyParams('password') password: string) {
+        return this.userService.login(username, password);
     }
 
     @Post('/signup')

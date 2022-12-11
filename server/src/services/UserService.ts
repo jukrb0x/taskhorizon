@@ -4,6 +4,7 @@ import { BadRequest, InternalServerError } from '@tsed/exceptions';
 import jwt from 'jsonwebtoken';
 import { envs } from '@/config/envs';
 import { JwtOptions, jwtSign } from '@/config/jwt';
+import { $log } from '@tsed/common';
 
 @Injectable()
 export class UserService {
@@ -51,6 +52,7 @@ export class UserService {
 
     async login(username: string, password: string) {
         const user = await this.userRepo.findUnique({ where: { username: username } });
+
         let token: string;
         if (user === null) {
             throw new BadRequest('User not found');

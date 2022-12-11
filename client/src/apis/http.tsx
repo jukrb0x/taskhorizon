@@ -23,7 +23,14 @@ const responseSuccess = async (response: AxiosResponse) => {
     return await response.data;
 };
 
-const responseFailed = async (error: AxiosError) => {
+interface BadRequest extends Error {
+    name: string;
+    message: string;
+    status: number;
+    errors: [];
+}
+
+const responseFailed = async (error: AxiosError<BadRequest>) => {
     const { response, code, message } = error;
     const notificationPayload = {
         title: code,
@@ -37,8 +44,11 @@ const responseFailed = async (error: AxiosError) => {
         notificationPayload.message = 'Please check your network connection.';
         errorMessageToThrow = 'Your network is offline';
     } else if (response) {
-        notificationPayload.title = `Error ${response.status.toString()}`;
-        notificationPayload.message = response.statusText;
+        // notificationPayload.title = `Error ${response.status} ${response.statusText}`;
+        notificationPayload.title = 'Something went wrong...';
+        notificationPayload.message = response.data.message
+            ? response.data.message
+            : response.statusText;
         errorMessageToThrow = 'Error: ' + response.status + ' ' + response.statusText;
     }
     showNotification(notificationPayload);
