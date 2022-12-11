@@ -11,6 +11,7 @@ import { MantineProvider } from '@mantine/core';
 import { useTauriExtension } from '@/hooks/use-tauri-extension';
 import { ConfigProvider as SemiConfigProvider } from '@douyinfe/semi-ui';
 import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
+import { NotificationsProvider } from '@mantine/notifications';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -55,10 +56,12 @@ function App() {
         <BrowserRouter>
             {isTauri && <TauriWindowDragRegion />}
             <MantineProvider withGlobalStyles withNormalizeCSS theme={mantineTheme}>
-                <SemiConfigProvider locale={en_GB}>
-                    <AppRoute />
-                    {import.meta.env.MODE === 'development' && <DebugTools />}
-                </SemiConfigProvider>
+                <NotificationsProvider>
+                    <SemiConfigProvider locale={en_GB}>
+                        <AppRoute />
+                        {import.meta.env.MODE === 'development' && <DebugTools />}
+                    </SemiConfigProvider>
+                </NotificationsProvider>
             </MantineProvider>
         </BrowserRouter>
     );

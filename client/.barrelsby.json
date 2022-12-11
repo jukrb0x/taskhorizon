@@ -1,5 +1,5 @@
 {
-    "directory": ["./src/components"],
+    "directory": ["./src/components", "./src/hooks", "./src/apis"],
     "exclude": ["__mock__", "__mocks__", ".spec.ts", ".test.ts"],
     "delete": true,
     "singleQuotes": true

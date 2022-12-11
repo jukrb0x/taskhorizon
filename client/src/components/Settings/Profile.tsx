@@ -1,6 +1,7 @@
 import { Modal } from '@mantine/core';
 import { useState } from 'react';
 import { Button } from '@/components';
+import http from '@/apis/http';
 
 export const Profile = () => {
     const [opened, setOpened] = useState(false);
@@ -18,6 +19,13 @@ export const Profile = () => {
                 {/* Modal content */}
                 asa
             </Modal>
+            <Button
+                onClick={() => {
+                    http.get('/hello-world/todo');
+                }}
+            >
+                Oodal
+            </Button>
             <Button onClick={() => setOpened(true)}>Profile</Button>
         </div>
     );

@@ -25,4 +25,11 @@ export class AuthController {
     ) {
         return this.userService.signup(username, email, password);
     }
+
+    @Post('/logout')
+    logout(@Req() req: Req, @BodyParams('token') token: string) {
+        $log.info('logout: ', token);
+        return true; // jwt logout
+        // return this.userService.logout(token);
+    }
 }

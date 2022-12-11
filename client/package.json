@@ -27,6 +27,7 @@
         "@mantine/core": "^5.8.2",
         "@mantine/dates": "^5.8.2",
         "@mantine/hooks": "^5.8.2",
+        "@mantine/notifications": "^5.9.3",
         "@tabler/icons": "^1.112.0",
         "@tauri-apps/api": "^1.2.0",
         "@types/react-transition-group": "^4.4.5",

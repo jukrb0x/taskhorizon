@@ -57,18 +57,25 @@ export class UserService {
         } else if (user.password !== password) {
             throw new BadRequest('Incorrect password');
         } else {
-            // sign jwt with username, email, user id
-
             token = jwtSign({
                 username: user.username,
                 email: user.email,
                 id: user.id
             });
-            // token = jwt.sign(envs.JWT_SECRET, JwtOptions);
         }
         return {
             user: { username: user.username, email: user.email, id: user.id },
             token: token
         };
+    }
+
+    async logout(token: string) {
+        // TODO: implement logout with a blacklist
+        const decoded = await jwt.verify(token, envs.JWT_SECRET as string);
+        if (decoded) {
+            return true;
+        } else {
+            throw new InternalServerError('Invalid token');
+        }
     }
 }
