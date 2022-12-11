@@ -8,6 +8,7 @@ interface UserStoreState {
     setUsername: (username: string) => void;
     getUsername: () => string;
     token: string;
+    logout: () => void;
 }
 
 const UserStore: StateCreator<UserStoreState> = (set, get) => ({
@@ -26,7 +27,15 @@ const UserStore: StateCreator<UserStoreState> = (set, get) => ({
         }
         return get().username;
     },
-    token: ''
+    token: '',
+    logout: () => {
+        set(() => ({
+            uid: -1,
+            username: '',
+            email: '',
+            token: ''
+        }));
+    }
 });
 
 const useUserStore = create<UserStoreState>()(

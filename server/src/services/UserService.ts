@@ -64,7 +64,7 @@ export class UserService {
             });
         }
         return {
-            user: { username: user.username, email: user.email, id: user.id },
+            data: { username: user.username, email: user.email, id: user.id },
             token: token
         };
     }

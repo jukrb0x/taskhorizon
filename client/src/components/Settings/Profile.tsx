@@ -1,7 +1,7 @@
 import { Modal } from '@mantine/core';
 import { useState } from 'react';
 import { Button } from '@/components';
-import http from '@/apis/http';
+import { http } from '@/apis/http';
 
 export const Profile = () => {
     const [opened, setOpened] = useState(false);

@@ -14,7 +14,9 @@ const Login = () => {
             </div>
             <div className={'tw-space-x-2'}>
                 <NavLink to={'/auth/login'}>
-                    <Button size={'xs'}>Login</Button>
+                    <Button size={'xs'} onClick={}>
+                        Login
+                    </Button>
                 </NavLink>
                 <NavLink to={'/auth/signup'}>
                     <MButton variant={'subtle'} color={'gray'} size={'xs'} className={'tw-px-1'}>
