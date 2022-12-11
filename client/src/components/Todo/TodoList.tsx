@@ -1,4 +1,4 @@
-import { TodoItem } from '@/components/Todo/TodoItem';
+import { TodoItem } from '@/components';
 import { Todo } from '@/store/todo-store';
 import { DndContext } from '@dnd-kit/core';
 

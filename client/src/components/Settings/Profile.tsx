@@ -1,6 +1,6 @@
 import { Modal } from '@mantine/core';
 import { useState } from 'react';
-import { Button } from '@/components/Button';
+import { Button } from '@/components';
 
 export const Profile = () => {
     const [opened, setOpened] = useState(false);

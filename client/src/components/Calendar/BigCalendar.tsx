@@ -7,7 +7,7 @@ import './styles/default/dragAndDrop.scss';
 import { useEventStore, useTodoStore } from '@/store';
 import { CalendarEvent } from '@/store/event-store';
 import { SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react';
-import { EventCard, EventCardMode } from '@/components/EventCard';
+import { EventCard, EventCardMode } from '@/components';
 import {
     flip,
     offset,

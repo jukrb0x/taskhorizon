@@ -2,7 +2,7 @@ import { Todo } from '@/store/todo-store';
 import { useTodoStore } from '@/store';
 import { useState } from 'react';
 import { TextInput } from '@mantine/core';
-import { Button } from '@/components/Button';
+import { Button } from '@/components';
 
 export const TodoInput = () => {
     const { addTodo } = useTodoStore();

@@ -1,10 +1,10 @@
 import { NavLink, Outlet } from 'react-router-dom';
-import { Button } from '@/components/Button';
-import { SocialIcons, WelcomeTitle } from '@/components/Heros';
+import { Button } from '@/components';
+import { SocialIcons, WelcomeTitle } from '@/components';
 import autoAnimate from '@formkit/auto-animate';
 import { useEffect, useRef, useState } from 'react';
 import { Divider, Transition } from '@mantine/core';
-import { OpeningTransition } from '@/components/Transition';
+import { OpeningTransition } from '@/components';
 import clsx from 'clsx';
 
 export default function AuthLayout() {

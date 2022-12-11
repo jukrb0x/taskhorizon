@@ -10,7 +10,7 @@ import {
     Menu,
     Transition
 } from '@mantine/core';
-import { Button } from '@/components/Button';
+import { Button } from '@/components';
 import * as dateFns from 'date-fns';
 import { DatetimePicker } from './DatetimePicker';
 import { CalendarEvent } from '@/store/event-store';

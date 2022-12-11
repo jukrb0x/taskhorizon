@@ -1,9 +1,9 @@
-import { Button } from '@/components/Button';
-import { SocialIcons, WelcomeTitle } from '@/components/Heros';
+import { Button } from '@/components';
+import { SocialIcons, WelcomeTitle } from '@/components';
 import { Navigate, NavLink } from 'react-router-dom';
 import { Divider } from '@mantine/core';
-import { CopyrightBar } from '@/components/Heros/CopyrightBar';
-import { OpeningTransition } from '@/components/Transition';
+import { CopyrightBar } from '@/components';
+import { OpeningTransition } from '@/components';
 
 export const LandingLayout = () => (
     <OpeningTransition transition={'pop'} duration={800}>

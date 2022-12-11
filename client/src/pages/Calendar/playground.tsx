@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { Checkbox, Group, TextInput, Textarea, Select } from '@mantine/core';
-import { Button } from '@/components/Button';
+import { Button } from '@/components';
 import { DatePicker, TimeInput } from '@mantine/dates';
 import { Input, TimePicker } from '@douyinfe/semi-ui';
 import * as dateFns from 'date-fns';
-import { EventCard } from '@/components/EventCard';
+import { EventCard } from '@/components';
 
 const TestEventCard = () => {
     const [title, setTitle] = useState<string>('');
@@ -64,10 +64,10 @@ const TestEventCard = () => {
                                                 height: '100%'
                                             },
                                             input: {
-                                                height: '100%',
-                                                minHeight: '100%',
-                                                lineHeight: '100%',
-                                                padding: '0 0.5px',
+                                                'height': '100%',
+                                                'minHeight': '100%',
+                                                'lineHeight': '100%',
+                                                'padding': '0 0.5px',
                                                 // border: 'none',
                                                 '&:focus': {
                                                     borderColor: theme.colors.gray[5]
@@ -133,10 +133,10 @@ const TestEventCard = () => {
                                                 height: '100%'
                                             },
                                             input: {
-                                                height: '100%',
-                                                minHeight: '100%',
-                                                lineHeight: '100%',
-                                                padding: '0 0.5px',
+                                                'height': '100%',
+                                                'minHeight': '100%',
+                                                'lineHeight': '100%',
+                                                'padding': '0 0.5px',
                                                 // border: 'none',
                                                 '&:focus': {
                                                     borderColor: theme.colors.gray[5]

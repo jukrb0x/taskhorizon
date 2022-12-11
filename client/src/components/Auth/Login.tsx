@@ -1,5 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import { Button } from '@/components/Button';
+import { Button } from '@/components';
 import { Text, PasswordInput, TextInput, Title, Button as MButton } from '@mantine/core';
 
 const Login = () => {
