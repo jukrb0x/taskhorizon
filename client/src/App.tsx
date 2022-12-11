@@ -2,7 +2,7 @@ import './index.scss';
 import { invoke } from '@tauri-apps/api';
 import { useEffect } from 'react';
 import AppRoute from '@/routes/AppRoute';
-import { BrowserRouter, HashRouter } from 'react-router-dom';
+import { BrowserRouter, HashRouter, MemoryRouter } from 'react-router-dom';
 import DebugPanelWrapper from '@/routes/components/DebugPanel';
 import styled from 'styled-components';
 // import { DndProvider } from 'react-dnd';

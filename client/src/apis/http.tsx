@@ -1,5 +1,4 @@
 import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
-import useUserStore from '@/store/user-store';
 import userStore from '@/store/user-store';
 import { showNotification } from '@mantine/notifications';
 import { IconX } from '@tabler/icons';
@@ -8,8 +7,8 @@ const http = axios.create({
     baseURL: `${import.meta.env.VITE_BASE_URL}/rest`,
     headers: {
         'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': 'Bearer ' + useUserStore.getState().token
+        'Accept': 'application/json'
+        // 'Authorization': 'Bearer ' + useUserStore.getState().token
     }
 });
 
@@ -30,7 +29,7 @@ interface BadRequest extends Error {
     errors: [];
 }
 
-const responseFailed = async (error: AxiosError<BadRequest>) => {
+const responseFailed = (error: AxiosError<BadRequest>) => {
     const { response, code, message } = error;
     const notificationPayload = {
         title: code,
@@ -55,7 +54,12 @@ const responseFailed = async (error: AxiosError<BadRequest>) => {
     throw new Error(errorMessageToThrow);
 };
 
+const refillInterceptor = () => {
+    http.interceptors.request.use(beforeRequest);
+    http.interceptors.response.use(responseSuccess, responseFailed);
+};
+
 http.interceptors.request.use(beforeRequest);
 http.interceptors.response.use(responseSuccess, responseFailed);
 
-export { http };
+export { http, refillInterceptor };

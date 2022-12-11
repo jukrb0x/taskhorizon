@@ -1,10 +1,12 @@
-import { http } from '@/apis';
+import { http, refillInterceptor } from '@/apis';
 import useSWR from 'swr';
 import useUserStore from '@/store/user-store';
 import { useEffect } from 'react';
 
-http.interceptors.response.clear();
-const fetcher = (url: string) => http.get(url).then((res) => res.data);
+const fetcher = (url: string) => {
+    http.interceptors.response.clear();
+    return http.get(url).then((res) => res.data);
+};
 
 interface Response {
     user: {
@@ -16,9 +18,10 @@ interface Response {
 
 export const useUser = () => {
     const { data, error, isLoading, mutate } = useSWR<Response>('/auth/user', fetcher);
-    // console.log(error.response.status);
 
     const loggedOut = error && !data;
+
+    refillInterceptor();
 
     return {
         user: data,

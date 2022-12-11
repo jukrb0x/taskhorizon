@@ -2,8 +2,13 @@ import { Modal } from '@mantine/core';
 import { useState } from 'react';
 import { Button } from '@/components';
 import { http } from '@/apis/http';
+import { logout } from '@/apis';
+import { useNavigate } from 'react-router-dom';
+import { useUser } from '@/hooks';
+import { mutate } from 'swr';
 
 export const Profile = () => {
+    const navigate = useNavigate();
     const [opened, setOpened] = useState(false);
 
     return (
@@ -21,12 +26,12 @@ export const Profile = () => {
             </Modal>
             <Button
                 onClick={() => {
-                    http.get('/hello-world/todo');
+                    logout();
                 }}
             >
                 Oodal
             </Button>
-            <Button onClick={() => setOpened(true)}>Profile</Button>
+            <Button onClick={() => setOpened(true)}>Profile</Button>;
         </div>
     );
 };

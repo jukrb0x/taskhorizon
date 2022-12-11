@@ -1,5 +1,8 @@
 import { http } from '@/apis/http';
 import useUserStore from '@/store/user-store';
+import { useNavigate } from 'react-router-dom';
+import { mutate } from 'swr';
+import { showNotification } from '@mantine/notifications';
 
 interface LoginResponse {
     user: {
@@ -24,8 +27,13 @@ const signup = async (username: string, email: string, password: string) => {
     return await http.post<SignupResponse>('/auth/signup', { username, email, password });
 };
 
-const logout = () => {
-    useUserStore().logout();
+const logout = async () => {
+    useUserStore.getState().logout();
+    const a = await mutate('/auth/user', null, { revalidate: true });
+    showNotification({
+        title: 'You have been logged out',
+        message: 'Please log in again to continue'
+    });
 };
 
 export { login, logout, signup };

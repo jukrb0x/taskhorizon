@@ -1,6 +1,6 @@
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import { Layout } from '@douyinfe/semi-ui';
-import { Resizer } from '@/components';
+import { Button, Resizer } from '@/components';
 import { TodoApp } from '@/components';
 import { cls } from '@/utils';
 import useAppConfigStore from '@/store/config-store';
@@ -11,6 +11,9 @@ import { Profile } from '@/components';
 import { Divider, LoadingOverlay } from '@mantine/core';
 import { useUser } from '@/hooks';
 import { useEffect } from 'react';
+import { logout } from '@/apis';
+import { mutate } from 'swr';
+import useUserStore from '@/store/user-store';
 
 const DragRegionOffsetWrapper = cls.div`tw-h-5`;
 
@@ -19,16 +22,19 @@ export const HomeLayout = () => {
     const { Header, Content, Sider } = Layout;
     const navigate = useNavigate();
     const { user, loggedOut, isLoading } = useUser();
+    const { token } = useUserStore();
+
     useEffect(() => {
-        if (user && loggedOut) {
+        if (loggedOut) {
             navigate('/auth/login');
         }
-    }, [user, loggedOut]);
+    }, [loggedOut]);
 
     const { sidebarWidth } = useAppConfigStore();
 
     return (
         <>
+            {!user && isLoading && <LoadingOverlay visible />}
             <DndContext>
                 <div className={'tw-select-none tw-h-screen'}>
                     <Layout hasSider className={'tw-h-screen'}>

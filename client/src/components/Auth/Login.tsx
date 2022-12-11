@@ -7,6 +7,7 @@ import { useForm } from '@mantine/form';
 import useUserStore from '@/store/user-store';
 import { showNotification } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons';
+import { mutate } from 'swr';
 
 interface LoginFormValues {
     username: string;
@@ -46,7 +47,7 @@ const Login = () => {
                 color: 'teal',
                 icon: <IconCheck />
             });
-            navigate('/');
+            navigate('/calendar');
         }
     }, [login, form.values]);
 
