@@ -31,6 +31,6 @@ export class AuthController {
         @BodyParams('email') email: string,
         @BodyParams('password') password: string
     ) {
-        return this.userService.register(username, email, password);
+        return this.userService.signup(username, email, password);
     }
 }

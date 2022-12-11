@@ -4,6 +4,8 @@ import { BadRequest } from '@tsed/exceptions';
 import { Session } from '@tsed/platform-params';
 import { $log } from '@tsed/common';
 import session from 'express-session';
+import jwt from 'jsonwebtoken';
+import { envs } from '@/config/envs';
 
 @Injectable()
 export class UserService {
@@ -35,7 +37,7 @@ export class UserService {
         return user;
     }
 
-    async register(username: string, email: string, password: string) {
+    async signup(username: string, email: string, password: string) {
         const userExists = await this.checkUserExists(username, email);
         if (userExists) {
             throw new BadRequest('User already exists');
@@ -48,11 +50,22 @@ export class UserService {
         const user = await this.userRepo.findUnique({ where: { username: username } });
         if (user === null) {
             throw new BadRequest('User not found');
-        }
-        if (user.password !== password) {
+        } else if (user.password !== password) {
             throw new BadRequest('Incorrect password');
         } else {
-            // session store
+            // sign jwt with username, email, user id
+            if (!envs.JWT_SECRET) {
+                throw new Error('JWT_SECRET not set');
+            }
+            const token = jwt.sign(
+                {
+                    username: user.username,
+                    email: user.email,
+                    id: user.id
+                },
+                envs.JWT_SECRET,
+                { expiresIn: '1h' }
+            );
         }
         return user;
     }
