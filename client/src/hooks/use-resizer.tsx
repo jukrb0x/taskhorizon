@@ -4,7 +4,7 @@ import useAppConfigStore from '@/store/config-store';
 
 export const useResizer = () => {
     const ref = useRef<HTMLDivElement | null>(null);
-    const { setSidebarWidth } = useAppConfigStore();
+    const { setSidebarWidth } = useAppConfigStore(); // todo: (low priority) return the width instead of setting it to store
     const [isResizing, setIsResizing] = useState(false);
 
     const startResizing = useCallback(() => {

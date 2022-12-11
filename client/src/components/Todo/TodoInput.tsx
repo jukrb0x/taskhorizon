@@ -3,8 +3,9 @@ import { useTodoStore } from '@/store';
 import { useState } from 'react';
 import { TextInput } from '@mantine/core';
 import { Button } from '@/components';
+import clsx from 'clsx';
 
-export const TodoInput = () => {
+export const TodoInput = (props: { className?: string }) => {
     const { addTodo } = useTodoStore();
     const [title, setTitle] = useState<string>('');
 
@@ -21,7 +22,7 @@ export const TodoInput = () => {
 
     return (
         <>
-            <div className={'tw-flex flex-row tw-gap-1.5 tw-mb-5'}>
+            <div className={clsx('tw-flex flex-row tw-gap-1.5 tw-mb-5', props.className)}>
                 <TextInput
                     className={'tw-flex-auto'}
                     // ref={inputRef}

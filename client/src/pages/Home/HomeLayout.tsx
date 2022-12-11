@@ -1,13 +1,14 @@
 import { Navigate, Outlet } from 'react-router-dom';
 import { Layout } from '@douyinfe/semi-ui';
-import { Resizer } from '@/components/Resizer';
-import { TodoApp } from '@/components/Todo';
+import { Resizer } from '@/components';
+import { TodoApp } from '@/components';
 import { cls } from '@/utils';
 import useAppConfigStore from '@/store/config-store';
 import { useTauriExtension } from '@/hooks/use-tauri-extension';
 import { DndContext } from '@dnd-kit/core';
-import { Spacer } from '@/components/Spacer';
-import { Profile } from '@/components/Settings';
+import { Spacer } from '@/components';
+import { Profile } from '@/components';
+import { Divider } from '@mantine/core';
 
 const DragRegionOffsetWrapper = cls.div`tw-h-5`;
 
@@ -27,15 +28,21 @@ export const HomeLayout = () => {
             <div className={'tw-select-none tw-h-screen'}>
                 <Layout hasSider className={'tw-h-screen'}>
                     <Sider
-                        className={'tw-min-[300px] tw-max-[600px] tw-p-[15px]'}
+                        className={'tw-min-[300px] tw-max-[600px] '}
                         style={{ width: `${sidebarWidth}px` }}
                     >
                         <div className={'tw-flex tw-flex-col tw-h-full'}>
                             {isTauri && <DragRegionOffsetWrapper />}
-                            <TodoApp />
+                            <TodoApp
+                                TodoListClassName={'tw-px-3.5'}
+                                TodoInputClassName={'tw-px-3.5 tw-pt-3.5'}
+                            />
                             <Spacer />
                             <div className={'tw-bottom-0'}>
-                                <Profile />
+                                <Divider />
+                                <div className={'tw-p-3.5'}>
+                                    <Profile />
+                                </div>
                             </div>
                         </div>
                     </Sider>
