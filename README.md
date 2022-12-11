@@ -18,13 +18,12 @@
 
 ![demo](./docs/background-demo.jpg)
 
-Project TaskHorizon integrates Todo-list and Calendar to create e a smooth experience for
-daily tasking and scheduling. Currently, we are working on the `web` and `macOS` version of the app. Features are coming from the future!
+TaskHorizon is a productivity app that combines To-do and Calendar functionality to enable effective daily task management and scheduling, providing a seamless experience for users. We are currently focused on developing the web and macOS versions of the app, with several exciting new features in the pipeline.
 
 See [Planned Roadmap](docs/Roadmap.md) and [Project real-time Roadmap](https://jabriel.notion.site/404ec6d1dd084c17a4a877afc327ee47) for latest updates.
 
 ### Monorepo
-- `client` the Tauri x web app
+- `client` the Tauri x eb app
 - `server` the backend server based on ts.ed and express.js
 ## Branches
 
