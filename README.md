@@ -1,6 +1,6 @@
 
 <h1>
-<p align="center">
+<div align="center">
     <img width="310" alt="image" src="docs/logo.png" />
     <br />
 <!--
@@ -8,7 +8,7 @@
       TaskHorizon
     </samp>
 -->
-  </p>
+  </div>
 </h1>
 <p align="center">
   <em>
