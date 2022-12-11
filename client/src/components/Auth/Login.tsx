@@ -4,7 +4,6 @@ import { Text, PasswordInput, TextInput, Title, Button as MButton } from '@manti
 import { login } from '@/apis';
 import { useCallback, useState } from 'react';
 import { useForm } from '@mantine/form';
-import { useUser } from '@/hooks';
 import useUserStore from '@/store/user-store';
 import { showNotification } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons';

@@ -87,9 +87,9 @@ export const BigCalendar = () => {
         setSelectable(true);
     });
 
-    // --- Calendar Handlers ---
+    // --- Playground Handlers ---
 
-    // handle dragged to-do to create Calendar event
+    // handle dragged to-do to create Playground event
     const createEventFromTodo = useCallback(
         (e: { start: Date; end: Date; allDay: boolean }) => {
             if (dragItem === null) return;

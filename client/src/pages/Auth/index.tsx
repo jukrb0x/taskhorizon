@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router-dom';
+import { Navigate, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { Button } from '@/components';
 import { SocialIcons, WelcomeTitle } from '@/components';
 import autoAnimate from '@formkit/auto-animate';
@@ -6,8 +6,19 @@ import { useEffect, useRef, useState } from 'react';
 import { Divider, Transition } from '@mantine/core';
 import { OpeningTransition } from '@/components';
 import clsx from 'clsx';
+import { useUser } from '@/hooks';
+import useUserStore from '@/store/user-store';
 
 export default function AuthLayout() {
+    const navigate = useNavigate();
+    const { user, loggedOut } = useUser();
+
+    useEffect(() => {
+        if (user && !loggedOut) {
+            navigate('/calendar');
+        }
+    }, [user, loggedOut]);
+
     const ref = useRef(null);
 
     useEffect(() => {
