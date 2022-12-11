@@ -37,7 +37,6 @@ const rootDir = __dirname;
         }
     ],
     middlewares: [
-        'cors',
         'cookie-parser',
         'compression',
         'method-override',
@@ -63,10 +62,8 @@ export class Server {
     protected settings: Configuration;
 
     $beforeRoutesInit() {
-        this.app
-            .use(cors())
-            .use(cookieParser())
-            .use(methodOverride())
+        this.app // @Configuration(middlewares: []) will register after this
+            .use(cors({ origin: '*', credentials: true }))
             .use(bodyParser.json())
             .use(
                 bodyParser.urlencoded({

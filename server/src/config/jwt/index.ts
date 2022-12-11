@@ -1,16 +1,22 @@
 import jwt, { SignOptions } from 'jsonwebtoken';
 import { envs } from '@/config/envs';
 import { InternalServerError } from '@tsed/exceptions';
+import { ExtractJwt } from 'passport-jwt';
+import { Req } from '@tsed/common';
 
-export interface JwtPayload {
+export interface JwtPayload extends jwt.JwtPayload {
+    uid: number;
     username: string;
     email: string;
-    id: number;
-    iat: number;
-    exp: number;
-    aud: string;
-    iss: string;
 }
+
+export const getJwtSecret = (): string => {
+    if (envs.JWT_SECRET) {
+        return envs.JWT_SECRET;
+    } else {
+        throw new InternalServerError('JWT_SECRET is not defined');
+    }
+};
 
 export const JwtOptions: SignOptions = {
     expiresIn: '1d',
@@ -19,8 +25,12 @@ export const JwtOptions: SignOptions = {
 };
 
 export function jwtSign(payload: Partial<JwtPayload>): string {
-    if (!envs.JWT_SECRET) {
+    if (!getJwtSecret()) {
         throw new InternalServerError('JWT SECRET not set');
     }
-    return jwt.sign(payload, envs.JWT_SECRET, JwtOptions);
+    return jwt.sign(payload, getJwtSecret(), JwtOptions);
+}
+
+export function extractBearerToken(req: Req): string | null {
+    return ExtractJwt.fromAuthHeaderAsBearerToken()(req);
 }

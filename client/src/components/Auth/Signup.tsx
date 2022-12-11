@@ -67,13 +67,13 @@ const Signup = () => {
         if (res) {
             showNotification({
                 title: 'Signup successful',
-                message: 'You will be redirected to login page in 3 seconds...',
+                message: 'You will be redirected to login page now...',
                 color: 'teal',
                 icon: <IconCheck size={18} />
             });
             setTimeout(() => {
                 navigate('/auth/login');
-            }, 3000);
+            }, 500);
         }
     }, [form.values, signup]);
 

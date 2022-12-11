@@ -3,8 +3,13 @@ import { UsersRepository } from '@/repositories';
 import { BadRequest, InternalServerError } from '@tsed/exceptions';
 import jwt from 'jsonwebtoken';
 import { envs } from '@/config/envs';
-import { JwtOptions, jwtSign } from '@/config/jwt';
-import { $log } from '@tsed/common';
+import { getJwtSecret, jwtSign } from '@/config/jwt';
+
+export interface UserResponseModel {
+    uid: number;
+    username: string;
+    email: string;
+}
 
 @Injectable()
 export class UserService {
@@ -40,17 +45,19 @@ export class UserService {
         return user;
     }
 
-    async signup(username: string, email: string, password: string) {
+    async signup(username: string, email: string, password: string): Promise<UserResponseModel> {
         await this.checkUserExists(username, email);
         const user = await this.userRepo.create({ data: { email, username, password } });
-        // const res = await this.login(username, password) // AUTO LOGIN
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        const { password: pwd, updatedAt, createdAt, ...res } = user;
-        return res;
+        return {
+            uid: user.id,
+            username: user.username,
+            email: user.email
+        };
     }
 
-    async login(username: string, password: string) {
+    async login(username: string, password: string): Promise<{ user: UserResponseModel; token: string }> {
         const user = await this.userRepo.findUnique({ where: { username: username } });
 
         let token: string;
@@ -62,18 +69,18 @@ export class UserService {
             token = jwtSign({
                 username: user.username,
                 email: user.email,
-                id: user.id
+                uid: user.id
             });
         }
         return {
-            data: { username: user.username, email: user.email, id: user.id },
+            user: { username: user.username, email: user.email, uid: user.id },
             token: token
         };
     }
 
     async logout(token: string) {
         // TODO: implement logout with a blacklist
-        const decoded = await jwt.verify(token, envs.JWT_SECRET as string);
+        const decoded = await jwt.verify(token, getJwtSecret());
         if (decoded) {
             return true;
         } else {

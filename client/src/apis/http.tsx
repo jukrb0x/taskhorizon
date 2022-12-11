@@ -29,7 +29,7 @@ interface BadRequest extends Error {
     errors: [];
 }
 
-const responseFailed = (error: AxiosError<BadRequest>) => {
+const responseFailed = /*async*/ (error: AxiosError<BadRequest>) => {
     const { response, code, message } = error;
     const notificationPayload = {
         title: code,
@@ -48,10 +48,10 @@ const responseFailed = (error: AxiosError<BadRequest>) => {
         notificationPayload.message = response.data.message
             ? response.data.message
             : response.statusText;
-        errorMessageToThrow = 'Error: ' + response.status + ' ' + response.statusText;
+        // errorMessageToThrow = 'Error: ' + response.status + ' ' + response.statusText;
     }
     showNotification(notificationPayload);
-    throw new Error(errorMessageToThrow);
+    // throw new Error(errorMessageToThrow);
 };
 
 const refillInterceptor = () => {

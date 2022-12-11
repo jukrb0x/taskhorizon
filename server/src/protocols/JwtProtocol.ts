@@ -4,7 +4,7 @@ import { ExtractJwt, Strategy, StrategyOptions } from 'passport-jwt';
 import { UserService } from '@/services/UserService';
 import { Inject } from '@tsed/di';
 import { envs } from '@/config/envs';
-import { JwtOptions, JwtPayload } from '@/config/jwt';
+import { getJwtSecret, JwtOptions, JwtPayload } from '@/config/jwt';
 
 console.log('JwtOptions', JwtOptions);
 
@@ -13,7 +13,7 @@ console.log('JwtOptions', JwtOptions);
     useStrategy: Strategy,
     settings: {
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-        secretOrKey: envs.JWT_SECRET,
+        secretOrKey: getJwtSecret(),
         jsonWebTokenOptions: JwtOptions
     }
 })
