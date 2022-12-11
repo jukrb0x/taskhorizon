@@ -72,7 +72,6 @@
         "eslint-plugin-n": "^15.5.0",
         "eslint-plugin-promise": "^6.1.1",
         "eslint-plugin-react": "^7.31.11",
-        "lint-staged": "^13.0.3",
         "postcss": "^8.4.18",
         "prettier": "2.7.1",
         "sass": "^1.56.0",
@@ -85,16 +84,6 @@
         "typescript": "*",
         "vite": "^3.2.3",
         "vitest": "^0.25.3"
-    },
-    "lint-staged": {
-        "*.{js,jsx,ts,tsx}": [
-            "prettier --write",
-            "eslint --fix"
-        ],
-        "*.{scss,css}": [
-            "prettier --write",
-            "stylelint --fix"
-        ]
     },
     "resolutions": {
         "styled-components": "^5"
