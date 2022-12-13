@@ -31,7 +31,7 @@ const TauriWindowDragRegion = styled.div.attrs(() => ({
 }))`
     // debug start
     &::after {
-        content: 'Tauri Window Rrag Region';
+        content: 'DEBUG Tauri Window Rrag Region';
     }
 
     // debug end

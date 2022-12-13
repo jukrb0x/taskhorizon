@@ -81,7 +81,10 @@ export const HomeLayout = () => {
                             </div>
                         </Sider>
                         <Resizer />
-                        <Layout className={'tw-relative'} style={{ left: `calc(${sidebarWidth})` }}>
+                        <Layout
+                            className={'tw-relative hide-scrollbar'}
+                            style={{ left: `calc(${sidebarWidth})` }}
+                        >
                             <Header
                                 className={
                                     'tw-font-bold tw-text-center tw-z-30 tw-bg-amber-100 tw-opacity-50 tw-h-7 tw-font-mono'
