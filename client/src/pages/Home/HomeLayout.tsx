@@ -83,9 +83,11 @@ export const HomeLayout = () => {
                         <Resizer />
                         <Layout className={'tw-relative'} style={{ left: `calc(${sidebarWidth})` }}>
                             <Header
-                                className={'tw-font-bold tw-text-center tw-z-30 tw-bg-amber-100'}
+                                className={
+                                    'tw-font-bold tw-text-center tw-z-30 tw-bg-amber-100 tw-opacity-50 tw-h-7 tw-font-mono'
+                                }
                             >
-                                Header
+                                PREVIEW - HEADER PLACEHOLDER
                             </Header>
                             <Content>
                                 <div className={'tw-p-2 tw-h-full'}>
