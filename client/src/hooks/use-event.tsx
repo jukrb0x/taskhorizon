@@ -1,4 +1,4 @@
-import { useEventStore, useTodoStore } from '@/store';
+import { Todo, useEventStore, useTodoStore } from '@/store';
 import { CalendarEvent } from '@/store/event-store';
 
 /**
@@ -38,10 +38,30 @@ export const useEvent = () => {
         });
     };
 
+    /**
+     * @param id
+     * @description Toggle Event completed status
+     * @description Event (n - 1) Todo
+     * @description Todo will be toggled when all linked event is completed
+     */
     const toggleCompleted = (id: string) => {
         const event = getEventById(id);
         if (event) {
-            updateLinkedTodos(toggleEventCompleted(id));
+            const toggledEvent = toggleEventCompleted(id);
+            // process linked todos, usually it's only one linked todo for one event
+            toggledEvent.linkedTodos?.forEach((todoId) => {
+                const todo = getTodoById(todoId) as Todo;
+                const uncompletedEvents = todo?.linkedEvents?.filter((eventId) => {
+                    const event = getEventById(eventId);
+                    return !event?.completed;
+                });
+                if (uncompletedEvents?.length == 0) {
+                    // all linked events are completed
+                    setTodo(todoId, { ...todo, completed: true });
+                } else {
+                    setTodo(todoId, { ...todo, completed: false });
+                }
+            });
         }
     };
 
@@ -50,6 +70,7 @@ export const useEvent = () => {
     };
     const removeEvent = (id: string) => {
         removeEventInternal(id).linkedTodos?.forEach((todoId) => {
+            // remove all linked todos, usually it should be only one
             removeTodo(todoId);
         });
     };

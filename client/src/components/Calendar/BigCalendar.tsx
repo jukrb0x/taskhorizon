@@ -214,7 +214,8 @@ export const BigCalendar = () => {
                 allDay: false,
                 start: slotInfo.start,
                 end: slotInfo.end,
-                title: ''
+                title: '',
+                desc: ''
             };
             setPopEventCard(newEvent, 'create', bounds);
             setPopVisible(true);
@@ -289,7 +290,7 @@ export const BigCalendar = () => {
                     onEventDrop={(val) => handleEventDrop(val as EventDropProps)}
                     onDragOver={(event) => {
                         event.preventDefault();
-                        console.log('onDragOver', event);
+                        // console.log('onDragOver', event);
                     }}
                     /* eslint-disable-next-line @typescript-eslint/ban-ts-comment */
                     // @ts-ignore

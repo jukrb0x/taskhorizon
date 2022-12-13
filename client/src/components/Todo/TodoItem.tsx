@@ -54,7 +54,7 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
     const handleDragStart = useCallback(
         (e: MouseEvent) => {
             setDragItem(todo);
-            console.log('drag start', todo);
+            // console.log('drag start', todo);
         },
         [todo]
     );
