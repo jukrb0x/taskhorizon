@@ -1,14 +1,16 @@
-import { Text, Checkbox, Textarea, ActionIcon, Menu, Tooltip } from '@mantine/core';
+import { ActionIcon, Checkbox, Menu, Text, Textarea, Tooltip } from '@mantine/core';
 import { Todo } from '@/store/todo-store';
-import { useCallback, useState, MouseEvent, useEffect, RefObject, MutableRefObject } from 'react';
+import { MouseEvent, MutableRefObject, useCallback, useMemo, useState } from 'react';
 import clsx from 'clsx';
 import { IconTrash, IconX } from '@tabler/icons';
 import { useDraggable } from '@dnd-kit/core';
 import { useEventListener, useMergedRef } from '@mantine/hooks';
 import { useTodo } from '@/hooks';
+import { format } from 'date-fns';
 
 export const TodoItem = ({ todo }: { todo: Todo }) => {
-    const { setTodo, toggleCompleted, removeTodo, setDragItem, clearDragItem } = useTodo();
+    const { setTodo, toggleCompleted, removeTodo, setDragItem, clearDragItem, getEventById } =
+        useTodo();
     const [isActive, setIsActive] = useState<boolean>(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [title, setTitle] = useState<string>(todo.title || ''); // todo
@@ -39,6 +41,18 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
         },
         [setIsEdit]
     );
+
+    const linkedEventNumber = todo.linkedEvents?.length || 0;
+    const formattedLinkedEventsDateTimeList = useMemo(() => {
+        return todo.linkedEvents
+            ?.map((eventId) => {
+                return getEventById(eventId)?.start as Date;
+            })
+            .sort((a, b) => a.getTime() - b.getTime())
+            .map((DT) => {
+                return format(DT, 'eee, dd MMMM') + ' at ' + format(DT, 'HH:mm');
+            });
+    }, [todo, getEventById]);
 
     const handleSave = useCallback(() => {
         if (title.trim() == '') return;
@@ -149,20 +163,31 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
                         }}
                     />
                 )}
-                <div>
-                    <ActionIcon
-                        radius={'xl'}
-                        size={'xs'}
-                        className={mouseHover ? 'tw-w-fit' : 'tw-hidden'}
-                        // color={mouseHover ? 'gray' : 'gray-light'}
-                        // style={{ display: !isEdit ? '' : '' }} // fixme: confirm before delete, show only when edit
-                    >
-                        <Tooltip withArrow label={'hoo'}>
-                            <div>Lliasd</div>
-                        </Tooltip>
-                        {/*<IconX size={15} />*/}
-                    </ActionIcon>
-                </div>
+                {linkedEventNumber > 0 && (
+                    <div>
+                        <Text
+                            size={'xs'}
+                            className={mouseHover ? 'tw-w-fit tw-px-1' : 'tw-hidden'}
+                            color={'gray'}
+                        >
+                            <Tooltip
+                                withArrow
+                                multiline
+                                position={'bottom'}
+                                styles={() => ({
+                                    tooltip: {
+                                        width: 'max-content'
+                                    }
+                                })}
+                                label={formattedLinkedEventsDateTimeList?.map((date, index) => (
+                                    <div key={index}>{date}</div>
+                                ))}
+                            >
+                                <div>{linkedEventNumber}</div>
+                            </Tooltip>
+                        </Text>
+                    </div>
+                )}
                 <Menu
                     transition={'scale-y'}
                     opened={menuOpen}

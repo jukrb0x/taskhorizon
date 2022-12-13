@@ -117,6 +117,7 @@ export const useEvent = () => {
         addEvent,
         addLinkedTodo,
         toggleCompleted,
-        removeEvent
+        removeEvent,
+        getEventById
     };
 };

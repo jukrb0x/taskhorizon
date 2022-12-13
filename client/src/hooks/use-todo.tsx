@@ -63,6 +63,7 @@ export const useTodo = () => {
         setTodo,
         addTodo,
         toggleCompleted,
-        removeTodo
+        removeTodo,
+        getEventById
     };
 };
