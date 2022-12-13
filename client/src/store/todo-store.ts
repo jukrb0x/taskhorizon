@@ -13,7 +13,7 @@ interface Todo {
 interface TodoStoreState {
     todoList: Todo[];
     addTodo: (newTodo: Todo) => void;
-    setTodo: (id: string, newTodo: Todo) => void;
+    setTodo: (id: string, newTodo: Todo) => Todo;
     removeTodo: (id: string) => void;
     getTodoById: (id: string) => Todo | undefined;
     toggleCompleted: (id: string) => void;
@@ -54,6 +54,7 @@ const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({
                     : todo
             )
         }));
+        return newTodo;
     },
     removeTodo: (id: string) =>
         set((state) => ({ todoList: state.todoList.filter((todo) => todo.id !== id) })),

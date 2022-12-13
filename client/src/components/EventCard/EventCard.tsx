@@ -17,6 +17,7 @@ import { CalendarEvent } from '@/store/event-store';
 import { useEventStore } from '@/store';
 import { IconChevronDown, IconDots, IconTrash } from '@tabler/icons';
 import { useEventListener } from '@mantine/hooks';
+import { useEvent } from '@/hooks';
 
 type EventCardMode = 'edit' | 'create';
 
@@ -32,7 +33,7 @@ const EventCard = (props: EventCardProps) => {
     const defaultEvent = props.value;
 
     // ----- STORE -----
-    const { addEvent, setEvent, removeEvent, toggleCompleted } = useEventStore();
+    const { addEvent, setEvent, removeEvent, toggleCompleted } = useEvent();
 
     // ----- STATES -----
     const [title, setTitle] = useState<string>(defaultEvent?.title || '');
