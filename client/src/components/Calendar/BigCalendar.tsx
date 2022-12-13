@@ -5,7 +5,7 @@ import moment from 'moment';
 import './styles/default/styles.scss';
 import './styles/default/dragAndDrop.scss';
 import { CalendarEvent } from '@/store/event-store';
-import { SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react';
+import { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { EventCard, EventCardMode } from '@/components';
 import {
     flip,
@@ -26,6 +26,7 @@ import './styles/animation.scss';
 import { useEventListener } from '@mantine/hooks';
 import { useEvent } from '@/hooks/use-event';
 import { useTodo } from '@/hooks';
+import CustomToolbar from '@/components/Calendar/components/CustomToolbar';
 
 const localizer = momentLocalizer(moment); // todo: use luxon, later when we need multi-timezone support, moment.js is not good enough
 
@@ -179,6 +180,7 @@ export const BigCalendar = () => {
             }
         }
     }, []);
+
     // create event
     const handleSelectSlot = useCallback(
         (slotInfo: SlotInfo) => {
@@ -192,13 +194,6 @@ export const BigCalendar = () => {
                     .getBoundingClientRect();
                 break;
             case 'click':
-                // const els = document.getElementsByClassName(slotInfo.start.toISOString());
-                // for (let i = 0; i < els.length; i++) {
-                //     if (els[i].closest('.rbc-day-slot')) {
-                //         // there are two elements has exact same class name but one is time gutter
-                //         bounds = els[i].getBoundingClientRect();
-                //     }
-                // }
                 if (slotInfo) {
                     bounds =
                             getElementFromStartTime(slotInfo.start)?.getBoundingClientRect() ||
@@ -223,6 +218,12 @@ export const BigCalendar = () => {
         [setPopVisible, setSelectable, setPopEventCard]
     ); /* handleSelectSlot */
 
+    const calendarComponents = useMemo(
+        () => ({
+            toolbar: CustomToolbar
+        }),
+        []
+    );
     const eventCardWrapperRef = useRef(null); // css transition ref
 
     return (
@@ -268,6 +269,9 @@ export const BigCalendar = () => {
 
             <div ref={calendarRef}>
                 <DnDCalendar
+                    components={calendarComponents}
+                    // toolbar={false}
+                    selected={popEvent}
                     defaultView={'week'}
                     views={['week', 'day']}
                     step={15}
