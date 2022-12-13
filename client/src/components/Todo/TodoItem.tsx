@@ -118,6 +118,8 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
                     <Textarea
                         autoFocus={true}
                         onFocus={(e) => {
+                            // sync state from store
+                            setTitle(todo.title);
                             // move cursor to the end
                             e.target.value = '';
                             e.target.value = title;
