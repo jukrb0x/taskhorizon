@@ -45,10 +45,9 @@ export const HomeLayout = () => {
                             <div className={'tw-flex tw-flex-col tw-h-full'}>
                                 {isTauri && <DragRegionOffsetWrapper />}
                                 <TodoApp
-                                    TodoListClassName={'tw-px-3.5'}
+                                    TodoListClassName={'tw-px-3.5 tw-flex-grow'}
                                     TodoInputClassName={'tw-px-3.5 tw-pt-3.5'}
                                 />
-                                <Spacer />
                                 <div className={'tw-bottom-0'}>
                                     <Divider />
                                     <div className={'tw-p-3.5'}>

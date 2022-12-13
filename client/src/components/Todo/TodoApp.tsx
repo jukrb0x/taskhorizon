@@ -11,10 +11,8 @@ export const TodoApp = (props: { TodoInputClassName?: string; TodoListClassName?
     return (
         <>
             <TodoInput className={props.TodoInputClassName} />
-            <ScrollArea type={'never'}>
-                <div ref={ref} className={props.TodoListClassName}>
-                    <TodoList todos={todoList} />
-                </div>
+            <ScrollArea type={'never'} className={props.TodoListClassName} ref={ref}>
+                <TodoList todos={todoList} />
             </ScrollArea>
         </>
     );

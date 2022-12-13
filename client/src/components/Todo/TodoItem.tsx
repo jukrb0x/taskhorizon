@@ -1,18 +1,29 @@
 import { Text, Checkbox, Textarea, ActionIcon, Menu } from '@mantine/core';
 import { Todo } from '@/store/todo-store';
 import { useTodoStore } from '@/store';
-import { useCallback, useState, MouseEvent } from 'react';
+import { useCallback, useState, MouseEvent, useEffect, RefObject, MutableRefObject } from 'react';
 import clsx from 'clsx';
 import { IconTrash, IconX } from '@tabler/icons';
 import { useDraggable } from '@dnd-kit/core';
+import { useEventListener, useMergedRef } from '@mantine/hooks';
 
 export const TodoItem = ({ todo }: { todo: Todo }) => {
     const { setTodo, toggleCompleted, removeTodo, setDragItem, clearDragItem } = useTodoStore();
     const [isActive, setIsActive] = useState<boolean>(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [title, setTitle] = useState<string>(todo.title || '');
+    const [mouseHover, setMouseHover] = useState<boolean>(false);
+    const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
-    // const re
+    const ref = useMergedRef<HTMLDivElement>(
+        useEventListener('mouseenter', () =>
+            setMouseHover(true)
+        ) as MutableRefObject<HTMLDivElement>,
+        useEventListener('mouseleave', () => {
+            setMouseHover(false);
+            setMenuOpen(false);
+        }) as MutableRefObject<HTMLDivElement>
+    );
 
     const handleToggle = useCallback(() => {
         toggleCompleted(todo.id);
@@ -54,6 +65,7 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
 
     return (
         <div
+            ref={ref}
             className={clsx('tw-p-1 tw-rounded-md', {
                 'tw-bg-gray-200': isEdit || isActive,
                 'hover:tw-bg-gray-100': !isEdit || !isActive
@@ -63,14 +75,12 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
             // ref={setNodeRef}
             // {...listeners}
             // {...attributes}
+            onBlur={(e) => {
+                e.preventDefault();
+                handleSave();
+            }}
         >
-            <div
-                className={'tw-flex tw-items-start tw-items-center'}
-                onBlur={(e) => {
-                    e.preventDefault();
-                    handleSave();
-                }}
-            >
+            <div className={'tw-flex tw-items-start tw-items-center'}>
                 <Checkbox
                     className={'tw-mr-1.5'}
                     checked={todo.completed}
@@ -137,12 +147,20 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
                         }}
                     />
                 )}
-                <Menu transition={'scale-y'}>
+                <Menu
+                    transition={'scale-y'}
+                    opened={menuOpen}
+                    onChange={setMenuOpen}
+                    position={'bottom-end'}
+                    offset={-2}
+                >
                     <Menu.Target>
                         <ActionIcon
                             radius={'xl'}
                             size={'xs'}
-                            style={{ display: !isEdit ? '' : '' }} // fixme: confirm before delete, show only when edit
+                            className={mouseHover ? '' : 'tw-hidden'}
+                            // color={mouseHover ? 'gray' : 'gray-light'}
+                            // style={{ display: !isEdit ? '' : '' }} // fixme: confirm before delete, show only when edit
                         >
                             <IconX size={15} />
                         </ActionIcon>
