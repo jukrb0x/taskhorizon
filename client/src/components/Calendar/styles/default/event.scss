@@ -20,6 +20,12 @@
     }
 
     &.rbc-selected {
+        // todo: remove it when blur
+        // background-color: darken($event-bg, 5%);
+    }
+
+    &:hover,
+    &:active {
         background-color: darken($event-bg, 5%);
     }
 
@@ -41,6 +47,7 @@
     border-top-left-radius: 0;
     border-bottom-left-radius: 0;
 }
+
 .rbc-event-continues-after {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -50,6 +57,7 @@
     border-top-left-radius: 0;
     border-top-right-radius: 0;
 }
+
 .rbc-event-continues-later {
     border-bottom-left-radius: 0;
     border-bottom-right-radius: 0;
