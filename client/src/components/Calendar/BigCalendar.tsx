@@ -4,7 +4,6 @@ import moment from 'moment';
 // import luxon from 'luxon';
 import './styles/default/styles.scss';
 import './styles/default/dragAndDrop.scss';
-import { useEventStore, useTodoStore } from '@/store';
 import { CalendarEvent } from '@/store/event-store';
 import { SyntheticEvent, useCallback, useEffect, useRef, useState } from 'react';
 import { EventCard, EventCardMode } from '@/components';
@@ -26,6 +25,7 @@ import { CSSTransition } from 'react-transition-group';
 import './styles/animation.scss';
 import { useEventListener } from '@mantine/hooks';
 import { useEvent } from '@/hooks/use-event';
+import { useTodo } from '@/hooks';
 
 const localizer = momentLocalizer(moment); // todo: use luxon, later when we need multi-timezone support, moment.js is not good enough
 
@@ -36,7 +36,7 @@ const DnDCalendar = withDragAndDrop(Calendar);
 export const BigCalendar = () => {
     // const { eventList, setEvent, addEvent, addLinkedTodo } = useEventStore();
     const { eventList, setEvent, addEvent, addLinkedTodo } = useEvent();
-    const { dragItem, clearDragItem, addLinkedEvent } = useTodoStore();
+    const { dragItem, clearDragItem, addLinkedEvent } = useTodo();
     // Floating Event Card (Pop-up)
     const [popEvent, setPopEvent] = useState<CalendarEvent>();
     const [popMode, setPopMode] = useState<EventCardMode>('create');

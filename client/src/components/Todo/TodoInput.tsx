@@ -1,12 +1,12 @@
 import { Todo } from '@/store/todo-store';
-import { useTodoStore } from '@/store';
 import { useState } from 'react';
 import { TextInput } from '@mantine/core';
 import { Button } from '@/components';
 import clsx from 'clsx';
+import { useTodo } from '@/hooks';
 
 export const TodoInput = (props: { className?: string }) => {
-    const { addTodo } = useTodoStore();
+    const { addTodo } = useTodo();
     const [title, setTitle] = useState<string>('');
 
     const handleAdd = () => {

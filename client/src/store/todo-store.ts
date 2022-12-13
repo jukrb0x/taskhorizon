@@ -14,9 +14,9 @@ interface TodoStoreState {
     todoList: Todo[];
     addTodo: (newTodo: Todo) => void;
     setTodo: (id: string, newTodo: Todo) => Todo;
-    removeTodo: (id: string) => void;
+    removeTodo: (id: string) => Todo;
     getTodoById: (id: string) => Todo | undefined;
-    toggleCompleted: (id: string) => void;
+    toggleCompleted: (id: string) => Todo;
     dragItem: Todo | null;
     setDragItem: (item: Todo) => void;
     clearDragItem: () => void;
@@ -56,9 +56,12 @@ const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({
         }));
         return newTodo;
     },
-    removeTodo: (id: string) =>
-        set((state) => ({ todoList: state.todoList.filter((todo) => todo.id !== id) })),
-    toggleCompleted: (id: string) =>
+    removeTodo: (id: string) => {
+        const removedTodo = get().getTodoById(id) as Todo;
+        set((state) => ({ todoList: state.todoList.filter((todo) => todo.id !== id) }));
+        return removedTodo;
+    },
+    toggleCompleted: (id: string) => {
         set((state) => ({
             todoList: state.todoList.map((todo) =>
                 todo.id === id
@@ -68,7 +71,9 @@ const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({
                     }
                     : todo
             )
-        })),
+        }));
+        return get().getTodoById(id) as Todo;
+    },
     getTodoById: (id: string) => get().todoList.find((todo) => todo.id === id),
     dragItem: null,
     setDragItem: (item: Todo) => set(() => ({ dragItem: item })),
@@ -87,7 +92,7 @@ const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({
     }
 });
 
-const useTodoStore = create<TodoStoreState>()(
+export const useTodoStore = create<TodoStoreState>()(
     devtools(
         persist(TodoStore, {
             name: 'todo-store',
@@ -102,4 +107,3 @@ const useTodoStore = create<TodoStoreState>()(
 );
 export type { Todo };
 export { TodoIdGenerator };
-export default useTodoStore;

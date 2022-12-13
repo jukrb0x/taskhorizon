@@ -1,17 +1,17 @@
 import { Text, Checkbox, Textarea, ActionIcon, Menu } from '@mantine/core';
 import { Todo } from '@/store/todo-store';
-import { useTodoStore } from '@/store';
 import { useCallback, useState, MouseEvent, useEffect, RefObject, MutableRefObject } from 'react';
 import clsx from 'clsx';
 import { IconTrash, IconX } from '@tabler/icons';
 import { useDraggable } from '@dnd-kit/core';
 import { useEventListener, useMergedRef } from '@mantine/hooks';
+import { useTodo } from '@/hooks';
 
 export const TodoItem = ({ todo }: { todo: Todo }) => {
-    const { setTodo, toggleCompleted, removeTodo, setDragItem, clearDragItem } = useTodoStore();
+    const { setTodo, toggleCompleted, removeTodo, setDragItem, clearDragItem } = useTodo();
     const [isActive, setIsActive] = useState<boolean>(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
-    const [title, setTitle] = useState<string>(todo.title || '');
+    const [title, setTitle] = useState<string>(todo.title || ''); // todo
     const [mouseHover, setMouseHover] = useState<boolean>(false);
     const [menuOpen, setMenuOpen] = useState<boolean>(false);
 

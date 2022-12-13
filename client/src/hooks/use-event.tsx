@@ -10,8 +10,9 @@ export const useEvent = () => {
         setEvent: setEventInternal,
         addEvent,
         addLinkedTodo,
-        removeEvent,
-        toggleCompleted: toggleEventCompleted
+        removeEvent: removeEventInternal,
+        toggleCompleted: toggleEventCompleted,
+        getEventById
     } = useEventStore();
     const {
         todoList,
@@ -38,12 +39,19 @@ export const useEvent = () => {
     };
 
     const toggleCompleted = (id: string) => {
-        const toggedEvent = toggleEventCompleted(id);
-        if (toggedEvent) updateLinkedTodos(toggedEvent);
+        const event = getEventById(id);
+        if (event) {
+            updateLinkedTodos(toggleEventCompleted(id));
+        }
     };
 
     const setEvent = (id: string, newEvent: CalendarEvent) => {
         updateLinkedTodos(setEventInternal(id, newEvent));
+    };
+    const removeEvent = (id: string) => {
+        removeEventInternal(id).linkedTodos?.forEach((todoId) => {
+            removeTodo(todoId);
+        });
     };
 
     return {

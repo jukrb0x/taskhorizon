@@ -2,7 +2,6 @@ import create, { StateCreator } from 'zustand';
 import { UUID } from '@/utils';
 import { devtools, persist } from 'zustand/middleware';
 import useUserStore from '@/store/user-store';
-import { useTodoStore } from '@/store/index';
 
 interface CalendarEvent {
     id: string; // generate inside store
@@ -19,8 +18,8 @@ interface EventStoreState {
     eventList: CalendarEvent[];
     addEvent: (newEvent: CalendarEvent) => string;
     setEvent: (id: string, newEvent: CalendarEvent) => CalendarEvent;
-    removeEvent: (id: string) => void;
-    toggleCompleted: (id: string) => CalendarEvent | undefined;
+    removeEvent: (id: string) => CalendarEvent;
+    toggleCompleted: (id: string) => CalendarEvent;
     addLinkedTodo: (id: string, todoId: string) => void;
     getEventById: (id: string) => CalendarEvent | undefined;
 }
@@ -63,11 +62,11 @@ const EventStore: StateCreator<EventStoreState> = (set, get) => ({
         });
         return newEvent;
     },
-    removeEvent: (id: string) =>
-        set((state) => {
-            // todo: remove linked todo
-            return { eventList: state.eventList.filter((event) => event.id !== id) };
-        }),
+    removeEvent: (id: string) => {
+        const removedEvent = get().getEventById(id) as CalendarEvent;
+        set((state) => ({ eventList: state.eventList.filter((event) => event.id !== id) }));
+        return removedEvent;
+    },
     toggleCompleted: (id: string) => {
         set((state) => ({
             eventList: state.eventList.map((event) =>
@@ -79,7 +78,7 @@ const EventStore: StateCreator<EventStoreState> = (set, get) => ({
                     : event
             )
         }));
-        return get().getEventById(id);
+        return get().getEventById(id) as CalendarEvent;
     },
     addLinkedTodo: (id: string, todoId: string) =>
         set((state) => {
@@ -97,7 +96,7 @@ const EventStore: StateCreator<EventStoreState> = (set, get) => ({
     getEventById: (id: string) => get().eventList.find((event) => event.id === id)
 });
 
-const useEventStore = create<EventStoreState>()(
+export const useEventStore = create<EventStoreState>()(
     devtools(
         persist(EventStore, {
             name: 'event-store',
@@ -119,4 +118,3 @@ const useEventStore = create<EventStoreState>()(
 
 export type { CalendarEvent };
 export { EventIdGenerator };
-export default useEventStore;
