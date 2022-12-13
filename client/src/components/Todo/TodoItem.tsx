@@ -1,4 +1,4 @@
-import { Text, Checkbox, Textarea, ActionIcon, Menu } from '@mantine/core';
+import { Text, Checkbox, Textarea, ActionIcon, Menu, Tooltip } from '@mantine/core';
 import { Todo } from '@/store/todo-store';
 import { useCallback, useState, MouseEvent, useEffect, RefObject, MutableRefObject } from 'react';
 import clsx from 'clsx';
@@ -149,6 +149,20 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
                         }}
                     />
                 )}
+                <div>
+                    <ActionIcon
+                        radius={'xl'}
+                        size={'xs'}
+                        className={mouseHover ? 'tw-w-fit' : 'tw-hidden'}
+                        // color={mouseHover ? 'gray' : 'gray-light'}
+                        // style={{ display: !isEdit ? '' : '' }} // fixme: confirm before delete, show only when edit
+                    >
+                        <Tooltip withArrow label={'hoo'}>
+                            <div>Lliasd</div>
+                        </Tooltip>
+                        {/*<IconX size={15} />*/}
+                    </ActionIcon>
+                </div>
                 <Menu
                     transition={'scale-y'}
                     opened={menuOpen}
