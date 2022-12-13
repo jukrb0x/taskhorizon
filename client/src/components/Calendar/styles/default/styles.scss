@@ -8,6 +8,8 @@
     display: flex;
     flex-direction: column;
     align-items: stretch;
+    // JB
+    font-size: 14px;
 }
 
 .rbc-calendar *,
@@ -45,6 +47,7 @@
 }
 
 .rbc-header {
+    color: $column-header-color;
     overflow: hidden;
     flex: 1 0 0%;
     text-overflow: ellipsis;
@@ -117,6 +120,9 @@
 
 .rbc-today {
     background-color: $today-highlight-bg;
+    .rbc-button-link span {
+        font-weight: bold;
+    }
 }
 
 @import './toolbar';

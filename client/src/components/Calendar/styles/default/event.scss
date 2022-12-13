@@ -20,7 +20,7 @@
     }
 
     &.rbc-selected {
-        background-color: darken($event-bg, 10%);
+        background-color: darken($event-bg, 5%);
     }
 
     &:focus {
