@@ -27,7 +27,7 @@ export default function AuthLayout() {
 
     return (
         <>
-            <div className={'tw-flex tw-items-center tw-justify-center tw-h-screen'}>
+            <div className={'tw-flex tw-items-center tw-justify-center tw-h-screen tw-select-none'}>
                 <div className={'tw-flex tw-flex-row'}>
                     <div className={'tw-flex tw-items-center tw-justify-center'}>
                         <div>
