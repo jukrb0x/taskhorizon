@@ -21,6 +21,7 @@ interface TodoStoreState {
     setDragItem: (item: Todo) => void;
     clearDragItem: () => void;
     addLinkedEvent: (id: string, eventId: string) => void;
+    removeLinkedEvent: (id: string, eventId: string) => void;
 }
 
 const TodoIdGenerator = () => {
@@ -85,6 +86,18 @@ const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({
                     ? {
                         ...todo,
                         linkedEvents: [...(todo.linkedEvents || []), eventId]
+                    }
+                    : todo
+            )
+        }));
+    },
+    removeLinkedEvent: (id: string, eventId: string) => {
+        set((state) => ({
+            todoList: state.todoList.map((todo) =>
+                todo.id === id
+                    ? {
+                        ...todo,
+                        linkedEvents: (todo.linkedEvents || []).filter((id) => id !== eventId)
                     }
                     : todo
             )

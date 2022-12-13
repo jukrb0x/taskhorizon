@@ -22,9 +22,15 @@ export const useEvent = () => {
         removeTodo,
         setDragItem,
         clearDragItem,
-        getTodoById
+        getTodoById,
+        removeLinkedEvent
     } = useTodoStore();
 
+    /**
+     * @description update the linked todos when the event is updated
+     * @description usually Event has only one linked Todo
+     * @param event
+     */
     const updateLinkedTodos = (event: CalendarEvent) => {
         event.linkedTodos?.forEach((todoId) => {
             const todo = getTodoById(todoId);
@@ -68,10 +74,20 @@ export const useEvent = () => {
     const setEvent = (id: string, newEvent: CalendarEvent) => {
         updateLinkedTodos(setEventInternal(id, newEvent));
     };
+
     const removeEvent = (id: string) => {
-        removeEventInternal(id).linkedTodos?.forEach((todoId) => {
-            // remove all linked todos, usually it should be only one
-            removeTodo(todoId);
+        const removedEvent = removeEventInternal(id);
+        removedEvent.linkedTodos?.forEach((todoId) => {
+            // remove the event from linked todo,
+            // usually it's only one linked todo for one event
+            removeLinkedEvent(todoId, removedEvent.id);
+        });
+        // remove all linked todos only if all linked events are removed
+        removedEvent.linkedTodos?.forEach((todoId) => {
+            const todo = getTodoById(todoId);
+            if (todo?.linkedEvents?.length == 0) {
+                removeTodo(todoId);
+            }
         });
     };
 
