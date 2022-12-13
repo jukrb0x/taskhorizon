@@ -73,6 +73,21 @@ export const useEvent = () => {
 
     const setEvent = (id: string, newEvent: CalendarEvent) => {
         updateLinkedTodos(setEventInternal(id, newEvent));
+
+        /**
+         * update ONLY TITLE, DESC for linked events from linked todo
+         * UPDATE LOGIC: the event --> linked todo --> linked events --> update events
+         */
+        getEventById(id)?.linkedTodos?.forEach((todoId) => {
+            getTodoById(todoId)?.linkedEvents?.forEach((eventId) => {
+                const e = getEventById(eventId) as CalendarEvent;
+                setEventInternal(eventId, {
+                    ...e,
+                    title: newEvent.title,
+                    desc: newEvent.desc
+                });
+            });
+        });
     };
 
     const removeEvent = (id: string) => {
