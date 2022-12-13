@@ -48,7 +48,7 @@ export const useEvent = () => {
      * @param id
      * @description Toggle Event completed status
      * @description Event (n - 1) Todo
-     * @description Todo will be toggled when all linked event is completed
+     * @description Linked Todos (1) will be checked when all linked events (n) is completed
      */
     const toggleCompleted = (id: string) => {
         const event = getEventById(id);
@@ -71,12 +71,17 @@ export const useEvent = () => {
         }
     };
 
+    /**
+     * @param id
+     * @param newEvent
+     * @description update the event and it's linked todos, the linked events of linked todos will also be updated ONLY for the title and description.
+     */
     const setEvent = (id: string, newEvent: CalendarEvent) => {
         updateLinkedTodos(setEventInternal(id, newEvent));
 
         /**
-         * update ONLY TITLE, DESC for linked events from linked todo
-         * UPDATE LOGIC: the event --> linked todo --> linked events --> update events
+         * update ONLY TITLE, DESC for linked events from linked todos
+         * UPDATE LOGIC: the event --> linked todos --> linked events --> update events
          */
         getEventById(id)?.linkedTodos?.forEach((todoId) => {
             getTodoById(todoId)?.linkedEvents?.forEach((eventId) => {
