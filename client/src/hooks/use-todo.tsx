@@ -49,6 +49,7 @@ export const useTodo = () => {
 
     const removeTodo = (id: string) => {
         removeTodoInternal(id).linkedEvents?.forEach((eventId) => {
+            // remove all linked events
             removeEvent(eventId);
         });
     };

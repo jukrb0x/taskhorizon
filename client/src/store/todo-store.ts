@@ -25,7 +25,7 @@ interface TodoStoreState {
 
 const TodoIdGenerator = () => {
     const username = useUserStore.getState().getUsername();
-    return UUID() + `'-todo:${username}`;
+    return UUID() + `-todo:${username}`;
 };
 
 const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({

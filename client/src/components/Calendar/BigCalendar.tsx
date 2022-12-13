@@ -96,6 +96,7 @@ export const BigCalendar = () => {
         (e: { start: Date; end: Date; allDay: boolean }) => {
             if (dragItem === null) return;
             const event: CalendarEvent = {
+                desc: '',
                 id: 'new event id will be generated',
                 title: dragItem.title.trim(),
                 start: e.start,

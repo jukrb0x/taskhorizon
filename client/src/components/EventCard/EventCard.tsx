@@ -63,11 +63,11 @@ const EventCard = (props: EventCardProps) => {
     const isEdited = useMemo(() => {
         if (props.mode != 'edit' || !defaultEvent?.id) return false; // ensure event exists
         return (
-            defaultEvent.title != title ||
-            defaultEvent.desc != description ||
-            defaultEvent.start.toISOString() != start.toISOString() ||
-            defaultEvent.end.toISOString() != end.toISOString() ||
-            defaultEvent.allDay != allDay
+            defaultEvent.title !== title ||
+            defaultEvent.desc !== description ||
+            defaultEvent.start.toISOString() !== start.toISOString() ||
+            defaultEvent.end.toISOString() !== end.toISOString() ||
+            defaultEvent.allDay !== allDay
         );
     }, [defaultEvent, title, description, completed, start, end, allDay]);
     const isValidEvent = title.trim() != '' && startDate != null && endDate != null;

@@ -6,7 +6,7 @@ import useUserStore from '@/store/user-store';
 interface CalendarEvent {
     id: string; // generate inside store
     title: string;
-    desc?: string;
+    desc: string;
     start: Date;
     end: Date;
     allDay: boolean;
