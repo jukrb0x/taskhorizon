@@ -117,7 +117,7 @@ export const useEvent = () => {
                     title: event.title,
                     completed: event.completed
                 });
-                setTodoInternal(todoId, updated);
+                setTodoInternal(todoId, event);
             }
         });
     };
@@ -136,7 +136,7 @@ export const useEvent = () => {
                     desc: event.desc
                 };
                 const updated = await EventAPI.updateEvent(toUpdate);
-                setEventInternal(eventId, updated);
+                setEventInternal(eventId, event);
             });
         });
     };
@@ -150,9 +150,11 @@ export const useEvent = () => {
         const updated = await EventAPI.updateEvent(newEvent); // update the event itself
 
         if (updated) {
-            setEventInternal(id, updated);
-            await updateLinkedTodosToEvent(updated);
-            await updateLinkedEventsToEvent(updated);
+            // notice that we pass the newEvent to the store, not the updated one
+            // because the date in the updated one is string, not Date
+            setEventInternal(id, newEvent);
+            await updateLinkedTodosToEvent(newEvent);
+            await updateLinkedEventsToEvent(newEvent);
         }
         // updateLinkedTodosToEvent(setEventInternal(id, newEvent));
 
