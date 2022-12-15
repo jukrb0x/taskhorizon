@@ -48,6 +48,13 @@ export const useTodo = () => {
                     setTodoInternal(todo.id, todo);
                 }
             });
+
+            // remove todos that are not in the server
+            todoList.forEach((todo) => {
+                if (!todos.find((t) => t.id === todo.id)) {
+                    removeTodoInternal(todo.id);
+                }
+            });
         }
     };
 

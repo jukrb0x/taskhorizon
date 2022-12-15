@@ -28,7 +28,6 @@ export const HomeLayout = () => {
     const [settingsOpen, setSettingsOpen] = useState(false);
 
     useEffect(() => {
-        console.log(user);
         if (loggedOut) {
             navigate('/auth/login');
         }
