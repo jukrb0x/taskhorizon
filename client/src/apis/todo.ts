@@ -2,9 +2,14 @@ import { Todo, TodoIdGenerator } from '@/store';
 import { http } from '@/apis';
 import { renameKeys } from '@/utils/common';
 
-interface TodoRequestModel extends Omit<Todo, 'id'> {
+interface TodoRequestModel {
     uuid: string;
-    categoryId: number;
+    title: string;
+    category: {
+        id: string;
+        name: string;
+    };
+    completed: boolean;
 }
 
 export class TodoAPI {
@@ -15,6 +20,7 @@ export class TodoAPI {
 
     static async createTodo(todo: Todo): Promise<Todo> {
         const req: TodoRequestModel = renameKeys(todo, { id: 'uuid' });
+        console.log(req);
         const { data } = await http.post<Todo>('/todo/create', req);
         return data;
     }

@@ -3,6 +3,7 @@ import useUserStore from '@/store/user-store';
 import { useNavigate } from 'react-router-dom';
 import { mutate } from 'swr';
 import { showNotification } from '@mantine/notifications';
+import { useUser } from '@/hooks';
 
 interface LoginResponse {
     user: {
@@ -30,10 +31,10 @@ export class AuthAPI {
 
     static logout = async () => {
         useUserStore.getState().logout();
-        await mutate('/auth/user', null, { revalidate: true });
         showNotification({
             title: 'You have been logged out',
             message: 'Please log in again to continue'
         });
+        setTimeout(() => (window.location.href = '/'), 1000);
     };
 }

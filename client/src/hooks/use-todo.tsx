@@ -16,7 +16,7 @@ export const useTodo = () => {
 
     const {
         eventList,
-        setEvent,
+        setEvent: setEventInternal,
         addEvent,
         addLinkedTodo,
         removeEvent: removeEventInternal,
@@ -63,7 +63,7 @@ export const useTodo = () => {
         todo.linkedEvents?.forEach((eventId) => {
             const event = getEventById(eventId);
             if (event) {
-                setEvent(eventId, {
+                setEventInternal(eventId, {
                     ...event,
                     title: todo.title,
                     completed: todo.completed

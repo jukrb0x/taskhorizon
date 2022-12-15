@@ -1,7 +1,6 @@
 import { AuthAPI, http, refillHttpInterceptor } from '@/apis';
 import useSWR from 'swr';
 import useUserStore from '@/store/user-store';
-import { useEffect } from 'react';
 
 const fetcher = (url: string) => {
     http.interceptors.response.clear(); // clear all notification
@@ -26,7 +25,7 @@ export const useUser = () => {
         onError: async () => {
             // TODO: currently, if server is down, client will be shut down too
             //       this is not expected behavior, we want a better recovery solution
-            await AuthAPI.logout();
+            await mutate();
         }
     });
     const { uid, username, email } = useUserStore();
