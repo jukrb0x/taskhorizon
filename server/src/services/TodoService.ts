@@ -6,6 +6,7 @@ import { Todo } from '@prisma/client';
 import { EventModel, TodoModel } from '@/models';
 import { $log } from '@tsed/common';
 import { TodoRequestModel, TodoResponseModel } from '@/interfaces/TodoInterface';
+import { getPrismaClient } from '@prisma/client/runtime';
 
 @Injectable()
 export class TodoService {
@@ -73,6 +74,19 @@ export class TodoService {
                         uuid: category.id
                     }
                 }
+            }
+        });
+    }
+
+    async updateTodoById(id: number, todo: TodoRequestModel) {
+        const { category, ...data } = todo;
+        const todoCategory = await this.todoCategoriesRepo.findUnique({ where: { uuid: category.id } });
+        return await this.todoRepository.update({
+            where: { id },
+            data: {
+                ...data,
+                categoryId: todoCategory?.id,
+                updatedAt: new Date()
             }
         });
     }

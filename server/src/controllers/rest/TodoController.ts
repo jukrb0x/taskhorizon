@@ -63,9 +63,9 @@ export class TodoController {
     async update(@Req() req: Req, @BodyParams() todo: TodoRequestModel): Promise<TodoModel | undefined> {
         const payload = extractJwtPayload(req);
         if (payload) {
-            const todo = await this.todoService.getTodoByUUID(uuid);
-            if (todo && todo?.userId === payload.uid) {
-                return this.todoService.updateTodoById(todo.id, todo);
+            const exist = await this.todoService.getTodoByUUID(todo.uuid);
+            if (exist && exist?.userId === payload.uid) {
+                return this.todoService.updateTodoById(exist.id, todo);
             } else {
                 throw new BadRequest('Todo not found');
             }

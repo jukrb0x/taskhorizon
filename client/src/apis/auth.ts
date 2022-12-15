@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { mutate } from 'swr';
 import { showNotification } from '@mantine/notifications';
 import { useUser } from '@/hooks';
+import { useEventStore, useTodoStore } from '@/store';
 
 interface LoginResponse {
     user: {
@@ -30,7 +31,10 @@ export class AuthAPI {
     };
 
     static logout = async () => {
+        // unload all data
         useUserStore.getState().logout();
+        useTodoStore.setState({ todoList: [] });
+        useEventStore.setState({ eventList: [] });
         showNotification({
             title: 'You have been logged out',
             message: 'Please log in again to continue'

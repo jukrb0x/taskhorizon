@@ -20,8 +20,13 @@ export class TodoAPI {
 
     static async createTodo(todo: Todo): Promise<Todo> {
         const req: TodoRequestModel = renameKeys(todo, { id: 'uuid' });
-        console.log(req);
         const { data } = await http.post<Todo>('/todo/create', req);
+        return data;
+    }
+
+    static async updateTodoById(id: string, todo: Todo): Promise<Todo> {
+        const req: TodoRequestModel = renameKeys(todo, { id: 'uuid' });
+        const { data } = await http.post<Todo>('/todo/update', req);
         return data;
     }
 

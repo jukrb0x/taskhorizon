@@ -2,7 +2,6 @@ import { useEventStore, useTodoStore } from '@/store';
 import { Todo } from '@/store/todo-store';
 import { http, TodoAPI } from '@/apis';
 import useSWR from 'swr';
-import { useEffect } from 'react';
 
 const fetcher = (url: string) => {
     // http.interceptors.response.clear(); // clear all notification
@@ -58,12 +57,6 @@ export const useTodo = () => {
         }
     };
 
-    // useEffect(() => {
-    //     if (data) {
-    //         compareWithStore(data)
-    //     }
-    // }, [data, compareWithStore]);
-
     // CLIENT SIDE FUNCTIONS
 
     const updateLinkedEvents = (todo: Todo) => {
@@ -95,8 +88,12 @@ export const useTodo = () => {
         return created;
     };
 
-    const setTodo = (id: string, todo: Todo) => {
-        updateLinkedEvents(setTodoInternal(id, todo));
+    const setTodo = async (id: string, todo: Todo) => {
+        const updated = await TodoAPI.updateTodoById(id, todo);
+        if (updated) {
+            updateLinkedEvents(setTodoInternal(id, todo));
+        }
+        return updated;
     };
 
     const toggleCompleted = (id: string) => {
