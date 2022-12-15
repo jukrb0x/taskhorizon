@@ -4,6 +4,7 @@ import { TextInput } from '@mantine/core';
 import { Button } from '@/components';
 import clsx from 'clsx';
 import { useTodo } from '@/hooks';
+import { TodoApi } from '@/apis/todo';
 
 export const TodoInput = (props: { className?: string }) => {
     const { addTodo } = useTodo();
@@ -16,8 +17,12 @@ export const TodoInput = (props: { className?: string }) => {
             title: title.trim(),
             completed: false
         };
-        addTodo && addTodo(todo);
-        setTitle('');
+        TodoApi.createTodo(todo).then((todo) => {
+            addTodo(todo);
+            setTitle('');
+        });
+        // addTodo && addTodo(todo);
+        // setTitle('');
     };
 
     return (

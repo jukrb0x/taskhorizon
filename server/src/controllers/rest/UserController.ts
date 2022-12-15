@@ -1,42 +1,32 @@
 import { Controller, Inject, ProviderScope, Scope } from '@tsed/di';
 import { Get, Post } from '@tsed/schema';
-import { BodyParams, HeaderParams } from '@tsed/platform-params';
+import { BodyParams } from '@tsed/platform-params';
 import { $log, Req } from '@tsed/common';
 import { UserResponseModel, UserService } from '@/services/UserService';
 import { BadRequest } from '@tsed/exceptions';
-import { envs } from '@/config/envs';
 import { JwtAuth } from '@/decorators/JwtAuth';
-import { extractBearerToken, JwtPayload } from '@/config/jwt';
-import jwt from 'jsonwebtoken';
-import { UserModel } from '@/models';
+import { extractBearerToken, extractJwtPayload } from '@/config/jwt';
 
-@Controller('/auth')
+@Controller('/user')
 @Scope(ProviderScope.SINGLETON)
-export class AuthController {
+export class UserController {
     @Inject()
     private userService: UserService;
 
     @Get('/')
-    @Get('/user')
+    @Get('/me')
     @JwtAuth()
     async getUser(@Req() req: Req): Promise<{ user: UserResponseModel }> {
-        const token = extractBearerToken(req);
-        if (token) {
-            const decoded = jwt.verify(token, envs.JWT_SECRET as string) as JwtPayload;
-            if (decoded) {
-                $log.info('decoded: ', decoded);
-                const user = await this.userService.findByUsername(decoded.username);
-                const res = {
-                    user: {
-                        uid: user.id,
-                        username: user.username,
-                        email: user.email
-                    }
-                };
-                return res;
-            } else {
-                throw new BadRequest('Invalid token');
-            }
+        const payload = extractJwtPayload(req);
+        if (payload) {
+            const user = await this.userService.findByUsername(payload.username);
+            return {
+                user: {
+                    uid: user.id,
+                    username: user.username,
+                    email: user.email
+                }
+            };
         } else {
             throw new BadRequest('Invalid token');
         }

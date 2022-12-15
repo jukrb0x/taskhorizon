@@ -1,6 +1,7 @@
 import { Inject, Injectable } from '@tsed/di';
 import { EventsRepository } from '@/repositories';
 import { UserService } from '@/services/UserService';
+import { EventModel } from '@/models';
 
 @Injectable()
 export class EventService {
@@ -13,5 +14,23 @@ export class EventService {
     async getEventsByUsername(username: string) {
         const user = await this.userService.findByUsername(username);
         return await this.eventRepository.findMany({ where: { userId: user.id } });
+    }
+
+    async getEventById(id: number) {
+        return await this.eventRepository.findUnique({ where: { id } });
+    }
+
+    async createEvent(username: string, event: any) {
+        const user = await this.userService.findByUsername(username);
+        return await this.eventRepository.create({ ...event, userId: user.id });
+    }
+
+    /**
+     * Deletes an event by id
+     * @TODO logically delete
+     * @param id
+     */
+    async deleteEvent(id: number) {
+        return await this.eventRepository.delete({ where: { id } });
     }
 }

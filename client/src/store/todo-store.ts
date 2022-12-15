@@ -44,7 +44,6 @@ const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({
             };
         }),
     setTodo: (id, newTodo) => {
-        // TODO updateLinkedEvents
         set((state) => ({
             todoList: state.todoList.map((todo) =>
                 todo.id === id

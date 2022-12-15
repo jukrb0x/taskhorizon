@@ -3,7 +3,7 @@ import { Button } from '@/components';
 import { Text, PasswordInput, TextInput, Title, Button as MButton, Tooltip } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { useCallback } from 'react';
-import { REG_EMAIL } from '@/utils/common-regex';
+import { REG_EMAIL } from '@/utils/regex';
 import { signup } from '@/apis';
 import { showNotification } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons';

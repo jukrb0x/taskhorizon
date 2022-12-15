@@ -34,3 +34,12 @@ export function jwtSign(payload: Partial<JwtPayload>): string {
 export function extractBearerToken(req: Req): string | null {
     return ExtractJwt.fromAuthHeaderAsBearerToken()(req);
 }
+
+export function extractJwtPayload(req: Req): JwtPayload | null {
+    const token = extractBearerToken(req);
+    if (token) {
+        return jwt.verify(token, getJwtSecret()) as JwtPayload;
+    } else {
+        return null;
+    }
+}

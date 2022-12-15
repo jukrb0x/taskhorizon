@@ -20,11 +20,11 @@ interface SignupResponse {
 }
 
 const login = async (username: string, password: string) => {
-    return await http.post<LoginResponse>('/auth/login', { username, password });
+    return await http.post<LoginResponse>('/user/login', { username, password });
 };
 
 const signup = async (username: string, email: string, password: string) => {
-    return await http.post<SignupResponse>('/auth/signup', { username, email, password });
+    return await http.post<SignupResponse>('/user/signup', { username, email, password });
 };
 
 const logout = async () => {

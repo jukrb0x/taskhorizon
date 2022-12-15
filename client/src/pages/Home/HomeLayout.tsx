@@ -15,6 +15,7 @@ import { logout } from '@/apis';
 import { mutate } from 'swr';
 import useUserStore from '@/store/user-store';
 import { IconMessageCircle, IconPhoto, IconSearch, IconSettings } from '@tabler/icons';
+import { TodoApi } from '@/apis/todo';
 
 const DragRegionOffsetWrapper = cls.div`tw-h-5`;
 
@@ -57,6 +58,7 @@ export const HomeLayout = () => {
                                         onClose={() => setSettingsOpen(false)}
                                     />
                                     <div className={'tw-p-3.5'}>
+                                        <Button onClick={() => TodoApi.getTodos()}>Test</Button>
                                         <Menu trigger={'hover'}>
                                             <Menu.Target>
                                                 <Button onClick={() => setSettingsOpen(true)}>

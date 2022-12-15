@@ -43,7 +43,7 @@ const Login = () => {
             useUserStore.setState({ ...data.user, token: data.token });
             showNotification({
                 title: `${data.user.username}, Welcome back!`,
-                message: 'You have successfully logged in',
+                message: 'Start your productive day!',
                 color: 'teal',
                 icon: <IconCheck />
             });

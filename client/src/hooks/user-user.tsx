@@ -17,7 +17,7 @@ interface Response {
 }
 
 export const useUser = () => {
-    const { data, error, isLoading, mutate } = useSWR<Response>('/auth/user', fetcher);
+    const { data, error, isLoading, mutate } = useSWR<Response>('/user', fetcher);
 
     const loggedOut = error && !data;
 

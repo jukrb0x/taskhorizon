@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { clamp } from '@/utils/clamp';
+import { math } from '@/utils/math';
 import useAppConfigStore from '@/store/config-store';
 
 export const useResizer = () => {
@@ -18,7 +18,7 @@ export const useResizer = () => {
     const onMouseMove = useCallback(
         (e: MouseEvent) => {
             if (isResizing) {
-                setSidebarWidth(clamp(e.clientX, 300, 600));
+                setSidebarWidth(math(e.clientX, 300, 600));
             }
         },
         [isResizing, setSidebarWidth]
