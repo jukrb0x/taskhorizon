@@ -1,20 +1,13 @@
 import { Controller, Inject } from '@tsed/di';
 import { JwtAuth } from '@/decorators/JwtAuth';
-import { TodoResponseModel, TodoService } from '@/services/TodoService';
+import { TodoService } from '@/services/TodoService';
 import { Delete, Get, Post } from '@tsed/schema';
 import { TodoModel } from '@/models';
 import { $log, PathParams, Req } from '@tsed/common';
 import { extractJwtPayload } from '@/config/jwt';
 import { BodyParams } from '@tsed/platform-params';
 import { BadRequest } from '@tsed/exceptions';
-
-export interface TodoRequestModel extends Omit<TodoModel, 'updatedAt' | 'createdAt' | 'id'> {
-    uuid: string;
-    category: {
-        id: string;
-        name: string;
-    };
-}
+import { TodoRequestModel, TodoResponseModel } from '@/interfaces/TodoInterface';
 
 @JwtAuth()
 @Controller('/todo')
@@ -58,7 +51,6 @@ export class TodoController {
         const payload = extractJwtPayload(req);
         if (payload) {
             const todo = await this.todoService.getTodoByUUID(uuid);
-            $log.warn('todo is', todo);
             if (todo && todo?.userId === payload.uid) {
                 return this.todoService.deleteTodoById(todo.id);
             } else {
@@ -67,5 +59,16 @@ export class TodoController {
         }
     }
 
-    // @Get('/delete/:id')
+    @Post('/update')
+    async update(@Req() req: Req, @BodyParams() todo: TodoRequestModel): Promise<TodoModel | undefined> {
+        const payload = extractJwtPayload(req);
+        if (payload) {
+            const todo = await this.todoService.getTodoByUUID(uuid);
+            if (todo && todo?.userId === payload.uid) {
+                return this.todoService.updateTodoById(todo.id, todo);
+            } else {
+                throw new BadRequest('Todo not found');
+            }
+        }
+    }
 }

@@ -5,24 +5,7 @@ import { TodoCategoriesRepository, TodosRepository, UsersRepository } from '@/re
 import { Todo } from '@prisma/client';
 import { EventModel, TodoModel } from '@/models';
 import { $log } from '@tsed/common';
-
-/**
- * This Response Model should strictly match the client-side Todo interface
- */
-export interface TodoResponseModel {
-    id: string;
-    order: number | null;
-    category: {
-        id: string;
-        name: string;
-    };
-    completed: boolean;
-    title: string;
-    createdAt: Date;
-    updatedAt: Date;
-    userId: number;
-    linkedEvents: EventModel[];
-}
+import { TodoRequestModel, TodoResponseModel } from '@/interfaces/TodoInterface';
 
 @Injectable()
 export class TodoService {
@@ -78,7 +61,7 @@ export class TodoService {
     }
 
     // todo: figure out json validation in tsed (ajv)
-    async createTodo(username: string, todo: any /*TodoRequestModel*/) {
+    async createTodo(username: string, todo: TodoRequestModel) {
         const user = await this.userService.findByUsername(username);
         const { category, ...data } = todo;
         return this.todoRepository.create({
@@ -94,6 +77,10 @@ export class TodoService {
         });
     }
 
+    /**
+     * @TODO logically delete the todo is better
+     * @param id
+     */
     async deleteTodoById(id: number) {
         return this.todoRepository.delete({ where: { id } });
     }

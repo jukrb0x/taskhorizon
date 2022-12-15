@@ -52,7 +52,7 @@ export class UserService {
     async signup(username: string, email: string, password: string): Promise<UserResponseModel> {
         await this.checkUserExists(username, email);
         const user = await this.userRepo.create({ data: { email, username, password } });
-        await this.initialize(username);
+        await this.initialize(user);
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         return {
@@ -62,8 +62,8 @@ export class UserService {
         };
     }
 
-    async initialize(username: string) {
-        const user = await this.userRepo.findUnique({ where: { username: username } });
+    async initialize(user: UserModel) {
+        // const user = await this.userRepo.findUnique({ where: { username: username } });
         if (user === null) {
             throw new BadRequest('User not found');
         }
