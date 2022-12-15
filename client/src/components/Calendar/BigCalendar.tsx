@@ -138,24 +138,24 @@ export const BigCalendar = () => {
     }
 
     const handleEventDrop = useCallback(
-        ({ event, start, end, isAllDay }: EventDropProps) => {
+        async ({ event, start, end, isAllDay }: EventDropProps) => {
             const nextEvent: CalendarEvent = {
                 ...event,
                 start: start,
                 end: end,
                 allDay: isAllDay
             };
-            setEvent(event.id, nextEvent);
+            await setEvent(event.id, nextEvent);
         },
         [setEvent]
     ); /* handleEventDrop */
 
     // resize event to reschedule
     const handleEventResize = useCallback(
-        ({ event, start, end }: { event: CalendarEvent; start: Date; end: Date }) => {
+        async ({ event, start, end }: { event: CalendarEvent; start: Date; end: Date }) => {
             event.start = start;
             event.end = end;
-            setEvent(event.id, event);
+            await setEvent(event.id, event);
         },
         [setEvent]
     ); /* handleEventResize */

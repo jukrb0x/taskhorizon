@@ -1,7 +1,7 @@
 import { Todo, useEventStore, useTodoStore } from '@/store';
 import { CalendarEvent } from '@/store/event-store';
 import { EventAPI } from '@/apis/event';
-import { http } from '@/apis';
+import { http, TodoAPI } from '@/apis';
 import useSWR from 'swr';
 
 const fetcher = (url: string) => {
@@ -29,7 +29,7 @@ export const useEvent = () => {
     const {
         todoList,
         addTodo,
-        setTodo,
+        setTodo: setTodoInternal,
         toggleCompleted: toggleTodoCompleted,
         removeTodo: removeTodoInternal,
         setDragItem,
@@ -38,11 +38,12 @@ export const useEvent = () => {
         removeLinkedEvent
     } = useTodoStore();
 
+    // DATA SWR
+
     const compareWithStore = (events: CalendarEvent[]) => {
-        console.log(events);
         if (events) {
             events.forEach((event) => {
-                // parse date
+                // parse date, not pure
                 event.start = new Date(event.start);
                 event.end = new Date(event.end);
 
@@ -63,6 +64,8 @@ export const useEvent = () => {
         }
     };
 
+    // CLIENT SIDE FUNCTIONS
+
     const addEvent: (event: CalendarEvent) => Promise<CalendarEvent | undefined> = async (
         event: CalendarEvent
     ) => {
@@ -71,24 +74,6 @@ export const useEvent = () => {
             addEventInternal(event);
             return event;
         }
-    };
-
-    /**
-     * @description update the linked todos when the event is updated
-     * @description usually Event has only one linked Todo
-     * @param event
-     */
-    const updateLinkedTodos = (event: CalendarEvent) => {
-        event.linkedTodos?.forEach((todoId) => {
-            const todo = getTodoById(todoId);
-            if (todo) {
-                setTodo(todoId, {
-                    ...todo,
-                    title: event.title,
-                    completed: event.completed
-                });
-            }
-        });
     };
 
     /**
@@ -110,12 +95,50 @@ export const useEvent = () => {
                 });
                 if (uncompletedEvents?.length == 0) {
                     // all linked events are completed
-                    setTodo(todoId, { ...todo, completed: true });
+                    setTodoInternal(todoId, { ...todo, completed: true });
                 } else {
-                    setTodo(todoId, { ...todo, completed: false });
+                    setTodoInternal(todoId, { ...todo, completed: false });
                 }
             });
         }
+    };
+
+    /**
+     * @description update the linked todos when the event is updated
+     * @description usually Event has only one linked Todo
+     * @param event
+     */
+    const updateLinkedTodosToEvent = (event: CalendarEvent) => {
+        event.linkedTodos?.forEach(async (todoId) => {
+            const todo = getTodoById(todoId);
+            if (todo) {
+                const updated = await TodoAPI.updateTodo({
+                    ...todo,
+                    title: event.title,
+                    completed: event.completed
+                });
+                setTodoInternal(todoId, updated);
+            }
+        });
+    };
+
+    /**
+     * @description update the linked events of linked todos
+     * update ONLY TITLE, DESC
+     * UPDATE LOGIC: the event --> linked todos --> linked events --> update events
+     */
+    const updateLinkedEventsToEvent = (event: CalendarEvent) => {
+        event.linkedTodos?.forEach((todoId) => {
+            getTodoById(todoId)?.linkedEvents?.forEach(async (eventId) => {
+                const toUpdate = {
+                    ...(getEventById(eventId) as CalendarEvent),
+                    title: event.title,
+                    desc: event.desc
+                };
+                const updated = await EventAPI.updateEvent(toUpdate);
+                setEventInternal(eventId, updated);
+            });
+        });
     };
 
     /**
@@ -123,24 +146,32 @@ export const useEvent = () => {
      * @param newEvent
      * @description update the event, and it's linked todos, the linked events of linked todos will also be updated ONLY for the title and description.
      */
-    const setEvent = (id: string, newEvent: CalendarEvent) => {
-        updateLinkedTodos(setEventInternal(id, newEvent)); // todo
+    const setEvent = async (id: string, newEvent: CalendarEvent) => {
+        const updated = await EventAPI.updateEvent(newEvent); // update the event itself
 
-        /**
-         * update ONLY TITLE, DESC for linked events from linked todos
-         * UPDATE LOGIC: the event --> linked todos --> linked events --> update events
-         */
-        getEventById(id)?.linkedTodos?.forEach((todoId) => {
-            getTodoById(todoId)?.linkedEvents?.forEach((eventId) => {
-                const e = getEventById(eventId) as CalendarEvent;
-                setEventInternal(eventId, {
-                    // todo
-                    ...e,
-                    title: newEvent.title,
-                    desc: newEvent.desc
+        if (updated) {
+            setEventInternal(id, updated);
+            await updateLinkedTodosToEvent(updated);
+            await updateLinkedEventsToEvent(updated);
+        }
+        // updateLinkedTodosToEvent(setEventInternal(id, newEvent));
+
+        /*    /!**
+             * @description update the linked events of linked todos
+             * update ONLY TITLE, DESC
+             * UPDATE LOGIC: the event --> linked todos --> linked events --> update events
+             *!/
+            getEventById(id)?.linkedTodos?.forEach((todoId) => {
+                getTodoById(todoId)?.linkedEvents?.forEach((eventId) => {
+                    const e = getEventById(eventId) as CalendarEvent;
+                    setEventInternal(eventId, {
+                        // todo
+                        ...e,
+                        title: newEvent.title,
+                        desc: newEvent.desc
+                    });
                 });
-            });
-        });
+            });*/
     };
 
     const removeEvent = (id: string) => {

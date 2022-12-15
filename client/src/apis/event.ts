@@ -29,6 +29,12 @@ export class EventAPI {
         return data;
     }
 
-    // static async updateEventById(id: string, event: CalendarEvent): Promise<CalendarEvent> {
-    // }
+    static async updateEvent(event: CalendarEvent): Promise<CalendarEvent> {
+        const req: CalendarEventRequestModel = renameKeys(event, {
+            id: 'uuid',
+            desc: 'description'
+        });
+        const { data } = await http.post<CalendarEvent>('/event/update', req);
+        return data;
+    }
 }

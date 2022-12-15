@@ -24,7 +24,7 @@ export class TodoAPI {
         return data;
     }
 
-    static async updateTodoById(id: string, todo: Todo): Promise<Todo> {
+    static async updateTodo(todo: Todo): Promise<Todo> {
         const req: TodoRequestModel = renameKeys(todo, { id: 'uuid' });
         const { data } = await http.post<Todo>('/todo/update', req);
         return data;

@@ -65,7 +65,7 @@ export class TodoController {
         if (payload) {
             const exist = await this.todoService.getTodoByUUID(todo.uuid);
             if (exist && exist?.userId === payload.uid) {
-                return this.todoService.updateTodoById(exist.id, todo);
+                return this.todoService.updateTodo(todo);
             } else {
                 throw new BadRequest('Todo not found');
             }

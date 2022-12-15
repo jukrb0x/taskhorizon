@@ -35,6 +35,10 @@ export class EventService {
         return await this.eventRepository.findUnique({ where: { id } });
     }
 
+    async getEventByUUID(uuid: string) {
+        return await this.eventRepository.findUnique({ where: { uuid } });
+    }
+
     async createEvent(username: string, event: EventRequestModel) {
         const user = await this.userService.findByUsername(username);
         return await this.eventRepository.create({
@@ -44,6 +48,19 @@ export class EventService {
                     connect: event.linkedTodos.map((todo) => ({ uuid: todo }))
                 },
                 User: { connect: { id: user.id } }
+            }
+        });
+    }
+
+    async updateEvent(event: EventRequestModel) {
+        return await this.eventRepository.update({
+            where: { uuid: event.uuid },
+            data: {
+                ...event,
+                linkedTodos: {
+                    connect: event.linkedTodos.map((todo) => ({ uuid: todo }))
+                },
+                updatedAt: new Date()
             }
         });
     }

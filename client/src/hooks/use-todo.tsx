@@ -37,7 +37,7 @@ export const useTodo = () => {
 
     // DATA SWR
 
-    const compareWithStore = (todos: Todo[] /*, addTodoInternal, setTodoInternal*/) => {
+    const compareWithStore = (todos: Todo[]) => {
         if (todos) {
             todos.forEach((todo) => {
                 const storeTodo = getTodoById(todo.id);
@@ -90,7 +90,7 @@ export const useTodo = () => {
     };
 
     const setTodo = async (id: string, todo: Todo) => {
-        const updated = await TodoAPI.updateTodoById(id, todo);
+        const updated = await TodoAPI.updateTodo(todo);
         if (updated) {
             updateLinkedEvents(setTodoInternal(id, todo));
         }

@@ -78,11 +78,11 @@ export class TodoService {
         });
     }
 
-    async updateTodoById(id: number, todo: TodoRequestModel) {
+    async updateTodo(todo: TodoRequestModel) {
         const { category, ...data } = todo;
         const todoCategory = await this.todoCategoriesRepo.findUnique({ where: { uuid: category.id } });
         return await this.todoRepository.update({
-            where: { id },
+            where: { uuid: data.uuid },
             data: {
                 ...data,
                 categoryId: todoCategory?.id,

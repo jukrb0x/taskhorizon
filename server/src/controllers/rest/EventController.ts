@@ -7,7 +7,7 @@ import { extractJwtPayload } from '@/config/jwt';
 import { BodyParams } from '@tsed/platform-params';
 import { EventModel } from '@/models';
 import { BadRequest } from '@tsed/exceptions';
-import { EventRequestModel } from '@/interfaces/EventInterface';
+import { EventRequestModel, EventResponseModel } from '@/interfaces/EventInterface';
 
 @JwtAuth()
 @Controller('/event')
@@ -17,7 +17,7 @@ export class EventController {
 
     @Get('/')
     @Get('/all')
-    async getEvents(@Req() req: Req): Promise<EventModel[]> {
+    async getEvents(@Req() req: Req): Promise<EventResponseModel[]> {
         const payload = extractJwtPayload(req);
         if (payload) {
             return this.eventService.getEventsByUsername(payload.username);
@@ -38,6 +38,20 @@ export class EventController {
         const payload = extractJwtPayload(req);
         if (payload) {
             return this.eventService.createEvent(payload.username, event);
+        }
+    }
+
+    @Post('/update')
+    async updateEvent(@Req() req: Req, @BodyParams() event: EventRequestModel): Promise<EventModel | undefined> {
+        const payload = extractJwtPayload(req);
+        if (payload) {
+            // check ownership
+            const exist = await this.eventService.getEventByUUID(event.uuid);
+            if (exist?.userId === payload.uid) {
+                return this.eventService.updateEvent(event);
+            } else {
+                throw new BadRequest('Invalid event');
+            }
         }
     }
 

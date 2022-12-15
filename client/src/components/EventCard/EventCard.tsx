@@ -110,7 +110,7 @@ const EventCard = (props: EventCardProps) => {
         props.onEventCreated && props.onEventCreated();
     }, [addEvent, completed, title, description, start, end, allDay, linkedTodos]);
 
-    const updateEvent = () => {
+    const updateEvent = async () => {
         if (!isEdited || !defaultEvent || !isValidEvent) return;
         const event: CalendarEvent = {
             id: defaultEvent.id, // do not change id
@@ -122,7 +122,7 @@ const EventCard = (props: EventCardProps) => {
             allDay: allDay,
             linkedTodos: linkedTodos
         };
-        setEvent(defaultEvent.id, event);
+        await setEvent(defaultEvent.id, event);
         props.onDismissed && props.onDismissed();
     };
 
