@@ -40,15 +40,15 @@ export class TodoController {
     }
 
     @Post('/create')
-    async create(@Req() req: Req, @BodyParams() todo: Omit<TodoModel, 'createdAt' | 'updatedAt'>): Promise<TodoModel | undefined> {
+    async create(@Req() req: Req, @BodyParams() todo: TodoRequestModel): Promise<TodoModel | undefined> {
         const payload = extractJwtPayload(req);
         if (payload) {
             return this.todoService.createTodo(payload.username, todo);
         }
     }
 
-    @Get('/delete/:id')
-    async delete(@Req() req: Req, @PathParams('id') id: number): Promise<TodoModel | undefined> {
+    @Get('/delete/:uuid')
+    async delete(@Req() req: Req, @PathParams('uuid') id: number): Promise<TodoModel | undefined> {
         const payload = extractJwtPayload(req);
         if (payload) {
             const todo = await this.todoService.getTodoById(id);

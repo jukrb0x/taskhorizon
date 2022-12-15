@@ -15,12 +15,8 @@ export class TodoApi {
 
     static async createTodo(todo: Todo): Promise<Todo> {
         todo.id = TodoIdGenerator();
-        // rename id to uuid
-        // const t = { ...todo, uuid: todo.id }
         const t = renameKeys(todo, { id: 'uuid' });
-        console.log(t);
-        return t;
-        // const { data } = await http.post<Todo>('/todo/create', todo);
-        // return data;
+        const { data } = await http.post<Todo>('/todo/create', todo);
+        return data;
     }
 }

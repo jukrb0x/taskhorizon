@@ -1,12 +1,16 @@
 import { EventService } from '@/services/EventService';
 import { UserService } from '@/services/UserService';
 import { Inject, Injectable } from '@tsed/di';
-import { TodosRepository } from '@/repositories';
+import { TodosRepository, UsersRepository } from '@/repositories';
+import { $log } from '@tsed/common';
 
 @Injectable()
 export class TodoService {
     @Inject()
     private todoRepository: TodosRepository;
+
+    @Inject()
+    private userRepository: UsersRepository;
 
     @Inject()
     private userService: UserService;
@@ -20,10 +24,9 @@ export class TodoService {
         return this.todoRepository.findUnique({ where: { id } });
     }
 
-    // TODO json mapper?
     async createTodo(username: string, todo: any) {
         const user = await this.userService.findByUsername(username);
-        return this.todoRepository.create({ ...todo, userId: user.id });
+        return this.todoRepository.create({ data: { ...todo, User: { connect: { username: username } } } });
     }
 
     async deleteEvent(id: number) {
