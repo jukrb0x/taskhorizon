@@ -21,6 +21,10 @@ export class TodoCategoryModel implements TodoCategory {
 
     @Property(String)
     @Required()
+    uuid: string;
+
+    @Property(String)
+    @Required()
     name: string;
 
     @Property(() => UserModel)

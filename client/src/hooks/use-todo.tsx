@@ -1,8 +1,19 @@
 import { useEventStore, useTodoStore } from '@/store';
 import { Todo } from '@/store/todo-store';
-import { TodoAPI } from '@/apis';
+import { http, TodoAPI } from '@/apis';
+import useSWR from 'swr';
+import { useEffect } from 'react';
+
+const fetcher = (url: string) => {
+    // http.interceptors.response.clear(); // clear all notification
+    return http.get(url).then((res) => res.data);
+};
 
 export const useTodo = () => {
+    const { data, error, isLoading, mutate } = useSWR<Response>('/todo/all', fetcher);
+
+    console.log(data);
+
     const {
         eventList,
         setEvent,
@@ -24,6 +35,37 @@ export const useTodo = () => {
         getTodoById,
         addLinkedEvent
     } = useTodoStore();
+
+    // DATA SWR
+    /*
+
+    const compareWithStore = (data?.todos, todoList/!*, addTodoInternal, setTodoInternal*!/) => {
+        if (data?.todos) {
+            data.todos.forEach((todo) => {
+                const storeTodo = getTodoById(todo.id);
+                if (!storeTodo) {
+                    addTodoInternal(todo);
+                } else if (storeTodo.updatedAt !== todo.updatedAt) {
+                    setTodoInternal(todo.id, todo);
+                }
+            });
+        }
+    };
+
+
+    useEffect(()=>{
+        if (data) {
+            // compare with local data
+            // if different, update local data
+            // if same, do nothing
+
+
+
+        }
+    },[data,])
+*/
+
+    // CLIENT SIDE FUNCTIONS
 
     const updateLinkedEvents = (todo: Todo) => {
         todo.linkedEvents?.forEach((eventId) => {

@@ -1,11 +1,22 @@
 import { EventService } from '@/services/EventService';
 import { UserService } from '@/services/UserService';
 import { Inject, Injectable } from '@tsed/di';
-import { TodosRepository, UsersRepository } from '@/repositories';
-import { $log } from '@tsed/common';
-import { TodoModel } from '@tsed/prisma';
+import { TodoCategoriesRepository, TodosRepository, UsersRepository } from '@/repositories';
 import { Todo } from '@prisma/client';
-import { TodoRequestModel } from '@/controllers/rest';
+import { EventModel, TodoModel } from '@/models';
+import { $log } from '@tsed/common';
+
+interface TodoResponseModel {
+    order: number | null;
+    categoryId: string;
+    completed: boolean;
+    title: string;
+    createdAt: Date;
+    updatedAt: Date;
+    userId: number;
+    uuid: string;
+    linkedEvents: EventModel[];
+}
 
 @Injectable()
 export class TodoService {
@@ -17,6 +28,22 @@ export class TodoService {
 
     @Inject()
     private userService: UserService;
+
+    @Inject()
+    private todoCategoriesRepo: TodoCategoriesRepository;
+
+    async getTodosByUserId(userId: number): Promise<TodoResponseModel[]> {
+        const todos = await this.todoRepository.findMany({ where: { userId }, include: { Category: true } });
+        $log.warn('todos ', todos);
+        // restructure todos
+        return todos.map((todo) => {
+            const { Category, User, id, ...rest } = todo;
+            return {
+                ...rest,
+                categoryId: Category.uuid
+            };
+        });
+    }
 
     async getTodosByUsername(username: string) {
         const user = await this.userService.findByUsername(username);

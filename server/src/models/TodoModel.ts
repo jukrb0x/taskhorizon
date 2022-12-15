@@ -48,7 +48,7 @@ export class TodoModel implements Todo {
     @Property(Number)
     @Integer()
     @Allow(null)
-    Order: number | null;
+    order: number | null;
 
     @Property(() => UserModel)
     @Required()

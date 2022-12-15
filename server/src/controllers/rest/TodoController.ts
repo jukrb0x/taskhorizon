@@ -1,7 +1,7 @@
 import { Controller, Inject } from '@tsed/di';
 import { JwtAuth } from '@/decorators/JwtAuth';
 import { TodoService } from '@/services/TodoService';
-import { Get, Post } from '@tsed/schema';
+import { Delete, Get, Post } from '@tsed/schema';
 import { TodoModel } from '@/models';
 import { $log, PathParams, Req } from '@tsed/common';
 import { extractJwtPayload } from '@/config/jwt';
@@ -27,7 +27,7 @@ export class TodoController {
     async getTodos(@Req() req: Req): Promise<TodoModel[]> {
         const payload = extractJwtPayload(req);
         if (payload) {
-            return this.todoService.getTodosByUsername(payload.username);
+            return this.todoService.getTodosByUserId(payload.uid);
         } else {
             return [];
         }
@@ -53,6 +53,7 @@ export class TodoController {
     }
 
     @Get('/delete/:uuid')
+    // @Delete('/delete/:uuid')
     async delete(@Req() req: Req, @PathParams('uuid') uuid: string): Promise<TodoModel | undefined> {
         const payload = extractJwtPayload(req);
         if (payload) {

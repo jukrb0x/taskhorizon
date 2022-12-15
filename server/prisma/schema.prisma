@@ -41,7 +41,7 @@ model Todo {
     linkedEvents Event[]
     Category     TodoCategory @relation(fields: [categoryId], references: [id])
     categoryId   Int
-    Order        Int? // Order in the list
+    order        Int? // Order in the list
     // ------
     User         User         @relation(fields: [userId], references: [id])
     userId       Int
