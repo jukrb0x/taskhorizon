@@ -22,7 +22,7 @@ export class EventService {
 
     async createEvent(username: string, event: any) {
         const user = await this.userService.findByUsername(username);
-        return await this.eventRepository.create({ ...event, userId: user.id });
+        return await this.eventRepository.create({ data: { ...event, User: { connect: { id: user.id } } } });
     }
 
     /**
@@ -32,5 +32,9 @@ export class EventService {
      */
     async deleteEvent(id: number) {
         return await this.eventRepository.delete({ where: { id } });
+    }
+
+    async deleteEvents(ids: number[]) {
+        return await this.eventRepository.deleteMany({ where: { id: { in: ids } } });
     }
 }

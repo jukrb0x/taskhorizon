@@ -7,6 +7,7 @@ export * from './Auth/Signup';
 export * from './Button/Button';
 export * from './Button/StylishButton';
 export * from './Calendar/BigCalendar';
+export * from './Calendar/components/CustomToolbar';
 export * from './EventCard/DatetimePicker';
 export * from './EventCard/EventCard';
 export * from './Heros/CopyrightBar';

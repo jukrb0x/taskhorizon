@@ -2,6 +2,7 @@ import { User } from '../client';
 import { Integer, Required, Property, Format, Email, Description, CollectionOf } from '@tsed/schema';
 import { TodoModel } from './TodoModel';
 import { EventModel } from './EventModel';
+import { TodoCategoryModel } from './TodoCategoryModel';
 
 export class UserModel implements User {
     @Property(Number)
@@ -40,4 +41,8 @@ export class UserModel implements User {
     @CollectionOf(() => EventModel)
     @Required()
     Event: EventModel[];
+
+    @CollectionOf(() => TodoCategoryModel)
+    @Required()
+    TodoCategory: TodoCategoryModel[];
 }

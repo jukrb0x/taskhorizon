@@ -1,5 +1,6 @@
 import { useEventStore, useTodoStore } from '@/store';
 import { Todo } from '@/store/todo-store';
+import { TodoAPI } from '@/apis';
 
 export const useTodo = () => {
     const {
@@ -7,13 +8,13 @@ export const useTodo = () => {
         setEvent,
         addEvent,
         addLinkedTodo,
-        removeEvent,
+        removeEvent: removeEventInternal,
         toggleCompleted: toggleEventCompleted,
         getEventById
     } = useEventStore();
     const {
         todoList,
-        addTodo,
+        addTodo: addTodoInternal,
         setTodo: setTodoInternal,
         toggleCompleted: toggleTodoCompleted,
         removeTodo: removeTodoInternal,
@@ -36,6 +37,22 @@ export const useTodo = () => {
             }
         });
     };
+    /**
+     * @TODO visualization performance
+     * 1. add this action to action stack, pending status
+     * 2. add todo to the local store
+     * 3. Promise return successful, update stack status to success
+     * 4. Promise return failed, update stack status to failed
+     * 5. if failed, remove todo from local store
+     */
+    const addTodo = async (todo: Todo) => {
+        const created = await TodoAPI.createTodo(todo);
+        if (created) {
+            addTodoInternal(todo);
+        }
+        return created;
+    };
+
     const setTodo = (id: string, todo: Todo) => {
         updateLinkedEvents(setTodoInternal(id, todo));
     };
@@ -47,11 +64,15 @@ export const useTodo = () => {
         }
     };
 
-    const removeTodo = (id: string) => {
-        removeTodoInternal(id).linkedEvents?.forEach((eventId) => {
-            // remove all linked events
-            removeEvent(eventId);
-        });
+    const removeTodo = async (id: string) => {
+        const deletedTodo = await TodoAPI.deleteTodoById(id);
+        if (deletedTodo) {
+            removeTodoInternal(id).linkedEvents?.forEach((eventId) => {
+                // remove all linked events
+                // TODO remove from use-event
+                removeEventInternal(eventId);
+            });
+        }
     };
 
     return {

@@ -8,6 +8,10 @@ interface Todo {
     completed: boolean;
     title: string;
     linkedEvents?: string[]; // todo
+    category: {
+        id: string;
+        name: string;
+    };
 }
 
 interface TodoStoreState {
@@ -37,8 +41,8 @@ const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({
                 todoList: [
                     ...state.todoList,
                     {
-                        ...newTodo,
-                        id: TodoIdGenerator()
+                        ...newTodo
+                        // id: TodoIdGenerator()
                     }
                 ]
             };

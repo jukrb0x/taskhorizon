@@ -8,6 +8,10 @@ import { BodyParams } from '@tsed/platform-params';
 import { EventModel } from '@/models';
 import { BadRequest } from '@tsed/exceptions';
 
+interface EventRequestModel extends Omit<EventModel, 'updatedAt' | 'createdAt' | 'id'> {
+    uuid: string;
+}
+
 @JwtAuth()
 @Controller('/event')
 export class EventController {
@@ -33,8 +37,7 @@ export class EventController {
     }
 
     @Post('/create')
-    // TODO json mapper
-    async createEvent(@Req() req: Req, @BodyParams('event') event: EventModel): Promise<EventModel | undefined> {
+    async createEvent(@Req() req: Req, @BodyParams('event') event: EventRequestModel): Promise<EventModel | undefined> {
         const payload = extractJwtPayload(req);
         if (payload) {
             return this.eventService.createEvent(payload.username, event);
@@ -49,6 +52,14 @@ export class EventController {
             if (event?.userId === payload.userId) {
                 return this.eventService.deleteEvent(id);
             }
+        }
+    }
+
+    @Post('/delete')
+    async deleteEvents(@Req() req: Req, @BodyParams() ids: number[]) {
+        const payload = extractJwtPayload(req);
+        if (payload) {
+            return this.eventService.deleteEvents(ids);
         }
     }
 }

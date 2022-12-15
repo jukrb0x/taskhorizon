@@ -3,12 +3,16 @@ import { JwtAuth } from '@/decorators/JwtAuth';
 import { TodoService } from '@/services/TodoService';
 import { Get, Post } from '@tsed/schema';
 import { TodoModel } from '@/models';
-import { PathParams, Req } from '@tsed/common';
+import { $log, PathParams, Req } from '@tsed/common';
 import { extractJwtPayload } from '@/config/jwt';
 import { BodyParams } from '@tsed/platform-params';
 
-interface TodoRequestModel extends Omit<TodoModel, 'updatedAt' | 'createdAt' | 'id'> {
+export interface TodoRequestModel extends Omit<TodoModel, 'updatedAt' | 'createdAt' | 'id'> {
     uuid: string;
+    category: {
+        id: string;
+        name: string;
+    };
 }
 
 @JwtAuth()

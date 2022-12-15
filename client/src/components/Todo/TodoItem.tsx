@@ -200,7 +200,6 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
                             radius={'xl'}
                             size={'xs'}
                             className={mouseHover ? '' : 'tw-hidden'}
-                            // color={mouseHover ? 'gray' : 'gray-light'}
                             // style={{ display: !isEdit ? '' : '' }} // fixme: confirm before delete, show only when edit
                         >
                             <IconX size={15} />

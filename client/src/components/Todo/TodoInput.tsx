@@ -1,28 +1,30 @@
-import { Todo } from '@/store/todo-store';
+import { Todo, TodoIdGenerator } from '@/store/todo-store';
 import { useState } from 'react';
 import { TextInput } from '@mantine/core';
 import { Button } from '@/components';
 import clsx from 'clsx';
-import { useTodo } from '@/hooks';
-import { TodoApi } from '@/apis/todo';
+import { useTodo, useUser } from '@/hooks';
+import { TodoAPI } from '@/apis';
 
 export const TodoInput = (props: { className?: string }) => {
     const { addTodo } = useTodo();
+    const { user } = useUser();
     const [title, setTitle] = useState<string>('');
 
     const handleAdd = () => {
         if (title.trim() == '') return;
         const todo: Todo = {
-            id: 'new todo id will be generated',
+            category: { id: `default-category:${user?.username}`, name: 'Default' }, // TODO: change to default category
+            id: TodoIdGenerator(),
             title: title.trim(),
             completed: false
         };
-        TodoApi.createTodo(todo).then((todo) => {
-            addTodo(todo);
-            setTitle('');
+
+        addTodo(todo).then((res) => {
+            if (res) {
+                setTitle('');
+            }
         });
-        // addTodo && addTodo(todo);
-        // setTitle('');
     };
 
     return (

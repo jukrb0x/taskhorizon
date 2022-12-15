@@ -25,6 +25,22 @@ const todos: Prisma.TodoCreateInput[] = [
             connect: {
                 email: 'alice@a.com'
             }
+        },
+        Category: {
+            connectOrCreate: {
+                where: {
+                    name: 'Work'
+                },
+                create: {
+                    name: 'Work',
+                    uuid: 'seeding-category-1',
+                    User: {
+                        connect: {
+                            email: 'alice@a.com'
+                        }
+                    }
+                }
+            }
         }
     },
     {
@@ -34,6 +50,22 @@ const todos: Prisma.TodoCreateInput[] = [
         User: {
             connect: {
                 email: 'bob@b.com'
+            }
+        },
+        Category: {
+            connectOrCreate: {
+                where: {
+                    name: 'Work'
+                },
+                create: {
+                    name: 'Work',
+                    uuid: 'seeding-category-2',
+                    User: {
+                        connect: {
+                            email: 'bob@b.com'
+                        }
+                    }
+                }
             }
         }
     }

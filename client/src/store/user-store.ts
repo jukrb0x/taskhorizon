@@ -29,6 +29,7 @@ const UserStore: StateCreator<UserStoreState> = (set, get) => ({
     },
     token: '',
     logout: () => {
+        // offline user mode
         set(() => ({
             uid: -1,
             username: '',

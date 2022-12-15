@@ -2,6 +2,7 @@ import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
 import userStore from '@/store/user-store';
 import { showNotification } from '@mantine/notifications';
 import { IconX } from '@tabler/icons';
+import { NotificationProps } from '@mantine/core';
 
 const http = axios.create({
     baseURL: `${import.meta.env.VITE_BASE_URL}/rest`,
@@ -34,6 +35,7 @@ const responseFailed = /*async*/ (error: AxiosError<BadRequest>) => {
     const notificationPayload = {
         title: code,
         message: message,
+        styles: () => ({}),
         color: 'red',
         icon: <IconX size={18} />
     };
@@ -54,7 +56,7 @@ const responseFailed = /*async*/ (error: AxiosError<BadRequest>) => {
     // throw new Error(errorMessageToThrow);
 };
 
-const refillInterceptor = () => {
+const refillHttpInterceptor = () => {
     http.interceptors.request.use(beforeRequest);
     http.interceptors.response.use(responseSuccess, responseFailed);
 };
@@ -62,4 +64,4 @@ const refillInterceptor = () => {
 http.interceptors.request.use(beforeRequest);
 http.interceptors.response.use(responseSuccess, responseFailed);
 
-export { http, refillInterceptor };
+export { http, refillHttpInterceptor };

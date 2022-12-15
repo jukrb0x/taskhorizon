@@ -1,5 +1,6 @@
 import { Todo, useEventStore, useTodoStore } from '@/store';
 import { CalendarEvent } from '@/store/event-store';
+import { EventAPI } from '@/apis/event';
 
 /**
  * @description useTodo hook to manage the TodoList and binding with the EventList
@@ -8,7 +9,7 @@ export const useEvent = () => {
     const {
         eventList,
         setEvent: setEventInternal,
-        addEvent,
+        addEvent: addEventInternal,
         addLinkedTodo,
         removeEvent: removeEventInternal,
         toggleCompleted: toggleEventCompleted,
@@ -19,12 +20,23 @@ export const useEvent = () => {
         addTodo,
         setTodo,
         toggleCompleted: toggleTodoCompleted,
-        removeTodo,
+        removeTodo: removeTodoInternal,
         setDragItem,
         clearDragItem,
         getTodoById,
         removeLinkedEvent
     } = useTodoStore();
+
+    const addEvent: (event: CalendarEvent) => Promise<CalendarEvent | undefined> = async (
+        event: CalendarEvent
+    ) => {
+        //TODO
+        const created = await EventAPI.createEvent(event);
+        if (created) {
+            addEventInternal(event);
+            return event;
+        }
+    };
 
     /**
      * @description update the linked todos when the event is updated
@@ -106,7 +118,7 @@ export const useEvent = () => {
         removedEvent.linkedTodos?.forEach((todoId) => {
             const todo = getTodoById(todoId);
             if (todo?.linkedEvents?.length == 0) {
-                removeTodo(todoId);
+                removeTodoInternal(todoId);
             }
         });
     };

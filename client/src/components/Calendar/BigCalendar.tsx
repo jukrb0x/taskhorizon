@@ -4,7 +4,7 @@ import moment from 'moment';
 // import luxon from 'luxon';
 import './styles/default/styles.scss';
 import './styles/default/dragAndDrop.scss';
-import { CalendarEvent } from '@/store/event-store';
+import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 import { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { EventCard, EventCardMode } from '@/components';
 import {
@@ -94,11 +94,11 @@ export const BigCalendar = () => {
 
     // handle dragged to-do to create Playground event
     const createEventFromTodo = useCallback(
-        (e: { start: Date; end: Date; allDay: boolean }) => {
+        async (e: { start: Date; end: Date; allDay: boolean }) => {
             if (dragItem === null) return;
             const event: CalendarEvent = {
                 desc: '',
-                id: 'new event id will be generated',
+                id: EventIdGenerator(),
                 title: dragItem.title.trim(),
                 start: e.start,
                 end: e.end,
@@ -106,8 +106,8 @@ export const BigCalendar = () => {
                 completed: dragItem.completed,
                 linkedTodos: [dragItem.id]
             };
-            const createdEventId = addEvent(event);
-            addLinkedEvent(dragItem.id, createdEventId);
+            const createdEvent = await addEvent(event);
+            createdEvent && addLinkedEvent(dragItem.id, createdEvent.id);
             clearDragItem();
         },
         [setPopVisible, setPopEventCard, dragItem, clearDragItem]

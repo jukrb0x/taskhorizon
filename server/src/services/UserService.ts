@@ -1,9 +1,10 @@
 import { Inject, Injectable } from '@tsed/di';
-import { UsersRepository } from '@/repositories';
+import { TodoCategoriesRepository, UsersRepository } from '@/repositories';
 import { BadRequest, InternalServerError } from '@tsed/exceptions';
 import jwt from 'jsonwebtoken';
 import { envs } from '@/config/envs';
 import { getJwtSecret, jwtSign } from '@/config/jwt';
+import { UserModel } from '@/models';
 
 export interface UserResponseModel {
     uid: number;
@@ -15,6 +16,9 @@ export interface UserResponseModel {
 export class UserService {
     @Inject()
     private userRepo: UsersRepository;
+
+    @Inject()
+    private todoCategoriesRepo: TodoCategoriesRepository;
 
     checkEmail(email: string) {
         const REG_EMAIL =
@@ -48,6 +52,7 @@ export class UserService {
     async signup(username: string, email: string, password: string): Promise<UserResponseModel> {
         await this.checkUserExists(username, email);
         const user = await this.userRepo.create({ data: { email, username, password } });
+        await this.initialize(username);
 
         // eslint-disable-next-line @typescript-eslint/no-unused-vars
         return {
@@ -55,6 +60,21 @@ export class UserService {
             username: user.username,
             email: user.email
         };
+    }
+
+    async initialize(username: string) {
+        const user = await this.userRepo.findUnique({ where: { username: username } });
+        if (user === null) {
+            throw new BadRequest('User not found');
+        }
+        await this.todoCategoriesRepo.create({
+            data: {
+                name: 'Default',
+                uuid: `default-category:${user.username}`,
+                User: { connect: { id: user.id } }
+            }
+        });
+        return user;
     }
 
     async login(username: string, password: string): Promise<{ user: UserResponseModel; token: string }> {

@@ -3,6 +3,9 @@ import { UserService } from '@/services/UserService';
 import { Inject, Injectable } from '@tsed/di';
 import { TodosRepository, UsersRepository } from '@/repositories';
 import { $log } from '@tsed/common';
+import { TodoModel } from '@tsed/prisma';
+import { Todo } from '@prisma/client';
+import { TodoRequestModel } from '@/controllers/rest';
 
 @Injectable()
 export class TodoService {
@@ -24,9 +27,21 @@ export class TodoService {
         return this.todoRepository.findUnique({ where: { id } });
     }
 
-    async createTodo(username: string, todo: any) {
+    // todo: figure out json validation in tsed (ajv)
+    async createTodo(username: string, todo: any /*TodoRequestModel*/) {
         const user = await this.userService.findByUsername(username);
-        return this.todoRepository.create({ data: { ...todo, User: { connect: { username: username } } } });
+        const { category, ...data } = todo;
+        return this.todoRepository.create({
+            data: {
+                ...data,
+                User: { connect: { id: user.id } },
+                Category: {
+                    connect: {
+                        uuid: category.id
+                    }
+                }
+            }
+        });
     }
 
     async deleteEvent(id: number) {
