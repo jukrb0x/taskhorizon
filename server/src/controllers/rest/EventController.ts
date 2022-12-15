@@ -49,7 +49,7 @@ export class EventController {
         const payload = extractJwtPayload(req);
         if (payload) {
             const event = await this.eventService.getEventById(id);
-            if (event?.userId === payload.userId) {
+            if (event?.userId === payload.uid) {
                 return this.eventService.deleteEvent(id);
             }
         }

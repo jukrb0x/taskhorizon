@@ -6,6 +6,7 @@ import { TodoModel } from '@/models';
 import { $log, PathParams, Req } from '@tsed/common';
 import { extractJwtPayload } from '@/config/jwt';
 import { BodyParams } from '@tsed/platform-params';
+import { BadRequest } from '@tsed/exceptions';
 
 export interface TodoRequestModel extends Omit<TodoModel, 'updatedAt' | 'createdAt' | 'id'> {
     uuid: string;
@@ -52,12 +53,15 @@ export class TodoController {
     }
 
     @Get('/delete/:uuid')
-    async delete(@Req() req: Req, @PathParams('uuid') id: number): Promise<TodoModel | undefined> {
+    async delete(@Req() req: Req, @PathParams('uuid') uuid: string): Promise<TodoModel | undefined> {
         const payload = extractJwtPayload(req);
         if (payload) {
-            const todo = await this.todoService.getTodoById(id);
-            if (todo?.userId === payload.userId) {
-                return this.todoService.deleteEvent(id);
+            const todo = await this.todoService.getTodoByUUID(uuid);
+            $log.warn('todo is', todo);
+            if (todo && todo?.userId === payload.uid) {
+                return this.todoService.deleteTodoById(todo.id);
+            } else {
+                throw new BadRequest('Todo not found');
             }
         }
     }

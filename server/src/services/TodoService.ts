@@ -27,6 +27,10 @@ export class TodoService {
         return this.todoRepository.findUnique({ where: { id } });
     }
 
+    async getTodoByUUID(uuid: string) {
+        return this.todoRepository.findUnique({ where: { uuid } });
+    }
+
     // todo: figure out json validation in tsed (ajv)
     async createTodo(username: string, todo: any /*TodoRequestModel*/) {
         const user = await this.userService.findByUsername(username);
@@ -44,7 +48,7 @@ export class TodoService {
         });
     }
 
-    async deleteEvent(id: number) {
+    async deleteTodoById(id: number) {
         return this.todoRepository.delete({ where: { id } });
     }
 }

@@ -31,8 +31,8 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
         toggleCompleted(todo.id);
     }, [todo, toggleCompleted]);
 
-    const handleRemove = useCallback(() => {
-        removeTodo(todo.id);
+    const handleRemove = useCallback(async () => {
+        await removeTodo(todo.id);
     }, [todo, removeTodo]);
 
     const handleEdit = useCallback(
