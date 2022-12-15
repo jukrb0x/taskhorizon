@@ -11,13 +11,13 @@ import { useEffect, useState } from 'react';
 
 export const LandingLayout = () => {
     const navigate = useNavigate();
-    const { user, loggedOut } = useUser();
+    const { token } = useUserStore();
 
     useEffect(() => {
-        if (user && !loggedOut) {
+        if (token) {
             navigate('/calendar');
         }
-    }, [user, loggedOut]);
+    }, [token]);
 
     return (
         <OpeningTransition transition={'pop'} duration={800}>

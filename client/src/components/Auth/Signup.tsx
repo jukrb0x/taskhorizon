@@ -4,7 +4,7 @@ import { Text, PasswordInput, TextInput, Title, Button as MButton, Tooltip } fro
 import { useForm } from '@mantine/form';
 import { useCallback } from 'react';
 import { REG_EMAIL } from '@/utils/regex';
-import { signup } from '@/apis';
+import { AuthAPI } from '@/apis';
 import { showNotification } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons';
 
@@ -63,7 +63,11 @@ const Signup = () => {
     });
 
     const handleSignup = useCallback(async () => {
-        const res = await signup(form.values.username, form.values.email, form.values.password);
+        const res = await AuthAPI.signup(
+            form.values.username,
+            form.values.email,
+            form.values.password
+        );
         if (res) {
             showNotification({
                 title: 'Signup successful',
@@ -75,7 +79,7 @@ const Signup = () => {
                 navigate('/auth/login');
             }, 500);
         }
-    }, [form.values, signup]);
+    }, [form.values]);
 
     return (
         <div className={'tw-w-72'}>

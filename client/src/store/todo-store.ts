@@ -7,11 +7,12 @@ interface Todo {
     id: string;
     completed: boolean;
     title: string;
-    linkedEvents?: string[]; // todo
+    linkedEvents?: string[]; // Todo
     category: {
         id: string;
         name: string;
     };
+    updatedAt: Date;
 }
 
 interface TodoStoreState {

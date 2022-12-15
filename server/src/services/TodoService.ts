@@ -6,15 +6,21 @@ import { Todo } from '@prisma/client';
 import { EventModel, TodoModel } from '@/models';
 import { $log } from '@tsed/common';
 
-interface TodoResponseModel {
+/**
+ * This Response Model should strictly match the client-side Todo interface
+ */
+export interface TodoResponseModel {
+    id: string;
     order: number | null;
-    categoryId: string;
+    category: {
+        id: string;
+        name: string;
+    };
     completed: boolean;
     title: string;
     createdAt: Date;
     updatedAt: Date;
     userId: number;
-    uuid: string;
     linkedEvents: EventModel[];
 }
 
@@ -34,20 +40,33 @@ export class TodoService {
 
     async getTodosByUserId(userId: number): Promise<TodoResponseModel[]> {
         const todos = await this.todoRepository.findMany({ where: { userId }, include: { Category: true } });
-        $log.warn('todos ', todos);
-        // restructure todos
         return todos.map((todo) => {
-            const { Category, User, id, ...rest } = todo;
+            const { Category, User, id, uuid, ...rest } = todo;
             return {
                 ...rest,
-                categoryId: Category.uuid
+                id: uuid,
+                category: {
+                    id: Category.uuid,
+                    name: Category.name
+                }
             };
         });
     }
 
-    async getTodosByUsername(username: string) {
+    async getTodosByUsername(username: string): Promise<TodoResponseModel[]> {
         const user = await this.userService.findByUsername(username);
-        return this.todoRepository.findMany({ where: { userId: user.id } });
+        const todos = await this.todoRepository.findMany({ where: { userId: user.id }, include: { Category: true } });
+        return todos.map((todo) => {
+            const { Category, User, id, uuid, ...rest } = todo;
+            return {
+                ...rest,
+                id: uuid,
+                category: {
+                    id: Category.uuid,
+                    name: Category.name
+                }
+            };
+        });
     }
 
     async getTodoById(id: number) {

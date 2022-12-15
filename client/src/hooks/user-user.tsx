@@ -1,4 +1,4 @@
-import { http, refillHttpInterceptor } from '@/apis';
+import { AuthAPI, http, refillHttpInterceptor } from '@/apis';
 import useSWR from 'swr';
 import useUserStore from '@/store/user-store';
 import { useEffect } from 'react';
@@ -17,11 +17,21 @@ interface Response {
 }
 
 export const useUser = () => {
-    const { data, error, isLoading, mutate } = useSWR<Response>('/user', fetcher);
+    const { data, error, isLoading, mutate } = useSWR<Response>('/user', fetcher, {
+        onSuccess: (data) => {
+            if (data) {
+                useUserStore.setState({ ...data.user });
+            }
+        },
+        onError: async () => {
+            // TODO: currently, if server is down, client will be shut down too
+            //       this is not expected behavior, we want a better recovery solution
+            await AuthAPI.logout();
+        }
+    });
     const { uid, username, email } = useUserStore();
 
-    useEffect(() => {
-        // check if user data stale
+    function checkStoreUserStale(data: Response) {
         if (
             data &&
             (data.user.uid !== uid || data.user.username !== username || data.user.email !== email)
@@ -30,7 +40,7 @@ export const useUser = () => {
                 console.log(err);
             });
         }
-    }, [data, uid, username, email]);
+    }
 
     const loggedOut = error && !data;
 

@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { Button } from '@/components';
 import { Text, PasswordInput, TextInput, Title, Button as MButton } from '@mantine/core';
-import { login } from '@/apis';
+import { AuthAPI } from '@/apis';
 import { useCallback, useState } from 'react';
 import { useForm } from '@mantine/form';
 import useUserStore from '@/store/user-store';
@@ -38,7 +38,7 @@ const Login = () => {
     });
 
     const handleLogin = useCallback(async () => {
-        const { data } = await login(form.values.username, form.values.password);
+        const { data } = await AuthAPI.login(form.values.username, form.values.password);
         if (data) {
             useUserStore.setState({ ...data.user, token: data.token });
             showNotification({
@@ -49,7 +49,7 @@ const Login = () => {
             });
             navigate('/calendar');
         }
-    }, [login, form.values]);
+    }, [form.values]);
 
     return (
         <div className={'tw-w-72'}>

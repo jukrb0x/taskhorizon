@@ -11,13 +11,13 @@ import useUserStore from '@/store/user-store';
 
 export default function AuthLayout() {
     const navigate = useNavigate();
-    const { user, loggedOut } = useUser();
+    const { token } = useUserStore();
 
     useEffect(() => {
-        if (user && !loggedOut) {
+        if (token) {
             navigate('/calendar');
         }
-    }, [user, loggedOut]);
+    }, [token]);
 
     const ref = useRef(null);
 

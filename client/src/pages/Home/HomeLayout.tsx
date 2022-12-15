@@ -11,7 +11,7 @@ import { Profile } from '@/components';
 import { Divider, LoadingOverlay, Menu } from '@mantine/core';
 import { useUser } from '@/hooks';
 import { useEffect, useState } from 'react';
-import { logout } from '@/apis';
+import { AuthAPI } from '@/apis';
 import { mutate } from 'swr';
 import useUserStore from '@/store/user-store';
 import { IconMessageCircle, IconPhoto, IconSearch, IconSettings } from '@tabler/icons';
@@ -58,7 +58,7 @@ export const HomeLayout = () => {
                                         onClose={() => setSettingsOpen(false)}
                                     />
                                     <div className={'tw-p-3.5'}>
-                                        <Button onClick={() => TodoAPI.getTodos()}>Test</Button>
+                                        <Button onClick={() => AuthAPI.logout()}>Logout</Button>
                                         <Menu trigger={'hover'}>
                                             <Menu.Target>
                                                 <Button onClick={() => setSettingsOpen(true)}>

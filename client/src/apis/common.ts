@@ -19,21 +19,21 @@ interface SignupResponse {
     username: string;
 }
 
-const login = async (username: string, password: string) => {
-    return await http.post<LoginResponse>('/user/login', { username, password });
-};
+export class AuthAPI {
+    static login = async (username: string, password: string) => {
+        return await http.post<LoginResponse>('/user/login', { username, password });
+    };
 
-const signup = async (username: string, email: string, password: string) => {
-    return await http.post<SignupResponse>('/user/signup', { username, email, password });
-};
+    static signup = async (username: string, email: string, password: string) => {
+        return await http.post<SignupResponse>('/user/signup', { username, email, password });
+    };
 
-const logout = async () => {
-    useUserStore.getState().logout();
-    const a = await mutate('/auth/user', null, { revalidate: true });
-    showNotification({
-        title: 'You have been logged out',
-        message: 'Please log in again to continue'
-    });
-};
-
-export { login, logout, signup };
+    static logout = async () => {
+        useUserStore.getState().logout();
+        await mutate('/auth/user', null, { revalidate: true });
+        showNotification({
+            title: 'You have been logged out',
+            message: 'Please log in again to continue'
+        });
+    };
+}

@@ -10,9 +10,9 @@ const fetcher = (url: string) => {
 };
 
 export const useTodo = () => {
-    const { data, error, isLoading, mutate } = useSWR<Response>('/todo/all', fetcher);
-
-    console.log(data);
+    const { data, error, isLoading, mutate } = useSWR<Todo[]>('/todo/all', fetcher, {
+        onSuccess: (data) => compareWithStore(data)
+    });
 
     const {
         eventList,
@@ -37,11 +37,10 @@ export const useTodo = () => {
     } = useTodoStore();
 
     // DATA SWR
-    /*
 
-    const compareWithStore = (data?.todos, todoList/!*, addTodoInternal, setTodoInternal*!/) => {
-        if (data?.todos) {
-            data.todos.forEach((todo) => {
+    const compareWithStore = (todos: Todo[] /*, addTodoInternal, setTodoInternal*/) => {
+        if (todos) {
+            todos.forEach((todo) => {
                 const storeTodo = getTodoById(todo.id);
                 if (!storeTodo) {
                     addTodoInternal(todo);
@@ -52,18 +51,11 @@ export const useTodo = () => {
         }
     };
 
-
-    useEffect(()=>{
-        if (data) {
-            // compare with local data
-            // if different, update local data
-            // if same, do nothing
-
-
-
-        }
-    },[data,])
-*/
+    // useEffect(() => {
+    //     if (data) {
+    //         compareWithStore(data)
+    //     }
+    // }, [data, compareWithStore]);
 
     // CLIENT SIDE FUNCTIONS
 
