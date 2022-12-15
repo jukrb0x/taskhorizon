@@ -37,8 +37,9 @@ export const useTodo = () => {
             }
         });
     };
+
     /**
-     * @TODO visualization performance
+     * @TODO visualization performance [#32](https://github.com/jukrb0x/taskhorizon/issues/32)
      * 1. add this action to action stack, pending status
      * 2. add todo to the local store
      * 3. Promise return successful, update stack status to success

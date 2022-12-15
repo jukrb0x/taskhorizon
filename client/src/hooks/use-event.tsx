@@ -86,7 +86,7 @@ export const useEvent = () => {
     /**
      * @param id
      * @param newEvent
-     * @description update the event and it's linked todos, the linked events of linked todos will also be updated ONLY for the title and description.
+     * @description update the event, and it's linked todos, the linked events of linked todos will also be updated ONLY for the title and description.
      */
     const setEvent = (id: string, newEvent: CalendarEvent) => {
         updateLinkedTodos(setEventInternal(id, newEvent));
