@@ -13,7 +13,7 @@ import {
 import { Button } from '@/components';
 import * as dateFns from 'date-fns';
 import { DatetimePicker } from './DatetimePicker';
-import { CalendarEvent } from '@/store/event-store';
+import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 import { useEventStore } from '@/store';
 import { IconChevronDown, IconDots, IconTrash } from '@tabler/icons';
 import { useEventListener } from '@mantine/hooks';
@@ -94,10 +94,10 @@ const EventCard = (props: EventCardProps) => {
         }
     }, []);
 
-    const createEvent = useCallback(() => {
+    const createEvent = useCallback(async () => {
         if (!isValidEvent) return;
         const event: CalendarEvent = {
-            id: 'new event id will be generated',
+            id: EventIdGenerator(),
             completed: completed,
             title: title.trim(),
             desc: description,
@@ -106,7 +106,7 @@ const EventCard = (props: EventCardProps) => {
             allDay: allDay,
             linkedTodos: linkedTodos
         };
-        addEvent(event);
+        await addEvent(event);
         props.onEventCreated && props.onEventCreated();
     }, [addEvent, completed, title, description, start, end, allDay, linkedTodos]);
 

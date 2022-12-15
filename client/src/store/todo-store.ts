@@ -12,7 +12,7 @@ interface Todo {
         id: string;
         name: string;
     };
-    updatedAt: Date;
+    updatedAt?: Date;
 }
 
 interface TodoStoreState {

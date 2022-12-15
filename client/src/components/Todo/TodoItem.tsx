@@ -45,8 +45,8 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
     const linkedEventNumber = todo.linkedEvents?.length || 0;
     const formattedLinkedEventsDateTimeList = useMemo(() => {
         return todo.linkedEvents
-            ?.map((eventId) => {
-                return getEventById(eventId)?.start as Date;
+            ?.map((eventUUID) => {
+                return getEventById(eventUUID)?.start as Date;
             })
             .sort((a, b) => a.getTime() - b.getTime())
             .map((DT) => {

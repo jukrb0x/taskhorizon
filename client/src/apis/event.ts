@@ -2,21 +2,33 @@ import { CalendarEvent, EventIdGenerator } from '@/store';
 import { http } from './http';
 import { renameKeys } from '@/utils/common';
 
-interface CalendarEventRequestModel extends Omit<CalendarEvent, 'id'> {
-    uuid: string;
+interface CalendarEventRequestModel {
+    uuid: string; // id
+    title: string;
     description: string;
+    allDay: boolean;
+    completed: boolean;
+    desc: string;
+    start: Date;
+    end: Date;
+    linkedTodos: string[];
 }
 
 export class EventAPI {
-    // static async getEvents(): Promise<CalendarEvent[]> {
-    //
-    // }
-
-    static async createEvent(event: CalendarEvent): Promise<CalendarEvent> {
-        const req = renameKeys(event, { id: 'uuid', description: 'desc' });
-        req.uuid = EventIdGenerator();
-        console.log(req);
-        const { data } = await http.post<CalendarEvent>('/event/create', event);
+    static async getEvents(): Promise<CalendarEvent[]> {
+        const { data } = await http.get<CalendarEvent[]>('/event/all');
         return data;
     }
+
+    static async createEvent(event: CalendarEvent): Promise<CalendarEvent> {
+        const req: CalendarEventRequestModel = renameKeys(event, {
+            id: 'uuid',
+            desc: 'description'
+        });
+        const { data } = await http.post<CalendarEvent>('/event/create', req);
+        return data;
+    }
+
+    // static async updateEventById(id: string, event: CalendarEvent): Promise<CalendarEvent> {
+    // }
 }

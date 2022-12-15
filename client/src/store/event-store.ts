@@ -11,12 +11,13 @@ interface CalendarEvent {
     end: Date;
     allDay: boolean;
     completed: boolean;
-    linkedTodos?: string[]; // todo
+    linkedTodos?: string[];
+    updatedAt?: Date;
 }
 
 interface EventStoreState {
     eventList: CalendarEvent[];
-    addEvent: (newEvent: CalendarEvent) => string;
+    addEvent: (newEvent: CalendarEvent) => void;
     setEvent: (id: string, newEvent: CalendarEvent) => CalendarEvent;
     removeEvent: (id: string) => CalendarEvent;
     toggleCompleted: (id: string) => CalendarEvent;
@@ -33,19 +34,16 @@ const EventIdGenerator = () => {
 const EventStore: StateCreator<EventStoreState> = (set, get) => ({
     eventList: [],
     addEvent: (newEvent: CalendarEvent) => {
-        const newId = EventIdGenerator();
         set((state) => {
             return {
                 eventList: [
                     ...state.eventList,
                     {
-                        ...newEvent,
-                        id: newId
+                        ...newEvent
                     }
                 ]
             };
         });
-        return newId;
     },
     setEvent: (id: string, newEvent: CalendarEvent) => {
         set((state) => {

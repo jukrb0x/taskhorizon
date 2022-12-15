@@ -1,11 +1,22 @@
 import { Todo, useEventStore, useTodoStore } from '@/store';
 import { CalendarEvent } from '@/store/event-store';
 import { EventAPI } from '@/apis/event';
+import { http } from '@/apis';
+import useSWR from 'swr';
+
+const fetcher = (url: string) => {
+    // http.interceptors.response.clear(); // clear all notification
+    return http.get(url).then((res) => res.data);
+};
 
 /**
  * @description useTodo hook to manage the TodoList and binding with the EventList
  */
 export const useEvent = () => {
+    const { data, error, isLoading, mutate } = useSWR<CalendarEvent[]>('/event/all', fetcher, {
+        onSuccess: (data) => compareWithStore(data)
+    });
+
     const {
         eventList,
         setEvent: setEventInternal,
@@ -27,10 +38,34 @@ export const useEvent = () => {
         removeLinkedEvent
     } = useTodoStore();
 
+    const compareWithStore = (events: CalendarEvent[]) => {
+        console.log(events);
+        if (events) {
+            events.forEach((event) => {
+                // parse date
+                event.start = new Date(event.start);
+                event.end = new Date(event.end);
+
+                const storeEvent = getEventById(event.id);
+                if (!storeEvent) {
+                    addEventInternal(event);
+                } else if (storeEvent.updatedAt !== event.updatedAt) {
+                    setEventInternal(event.id, event);
+                }
+            });
+
+            // remove events that are not in the server
+            eventList.forEach((event) => {
+                if (!events.find((e) => e.id === event.id)) {
+                    removeEventInternal(event.id);
+                }
+            });
+        }
+    };
+
     const addEvent: (event: CalendarEvent) => Promise<CalendarEvent | undefined> = async (
         event: CalendarEvent
     ) => {
-        //TODO
         const created = await EventAPI.createEvent(event);
         if (created) {
             addEventInternal(event);
@@ -89,7 +124,7 @@ export const useEvent = () => {
      * @description update the event, and it's linked todos, the linked events of linked todos will also be updated ONLY for the title and description.
      */
     const setEvent = (id: string, newEvent: CalendarEvent) => {
-        updateLinkedTodos(setEventInternal(id, newEvent));
+        updateLinkedTodos(setEventInternal(id, newEvent)); // todo
 
         /**
          * update ONLY TITLE, DESC for linked events from linked todos
@@ -99,6 +134,7 @@ export const useEvent = () => {
             getTodoById(todoId)?.linkedEvents?.forEach((eventId) => {
                 const e = getEventById(eventId) as CalendarEvent;
                 setEventInternal(eventId, {
+                    // todo
                     ...e,
                     title: newEvent.title,
                     desc: newEvent.desc

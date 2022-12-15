@@ -7,10 +7,7 @@ import { extractJwtPayload } from '@/config/jwt';
 import { BodyParams } from '@tsed/platform-params';
 import { EventModel } from '@/models';
 import { BadRequest } from '@tsed/exceptions';
-
-interface EventRequestModel extends Omit<EventModel, 'updatedAt' | 'createdAt' | 'id'> {
-    uuid: string;
-}
+import { EventRequestModel } from '@/interfaces/EventInterface';
 
 @JwtAuth()
 @Controller('/event')
@@ -37,7 +34,7 @@ export class EventController {
     }
 
     @Post('/create')
-    async createEvent(@Req() req: Req, @BodyParams('event') event: EventRequestModel): Promise<EventModel | undefined> {
+    async createEvent(@Req() req: Req, @BodyParams() event: EventRequestModel): Promise<EventModel | undefined> {
         const payload = extractJwtPayload(req);
         if (payload) {
             return this.eventService.createEvent(payload.username, event);

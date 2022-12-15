@@ -2,6 +2,8 @@ import { Inject, Injectable } from '@tsed/di';
 import { EventsRepository } from '@/repositories';
 import { UserService } from '@/services/UserService';
 import { EventModel } from '@/models';
+import { EventRequestModel, EventResponseModel } from '@/interfaces/EventInterface';
+import { $log } from '@tsed/common';
 
 @Injectable()
 export class EventService {
@@ -11,18 +13,39 @@ export class EventService {
     @Inject()
     private userService: UserService;
 
-    async getEventsByUsername(username: string) {
+    async getEventsByUsername(username: string): Promise<EventResponseModel[]> {
         const user = await this.userService.findByUsername(username);
-        return await this.eventRepository.findMany({ where: { userId: user.id } });
+        const events = await this.eventRepository.findMany({ where: { userId: user.id } });
+        return events.map((e) => {
+            return {
+                id: e.uuid,
+                desc: e.description || '',
+                title: e.title,
+                start: e.start,
+                end: e.end,
+                allDay: e.allDay,
+                completed: e.completed,
+                updatedAt: e.updatedAt,
+                linkedTodos: e.linkedTodos?.map((todo) => todo.uuid) || []
+            };
+        });
     }
 
     async getEventById(id: number) {
         return await this.eventRepository.findUnique({ where: { id } });
     }
 
-    async createEvent(username: string, event: any) {
+    async createEvent(username: string, event: EventRequestModel) {
         const user = await this.userService.findByUsername(username);
-        return await this.eventRepository.create({ data: { ...event, User: { connect: { id: user.id } } } });
+        return await this.eventRepository.create({
+            data: {
+                ...event,
+                linkedTodos: {
+                    connect: event.linkedTodos.map((todo) => ({ uuid: todo }))
+                },
+                User: { connect: { id: user.id } }
+            }
+        });
     }
 
     /**

@@ -63,6 +63,7 @@ export const useTodo = () => {
         todo.linkedEvents?.forEach((eventId) => {
             const event = getEventById(eventId);
             if (event) {
+                // todo
                 setEventInternal(eventId, {
                     ...event,
                     title: todo.title,
