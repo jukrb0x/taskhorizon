@@ -11,7 +11,7 @@ export const TodoInput = (props: { className?: string }) => {
     const { user } = useUser();
     const [title, setTitle] = useState<string>('');
 
-    const handleAdd = () => {
+    const handleAdd = async () => {
         if (title.trim() == '') return;
         const todo: Todo = {
             category: { id: `default-category:${user?.username}`, name: 'Default' }, // TODO: change to default category
@@ -19,12 +19,8 @@ export const TodoInput = (props: { className?: string }) => {
             title: title.trim(),
             completed: false
         };
-
-        addTodo(todo).then((res) => {
-            if (res) {
-                setTitle('');
-            }
-        });
+        await addTodo(todo);
+        setTitle('');
     };
 
     return (

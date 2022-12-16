@@ -2,16 +2,22 @@ import { useEventStore, useTodoStore } from '@/store';
 import { Todo } from '@/store/todo-store';
 import { http, TodoAPI } from '@/apis';
 import useSWR from 'swr';
+import { useEvent } from '@/hooks/use-event';
+import { should } from 'vitest';
 
 const fetcher = (url: string) => {
     // http.interceptors.response.clear(); // clear all notification
     return http.get(url).then((res) => res.data);
 };
 
-export const useTodo = () => {
-    const { data, error, isLoading, mutate } = useSWR<Todo[]>('/todo/all', fetcher, {
-        onSuccess: (data) => compareWithStore(data)
-    });
+export const useTodo = (shouldFetch = true) => {
+    const { data, error, isLoading, mutate } = useSWR<Todo[]>(
+        shouldFetch ? '/todo/all' : null,
+        fetcher,
+        {
+            onSuccess: (data) => compareWithStore(data)
+        }
+    );
 
     const {
         eventList,
@@ -35,7 +41,9 @@ export const useTodo = () => {
         addLinkedEvent
     } = useTodoStore();
 
+    // ----------------------------
     // DATA SWR
+    // ----------------------------
 
     const compareWithStore = (todos: Todo[]) => {
         if (todos) {
@@ -57,14 +65,15 @@ export const useTodo = () => {
         }
     };
 
+    // ----------------------------
     // CLIENT SIDE FUNCTIONS
+    // ----------------------------
 
-    const updateLinkedEvents = (todo: Todo) => {
-        todo.linkedEvents?.forEach((eventId) => {
+    const updateLinkedEventsToTodo = (todo: Todo) => {
+        todo.linkedEvents?.forEach(async (eventId) => {
             const event = getEventById(eventId);
             if (event) {
-                // todo
-                setEventInternal(eventId, {
+                await useEvent(false).setEvent(eventId, {
                     ...event,
                     title: todo.title,
                     completed: todo.completed
@@ -82,37 +91,44 @@ export const useTodo = () => {
      * 5. if failed, remove todo from local store
      */
     const addTodo = async (todo: Todo) => {
-        const created = await TodoAPI.createTodo(todo);
-        if (created) {
-            addTodoInternal(todo);
-        }
-        return created;
+        // FIXME: when exactly should i mutate...?
+        data && (await mutate([...data, todo]));
+        addTodoInternal(todo);
+        await TodoAPI.createTodo(todo);
     };
 
-    const setTodo = async (id: string, todo: Todo) => {
-        const updated = await TodoAPI.updateTodo(todo);
-        if (updated) {
-            updateLinkedEvents(setTodoInternal(id, todo));
+    const setTodo = async (id: string, todo: Todo, drilldown = shouldFetch) => {
+        // FIXME: if mutate, we have bit of lag to see the change..???
+        // data && (await mutate(data.map((t) => (t.id === id ? todo : t))));
+        setTodoInternal(id, todo);
+        if (drilldown) {
+            updateLinkedEventsToTodo(todo);
         }
-        return updated;
+        return await TodoAPI.updateTodo(todo);
     };
 
-    const toggleCompleted = (id: string) => {
-        const todo = getTodoById(id);
-        if (todo) {
-            updateLinkedEvents(toggleTodoCompleted(id));
+    const toggleCompleted = async (id: string, drilldown = shouldFetch) => {
+        // FIXME: mutating cause lag as well as mutating on setTodo
+        //        guess it's because of the calculation & re-rendering
+        // data && await mutate([
+        //     ...data.map((todo) =>
+        //         todo.id === id ? { ...todo, completed: !todo.completed } : todo
+        //     )
+        // ]);
+        const toggled = toggleTodoCompleted(id);
+        if (drilldown) {
+            updateLinkedEventsToTodo(toggled);
         }
     };
 
     const removeTodo = async (id: string) => {
-        const deletedTodo = await TodoAPI.deleteTodoById(id);
-        if (deletedTodo) {
-            removeTodoInternal(id).linkedEvents?.forEach((eventId) => {
-                // remove all linked events
-                // TODO remove from use-event
-                removeEventInternal(eventId);
-            });
-        }
+        // FIXME: same as above
+        // data && await mutate(data.filter((todo) => todo.id !== id));
+        removeTodoInternal(id).linkedEvents?.forEach((eventId) => {
+            // remove all linked events
+            useEvent(false).removeEvent(eventId);
+        });
+        return await TodoAPI.deleteTodoById(id);
     };
 
     return {

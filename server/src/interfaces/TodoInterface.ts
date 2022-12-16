@@ -9,6 +9,7 @@ export interface TodoRequestModel {
         name: string;
     };
     order: number | null;
+    linkedEvents?: EventModel[];
 }
 
 /**

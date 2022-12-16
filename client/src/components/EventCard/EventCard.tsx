@@ -134,10 +134,17 @@ const EventCard = (props: EventCardProps) => {
 
     // keyboard bindings
     const ref = useEventListener('keydown', (e) => {
+        // new line
+        if (e.shiftKey && e.key == 'Enter') {
+            return;
+        }
+
+        // save action
         if (e.key === 'Enter') {
             if (props.mode === 'create') {
                 createEvent();
             } else if (props.mode === 'edit') {
+                e.preventDefault();
                 updateEvent();
             }
         } else if (e.key === 'Backspace') {

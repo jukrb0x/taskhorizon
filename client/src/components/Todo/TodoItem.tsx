@@ -91,7 +91,7 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
             // {...attributes}
             onBlur={(e) => {
                 e.preventDefault();
-                handleSave();
+                isEdit && handleSave();
             }}
         >
             <div className={'tw-flex tw-items-start tw-items-center'}>
