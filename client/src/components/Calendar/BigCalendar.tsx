@@ -144,7 +144,7 @@ export const BigCalendar = () => {
                 end: end,
                 allDay: isAllDay
             };
-            await setEvent(event.id, nextEvent);
+            await setEvent(event.id, nextEvent, false);
         },
         [setEvent]
     ); /* handleEventDrop */
@@ -157,7 +157,7 @@ export const BigCalendar = () => {
                 start: new Date(start),
                 end: new Date(end)
             };
-            await setEvent(event.id, nextEvent);
+            await setEvent(event.id, nextEvent, false);
         },
         [setEvent]
     ); /* handleEventResize */

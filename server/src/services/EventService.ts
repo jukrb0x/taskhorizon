@@ -26,7 +26,7 @@ export class EventService {
                 allDay: e.allDay,
                 completed: e.completed,
                 updatedAt: e.updatedAt,
-                linkedTodos: e.linkedTodos?.map((todo) => todo.uuid) || []
+                linkedTodos: e.linkedTodos?.map((todo) => todo.uuid)
             };
         });
     }
@@ -41,6 +41,7 @@ export class EventService {
 
     async createEvent(username: string, event: EventRequestModel) {
         const user = await this.userService.findByUsername(username);
+        // console.log(event);
         return await this.eventRepository.create({
             data: {
                 ...event,

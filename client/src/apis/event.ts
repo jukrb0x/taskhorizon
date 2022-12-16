@@ -37,4 +37,10 @@ export class EventAPI {
         const { data } = await http.post<CalendarEvent>('/event/update', req);
         return data;
     }
+
+    // TODO
+    static async deleteEventById(id: string): Promise<CalendarEvent> {
+        const { data } = await http.get<CalendarEvent>(`/event/delete/${id}`);
+        return data;
+    }
 }

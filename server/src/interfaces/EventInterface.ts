@@ -8,7 +8,7 @@ export interface EventRequestModel {
     description: string | null;
     start: Date;
     end: Date;
-    linkedTodos?: string[];
+    linkedTodos: string[];
 }
 
 export interface EventResponseModel {

@@ -49,7 +49,7 @@ export const useTodo = (shouldFetch = true) => {
         clearDragItem,
         getTodoById,
         addLinkedEvent,
-        removeLinkedEvent
+        removeLinkedEvent: removeLinkedEventInternal
     } = useTodoStore();
 
     // ----------------------------
@@ -136,6 +136,12 @@ export const useTodo = (shouldFetch = true) => {
         if (drilldown) {
             updateLinkedEventsToTodo(toggled);
         }
+    };
+
+    const removeLinkedEvent = async (todoId: string, eventId: string) => {
+        removeLinkedEventInternal(todoId, eventId);
+        // TODO
+        return await EventAPI.deleteEventById();
     };
 
     // TODO try to decouple..

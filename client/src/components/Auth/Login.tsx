@@ -47,7 +47,7 @@ const Login = () => {
                 color: 'teal',
                 icon: <IconCheck />
             });
-            navigate('/calendar');
+            await navigate('/calendar');
         }
     }, [form.values]);
 

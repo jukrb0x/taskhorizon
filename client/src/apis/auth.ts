@@ -35,10 +35,12 @@ export class AuthAPI {
         useUserStore.getState().logout();
         useTodoStore.setState({ todoList: [] });
         useEventStore.setState({ eventList: [] });
+        await mutate(() => true, undefined, { revalidate: false });
+
         showNotification({
             title: 'You have been logged out',
             message: 'Please log in again to continue'
         });
-        setTimeout(() => (window.location.href = '/'), 1000);
+        setTimeout(() => (window.location.href = '/'), 800);
     };
 }

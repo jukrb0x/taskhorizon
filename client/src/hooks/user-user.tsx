@@ -1,5 +1,5 @@
 import { AuthAPI, http, refillHttpInterceptor } from '@/apis';
-import useSWR from 'swr';
+import useSWR, { useSWRConfig } from 'swr';
 import useUserStore from '@/store/user-store';
 
 const fetcher = (url: string) => {
@@ -16,6 +16,7 @@ interface Response {
 }
 
 export const useUser = () => {
+    const { mutate: globalMutate } = useSWRConfig();
     const { data, error, isLoading, mutate } = useSWR<Response>('/user', fetcher, {
         onSuccess: (data) => {
             if (data) {
@@ -25,7 +26,7 @@ export const useUser = () => {
         onError: async () => {
             // TODO: currently, if server is down, client will be shut down too
             //       this is not expected behavior, we want a better recovery solution
-            await mutate();
+            await globalMutate(() => true, undefined, { revalidate: false });
         }
     });
     const { uid, username, email } = useUserStore();

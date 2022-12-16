@@ -54,7 +54,7 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
             });
     }, [todo, getEventById]);
 
-    const handleSave = useCallback(() => {
+    const handleSave = useCallback(async () => {
         if (title.trim() == '') return;
         setIsEdit(false);
         setTitle(title.trim());
@@ -62,7 +62,7 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
             ...todo,
             title: title.trim()
         };
-        setTodo(todo.id, newTodo);
+        await setTodo(todo.id, newTodo);
     }, [setIsEdit, setTodo, todo, title]);
 
     const handleDragStart = useCallback(

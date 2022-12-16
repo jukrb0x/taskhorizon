@@ -55,13 +55,13 @@ export class EventController {
         }
     }
 
-    @Get('/delete/:id')
-    async deleteEvent(@Req() req: Req, @PathParams('id') id: number): Promise<EventModel | undefined> {
+    @Get('/delete/:uuid')
+    async deleteEvent(@Req() req: Req, @PathParams('uuid') uuid: number): Promise<EventModel | undefined> {
         const payload = extractJwtPayload(req);
         if (payload) {
-            const event = await this.eventService.getEventById(id);
+            const event = await this.eventService.getEventByUUID(uuid);
             if (event?.userId === payload.uid) {
-                return this.eventService.deleteEvent(id);
+                return this.eventService.deleteEvent(event.id);
             }
         }
     }

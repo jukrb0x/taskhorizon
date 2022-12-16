@@ -50,7 +50,6 @@ export const useEvent = (shouldFetch = true) => {
                 // parse date, not pure
                 event.start = new Date(event.start);
                 event.end = new Date(event.end);
-                console.log(event);
 
                 const storeEvent = getEventById(event.id);
                 if (!storeEvent) {
@@ -93,7 +92,7 @@ export const useEvent = (shouldFetch = true) => {
         if (event) {
             const toggledEvent = toggleEventCompleted(id);
             // process linked todos, usually it's only one linked todo for one event
-            toggledEvent.linkedTodos?.forEach((todoId) => {
+            toggledEvent.linkedTodos?.forEach(async (todoId) => {
                 const todo = getTodoById(todoId) as Todo;
                 const uncompletedEvents = todo?.linkedEvents?.filter((eventId) => {
                     const event = getEventById(eventId);
@@ -101,9 +100,19 @@ export const useEvent = (shouldFetch = true) => {
                 });
                 if (uncompletedEvents?.length == 0) {
                     // all linked events are completed
-                    setTodoInternal(todoId, { ...todo, completed: true });
+                    const next = {
+                        ...todo,
+                        completed: true
+                    };
+                    setTodoInternal(todoId, next);
+                    await TodoAPI.updateTodo(next);
                 } else {
-                    setTodoInternal(todoId, { ...todo, completed: false });
+                    const next = {
+                        ...todo,
+                        completed: false
+                    };
+                    setTodoInternal(todoId, next);
+                    await TodoAPI.updateTodo(next);
                 }
             });
         }
@@ -118,12 +127,13 @@ export const useEvent = (shouldFetch = true) => {
         event.linkedTodos?.forEach(async (todoId) => {
             const todo = getTodoById(todoId);
             if (todo) {
-                await setTodoInternal(todoId, {
+                const next = {
                     ...todo,
                     title: event.title,
                     completed: event.completed
-                });
-                await TodoAPI.updateTodo(todo);
+                };
+                await setTodoInternal(todoId, next);
+                await TodoAPI.updateTodo(next);
             }
         });
     };
@@ -136,13 +146,16 @@ export const useEvent = (shouldFetch = true) => {
     const updateLinkedEventsToEvent = (event: CalendarEvent) => {
         event.linkedTodos?.forEach((todoId) => {
             getTodoById(todoId)?.linkedEvents?.forEach(async (eventId) => {
-                const toUpdate = {
-                    ...(getEventById(eventId) as CalendarEvent),
-                    title: event.title,
-                    desc: event.desc
-                };
-                await setEvent(eventId, event, false);
-                await EventAPI.updateEvent(toUpdate);
+                const exist = getEventById(eventId);
+                if (exist) {
+                    const next: CalendarEvent = {
+                        ...exist,
+                        title: event.title,
+                        desc: event.desc
+                    };
+                    await setEvent(eventId, next, false);
+                    await EventAPI.updateEvent(next);
+                }
             });
         });
     };
@@ -157,8 +170,8 @@ export const useEvent = (shouldFetch = true) => {
         // await mutate([...eventList.filter((event) => event.id !== id), newEvent]);
         setEventInternal(id, newEvent);
         if (drilldown) {
-            updateLinkedTodosToEvent(newEvent);
-            updateLinkedEventsToEvent(newEvent);
+            await updateLinkedTodosToEvent(newEvent);
+            await updateLinkedEventsToEvent(newEvent);
         }
         return await EventAPI.updateEvent(newEvent); // update the event itself
     };
