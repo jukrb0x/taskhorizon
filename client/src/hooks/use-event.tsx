@@ -3,16 +3,12 @@ import { CalendarEvent } from '@/store/event-store';
 import { EventAPI } from '@/apis/event';
 import { http, TodoAPI } from '@/apis';
 import useSWR from 'swr';
-import { useTodo } from '@/hooks/use-todo';
 
 const fetcher = (url: string) => {
     // http.interceptors.response.clear(); // clear all notification
     return http.get(url).then((res) => res.data);
 };
 
-/**
- * @description useTodo hook to manage the TodoList and binding with the EventList
- */
 export const useEvent = (shouldFetch = true) => {
     const { data, error, isLoading, mutate } = useSWR<CalendarEvent[]>(
         shouldFetch ? '/event/all' : null,
@@ -22,6 +18,9 @@ export const useEvent = (shouldFetch = true) => {
         }
     );
 
+    // ---------
+    // STORE
+    // ---------
     const {
         eventList,
         setEvent: setEventInternal,
@@ -51,6 +50,7 @@ export const useEvent = (shouldFetch = true) => {
                 // parse date, not pure
                 event.start = new Date(event.start);
                 event.end = new Date(event.end);
+                console.log(event);
 
                 const storeEvent = getEventById(event.id);
                 if (!storeEvent) {
@@ -75,6 +75,7 @@ export const useEvent = (shouldFetch = true) => {
         event: CalendarEvent
     ) => {
         const created = await EventAPI.createEvent(event);
+        console.log('created', created);
         if (created) {
             addEventInternal(event);
             return event;
@@ -117,11 +118,12 @@ export const useEvent = (shouldFetch = true) => {
         event.linkedTodos?.forEach(async (todoId) => {
             const todo = getTodoById(todoId);
             if (todo) {
-                await useTodo(false).setTodo(todoId, {
+                await setTodoInternal(todoId, {
                     ...todo,
                     title: event.title,
                     completed: event.completed
                 });
+                await TodoAPI.updateTodo(todo);
             }
         });
     };
@@ -139,7 +141,7 @@ export const useEvent = (shouldFetch = true) => {
                     title: event.title,
                     desc: event.desc
                 };
-                await useEvent(false).setEvent(eventId, event);
+                await setEvent(eventId, event, false);
                 await EventAPI.updateEvent(toUpdate);
             });
         });
@@ -154,37 +156,14 @@ export const useEvent = (shouldFetch = true) => {
     const setEvent = async (id: string, newEvent: CalendarEvent, drilldown = shouldFetch) => {
         // await mutate([...eventList.filter((event) => event.id !== id), newEvent]);
         setEventInternal(id, newEvent);
-        const updated = await EventAPI.updateEvent(newEvent); // update the event itself
         if (drilldown) {
             updateLinkedTodosToEvent(newEvent);
             updateLinkedEventsToEvent(newEvent);
         }
-
-        if (updated) {
-            // notice that we pass the newEvent to the store, not the updated one
-            // because the date in the updated one is string, not Date
-        }
-        // updateLinkedTodosToEvent(setEventInternal(id, newEvent));
-
-        /*    /!**
-             * @description update the linked events of linked todos
-             * update ONLY TITLE, DESC
-             * UPDATE LOGIC: the event --> linked todos --> linked events --> update events
-             *!/
-            getEventById(id)?.linkedTodos?.forEach((todoId) => {
-                getTodoById(todoId)?.linkedEvents?.forEach((eventId) => {
-                    const e = getEventById(eventId) as CalendarEvent;
-                    setEventInternal(eventId, {
-                        // todo
-                        ...e,
-                        title: newEvent.title,
-                        desc: newEvent.desc
-                    });
-                });
-            });*/
+        return await EventAPI.updateEvent(newEvent); // update the event itself
     };
 
-    // TODO
+    // TODO try to decouple..
     const removeEvent = async (id: string) => {
         await mutate(eventList.filter((event) => event.id !== id));
         const removedEvent = removeEventInternal(id);
@@ -192,7 +171,8 @@ export const useEvent = (shouldFetch = true) => {
         removedEvent.linkedTodos?.forEach((todoId) => {
             // remove the event from linked todo,
             // usually it's only one linked todo for one event
-            removeLinkedEvent(todoId, removedEvent.id);
+            const updated = removeLinkedEvent(todoId, removedEvent.id);
+            TodoAPI.updateTodo(updated);
         });
 
         // remove all linked todos only if all linked events are removed
@@ -200,6 +180,7 @@ export const useEvent = (shouldFetch = true) => {
             const todo = getTodoById(todoId);
             if (todo?.linkedEvents?.length == 0) {
                 removeTodoInternal(todoId);
+                TodoAPI.deleteTodoById(todoId);
             }
         });
     };

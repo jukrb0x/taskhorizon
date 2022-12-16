@@ -17,7 +17,8 @@ export const TodoInput = (props: { className?: string }) => {
             category: { id: `default-category:${user?.username}`, name: 'Default' }, // TODO: change to default category
             id: TodoIdGenerator(),
             title: title.trim(),
-            completed: false
+            completed: false,
+            linkedEvents: []
         };
         await addTodo(todo);
         setTitle('');

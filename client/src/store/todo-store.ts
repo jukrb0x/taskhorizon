@@ -7,7 +7,7 @@ interface Todo {
     id: string;
     completed: boolean;
     title: string;
-    linkedEvents?: string[]; // Todo
+    linkedEvents: string[]; // Todo
     category: {
         id: string;
         name: string;
@@ -26,7 +26,7 @@ interface TodoStoreState {
     setDragItem: (item: Todo) => void;
     clearDragItem: () => void;
     addLinkedEvent: (id: string, eventId: string) => void;
-    removeLinkedEvent: (id: string, eventId: string) => void;
+    removeLinkedEvent: (id: string, eventId: string) => Todo;
 }
 
 const TodoIdGenerator = () => {
@@ -96,16 +96,19 @@ const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({
         }));
     },
     removeLinkedEvent: (id: string, eventId: string) => {
-        set((state) => ({
-            todoList: state.todoList.map((todo) =>
-                todo.id === id
-                    ? {
-                        ...todo,
-                        linkedEvents: (todo.linkedEvents || []).filter((id) => id !== eventId)
-                    }
-                    : todo
-            )
-        }));
+        set((state) => {
+            return {
+                todoList: state.todoList.map((todo) =>
+                    todo.id === id
+                        ? {
+                            ...todo,
+                            linkedEvents: (todo.linkedEvents || []).filter((id) => id !== eventId)
+                        }
+                        : todo
+                )
+            };
+        });
+        return get().getTodoById(id) as Todo;
     }
 });
 

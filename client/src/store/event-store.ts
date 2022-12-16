@@ -11,7 +11,7 @@ interface CalendarEvent {
     end: Date;
     allDay: boolean;
     completed: boolean;
-    linkedTodos?: string[];
+    linkedTodos: string[];
     updatedAt?: Date;
 }
 

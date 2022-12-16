@@ -35,8 +35,7 @@ const DnDCalendar = withDragAndDrop(Calendar);
 //     not easy to do, they are deeply coupled.
 //     this function is too long, need to be refactored.
 export const BigCalendar = () => {
-    // const { eventList, setEvent, addEvent, addLinkedTodo } = useEventStore();
-    const { eventList, setEvent, addEvent, addLinkedTodo } = useEvent();
+    const { eventList, setEvent, addEvent } = useEvent();
     const { dragItem, clearDragItem, addLinkedEvent } = useTodo();
     // Floating Event Card (Pop-up)
     const [popEvent, setPopEvent] = useState<CalendarEvent>();
@@ -153,9 +152,12 @@ export const BigCalendar = () => {
     // resize event to reschedule
     const handleEventResize = useCallback(
         async ({ event, start, end }: { event: CalendarEvent; start: Date; end: Date }) => {
-            event.start = start;
-            event.end = end;
-            await setEvent(event.id, event);
+            const nextEvent: CalendarEvent = {
+                ...event,
+                start: new Date(start),
+                end: new Date(end)
+            };
+            await setEvent(event.id, nextEvent);
         },
         [setEvent]
     ); /* handleEventResize */
@@ -210,7 +212,8 @@ export const BigCalendar = () => {
                 start: slotInfo.start,
                 end: slotInfo.end,
                 title: '',
-                desc: ''
+                desc: '',
+                linkedTodos: []
             };
             setPopEventCard(newEvent, 'create', bounds);
             setPopVisible(true);

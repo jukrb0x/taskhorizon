@@ -1,9 +1,10 @@
-import { useEventStore, useTodoStore } from '@/store';
+import { CalendarEvent, useEventStore, useTodoStore } from '@/store';
 import { Todo } from '@/store/todo-store';
 import { http, TodoAPI } from '@/apis';
 import useSWR from 'swr';
 import { useEvent } from '@/hooks/use-event';
 import { should } from 'vitest';
+import { EventAPI } from '@/apis/event';
 
 const fetcher = (url: string) => {
     // http.interceptors.response.clear(); // clear all notification
@@ -19,6 +20,15 @@ export const useTodo = (shouldFetch = true) => {
         }
     );
 
+    // TODO: decopule
+    const setEvent = async (id: string, newEvent: CalendarEvent) => {
+        setEventInternal(id, newEvent);
+        return await EventAPI.updateEvent(newEvent);
+    };
+
+    // ---------
+    // STORE
+    // ---------
     const {
         eventList,
         setEvent: setEventInternal,
@@ -38,7 +48,8 @@ export const useTodo = (shouldFetch = true) => {
         setDragItem,
         clearDragItem,
         getTodoById,
-        addLinkedEvent
+        addLinkedEvent,
+        removeLinkedEvent
     } = useTodoStore();
 
     // ----------------------------
@@ -69,11 +80,17 @@ export const useTodo = (shouldFetch = true) => {
     // CLIENT SIDE FUNCTIONS
     // ----------------------------
 
+    // shared with useEvent
+    // const setEvent = async (id: string, newEvent: CalendarEvent) => {
+    //     setEventInternal(id, newEvent);
+    //     await EventAPI.updateEvent(newEvent);
+    // };
     const updateLinkedEventsToTodo = (todo: Todo) => {
         todo.linkedEvents?.forEach(async (eventId) => {
             const event = getEventById(eventId);
             if (event) {
-                await useEvent(false).setEvent(eventId, {
+                // TODO useles
+                await setEvent(eventId, {
                     ...event,
                     title: todo.title,
                     completed: todo.completed
@@ -121,12 +138,32 @@ export const useTodo = (shouldFetch = true) => {
         }
     };
 
+    // TODO try to decouple..
+    const removeEvent = async (id: string) => {
+        const removedEvent = removeEventInternal(id);
+
+        removedEvent.linkedTodos?.forEach((todoId) => {
+            // remove the event from linked todo,
+            // usually it's only one linked todo for one event
+            const updated = removeLinkedEvent(todoId, removedEvent.id);
+            TodoAPI.updateTodo(updated);
+        });
+
+        // remove all linked todos only if all linked events are removed
+        removedEvent.linkedTodos?.forEach((todoId) => {
+            const todo = getTodoById(todoId);
+            if (todo?.linkedEvents?.length == 0) {
+                removeTodoInternal(todoId);
+                TodoAPI.deleteTodoById(todoId);
+            }
+        });
+    };
     const removeTodo = async (id: string) => {
         // FIXME: same as above
         // data && await mutate(data.filter((todo) => todo.id !== id));
         removeTodoInternal(id).linkedEvents?.forEach((eventId) => {
             // remove all linked events
-            useEvent(false).removeEvent(eventId);
+            removeEvent(eventId);
         });
         return await TodoAPI.deleteTodoById(id);
     };

@@ -25,14 +25,18 @@ export class TodoService {
     async getTodosByUserId(userId: number): Promise<TodoResponseModel[]> {
         const todos = await this.todoRepository.findMany({ where: { userId }, include: { Category: true } });
         return todos.map((todo) => {
-            const { Category, User, id, uuid, ...rest } = todo;
             return {
-                ...rest,
-                id: uuid,
+                id: todo.uuid,
                 category: {
-                    id: Category.uuid,
-                    name: Category.name
-                }
+                    id: todo.Category.uuid,
+                    name: todo.Category.name
+                },
+                order: todo.order,
+                completed: todo.completed,
+                title: todo.title,
+                createdAt: todo.createdAt,
+                updatedAt: todo.updatedAt,
+                linkedEvents: todo.linkedEvents
             };
         });
     }
@@ -73,19 +77,30 @@ export class TodoService {
                     connect: {
                         uuid: category.id
                     }
+                },
+                linkedEvents: {
+                    connect: (todo?.linkedEvents.map((event) => ({ uuid: event.id })) as []) || []
                 }
             }
         });
     }
 
     async updateTodo(todo: TodoRequestModel) {
-        const { category, ...data } = todo;
-        const todoCategory = await this.todoCategoriesRepo.findUnique({ where: { uuid: category.id } });
+        const { category, linkedEvents, ...data } = todo;
+        // const todoCategory = await this.todoCategoriesRepo.findUnique({ where: { uuid: category.id } });
         return await this.todoRepository.update({
             where: { uuid: data.uuid },
             data: {
                 ...data,
-                categoryId: todoCategory?.id,
+                // categoryId: todoCategory?.id,
+                Category: {
+                    connect: {
+                        uuid: category.id
+                    }
+                },
+                linkedEvents: {
+                    connect: linkedEvents.map((eventUUID) => ({ uuid: eventUUID })) as []
+                },
                 updatedAt: new Date()
             }
         });
