@@ -44,6 +44,7 @@ export class EventAPI {
     }
 
     static async deleteEvents(ids: string[]): Promise<CalendarEvent[]> {
-        // return await Promise.all(ids.map((id) => EventAPI.deleteEventById(id)));
+        const { data } = await http.post('/event/delete', ids);
+        return data;
     }
 }

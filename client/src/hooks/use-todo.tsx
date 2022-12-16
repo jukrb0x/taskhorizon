@@ -2,7 +2,7 @@ import { CalendarEvent, useEventStore, useTodoStore } from '@/store';
 import { Todo } from '@/store/todo-store';
 import { http, TodoAPI } from '@/apis';
 import useSWR, { KeyedMutator } from 'swr';
-import { removeEvent, setEvent, useEvent } from '@/hooks/use-event';
+import { removeEvent, removeEvents, setEvent, useEvent } from '@/hooks/use-event';
 import { should } from 'vitest';
 import { EventAPI } from '@/apis/event';
 
@@ -81,10 +81,14 @@ const toggleTodoCompleted = async (id: string, drillDown = false) => {
 const removeTodo = async (id: string, data?: Todo[] | undefined, mutate?: KeyedMutator<Todo[]>) => {
     const { removeTodo } = useTodoStore.getState();
     data && mutate && (await mutate(data.filter((todo) => todo.id !== id))); // TODO
-    removeTodo(id).linkedEvents?.forEach((eventId) => {
-        // remove all linked events
-        removeEvent(eventId);
-    });
+    // old
+    // removeTodo(id).linkedEvents?.forEach((eventId) => {
+    //     // remove all linked events
+    //     removeEvent(eventId);
+    // });
+    // new
+    await removeEvents(removeTodo(id).linkedEvents);
+
     return await TodoAPI.deleteTodoById(id);
 };
 

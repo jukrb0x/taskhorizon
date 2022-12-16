@@ -43,6 +43,11 @@ export const setEvent = async (
     }
     return await EventAPI.updateEvent(newEvent); // update the event itself
 };
+export const removeEvents = async (ids: string[]) => {
+    const { removeEvents } = useEventStore.getState();
+    removeEvents(ids);
+    await EventAPI.deleteEvents(ids);
+};
 
 export const removeEvent = async (
     id: string,

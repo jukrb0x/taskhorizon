@@ -20,6 +20,7 @@ interface EventStoreState {
     addEvent: (newEvent: CalendarEvent) => void;
     setEvent: (id: string, newEvent: CalendarEvent) => CalendarEvent;
     removeEvent: (id: string) => CalendarEvent;
+    removeEvents: (ids: string[]) => CalendarEvent[];
     toggleCompleted: (id: string) => CalendarEvent;
     addLinkedTodo: (id: string, todoId: string) => void;
     getEventById: (id: string) => CalendarEvent | undefined;
@@ -64,6 +65,11 @@ const EventStore: StateCreator<EventStoreState> = (set, get) => ({
         const removedEvent = get().getEventById(id) as CalendarEvent;
         set((state) => ({ eventList: state.eventList.filter((event) => event.id !== id) }));
         return removedEvent;
+    },
+    removeEvents: (ids: string[]) => {
+        const removedEvents = get().eventList.filter((event) => ids.includes(event.id));
+        set((state) => ({ eventList: state.eventList.filter((event) => !ids.includes(event.id)) }));
+        return removedEvents;
     },
     toggleCompleted: (id: string) => {
         set((state) => ({

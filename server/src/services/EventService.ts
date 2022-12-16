@@ -39,6 +39,10 @@ export class EventService {
         return await this.eventRepository.findUnique({ where: { uuid } });
     }
 
+    async getEventsByUUIDs(uuids: string[]) {
+        // return await this.eventRepository.findMany({ where: { uuid: { : uuids } } });
+    }
+
     async createEvent(username: string, event: EventRequestModel) {
         const user = await this.userService.findByUsername(username);
         const { linkedTodos, ...data } = event;
@@ -76,7 +80,13 @@ export class EventService {
         return await this.eventRepository.delete({ where: { id } });
     }
 
-    async deleteEvents(ids: number[]) {
-        return await this.eventRepository.deleteMany({ where: { id: { in: ids } } });
+    async deleteEventsByUUIDs(uuids: string[]) {
+        return await this.eventRepository.deleteMany({
+            where: {
+                uuid: {
+                    in: uuids
+                }
+            }
+        });
     }
 }

@@ -67,10 +67,10 @@ export class EventController {
     }
 
     @Post('/delete')
-    async deleteEvents(@Req() req: Req, @BodyParams() ids: number[]) {
+    async deleteEvents(@Req() req: Req, @BodyParams() uuids: string[]) {
         const payload = extractJwtPayload(req);
         if (payload) {
-            return this.eventService.deleteEvents(ids);
+            return this.eventService.deleteEventsByUUIDs(uuids);
         }
     }
 }
