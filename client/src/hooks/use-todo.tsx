@@ -80,15 +80,12 @@ const toggleTodoCompleted = async (id: string, drillDown = false) => {
 
 const removeTodo = async (id: string, data?: Todo[] | undefined, mutate?: KeyedMutator<Todo[]>) => {
     const { removeTodo } = useTodoStore.getState();
-    data && mutate && (await mutate(data.filter((todo) => todo.id !== id))); // TODO
-    // old
-    // removeTodo(id).linkedEvents?.forEach((eventId) => {
-    //     // remove all linked events
-    //     removeEvent(eventId);
-    // });
-    // new
-    await removeEvents(removeTodo(id).linkedEvents);
+    data && mutate && (await mutate(data.filter((todo) => todo.id !== id)));
 
+    // FIXME:
+    //   we separate the removal of linked todos and events
+    //   if there was network error, we may encounter a inconsistent state in the server
+    await removeEvents(removeTodo(id).linkedEvents);
     return await TodoAPI.deleteTodoById(id);
 };
 
