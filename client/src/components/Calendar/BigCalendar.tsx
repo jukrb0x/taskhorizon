@@ -136,6 +136,7 @@ export const BigCalendar = () => {
         isAllDay: boolean;
     }
 
+    // re-schedule the event
     const handleEventDrop = useCallback(
         async ({ event, start, end, isAllDay }: EventDropProps) => {
             const nextEvent: CalendarEvent = {
@@ -144,7 +145,7 @@ export const BigCalendar = () => {
                 end: end,
                 allDay: isAllDay
             };
-            await setEvent(event.id, nextEvent, false);
+            await setEvent(event.id, nextEvent);
         },
         [setEvent]
     ); /* handleEventDrop */
@@ -157,7 +158,7 @@ export const BigCalendar = () => {
                 start: new Date(start),
                 end: new Date(end)
             };
-            await setEvent(event.id, nextEvent, false);
+            await setEvent(event.id, nextEvent);
         },
         [setEvent]
     ); /* handleEventResize */
