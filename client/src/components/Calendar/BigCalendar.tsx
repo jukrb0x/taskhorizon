@@ -143,7 +143,7 @@ export const BigCalendar = () => {
                 ...event,
                 start: start,
                 end: end,
-                allDay: isAllDay
+                allDay: isAllDay || false
             };
             await setEvent(event.id, nextEvent);
         },
