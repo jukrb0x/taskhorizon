@@ -1,4 +1,4 @@
-# Roadmap
+# Roadmap (stale prototype)
 
 See [Roadmap on Notion](https://jabriel.notion.site/404ec6d1dd084c17a4a877afc327ee47) fot latest updates.
 
@@ -40,7 +40,3 @@ The Planned Roadmap:
     - event recurrence
     - event reminder
     - event location
-
-## To be Decided
-
-- [ ] Backend Data Sync
