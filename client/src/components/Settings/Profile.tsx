@@ -1,15 +1,14 @@
 import { Modal } from '@mantine/core';
-import { useState } from 'react';
-import { Button } from '@/components/Button';
+import { useNavigate } from 'react-router-dom';
 
-export const Profile = () => {
-    const [opened, setOpened] = useState(false);
+export const Profile = (props: { opened: boolean; onClose: () => void }) => {
+    const navigate = useNavigate();
 
     return (
         <div>
             <Modal
-                opened={opened}
-                onClose={() => setOpened(false)}
+                opened={props.opened}
+                onClose={props.onClose}
                 title="This is fullscreen modal!"
                 fullScreen
                 transition={'pop'}
@@ -18,7 +17,6 @@ export const Profile = () => {
                 {/* Modal content */}
                 asa
             </Modal>
-            <Button onClick={() => setOpened(true)}>Profile</Button>
         </div>
     );
 };

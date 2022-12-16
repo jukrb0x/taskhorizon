@@ -1,4 +1,4 @@
-import { SocialIcons } from '@/components/Heros/SocialIcons';
+import { SocialIcons } from '@/components';
 import { Text } from '@mantine/core';
 
 const CopyrightBar = () => {

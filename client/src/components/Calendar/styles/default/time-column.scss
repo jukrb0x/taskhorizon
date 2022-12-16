@@ -18,7 +18,7 @@
     flex-flow: column nowrap;
 }
 .rbc-time-gutter > .rbc-timeslot-group {
-    border: none;
+    border-color: transparent;
 }
 
 .rbc-time-gutter > .rbc-timeslot-group > .rbc-timeslot:first-child {
@@ -35,6 +35,7 @@
     // JB
     position: relative;
     top: -0.8rem;
+    color: $label-color;
 }
 
 .rbc-day-slot {
@@ -83,6 +84,7 @@
         line-height: 1;
         height: 100%;
         min-height: 1em;
+        font-weight: 600;
     }
 
     .rbc-time-slot {
@@ -124,7 +126,7 @@
         width: 140px;
         // min-width: 0;
         flex: 1 1 0;
-        flex-basis: 0 px;
+        flex-basis: 0px;
     }
 }
 
@@ -133,6 +135,7 @@
 }
 
 .rbc-time-slot {
+    //border: 1px solid red;
     min-height: 1rem;
     flex: 1 0 0;
 

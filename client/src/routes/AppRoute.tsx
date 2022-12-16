@@ -1,17 +1,17 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import { HomeLayout } from '@/pages/Home';
-import BigCalendar from '@/components/Calendar';
+import { BigCalendar } from '@/components';
 import NotFound from '@/routes/components/NotFound';
-import { Playground } from '@/pages/Calendar/playground';
-import WelcomeLayout from '@/pages/Welcome';
+import { Playground } from '@/pages/Playground/Playground';
+import { LandingLayout } from '@/pages/Landing';
 import AuthLayout from '@/pages/Auth';
-import { Login, Signup } from '@/components/Auth';
+import { Login, Signup } from '@/components';
 
 export default function AppRoute() {
     return (
         <Routes>
             <Route path="/">
-                <Route index element={<WelcomeLayout />} />
+                <Route index element={<LandingLayout />} />
                 <Route path="auth" element={<AuthLayout />}>
                     <Route index element={<Navigate to={'login'} />} />
                     <Route path="login" element={<Login />} />

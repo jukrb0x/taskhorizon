@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { clamp } from '@/utils/clamp';
+import { math } from '@/utils/math';
 import useAppConfigStore from '@/store/config-store';
 
 export const useResizer = () => {
     const ref = useRef<HTMLDivElement | null>(null);
-    const { setSidebarWidth } = useAppConfigStore();
+    const { setSidebarWidth } = useAppConfigStore(); // todo: (low priority) return the width instead of setting it to store
     const [isResizing, setIsResizing] = useState(false);
 
     const startResizing = useCallback(() => {
@@ -18,7 +18,7 @@ export const useResizer = () => {
     const onMouseMove = useCallback(
         (e: MouseEvent) => {
             if (isResizing) {
-                setSidebarWidth(clamp(e.clientX, 300, 600));
+                setSidebarWidth(math(e.clientX, 300, 600));
             }
         },
         [isResizing, setSidebarWidth]

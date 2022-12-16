@@ -51,7 +51,7 @@ export class EventModel implements Event {
 
     @CollectionOf(() => TodoModel)
     @Required()
-    linkedTodos: TodoModel[];
+    LinkedTodos: TodoModel[];
 
     @Property(() => UserModel)
     @Required()

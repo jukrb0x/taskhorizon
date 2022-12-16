@@ -1,12 +1,14 @@
 
 <h1>
-<p align="center">
-    <img width="310" alt="image" src="https://user-images.githubusercontent.com/15688641/206841113-0246670d-c86b-4f3b-9540-e1b72dce3af0.png" />
+<div align="center">
+    <img width="310" alt="image" src="docs/logo.png" />
     <br />
+<!--
     <samp>
       TaskHorizon
     </samp>
-  </p>
+-->
+  </div>
 </h1>
 <p align="center">
   <em>
@@ -16,13 +18,12 @@
 
 ![demo](./docs/background-demo.jpg)
 
-Project TaskHorizon integrates Todo-list and Calendar to create e a smooth experience for
-daily tasking and scheduling. Currently, we are working on the `web` and `macOS` version of the app. Features are coming from the future!
+TaskHorizon is a productivity app that combines To-do and Calendar functionality to enable effective daily task management and scheduling, providing a seamless experience for users. We are currently focused on developing the web and macOS versions of the app, with several exciting new features in the pipeline.
 
 See [Planned Roadmap](docs/Roadmap.md) and [Project real-time Roadmap](https://jabriel.notion.site/404ec6d1dd084c17a4a877afc327ee47) for latest updates.
 
 ### Monorepo
-- `client` the Tauri x web app
+- `client` the Tauri x Web app
 - `server` the backend server based on ts.ed and express.js
 ## Branches
 

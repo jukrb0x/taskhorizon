@@ -2,26 +2,28 @@ import create, { StateCreator } from 'zustand';
 import { UUID } from '@/utils';
 import { devtools, persist } from 'zustand/middleware';
 import useUserStore from '@/store/user-store';
-import { useTodoStore } from '@/store/index';
 
 interface CalendarEvent {
     id: string; // generate inside store
     title: string;
-    desc?: string;
+    desc: string;
     start: Date;
     end: Date;
     allDay: boolean;
     completed: boolean;
-    linkedTodos?: string[]; // todo
+    linkedTodos: string[];
+    updatedAt?: Date;
 }
 
 interface EventStoreState {
     eventList: CalendarEvent[];
-    addEvent: (newEvent: CalendarEvent) => string;
-    setEvent: (id: string, newEvent: CalendarEvent) => void;
-    removeEvent: (id: string) => void;
-    toggleCompleted: (id: string) => void;
+    addEvent: (newEvent: CalendarEvent) => void;
+    setEvent: (id: string, newEvent: CalendarEvent) => CalendarEvent;
+    removeEvent: (id: string) => CalendarEvent;
+    removeEvents: (ids: string[]) => CalendarEvent[];
+    toggleCompleted: (id: string) => CalendarEvent;
     addLinkedTodo: (id: string, todoId: string) => void;
+    getEventById: (id: string) => CalendarEvent | undefined;
 }
 
 const EventIdGenerator = () => {
@@ -30,39 +32,22 @@ const EventIdGenerator = () => {
     return UUID() + `-event:${username}`;
 };
 
-const updateLinkedTodos = (event: CalendarEvent) => {
-    event.linkedTodos?.forEach((todoId) => {
-        const todo = useTodoStore.getState().getTodoById(todoId);
-        if (todo) {
-            useTodoStore.getState().setTodo(todoId, {
-                ...todo,
-                title: event.title,
-                completed: event.completed
-            });
-        }
-    });
-};
-
-const EventStore: StateCreator<EventStoreState> = (set) => ({
+const EventStore: StateCreator<EventStoreState> = (set, get) => ({
     eventList: [],
     addEvent: (newEvent: CalendarEvent) => {
-        const newId = EventIdGenerator();
         set((state) => {
             return {
                 eventList: [
                     ...state.eventList,
                     {
-                        ...newEvent,
-                        id: newId
+                        ...newEvent
                     }
                 ]
             };
         });
-        return newId;
     },
     setEvent: (id: string, newEvent: CalendarEvent) => {
         set((state) => {
-            updateLinkedTodos(newEvent);
             return {
                 eventList: state.eventList.map((event) =>
                     event.id === id
@@ -74,31 +59,31 @@ const EventStore: StateCreator<EventStoreState> = (set) => ({
                 )
             };
         });
+        return newEvent;
     },
-    removeEvent: (id: string) =>
-        set((state) => ({ eventList: state.eventList.filter((event) => event.id !== id) })),
-    toggleCompleted: (id: string) =>
-        set((state) => {
-            // toggle linked todos
-            // need to secure the state is the same when linking
-            state.eventList.map((event) => {
-                if (event.id === id) {
-                    event.linkedTodos?.forEach((todoId) => {
-                        useTodoStore.getState().toggleCompleted(todoId);
-                    });
-                }
-            });
-            return {
-                eventList: state.eventList.map((event) =>
-                    event.id === id
-                        ? {
-                            ...event,
-                            completed: !event.completed
-                        }
-                        : event
-                )
-            };
-        }),
+    removeEvent: (id: string) => {
+        const removedEvent = get().getEventById(id) as CalendarEvent;
+        set((state) => ({ eventList: state.eventList.filter((event) => event.id !== id) }));
+        return removedEvent;
+    },
+    removeEvents: (ids: string[]) => {
+        const removedEvents = get().eventList.filter((event) => ids.includes(event.id));
+        set((state) => ({ eventList: state.eventList.filter((event) => !ids.includes(event.id)) }));
+        return removedEvents;
+    },
+    toggleCompleted: (id: string) => {
+        set((state) => ({
+            eventList: state.eventList.map((event) =>
+                event.id === id
+                    ? {
+                        ...event,
+                        completed: !event.completed
+                    }
+                    : event
+            )
+        }));
+        return get().getEventById(id) as CalendarEvent;
+    },
     addLinkedTodo: (id: string, todoId: string) =>
         set((state) => {
             return {
@@ -111,10 +96,11 @@ const EventStore: StateCreator<EventStoreState> = (set) => ({
                         : event
                 )
             };
-        })
+        }),
+    getEventById: (id: string) => get().eventList.find((event) => event.id === id)
 });
 
-const useEventStore = create<EventStoreState>()(
+export const useEventStore = create<EventStoreState>()(
     devtools(
         persist(EventStore, {
             name: 'event-store',
@@ -136,4 +122,3 @@ const useEventStore = create<EventStoreState>()(
 
 export type { CalendarEvent };
 export { EventIdGenerator };
-export default useEventStore;

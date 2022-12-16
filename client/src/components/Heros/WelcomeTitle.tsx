@@ -3,6 +3,14 @@ import { Badge, Title } from '@mantine/core';
 const WelcomeTitle = () => {
     return (
         <div>
+            <Title
+                order={3}
+                className={
+                    'tw-relative tw-top-2 tw-text-transparent tw-bg-clip-text tw-bg-gradient-to-r tw-from-[#bdc3c7] tw-to-[#2c3e50]'
+                }
+            >
+                Todo evolved
+            </Title>
             <Title order={1}>
                 Welcome to&nbsp;
                 <span

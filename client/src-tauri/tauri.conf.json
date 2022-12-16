@@ -60,12 +60,13 @@
                 "title": "TaskHorizon",
                 "width": 1200,
                 "height": 800,
+                "minWidth": 1000,
+                "minHeight": 600,
                 "transparent": false,
                 "decorations": true,
                 "center": true,
                 "titleBarStyle": "Overlay",
                 "hiddenTitle": true,
-                "center": true,
                 "fileDropEnabled": false
             }
         ]

@@ -2,10 +2,12 @@ import { Arg, OnInstall, OnVerify, Protocol } from '@tsed/passport';
 import { BasicStrategy } from 'passport-http';
 import { Strategy } from 'passport';
 import { $log, Req } from '@tsed/common';
-import { UsersRepository } from '@/repositories';
 import { Inject } from '@tsed/di';
 import { UserService } from '@/services/UserService';
 
+/**
+ * THIS STRATEGY IS ONLY FOR TESTING PURPOSES. IT IS NOT SECURE.
+ */
 @Protocol({
     name: 'basic',
     useStrategy: BasicStrategy,

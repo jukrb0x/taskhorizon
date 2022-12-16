@@ -1,6 +1,7 @@
 import { Todo } from '../client';
-import { Integer, Required, Property, Format, CollectionOf } from '@tsed/schema';
+import { Integer, Required, Property, Format, CollectionOf, Allow } from '@tsed/schema';
 import { EventModel } from './EventModel';
+import { TodoCategoryModel } from './TodoCategoryModel';
 import { UserModel } from './UserModel';
 
 export class TodoModel implements Todo {
@@ -33,7 +34,21 @@ export class TodoModel implements Todo {
 
     @CollectionOf(() => EventModel)
     @Required()
-    linkedEvents: EventModel[];
+    LinkedEvents: EventModel[];
+
+    @Property(() => TodoCategoryModel)
+    @Required()
+    Category: TodoCategoryModel;
+
+    @Property(Number)
+    @Integer()
+    @Required()
+    categoryId: number;
+
+    @Property(Number)
+    @Integer()
+    @Allow(null)
+    order: number | null;
 
     @Property(() => UserModel)
     @Required()

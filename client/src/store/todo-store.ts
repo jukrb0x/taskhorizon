@@ -7,25 +7,33 @@ interface Todo {
     id: string;
     completed: boolean;
     title: string;
-    linkedEvents?: string[]; // todo
+    linkedEvents: string[]; // Todo
+    category: {
+        id: string;
+        name: string;
+    };
+    updatedAt?: Date;
+    createdAt?: Date;
+    order?: number;
 }
 
 interface TodoStoreState {
     todoList: Todo[];
     addTodo: (newTodo: Todo) => void;
-    setTodo: (id: string, newTodo: Todo) => void;
-    removeTodo: (id: string) => void;
+    setTodo: (id: string, newTodo: Todo) => Todo;
+    removeTodo: (id: string) => Todo;
     getTodoById: (id: string) => Todo | undefined;
-    toggleCompleted: (id: string) => void;
+    toggleCompleted: (id: string) => Todo;
     dragItem: Todo | null;
     setDragItem: (item: Todo) => void;
     clearDragItem: () => void;
-    addLinkedEvent: (id: string, eventId: string) => void;
+    addLinkedEvent: (id: string, eventId: string) => Todo;
+    removeLinkedEvent: (id: string, eventId: string) => Todo;
 }
 
 const TodoIdGenerator = () => {
     const username = useUserStore.getState().getUsername();
-    return UUID() + `'-todo:${username}`;
+    return UUID() + `-todo:${username}`;
 };
 
 const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({
@@ -36,14 +44,13 @@ const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({
                 todoList: [
                     ...state.todoList,
                     {
-                        ...newTodo,
-                        id: TodoIdGenerator()
+                        ...newTodo
+                        // id: TodoIdGenerator()
                     }
                 ]
             };
         }),
     setTodo: (id, newTodo) => {
-        // TODO updateLinkedEvents
         set((state) => ({
             todoList: state.todoList.map((todo) =>
                 todo.id === id
@@ -54,10 +61,14 @@ const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({
                     : todo
             )
         }));
+        return newTodo;
     },
-    removeTodo: (id: string) =>
-        set((state) => ({ todoList: state.todoList.filter((todo) => todo.id !== id) })),
-    toggleCompleted: (id: string) =>
+    removeTodo: (id: string) => {
+        const removedTodo = get().getTodoById(id) as Todo;
+        set((state) => ({ todoList: state.todoList.filter((todo) => todo.id !== id) }));
+        return removedTodo;
+    },
+    toggleCompleted: (id: string) => {
         set((state) => ({
             todoList: state.todoList.map((todo) =>
                 todo.id === id
@@ -67,7 +78,9 @@ const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({
                     }
                     : todo
             )
-        })),
+        }));
+        return get().getTodoById(id) as Todo;
+    },
     getTodoById: (id: string) => get().todoList.find((todo) => todo.id === id),
     dragItem: null,
     setDragItem: (item: Todo) => set(() => ({ dragItem: item })),
@@ -83,10 +96,26 @@ const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({
                     : todo
             )
         }));
+        return get().getTodoById(id) as Todo;
+    },
+    removeLinkedEvent: (id: string, eventId: string) => {
+        set((state) => {
+            return {
+                todoList: state.todoList.map((todo) =>
+                    todo.id === id
+                        ? {
+                            ...todo,
+                            linkedEvents: (todo.linkedEvents || []).filter((id) => id !== eventId)
+                        }
+                        : todo
+                )
+            };
+        });
+        return get().getTodoById(id) as Todo;
     }
 });
 
-const useTodoStore = create<TodoStoreState>()(
+export const useTodoStore = create<TodoStoreState>()(
     devtools(
         persist(TodoStore, {
             name: 'todo-store',
@@ -101,4 +130,3 @@ const useTodoStore = create<TodoStoreState>()(
 );
 export type { Todo };
 export { TodoIdGenerator };
-export default useTodoStore;

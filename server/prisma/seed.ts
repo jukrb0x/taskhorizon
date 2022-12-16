@@ -25,6 +25,22 @@ const todos: Prisma.TodoCreateInput[] = [
             connect: {
                 email: 'alice@a.com'
             }
+        },
+        Category: {
+            connectOrCreate: {
+                where: {
+                    uuid: 'default-category:Alice'
+                },
+                create: {
+                    name: 'Work',
+                    uuid: 'default-category:Alice',
+                    User: {
+                        connect: {
+                            email: 'alice@a.com'
+                        }
+                    }
+                }
+            }
         }
     },
     {
@@ -34,6 +50,22 @@ const todos: Prisma.TodoCreateInput[] = [
         User: {
             connect: {
                 email: 'bob@b.com'
+            }
+        },
+        Category: {
+            connectOrCreate: {
+                where: {
+                    uuid: 'default-category:Bob'
+                },
+                create: {
+                    name: 'Default',
+                    uuid: 'default-category:Bob',
+                    User: {
+                        connect: {
+                            email: 'bob@b.com'
+                        }
+                    }
+                }
             }
         }
     }
@@ -48,7 +80,7 @@ const events: Prisma.EventCreateInput[] = [
         description: 'haha',
         allDay: false,
         completed: false,
-        linkedTodos: {
+        LinkedTodos: {
             connect: {
                 uuid: 'seeding-todo-2'
             }
