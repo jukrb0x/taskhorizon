@@ -106,7 +106,7 @@ export const BigCalendar = () => {
                 linkedTodos: [dragItem.id]
             };
             const createdEvent = await addEvent(event);
-            createdEvent && addLinkedEvent(dragItem.id, createdEvent.id);
+            createdEvent && (await addLinkedEvent(dragItem.id, createdEvent.id));
             clearDragItem();
         },
         [setPopVisible, setPopEventCard, dragItem, clearDragItem]

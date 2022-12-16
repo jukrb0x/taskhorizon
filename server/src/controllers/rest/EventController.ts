@@ -37,7 +37,7 @@ export class EventController {
     async createEvent(@Req() req: Req, @BodyParams() event: EventRequestModel): Promise<EventModel | undefined> {
         const payload = extractJwtPayload(req);
         if (payload) {
-            return this.eventService.createEvent(payload.username, event);
+            return await this.eventService.createEvent(payload.username, event);
         }
     }
 

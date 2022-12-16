@@ -1,12 +1,8 @@
-import { EventService } from '@/services/EventService';
 import { UserService } from '@/services/UserService';
 import { Inject, Injectable } from '@tsed/di';
 import { TodoCategoriesRepository, TodosRepository, UsersRepository } from '@/repositories';
-import { Todo } from '@prisma/client';
-import { EventModel, TodoModel } from '@/models';
-import { $log } from '@tsed/common';
-import { TodoRequestModel, TodoResponseModel } from '@/interfaces/TodoInterface';
-import { getPrismaClient } from '@prisma/client/runtime';
+import { TodoModel } from '@/models';
+import { TodoRequestModel } from '@/interfaces/TodoInterface';
 
 @Injectable()
 export class TodoService {
@@ -22,54 +18,31 @@ export class TodoService {
     @Inject()
     private todoCategoriesRepo: TodoCategoriesRepository;
 
-    async getTodosByUserId(userId: number): Promise<TodoResponseModel[]> {
-        const todos = await this.todoRepository.findMany({ where: { userId }, include: { Category: true } });
-        return todos.map((todo) => {
-            return {
-                id: todo.uuid,
-                category: {
-                    id: todo.Category.uuid,
-                    name: todo.Category.name
-                },
-                order: todo.order,
-                completed: todo.completed,
-                title: todo.title,
-                createdAt: todo.createdAt,
-                updatedAt: todo.updatedAt,
-                linkedEvents: todo.linkedEvents
-            };
-        });
+    async getTodosByUserId(userId: number): Promise<TodoModel[]> {
+        return await this.todoRepository.findMany({ where: { userId }, include: { Category: true, LinkedEvents: true } });
     }
 
-    async getTodosByUsername(username: string): Promise<TodoResponseModel[]> {
+    async getTodosByUsername(username: string): Promise<TodoModel[]> {
         const user = await this.userService.findByUsername(username);
-        const todos = await this.todoRepository.findMany({ where: { userId: user.id }, include: { Category: true } });
-        return todos.map((todo) => {
-            const { Category, User, id, uuid, ...rest } = todo;
-            return {
-                ...rest,
-                id: uuid,
-                category: {
-                    id: Category.uuid,
-                    name: Category.name
-                }
-            };
+        return await this.todoRepository.findMany({
+            where: { userId: user.id },
+            include: { Category: true, LinkedEvents: true }
         });
     }
 
     async getTodoById(id: number) {
-        return this.todoRepository.findUnique({ where: { id } });
+        return await this.todoRepository.findUnique({ where: { id }, include: { Category: true, LinkedEvents: true } });
     }
 
     async getTodoByUUID(uuid: string) {
-        return this.todoRepository.findUnique({ where: { uuid } });
+        return await this.todoRepository.findUnique({ where: { uuid } });
     }
 
     // todo: figure out json validation in tsed (ajv)
-    async createTodo(username: string, todo: TodoRequestModel) {
+    async createTodo(username: string, todo: TodoRequestModel): Promise<TodoModel> {
         const user = await this.userService.findByUsername(username);
-        const { category, ...data } = todo;
-        return this.todoRepository.create({
+        const { category, linkedEvents, ...data } = todo;
+        return await this.todoRepository.create({
             data: {
                 ...data,
                 User: { connect: { id: user.id } },
@@ -78,14 +51,15 @@ export class TodoService {
                         uuid: category.id
                     }
                 },
-                linkedEvents: {
-                    connect: (todo?.linkedEvents.map((event) => ({ uuid: event.id })) as []) || []
+                LinkedEvents: {
+                    connect: (linkedEvents?.map((eventUUID) => ({ uuid: eventUUID })) as []) || []
                 }
-            }
+            },
+            include: { Category: true, LinkedEvents: true }
         });
     }
 
-    async updateTodo(todo: TodoRequestModel) {
+    async updateTodo(todo: TodoRequestModel): Promise<TodoModel> {
         const { category, linkedEvents, ...data } = todo;
         // const todoCategory = await this.todoCategoriesRepo.findUnique({ where: { uuid: category.id } });
         return await this.todoRepository.update({
@@ -98,11 +72,12 @@ export class TodoService {
                         uuid: category.id
                     }
                 },
-                linkedEvents: {
+                LinkedEvents: {
                     connect: linkedEvents.map((eventUUID) => ({ uuid: eventUUID })) as []
                 },
                 updatedAt: new Date()
-            }
+            },
+            include: { Category: true, LinkedEvents: true }
         });
     }
 
@@ -111,6 +86,6 @@ export class TodoService {
      * @param id
      */
     async deleteTodoById(id: number) {
-        return this.todoRepository.delete({ where: { id } });
+        return await this.todoRepository.delete({ where: { id }, include: { Category: true, LinkedEvents: true } });
     }
 }

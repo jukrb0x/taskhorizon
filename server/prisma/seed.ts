@@ -29,7 +29,7 @@ const todos: Prisma.TodoCreateInput[] = [
         Category: {
             connectOrCreate: {
                 where: {
-                    name: 'Work'
+                    uuid: 'default-category:Alice'
                 },
                 create: {
                     name: 'Work',
@@ -55,7 +55,7 @@ const todos: Prisma.TodoCreateInput[] = [
         Category: {
             connectOrCreate: {
                 where: {
-                    name: 'Default'
+                    uuid: 'default-category:Bob'
                 },
                 create: {
                     name: 'Default',
@@ -80,7 +80,7 @@ const events: Prisma.EventCreateInput[] = [
         description: 'haha',
         allDay: false,
         completed: false,
-        linkedTodos: {
+        LinkedTodos: {
             connect: {
                 uuid: 'seeding-todo-2'
             }

@@ -26,7 +26,7 @@ export class EventService {
                 allDay: e.allDay,
                 completed: e.completed,
                 updatedAt: e.updatedAt,
-                linkedTodos: e.linkedTodos?.map((todo) => todo.uuid)
+                linkedTodos: e.LinkedTodos?.map((todo) => todo.uuid)
             };
         });
     }
@@ -41,12 +41,12 @@ export class EventService {
 
     async createEvent(username: string, event: EventRequestModel) {
         const user = await this.userService.findByUsername(username);
-        // console.log(event);
+        const { linkedTodos, ...data } = event;
         return await this.eventRepository.create({
             data: {
-                ...event,
-                linkedTodos: {
-                    connect: event.linkedTodos.map((todo) => ({ uuid: todo }))
+                ...data,
+                LinkedTodos: {
+                    connect: linkedTodos?.map((todoUUID) => ({ uuid: todoUUID }))
                 },
                 User: { connect: { id: user.id } }
             }
@@ -54,12 +54,13 @@ export class EventService {
     }
 
     async updateEvent(event: EventRequestModel) {
+        const { linkedTodos, ...data } = event;
         return await this.eventRepository.update({
             where: { uuid: event.uuid },
             data: {
-                ...event,
-                linkedTodos: {
-                    connect: event.linkedTodos.map((todo) => ({ uuid: todo }))
+                ...data,
+                LinkedTodos: {
+                    connect: linkedTodos?.map((todoUUID) => ({ uuid: todoUUID }))
                 },
                 updatedAt: new Date()
             }

@@ -13,6 +13,8 @@ interface Todo {
         name: string;
     };
     updatedAt?: Date;
+    createdAt?: Date;
+    order?: number;
 }
 
 interface TodoStoreState {
@@ -25,7 +27,7 @@ interface TodoStoreState {
     dragItem: Todo | null;
     setDragItem: (item: Todo) => void;
     clearDragItem: () => void;
-    addLinkedEvent: (id: string, eventId: string) => void;
+    addLinkedEvent: (id: string, eventId: string) => Todo;
     removeLinkedEvent: (id: string, eventId: string) => Todo;
 }
 
@@ -94,6 +96,7 @@ const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({
                     : todo
             )
         }));
+        return get().getTodoById(id) as Todo;
     },
     removeLinkedEvent: (id: string, eventId: string) => {
         set((state) => {

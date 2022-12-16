@@ -38,7 +38,7 @@ model Todo {
     uuid         String       @unique
     title        String
     completed    Boolean      @default(false)
-    linkedEvents Event[]
+    LinkedEvents Event[]
     Category     TodoCategory @relation(fields: [categoryId], references: [id])
     categoryId   Int
     order        Int? // Order in the list
@@ -71,7 +71,7 @@ model Event {
     end         DateTime
     allDay      Boolean  @default(false)
     completed   Boolean  @default(false)
-    linkedTodos Todo[]
+    LinkedTodos Todo[]
     // ------
     User        User     @relation(fields: [userId], references: [id])
     userId      Int

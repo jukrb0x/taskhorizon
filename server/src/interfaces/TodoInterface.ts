@@ -9,7 +9,7 @@ export interface TodoRequestModel {
         name: string;
     };
     order: number | null;
-    linkedEvents: EventModel[];
+    linkedEvents: string[];
 }
 
 /**
@@ -17,7 +17,7 @@ export interface TodoRequestModel {
  */
 export interface TodoResponseModel {
     id: string;
-    order: number | null;
+    order?: number | null;
     category: {
         id: string;
         name: string;
@@ -26,5 +26,5 @@ export interface TodoResponseModel {
     title: string;
     createdAt: Date;
     updatedAt: Date;
-    linkedEvents: EventModel[];
+    linkedEvents: string[];
 }

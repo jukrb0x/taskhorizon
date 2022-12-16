@@ -31,13 +31,13 @@ export const addEvent: (
 export const setEvent = async (
     id: string,
     newEvent: CalendarEvent,
-    drillDown = false,
+    propagation = false,
     data?: CalendarEvent[] | undefined,
     mutate?: KeyedMutator<CalendarEvent[]>
 ) => {
     // await mutate([...eventList.filter((event) => event.id !== id), newEvent]);
     useEventStore.getState().setEvent(id, newEvent);
-    if (drillDown) {
+    if (propagation) {
         await updateLinkedTodosToEvent(newEvent);
         await updateLinkedEventsToEvent(newEvent);
     }
@@ -53,10 +53,11 @@ export const removeEvent = async (
 
     mutate && (await mutate(useEventStore.getState().eventList.filter((event) => event.id !== id)));
     const removedEvent = useEventStore.getState().removeEvent(id);
+    await EventAPI.deleteEventById(id);
 
+    // remove the event from its linked todo,
+    // usually it's only one linked todo for one event
     removedEvent.linkedTodos?.forEach((todoId) => {
-        // remove the event from linked todo,
-        // usually it's only one linked todo for one event
         const updated = useTodoStore.getState().removeLinkedEvent(todoId, removedEvent.id);
         TodoAPI.updateTodo(updated);
     });
@@ -69,6 +70,8 @@ export const removeEvent = async (
             TodoAPI.deleteTodoById(todoId);
         }
     });
+
+    return removedEvent;
 };
 
 /**
@@ -134,22 +137,21 @@ const updateLinkedTodosToEvent = (event: CalendarEvent) => {
  * UPDATE LOGIC: the event --> linked todos --> linked events --> update events
  */
 const updateLinkedEventsToEvent = (event: CalendarEvent) => {
+    const { getTodoById } = useTodoStore.getState();
+    const { getEventById } = useEventStore.getState();
     event.linkedTodos?.forEach((todoId) => {
-        useTodoStore
-            .getState()
-            .getTodoById(todoId)
-            ?.linkedEvents?.forEach(async (eventId) => {
-                const exist = useEventStore.getState().getEventById(eventId);
-                if (exist) {
-                    const next: CalendarEvent = {
-                        ...exist,
-                        title: event.title,
-                        desc: event.desc
-                    };
-                    await setEvent(eventId, next, false);
-                    await EventAPI.updateEvent(next);
-                }
-            });
+        getTodoById(todoId)?.linkedEvents?.forEach(async (eventId) => {
+            const exist = getEventById(eventId);
+            if (exist) {
+                const next: CalendarEvent = {
+                    ...exist,
+                    title: event.title,
+                    desc: event.desc
+                };
+                await setEvent(eventId, next, false);
+                await EventAPI.updateEvent(next);
+            }
+        });
     });
 };
 
@@ -207,8 +209,9 @@ export const useEvent = (shouldFetch = true) => {
         toggleEventCompleted(id);
     };
 
-    const setEventWrapper = async (id: string, newEvent: CalendarEvent) => {
-        return await setEvent(id, newEvent, true, data, mutate);
+    const setEventWrapper = async (id: string, newEvent: CalendarEvent, propagation?: boolean) => {
+        if (propagation === undefined) propagation = true;
+        return await setEvent(id, newEvent, propagation, data, mutate);
     };
 
     const removeEventWrapper = async (id: string) => {

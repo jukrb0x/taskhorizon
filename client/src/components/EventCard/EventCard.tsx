@@ -45,6 +45,8 @@ const EventCard = (props: EventCardProps) => {
     const [endTime, setEndTime] = useState<Date>(defaultEvent?.end || new Date());
     const [endDate, setEndDate] = useState<Date>(defaultEvent?.end || new Date());
     const [linkedTodos, setLinkedTodos] = useState<string[]>(defaultEvent?.linkedTodos || []);
+
+    // start and end datetime are automatically calculated
     const start = useMemo(
         () =>
             dateFns.setHours(
@@ -110,7 +112,7 @@ const EventCard = (props: EventCardProps) => {
         props.onEventCreated && props.onEventCreated();
     }, [addEvent, completed, title, description, start, end, allDay, linkedTodos]);
 
-    const updateEvent = async () => {
+    const updateEvent = useCallback(async () => {
         if (!isEdited || !defaultEvent || !isValidEvent) return;
         const event: CalendarEvent = {
             id: defaultEvent.id, // do not change id
@@ -124,16 +126,16 @@ const EventCard = (props: EventCardProps) => {
         };
         await setEvent(defaultEvent.id, event);
         props.onDismissed && props.onDismissed();
-    };
+    }, [setEvent, completed, title, description, start, end, allDay, linkedTodos]);
 
-    const deleteEvent = () => {
+    const deleteEvent = async () => {
         if (props.mode !== 'edit' || !defaultEvent) return;
-        removeEvent(defaultEvent.id);
+        await removeEvent(defaultEvent.id);
         props.onDismissed && props.onDismissed();
     };
 
     // keyboard bindings
-    const ref = useEventListener('keydown', (e) => {
+    const ref = useEventListener('keydown', async (e) => {
         // new line
         if (e.shiftKey && e.key == 'Enter') {
             return;
@@ -142,14 +144,14 @@ const EventCard = (props: EventCardProps) => {
         // save action
         if (e.key === 'Enter') {
             if (props.mode === 'create') {
-                createEvent();
+                await createEvent();
             } else if (props.mode === 'edit') {
                 e.preventDefault();
-                updateEvent();
+                await updateEvent();
             }
         } else if (e.key === 'Backspace') {
             if (props.mode === 'edit' && document.activeElement === document.body) {
-                deleteEvent();
+                await deleteEvent();
             }
         }
     });

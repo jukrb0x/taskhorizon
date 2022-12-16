@@ -34,7 +34,7 @@ export class TodoModel implements Todo {
 
     @CollectionOf(() => EventModel)
     @Required()
-    linkedEvents: EventModel[];
+    LinkedEvents: EventModel[];
 
     @Property(() => TodoCategoryModel)
     @Required()
