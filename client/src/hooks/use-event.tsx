@@ -50,24 +50,23 @@ export const removeEvent = async (
     mutate?: KeyedMutator<CalendarEvent[]>
 ) => {
     // TODO: use batch remove
+    const { getTodoById, removeLinkedEvent, removeTodo } = useTodoStore.getState();
+    const { eventList, removeEvent } = useEventStore.getState();
 
-    mutate && (await mutate(useEventStore.getState().eventList.filter((event) => event.id !== id)));
-    const removedEvent = useEventStore.getState().removeEvent(id);
+    mutate && (await mutate(eventList.filter((event) => event.id !== id)));
+    const removedEvent = removeEvent(id);
     await EventAPI.deleteEventById(id);
 
     // remove the event from its linked todo,
     // usually it's only one linked todo for one event
     removedEvent.linkedTodos?.forEach((todoId) => {
-        const updated = useTodoStore.getState().removeLinkedEvent(todoId, removedEvent.id);
-        TodoAPI.updateTodo(updated);
-    });
-
-    // remove all linked todos only if all linked events are removed
-    removedEvent.linkedTodos?.forEach((todoId) => {
-        const todo = useTodoStore.getState().getTodoById(todoId);
+        const todo = getTodoById(todoId);
         if (todo?.linkedEvents?.length == 0) {
-            useTodoStore.getState().removeTodo(todoId);
+            removeTodo(todoId);
             TodoAPI.deleteTodoById(todoId);
+        } else {
+            const updated = removeLinkedEvent(todoId, removedEvent.id);
+            TodoAPI.updateTodo(updated);
         }
     });
 
@@ -178,6 +177,7 @@ export const useEvent = (shouldFetch = true) => {
     // DATA SWR
     const compareWithStore = (events: CalendarEvent[]) => {
         if (events) {
+            console.log('compareWithStore EVENTS', events);
             events.forEach((event) => {
                 // parse date, not pure
                 event.start = new Date(event.start);
