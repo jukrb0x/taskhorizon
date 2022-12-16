@@ -130,7 +130,7 @@ const EventCard = (props: EventCardProps) => {
 
     const deleteEvent = async () => {
         if (props.mode !== 'edit' || !defaultEvent) return;
-        await removeEvent(defaultEvent.id);
+        await removeEvent(defaultEvent.id); // where lag happens
         props.onDismissed && props.onDismissed();
     };
 
@@ -140,13 +140,12 @@ const EventCard = (props: EventCardProps) => {
         if (e.shiftKey && e.key == 'Enter') {
             return;
         }
-
         // save action
         if (e.key === 'Enter') {
+            e.preventDefault();
             if (props.mode === 'create') {
                 await createEvent();
             } else if (props.mode === 'edit') {
-                e.preventDefault();
                 await updateEvent();
             }
         } else if (e.key === 'Backspace') {
