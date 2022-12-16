@@ -158,7 +158,7 @@ const EventCard = (props: EventCardProps) => {
     // ----- RENDER -----
     return (
         <>
-            <div className="tw-h-auto tw-w-72 tw-p-2 tw-rounded-2xl tw-bg-white tw-space-y-1.5 tw-drop-shadow-lg tw-shadow tw-z-50 tw-select-none">
+            <div className="tw-h-auto tw-w-72 tw-p-2 tw-rounded-2xl tw-bg-white tw-space-y-1.5 tw-drop-shadow-xl tw-shadow-gray-600 tw-z-50 tw-select-none">
                 <div className={'tw-flex tw-row-auto tw-px-0.5'}>
                     <input // this will prevent autofocus on the checkbox
                         style={{ display: 'none' }}
