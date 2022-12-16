@@ -90,8 +90,8 @@ const removeTodo = async (id: string, data?: Todo[] | undefined, mutate?: KeyedM
     // FIXME:
     //   we separate the removal of linked todos and events
     //   if there was network error, we may encounter a inconsistent state in the server
-    await removeEvents(removeTodo(id).linkedEvents);
-    return await TodoAPI.deleteTodoById(id);
+    await TodoAPI.deleteTodoById(id);
+    await removeEvents(removeTodo(id).linkedEvents); // TODO: only visual, not actual
 };
 
 export const useTodo = (shouldFetch = true) => {

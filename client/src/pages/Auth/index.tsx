@@ -8,10 +8,12 @@ import { OpeningTransition } from '@/components';
 import clsx from 'clsx';
 import { useUser } from '@/hooks';
 import useUserStore from '@/store/user-store';
+import { mutate } from 'swr';
 
 export default function AuthLayout() {
     const navigate = useNavigate();
     const { token } = useUserStore();
+    // const { user, loggedOut, isLoading } = useUser();
 
     useEffect(() => {
         if (token) {

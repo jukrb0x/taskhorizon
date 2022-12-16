@@ -11,7 +11,7 @@ import { Profile } from '@/components';
 import { Divider, LoadingOverlay, Menu } from '@mantine/core';
 import { useUser } from '@/hooks';
 import { useEffect, useState } from 'react';
-import { AuthAPI } from '@/apis';
+import { AuthAPI, cleanAllCache } from '@/apis';
 import { mutate } from 'swr';
 import useUserStore from '@/store/user-store';
 import { IconMessageCircle, IconPhoto, IconSearch, IconSettings } from '@tabler/icons';
@@ -29,7 +29,7 @@ export const HomeLayout = () => {
 
     useEffect(() => {
         if (loggedOut) {
-            navigate('/auth/login');
+            navigate('/auth');
         }
     }, [user, loggedOut, isLoading]);
 

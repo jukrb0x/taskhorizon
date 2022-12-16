@@ -21,6 +21,13 @@ interface SignupResponse {
     username: string;
 }
 
+export const cleanAllCache = async () => {
+    useUserStore.getState().logout();
+    useTodoStore.setState({ todoList: [] });
+    useEventStore.setState({ eventList: [] });
+    await mutate(() => true, undefined, { revalidate: false });
+};
+
 export class AuthAPI {
     static login = async (username: string, password: string) => {
         return await http.post<LoginResponse>('/user/login', { username, password });
@@ -30,12 +37,12 @@ export class AuthAPI {
         return await http.post<SignupResponse>('/user/signup', { username, email, password });
     };
 
+    /**
+     * @description Local logout
+     */
     static logout = async () => {
         // unload all data
-        useUserStore.getState().logout();
-        useTodoStore.setState({ todoList: [] });
-        useEventStore.setState({ eventList: [] });
-        await mutate(() => true, undefined, { revalidate: false });
+        await cleanAllCache();
 
         showNotification({
             title: 'You have been logged out',

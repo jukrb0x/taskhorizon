@@ -8,6 +8,7 @@ import { useUser } from '@/hooks';
 import { showNotification } from '@mantine/notifications';
 import useUserStore from '@/store/user-store';
 import { useEffect, useState } from 'react';
+import { mutate } from 'swr';
 
 export const LandingLayout = () => {
     const navigate = useNavigate();
