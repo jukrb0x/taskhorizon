@@ -64,15 +64,20 @@ export const setTodo = async (
     return await TodoAPI.updateTodo(todo);
 };
 
-const toggleTodoCompleted = async (id: string, drillDown = false) => {
+const toggleTodoCompleted = async (
+    id: string,
+    drillDown = false,
+    data: Todo[] | undefined,
+    mutate: KeyedMutator<Todo[]>
+) => {
     // FIXME: mutating cause lag as well as mutating on setTodo
     //        guess it's because of the calculation & re-rendering
-    // data && await mutate([
-    //     ...data.map((todo) =>
-    //         todo.id === id ? { ...todo, completed: !todo.completed } : todo
-    //     )
-    // ]);
+    data &&
+        (await mutate([
+            ...data.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo))
+        ]));
     const toggled = useTodoStore.getState().toggleCompleted(id);
+    await setTodo(toggled.id, toggled);
     if (drillDown) {
         updateLinkedEventsToTodo(toggled);
     }
@@ -144,7 +149,7 @@ export const useTodo = (shouldFetch = true) => {
     };
 
     const toggleTodoCompletedWrapper = async (id: string) => {
-        await toggleTodoCompleted(id, true);
+        await toggleTodoCompleted(id, true, data, mutate);
     };
 
     // const removeLinkedEvent = async (todoId: string, eventId: string) => {
