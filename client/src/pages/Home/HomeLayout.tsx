@@ -58,7 +58,7 @@ export const HomeLayout = () => {
                                                 <Divider color={'gray.2'} />
                                                 <div
                                                     className={
-                                                        'tw-px-5 tw-py-2 tw-text-gray-300 tw-cursor-default'
+                                                        'tw-px-4 tw-py-2 tw-text-gray-300 tw-cursor-default tw-text-sm'
                                                     }
                                                 >
                                                     TaskHorizon Preview Version{' '}
