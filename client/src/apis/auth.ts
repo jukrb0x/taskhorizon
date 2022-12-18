@@ -42,12 +42,13 @@ export class AuthAPI {
      */
     static logout = async () => {
         // unload all data
-        await cleanAllCache();
-
         showNotification({
             title: 'You have been logged out',
             message: 'Please log in again to continue'
         });
-        setTimeout(() => (window.location.href = '/'), 800);
+        setTimeout(async () => {
+            window.location.href = '/';
+            await cleanAllCache();
+        }, 800);
     };
 }

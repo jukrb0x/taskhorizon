@@ -12,7 +12,8 @@ export const TodoApp = (props: { TodoInputClassName?: string; TodoListClassName?
             <div
                 className={clsx(
                     'tw-h-7 tw-mx-3.5 tw-h-[60px]',
-                    'tw-flex tw-items-center tw-pl-2 tw-flex-shrink-0'
+                    'tw-flex tw-items-center tw-pl-2 tw-flex-shrink-0',
+                    'tw-cursor-default'
                 )}
                 data-tauri-drag-region
             >

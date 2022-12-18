@@ -22,7 +22,10 @@ export const LandingLayout = () => {
 
     return (
         <OpeningTransition transition={'pop'} duration={800}>
-            <div className={'tw-flex tw-items-center tw-justify-center tw-h-screen'}>
+            <div
+                data-tauri-drag-region
+                className={'tw-flex tw-items-center tw-justify-center tw-h-screen'}
+            >
                 <div className={'tw-flex tw-flex-col'}>
                     <WelcomeTitle />
                     <div className={'tw-my-5 tw-space-x-2'}>

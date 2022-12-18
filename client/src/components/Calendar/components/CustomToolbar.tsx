@@ -72,7 +72,8 @@ export default function CustomToolbar({
             className={clsx(
                 'tw-w-full tw-h-[60px] tw-sticky tw-top-0',
                 'tw-flex tw-flex-row tw-items-center tw-justify-between',
-                'tw-bg-white tw-z-[1] tw-py-1.5 tw-pl-1.5 tw-pr-3'
+                'tw-bg-white tw-z-[1] tw-py-1.5 tw-pl-1.5 tw-pr-3',
+                'tw-cursor-default'
             )}
             style={{
                 borderBottom: '1px solid #e9ecef'
@@ -88,7 +89,7 @@ export default function CustomToolbar({
                         className={clsx(
                             'rbc-toolbar-label tw-flex tw-items-center tw-justify-start',
                             'hover:tw-bg-gray-100 tw-rounded-md tw-text-center tw-py-1 tw-px-3',
-                            'tw-transition tw-duration-200 tw-ease-in-out'
+                            'tw-transition tw-duration-150 tw-ease-in-out'
                         )}
                     >
                         <Title order={4}>{label}</Title>

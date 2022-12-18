@@ -6,13 +6,14 @@ import { cls } from '@/utils';
 import useAppConfigStore from '@/store/config-store';
 import { useTauriExtension } from '@/hooks/use-tauri-extension';
 import { DndContext } from '@dnd-kit/core';
-import { Profile } from '@/components';
-import { Divider, LoadingOverlay, Menu } from '@mantine/core';
+import { Settings } from '@/components';
+import { Divider, LoadingOverlay, Menu, Transition } from '@mantine/core';
 import { useUser } from '@/hooks';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AuthAPI, cleanAllCache } from '@/apis';
 import useUserStore from '@/store/user-store';
 import { IconMessageCircle, IconPhoto, IconSearch, IconSettings } from '@tabler/icons';
+import autoAnimate from '@formkit/auto-animate';
 
 export const HomeLayout = () => {
     const isTauri = useTauriExtension();
@@ -20,7 +21,6 @@ export const HomeLayout = () => {
     const navigate = useNavigate();
     const { user, loggedOut, isLoading } = useUser();
     const { token } = useUserStore();
-    const [settingsOpen, setSettingsOpen] = useState(false);
 
     useEffect(() => {
         if (loggedOut) {
@@ -28,7 +28,7 @@ export const HomeLayout = () => {
         }
     }, [user, loggedOut, isLoading]);
 
-    const { sidebarWidth } = useAppConfigStore();
+    const { sidebarWidth, showSidebar } = useAppConfigStore();
 
     return (
         <>
@@ -37,47 +37,40 @@ export const HomeLayout = () => {
                 <div className={'tw-select-none tw-h-screen tw-flex tw-flex-row'}>
                     <AppSider />
                     <Layout hasSider className={'tw-h-screen'}>
-                        <Sider
-                            className={'tw-min-[300px] tw-max-[600px]'}
-                            style={{ width: `${sidebarWidth}px` }}
+                        <Transition
+                            mounted={showSidebar}
+                            transition="slide-right"
+                            duration={150}
+                            timingFunction="ease"
                         >
-                            <div className={'tw-flex tw-flex-col tw-h-full tw-flex-1'}>
-                                <TodoApp
-                                    TodoListClassName={'tw-px-3.5 tw-flex-grow'}
-                                    TodoInputClassName={'tw-px-3.5'}
-                                />
-                                <div className={'tw-bottom-0'}>
-                                    <Divider color={'gray.2'} />
-                                    <Profile
-                                        opened={settingsOpen}
-                                        onClose={() => setSettingsOpen(false)}
-                                    />
-                                    <div className={'tw-p-3.5'}>
-                                        <Button onClick={() => AuthAPI.logout()}>Logout</Button>
-                                        <Menu trigger={'hover'}>
-                                            <Menu.Target>
-                                                <Button onClick={() => setSettingsOpen(true)}>
-                                                    asd
-                                                </Button>
-                                            </Menu.Target>
-                                            <Menu.Dropdown>
-                                                <Menu.Label>Application</Menu.Label>
-                                                <Menu.Item icon={<IconSettings size={14} />}>
-                                                    Settings
-                                                </Menu.Item>
-                                                <Menu.Item icon={<IconMessageCircle size={14} />}>
-                                                    Messages
-                                                </Menu.Item>
-                                                <Menu.Item icon={<IconPhoto size={14} />}>
-                                                    Gallery
-                                                </Menu.Item>
-                                            </Menu.Dropdown>
-                                        </Menu>
-                                    </div>
+                            {(styles) => (
+                                <div className={'tw-flex'} style={styles}>
+                                    <Sider
+                                        className={'tw-min-[300px] tw-max-[600px]'}
+                                        style={{ width: `${sidebarWidth}px` }}
+                                    >
+                                        <div className={'tw-flex tw-flex-col tw-h-full tw-flex-1'}>
+                                            <TodoApp
+                                                TodoListClassName={'tw-px-3.5 tw-flex-grow'}
+                                                TodoInputClassName={'tw-px-3.5'}
+                                            />
+                                            <div className={'tw-bottom-0'}>
+                                                <Divider color={'gray.2'} />
+                                                <div
+                                                    className={
+                                                        'tw-px-5 tw-py-2 tw-text-gray-300 tw-cursor-default'
+                                                    }
+                                                >
+                                                    TaskHorizon Preview Version{' '}
+                                                    {import.meta.env.VITE_APP_VERSION}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Sider>
+                                    <Resizer />
                                 </div>
-                            </div>
-                        </Sider>
-                        <Resizer />
+                            )}
+                        </Transition>
                         <Layout
                             className={'tw-relative hide-scrollbar'}
                             style={{ left: `calc(${sidebarWidth})` }}
