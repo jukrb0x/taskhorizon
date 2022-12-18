@@ -28,7 +28,7 @@ export const Settings = (props: { opened: boolean; onClose: () => void }) => {
                 withCloseButton={false}
                 withFocusReturn={false}
                 // trapFocus={false}
-                zIndex={1000}
+                zIndex={30}
             >
                 <div
                     className={'tw-w-full tw-flex tw-justify-end tw-fixed tw-h-8 tw-p-2'}

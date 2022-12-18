@@ -12,8 +12,9 @@ import {
 } from '@tabler/icons';
 import { IconClose } from '@douyinfe/semi-icons';
 import { ReactNode, useState } from 'react';
+import { AuthAPI } from '@/apis';
 
-const SettingNavButton = ({ icon, label, color, selected, disabled }: any) => {
+const SettingNavButton = ({ icon, label, color, selected, disabled, onClick }: any) => {
     return (
         <>
             <Button
@@ -28,6 +29,7 @@ const SettingNavButton = ({ icon, label, color, selected, disabled }: any) => {
                 color={color ? color : 'gray.7'}
                 leftIcon={icon}
                 disabled={disabled}
+                onClick={onClick}
             >
                 {label}
             </Button>
@@ -52,7 +54,14 @@ export const SettingsNav = () => {
             <SettingNavButton icon={<IconUser />} label={'Profile'} selected />
             <SettingNavButton icon={<IconPacman />} label={'About'} />
             <Divider color={'gray.3'} my={'xs'} />
-            <SettingNavButton icon={<IconLogout />} label={'Logout'} color={'red'} />
+            <SettingNavButton
+                icon={<IconLogout />}
+                label={'Logout'}
+                color={'red'}
+                onClick={async () => {
+                    await AuthAPI.logout();
+                }}
+            />
         </div>
     );
 };
