@@ -1,9 +1,19 @@
 import { ActionIcon, Modal, Button, Text, Divider } from '@mantine/core';
-import { IconLogout, IconMessageCircle, IconPhoto, IconSettings, IconUser } from '@tabler/icons';
+import {
+    IconAffiliate,
+    IconFlame,
+    IconLogout,
+    IconMessageCircle,
+    IconPacman,
+    IconPennant,
+    IconPhoto,
+    IconSettings,
+    IconUser
+} from '@tabler/icons';
 import { IconClose } from '@douyinfe/semi-icons';
 import { ReactNode, useState } from 'react';
 
-const SettingNavButton = ({ icon, label, color, selected }: any) => {
+const SettingNavButton = ({ icon, label, color, selected, disabled }: any) => {
     return (
         <>
             <Button
@@ -17,6 +27,7 @@ const SettingNavButton = ({ icon, label, color, selected }: any) => {
                 variant={selected ? 'filled' : 'subtle'}
                 color={color ? color : 'gray.7'}
                 leftIcon={icon}
+                disabled={disabled}
             >
                 {label}
             </Button>
@@ -39,7 +50,7 @@ export const SettingsNav = () => {
         <div className={'tw-space-y-1.5 tw-flex tw-flex-col'}>
             <SectionTitle>Settings</SectionTitle>
             <SettingNavButton icon={<IconUser />} label={'Profile'} selected />
-            <SettingNavButton icon={<IconPhoto />} label={'Profile'} />
+            <SettingNavButton icon={<IconPacman />} label={'About'} />
             <Divider color={'gray.3'} my={'xs'} />
             <SettingNavButton icon={<IconLogout />} label={'Logout'} color={'red'} />
         </div>

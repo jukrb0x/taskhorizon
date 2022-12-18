@@ -49,7 +49,9 @@ export const Settings = (props: { opened: boolean; onClose: () => void }) => {
                             <SettingsNav />
                         </div>
                     </div>
-                    <div className={'tw-basis-3/4 tw-px-10'}>right</div>
+                    <div className={'tw-basis-3/4 tw-px-10'}>
+                        Content will change based on nav selected.
+                    </div>
                 </div>
             </Modal>
         </>
