@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@tsed/di';
-import { EventsRepository } from '@/repositories';
+import { EventsRepository, TodosRepository } from '@/repositories';
 import { UserService } from '@/services/UserService';
 import { EventModel } from '@/models';
 import { EventRequestModel, EventResponseModel } from '@/interfaces/EventInterface';
@@ -9,6 +9,9 @@ import { $log } from '@tsed/common';
 export class EventService {
     @Inject()
     private eventRepository: EventsRepository;
+
+    @Inject()
+    private todoRepository: TodosRepository;
 
     @Inject()
     private userService: UserService;
@@ -71,13 +74,33 @@ export class EventService {
         });
     }
 
+    updateEvents(events: EventRequestModel[]) {
+        // return Promise.resolve(undefined);
+    }
+
     /**
      * Deletes an event by id
      * @TODO logically delete
      * @param id
      */
     async deleteEvent(id: number) {
-        return await this.eventRepository.delete({ where: { id } });
+        const event = await this.getEventById(id);
+        // disconnect from its linked todos
+        if (event) {
+            event.LinkedTodos?.forEach((todo) => {
+                this.todoRepository.update({
+                    where: { id: todo.id },
+                    data: {
+                        LinkedEvents: {
+                            disconnect: { id: event.id }
+                        }
+                    }
+                });
+            });
+            return await this.eventRepository.delete({ where: { id } });
+        } else {
+            throw new Error('Event not found');
+        }
     }
 
     async deleteEventsByUUIDs(uuids: string[]) {

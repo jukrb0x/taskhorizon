@@ -3,6 +3,7 @@ import { Inject, Injectable } from '@tsed/di';
 import { TodoCategoriesRepository, TodosRepository, UsersRepository } from '@/repositories';
 import { TodoModel } from '@/models';
 import { TodoRequestModel } from '@/interfaces/TodoInterface';
+import { EventService } from '@/services/EventService';
 
 @Injectable()
 export class TodoService {
@@ -14,6 +15,9 @@ export class TodoService {
 
     @Inject()
     private userService: UserService;
+
+    @Inject()
+    private eventService: EventService;
 
     @Inject()
     private todoCategoriesRepo: TodoCategoriesRepository;
@@ -86,6 +90,10 @@ export class TodoService {
      * @param id
      */
     async deleteTodoById(id: number) {
-        return await this.todoRepository.delete({ where: { id }, include: { Category: true, LinkedEvents: true } });
+        const deleted = await this.todoRepository.delete({ where: { id }, include: { Category: true, LinkedEvents: true } });
+        // keep the consistency of the data structure in the server-side
+        // delete the todo and its linked events
+        await this.eventService.deleteEventsByUUIDs(deleted.LinkedEvents.map((event) => event.uuid));
+        return deleted;
     }
 }

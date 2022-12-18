@@ -38,13 +38,15 @@ model Todo {
     uuid         String       @unique
     title        String
     completed    Boolean      @default(false)
-    LinkedEvents Event[]
+    LinkedEvents Event[]      @relation("LinkedEvents")
     Category     TodoCategory @relation(fields: [categoryId], references: [id])
     categoryId   Int
     order        Int? // Order in the list
     // ------
     User         User         @relation(fields: [userId], references: [id])
     userId       Int
+    // Event        Event?       @relation(fields: [eventId], references: [id])
+    // eventId      Int?
 }
 
 model TodoCategory {
@@ -71,8 +73,10 @@ model Event {
     end         DateTime
     allDay      Boolean  @default(false)
     completed   Boolean  @default(false)
-    LinkedTodos Todo[]
+    LinkedTodos Todo[]   @relation("LinkedEvents")
     // ------
     User        User     @relation(fields: [userId], references: [id])
     userId      Int
+    //    Todo        Todo?    @relation(fields: [todoId], references: [id])
+    //    todoId      Int?
 }

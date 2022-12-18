@@ -55,6 +55,14 @@ export class EventController {
         }
     }
 
+    @Post('/update/batch')
+    async updateEvents(@Req() req: Req, @BodyParams() events: EventRequestModel[]) {
+        const payload = extractJwtPayload(req);
+        if (payload) {
+            return this.eventService.updateEvents(events);
+        }
+    }
+
     @Get('/delete/:uuid')
     async deleteEvent(@Req() req: Req, @PathParams('uuid') uuid: string): Promise<EventModel | undefined> {
         const payload = extractJwtPayload(req);
