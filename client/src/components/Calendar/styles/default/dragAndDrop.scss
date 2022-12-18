@@ -53,6 +53,7 @@
         width: 100%;
         text-align: center;
         position: absolute;
+        cursor: ns-resize;
 
         &:first-child {
             top: 0;
@@ -63,7 +64,7 @@
         }
 
         .rbc-addons-dnd-resize-ns-icon {
-            display: none;
+            visibility: hidden;
             border-top: 3px double;
             margin: 0 auto;
             width: 10px;

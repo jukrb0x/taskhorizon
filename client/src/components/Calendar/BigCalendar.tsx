@@ -285,7 +285,7 @@ export const BigCalendar = () => {
                     draggableAccessor={(event) => true} // determine the event is draggable
                     resizable
                     selectable={selectable}
-                    dayLayoutAlgorithm="no-overlap"
+                    dayLayoutAlgorithm="overlap" // no-overlap
                     slotPropGetter={(date) => ({ className: date.toISOString() })}
                     onEventResize={(val) =>
                         handleEventResize(val as { event: CalendarEvent; start: Date; end: Date })

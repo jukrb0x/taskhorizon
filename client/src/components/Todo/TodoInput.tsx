@@ -28,7 +28,7 @@ export const TodoInput = (props: { className?: string }) => {
         <>
             <div
                 data-tauri-drag-region
-                className={clsx('tw-flex flex-row tw-gap-1.5 tw-mb-5', props.className)}
+                className={clsx('tw-flex flex-row tw-gap-1.5 tw-mb-3', props.className)}
             >
                 <TextInput
                     className={'tw-flex-auto'}

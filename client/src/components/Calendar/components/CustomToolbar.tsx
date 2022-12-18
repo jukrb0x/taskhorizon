@@ -13,24 +13,28 @@ function ViewNamesGroupButtons({
     messages,
     onView
 }: {
-    messages: object;
+    messages: object | any;
     onView: any;
     view: string;
     views: any[];
 }) {
-    return viewNames.map((name) => (
-        <Button
-            type="button"
-            key={name}
-            className={clsx({ 'rbc-active': view === name }, 'tw-px-3')} // todo
-            onClick={() => onView(name)}
-            variant={view === name ? 'filled' : 'default'}
-            color={view === name ? 'blue.5' : ''}
-            size={'sm'}
-        >
-            {messages[name]}
-        </Button>
-    ));
+    return (
+        <>
+            {viewNames.map((name) => (
+                <Button
+                    type="button"
+                    key={name}
+                    className={clsx({ 'rbc-active': view === name }, 'tw-px-3')} // todo
+                    onClick={() => onView(name)}
+                    variant={view === name ? 'filled' : 'default'}
+                    color={view === name ? 'blue.5' : ''}
+                    size={'sm'}
+                >
+                    {messages[name]}
+                </Button>
+            ))}
+        </>
+    );
 }
 
 const navigate = {
@@ -68,10 +72,10 @@ export default function CustomToolbar({
             className={clsx(
                 'tw-w-full tw-h-[60px] tw-sticky tw-top-0',
                 'tw-flex tw-flex-row tw-items-center tw-justify-between',
-                'tw-bg-white tw-z-[1] tw-py-1.5 tw-px-1.5'
+                'tw-bg-white tw-z-[1] tw-py-1.5 tw-pl-1.5 tw-pr-3'
             )}
             style={{
-                borderBottom: '1px solid #ddd'
+                borderBottom: '1px solid #e9ecef'
             }}
             data-tauri-drag-region
         >
@@ -81,9 +85,11 @@ export default function CustomToolbar({
             >
                 <div className={'tw-flex tw-flex-row tw-space-x-1'}>
                     <div
-                        className={
-                            'rbc-toolbar-label tw-flex tw-items-center tw-justify-center hover:tw-bg-gray-100 tw-rounded-md tw-text-center tw-w-[180px] tw-py-1 tw-px-3 tw-transition tw-duration-200 tw-ease-in-out'
-                        }
+                        className={clsx(
+                            'rbc-toolbar-label tw-flex tw-items-center tw-justify-start',
+                            'hover:tw-bg-gray-100 tw-rounded-md tw-text-center tw-py-1 tw-px-3',
+                            'tw-transition tw-duration-200 tw-ease-in-out'
+                        )}
                     >
                         <Title order={4}>{label}</Title>
                     </div>

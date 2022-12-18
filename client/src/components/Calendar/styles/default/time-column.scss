@@ -56,7 +56,7 @@
     }
 
     .rbc-event {
-        border: 1px solid $event-border;
+        border: 0.001px solid $event-border;
         display: flex;
         max-height: 100%;
         min-height: 20px;
@@ -64,6 +64,11 @@
         align-items: flex-start;
         overflow: hidden;
         position: absolute;
+        @apply tw-shadow-none tw-shadow-gray-50/20;
+        &:hover {
+            @apply tw-ease-in-out tw-transition tw-shadow-sm;
+        }
+        @apply tw-transition tw-duration-1000;
     }
 
     .rbc-background-event {

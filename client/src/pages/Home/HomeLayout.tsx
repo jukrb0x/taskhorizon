@@ -94,7 +94,7 @@ export const HomeLayout = () => {
                                 </Header>
                             )}
                             <Content>
-                                <div className={'tw-h-full tw-overflow-y-hidden'}>
+                                <div className={'tw-h-full'}>
                                     <Outlet />
                                 </div>
                             </Content>
