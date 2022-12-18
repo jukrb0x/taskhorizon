@@ -21,8 +21,8 @@
     border-color: transparent;
 }
 
-.rbc-time-gutter > .rbc-timeslot-group > .rbc-timeslot:first-child {
-    display: none;
+.rbc-time-gutter.rbc-time-column > .rbc-timeslot-group:first-child {
+    visibility: hidden;
 }
 
 .rbc-time-gutter,
@@ -32,7 +32,6 @@
 
 .rbc-label {
     padding: 0 5px;
-    // JB
     position: relative;
     top: -0.8rem;
     color: $label-color;
