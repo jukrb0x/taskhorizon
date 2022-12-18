@@ -47,7 +47,7 @@ const AppSider = () => {
                 data-tauri-drag-region
                 className={clsx(
                     'tw-h-full tw-flex tw-flex-col tw-w-[70px] tw-overflow-hidden',
-                    'tw-items-center tw-py-3'
+                    'tw-items-center tw-py-3 tw-flex-shrink-0 tw-bg-gray-100/30'
                 )}
             >
                 <div data-tauri-drag-region className={'tw-space-y-1 tw-grow'}>

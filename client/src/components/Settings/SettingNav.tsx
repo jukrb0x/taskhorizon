@@ -1,9 +1,9 @@
-import { ActionIcon, Modal, Button } from '@mantine/core';
-import { IconMessageCircle, IconPhoto, IconSettings } from '@tabler/icons';
+import { ActionIcon, Modal, Button, Text, Divider } from '@mantine/core';
+import { IconLogout, IconMessageCircle, IconPhoto, IconSettings, IconUser } from '@tabler/icons';
 import { IconClose } from '@douyinfe/semi-icons';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 
-const SettingNavButton = ({ icon, label, selected }: any) => {
+const SettingNavButton = ({ icon, label, color, selected }: any) => {
     return (
         <>
             <Button
@@ -15,8 +15,8 @@ const SettingNavButton = ({ icon, label, selected }: any) => {
                     };
                 }}
                 variant={selected ? 'filled' : 'subtle'}
-                color={'gray'}
-                leftIcon={<IconPhoto />}
+                color={color ? color : 'gray.7'}
+                leftIcon={icon}
             >
                 {label}
             </Button>
@@ -24,13 +24,24 @@ const SettingNavButton = ({ icon, label, selected }: any) => {
     );
 };
 
+const SectionTitle = ({ children }: { children: ReactNode }) => {
+    return (
+        <Text tt={'uppercase'} c={'dimmed'} fz={'xs'} fw={600} className={'tw-p-1'}>
+            {children}
+        </Text>
+    );
+};
+
 export const SettingsNav = () => {
     const [activeTab, setActiveTab] = useState('');
 
     return (
-        <>
-            <SettingNavButton icon={<IconPhoto />} label={'Profile'} selected />
+        <div className={'tw-space-y-1.5 tw-flex tw-flex-col'}>
+            <SectionTitle>Settings</SectionTitle>
+            <SettingNavButton icon={<IconUser />} label={'Profile'} selected />
             <SettingNavButton icon={<IconPhoto />} label={'Profile'} />
-        </>
+            <Divider color={'gray.3'} my={'xs'} />
+            <SettingNavButton icon={<IconLogout />} label={'Logout'} color={'red'} />
+        </div>
     );
 };

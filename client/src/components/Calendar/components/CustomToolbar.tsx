@@ -76,7 +76,8 @@ export default function CustomToolbar({
                 'tw-cursor-default'
             )}
             style={{
-                borderBottom: '1px solid #e9ecef'
+                borderBottom: '1px solid #e9ecef',
+                zIndex: 10
             }}
             data-tauri-drag-region
         >

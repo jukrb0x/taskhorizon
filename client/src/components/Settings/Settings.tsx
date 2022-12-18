@@ -27,7 +27,8 @@ export const Settings = (props: { opened: boolean; onClose: () => void }) => {
                 }}
                 withCloseButton={false}
                 withFocusReturn={false}
-                trapFocus={false}
+                // trapFocus={false}
+                zIndex={1000}
             >
                 <div
                     className={'tw-w-full tw-flex tw-justify-end tw-fixed tw-h-8 tw-p-2'}
@@ -43,7 +44,7 @@ export const Settings = (props: { opened: boolean; onClose: () => void }) => {
                         'tw-flex tw-flex-row tw-items-center tw-justify-center tw-h-full tw-w-full'
                     }
                 >
-                    <div className={'tw-basis-1/4 tw-h-screen tw-bg-gray-100/50 tw-pt-20'}>
+                    <div className={'tw-basis-1/4 tw-h-screen tw-pt-20 tw-bg-[#eee]/60'}>
                         <div className={'tw-flex-col tw-flex tw-ml-auto tw-pr-5 tw-w-48'}>
                             <SettingsNav />
                         </div>
