@@ -29,7 +29,12 @@ export default function AuthLayout() {
 
     return (
         <>
-            <div className={'tw-flex tw-items-center tw-justify-center tw-h-screen tw-select-none'}>
+            <div
+                data-tauri-drag-region
+                className={
+                    'tw-flex tw-items-center tw-justify-center tw-h-screen tw-select-none tw-cursor-default'
+                }
+            >
                 <div className={'tw-flex tw-flex-row'}>
                     <div className={'tw-flex tw-items-center tw-justify-center'}>
                         <div>
