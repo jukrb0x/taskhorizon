@@ -43,10 +43,24 @@ export const setEvent = async (
     }
     return await EventAPI.updateEvent(newEvent); // update the event itself
 };
-export const removeEvents = async (ids: string[]) => {
+
+export const setEvents = async (events: CalendarEvent[], useAPI: boolean) => {
+    const { getEventById, setEvent } = useEventStore.getState();
+    events.forEach((event) => {
+        const exist = getEventById(event.id);
+        if (exist) {
+            setEvent(event.id, event);
+            if (useAPI) EventAPI.updateEvent(event);
+        } else {
+            throw new Error('Event not found');
+        }
+    });
+};
+
+export const removeEvents = async (ids: string[], useAPI: boolean) => {
     const { removeEvents } = useEventStore.getState();
     removeEvents(ids);
-    await EventAPI.deleteEvents(ids);
+    if (useAPI) await EventAPI.deleteEvents(ids);
 };
 
 export const removeEvent = async (
@@ -54,14 +68,11 @@ export const removeEvent = async (
     data?: CalendarEvent[] | undefined,
     mutate?: KeyedMutator<CalendarEvent[]>
 ) => {
-    // TODO: use batch remove
     const { getTodoById, removeLinkedEvent, removeTodo } = useTodoStore.getState();
     const { eventList, removeEvent } = useEventStore.getState();
 
     mutate && (await mutate(eventList.filter((event) => event.id !== id)));
     const removedEvent = removeEvent(id);
-    await EventAPI.deleteEventById(id);
-
     // remove the event linkage from its linked todos,
     // usually it's only ONE linked todo on ONE event
     removedEvent.linkedTodos?.forEach((todoId) => {
@@ -71,13 +82,13 @@ export const removeEvent = async (
             removeTodo(todoId);
             TodoAPI.deleteTodoById(todoId);
         } else {
-            // remove the linkage in the linked todo
+            // remove the linkage in the linked todos
             const updated = removeLinkedEvent(todoId, removedEvent.id);
             TodoAPI.updateTodo(updated);
         }
     });
-
-    return removedEvent;
+    return EventAPI.deleteEventById(id);
+    // return removedEvent;
 };
 
 /**
@@ -184,7 +195,6 @@ export const useEvent = (shouldFetch = true) => {
     // DATA SWR
     const compareWithStore = (events: CalendarEvent[]) => {
         if (events) {
-            console.log('compareWithStore EVENTS', events);
             events.forEach((event) => {
                 // parse date, not pure
                 event.start = new Date(event.start);

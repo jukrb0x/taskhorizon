@@ -16,9 +16,11 @@ export const useResizer = () => {
     }, [setIsResizing]);
 
     const onMouseMove = useCallback(
+        // FIXME: performance issue
         (e: MouseEvent) => {
             if (isResizing) {
-                setSidebarWidth(math(e.clientX, 300, 600));
+                const appSiderWidth = 70; // in px
+                setSidebarWidth(math(e.clientX - appSiderWidth, 300, 600));
             }
         },
         [isResizing, setSidebarWidth]

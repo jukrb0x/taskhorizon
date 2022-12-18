@@ -22,7 +22,7 @@
     width: 100%;
 
     // border: 1px solid $calendar-border;
-    border-top: 1px solid $calendar-border; // todo: remove
+    // border-top: 1px solid $calendar-border; // todo: remove
     min-height: 0;
 
     .rbc-time-gutter {
@@ -120,6 +120,7 @@
 
     > .rbc-time-gutter {
         flex: none;
+        padding-left: 0.5rem;
     }
 
     > * + * > * {

@@ -3,7 +3,8 @@ import { MutableRefObject, useEffect } from 'react';
 import { useResizer } from '@/hooks/use-resizer';
 import { useMergedRef } from '@mantine/hooks';
 
-const ResizeBar = cls.div`tw-w-[0.3rem] tw-h-full tw-cursor-col-resize
+const ResizeBar = cls.div`tw-w-[0.2rem] before:tw-w-[1.3rem]
+                          tw-h-full tw-cursor-col-resize
                           tw-bg-gray-500/30 hover:tw-opacity-100 tw-opacity-50 tw-ease-out tw-duration-200`;
 
 export const Resizer = ({ innerRef }: { innerRef?: MutableRefObject<HTMLDivElement | null> }) => {

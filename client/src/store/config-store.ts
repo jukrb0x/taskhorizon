@@ -7,7 +7,7 @@ interface AppConfig {
 }
 
 const AppConfigStore: StateCreator<AppConfig> = (set) => ({
-    sidebarWidth: 350,
+    sidebarWidth: 450,
     setSidebarWidth: (width: number) => set(() => ({ sidebarWidth: width }))
 });
 const useAppConfigStore = create<AppConfig>()(

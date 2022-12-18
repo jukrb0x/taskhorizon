@@ -38,6 +38,14 @@ export class EventAPI {
         return data;
     }
 
+    static async updateEvents(events: CalendarEvent[]): Promise<CalendarEvent[]> {
+        const req: CalendarEventRequestModel[] = events.map((event) => {
+            return renameKeys(event, { id: 'uuid', desc: 'description' });
+        });
+        const { data } = await http.post('/event/update/batch', req);
+        return data;
+    }
+
     static async deleteEventById(id: string): Promise<CalendarEvent> {
         const { data } = await http.get<CalendarEvent>(`/event/delete/${id}`);
         return data;

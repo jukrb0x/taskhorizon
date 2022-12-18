@@ -31,7 +31,7 @@ const TauriWindowDragRegion = styled.div.attrs(() => ({
 }))`
     // debug start
     &::after {
-        content: 'DEBUG Tauri Window Rrag Region';
+        content: 'DEBUG Tauri Window Drag Region';
     }
 
     // debug end
@@ -55,7 +55,7 @@ function App() {
 
     return (
         <BrowserRouter>
-            {isTauri && <TauriWindowDragRegion />}
+            {false && isTauri && <TauriWindowDragRegion />}
             <MantineProvider withGlobalStyles withNormalizeCSS theme={mantineTheme}>
                 <NotificationsProvider>
                     <SemiConfigProvider locale={en_GB}>

@@ -15,11 +15,12 @@ const fetcher = (url: string) => {
 // CLIENT-SIDE FUNCTIONS
 // ---------
 
+// only make local store change but the server is on charge of the actual updates
 const updateLinkedEventsToTodo = (todo: Todo) => {
+    // TODO: old
     todo.linkedEvents?.forEach(async (eventId) => {
         const event = useEventStore.getState().getEventById(eventId);
         if (event) {
-            // TODO useles
             await setEvent(eventId, {
                 ...event,
                 title: todo.title,
@@ -27,6 +28,13 @@ const updateLinkedEventsToTodo = (todo: Todo) => {
             });
         }
     });
+    // TODO: new
+    /*
+    const events: CalendarEvent[] = todo.linkedEvents.map(
+        (eventId) => useEventStore.getState().getEventById(eventId) as CalendarEvent
+    );
+    events && setEvents(events, false); // visual consistency
+     */
 };
 
 /**
@@ -86,12 +94,10 @@ const toggleTodoCompleted = async (
 const removeTodo = async (id: string, data?: Todo[] | undefined, mutate?: KeyedMutator<Todo[]>) => {
     const { removeTodo } = useTodoStore.getState();
     data && mutate && (await mutate(data.filter((todo) => todo.id !== id)));
-
-    // FIXME:
-    //   we separate the removal of linked todos and events
-    //   if there was network error, we may encounter a inconsistent state in the server
+    // remove the todo will also remove the linked events in the server
     await TodoAPI.deleteTodoById(id);
-    await removeEvents(removeTodo(id).linkedEvents); // TODO: only visual, not actual
+    // remove the linked events in local store for visual consistency
+    await removeEvents(removeTodo(id).linkedEvents, false);
 };
 
 export const useTodo = (shouldFetch = true) => {
@@ -120,7 +126,6 @@ export const useTodo = (shouldFetch = true) => {
     } = useTodoStore();
 
     const compareWithStore = (todos: Todo[]) => {
-        console.log('compareWithStore', todos);
         if (todos) {
             todos.forEach((todo) => {
                 const storeTodo = getTodoById(todo.id);
@@ -151,33 +156,6 @@ export const useTodo = (shouldFetch = true) => {
     const toggleTodoCompletedWrapper = async (id: string) => {
         await toggleTodoCompleted(id, true, data, mutate);
     };
-
-    // const removeLinkedEvent = async (todoId: string, eventId: string) => {
-    //     removeLinkedEventInternal(todoId, eventId);
-    //     // TODO
-    //     return await EventAPI.deleteEventById();
-    // };
-    //
-    // TODO try to decouple..
-    // const removeEvent = async (id: string) => {
-    //     const removedEvent = removeEventInternal(id);
-    //
-    //     removedEvent.linkedTodos?.forEach((todoId) => {
-    //         // remove the event from linked todo,
-    //         // usually it's only one linked todo for one event
-    //         const updated = removeLinkedEvent(todoId, removedEvent.id);
-    //         TodoAPI.updateTodo(updated);
-    //     });
-    //
-    //     // remove all linked todos only if all linked events are removed
-    //     removedEvent.linkedTodos?.forEach((todoId) => {
-    //         const todo = getTodoById(todoId);
-    //         if (todo?.linkedEvents?.length == 0) {
-    //             removeTodoInternal(todoId);
-    //             TodoAPI.deleteTodoById(todoId);
-    //         }
-    //     });
-    // };
 
     const removeTodoWrapper = async (id: string) => {
         await removeTodo(id, data, mutate);
