@@ -165,31 +165,6 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
                         }}
                     />
                 )}
-                {linkedEventNumber > 0 && (
-                    <div>
-                        <Text
-                            size={'xs'}
-                            className={mouseHover ? 'tw-w-fit tw-px-1' : 'tw-hidden'}
-                            color={'gray'}
-                        >
-                            <Tooltip
-                                withArrow
-                                multiline
-                                position={'bottom'}
-                                styles={() => ({
-                                    tooltip: {
-                                        width: 'max-content'
-                                    }
-                                })}
-                                label={formattedLinkedEventsDateTimeList?.map((date, index) => (
-                                    <div key={index}>{date}</div>
-                                ))}
-                            >
-                                <div>{linkedEventNumber}</div>
-                            </Tooltip>
-                        </Text>
-                    </div>
-                )}
                 <Menu
                     transition={'scale-y'}
                     opened={menuOpen}
@@ -217,6 +192,28 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
                         </Menu.Item>
                     </Menu.Dropdown>
                 </Menu>
+
+                {linkedEventNumber > 0 && (
+                    <div>
+                        <Text size={'xs'} className={'tw-w-fit tw-px-1'} color={'gray'}>
+                            <Tooltip
+                                withArrow
+                                multiline
+                                position={'bottom'}
+                                styles={() => ({
+                                    tooltip: {
+                                        width: 'max-content'
+                                    }
+                                })}
+                                label={formattedLinkedEventsDateTimeList?.map((date, index) => (
+                                    <div key={index}>{date}</div>
+                                ))}
+                            >
+                                <div>{linkedEventNumber}</div>
+                            </Tooltip>
+                        </Text>
+                    </div>
+                )}
             </div>
         </div>
     );
