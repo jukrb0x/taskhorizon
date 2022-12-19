@@ -39,8 +39,8 @@ const setEvent = async (
     // await mutate([...eventList.filter((event) => event.id !== id), newEvent]);
     useEventStore.getState().setEvent(id, newEvent);
     if (propagation) {
-        await updateLinkedTodosToEvent(newEvent);
-        await updateLinkedEventsToEvent(newEvent);
+        await locallyUpdateLinkedTodosToEvent(newEvent);
+        await locallyUpdateLinkedEventsToEvent(newEvent);
     }
     if (useAPI) return await EventAPI.updateEvent(newEvent); // update the event itself
 };
@@ -51,7 +51,6 @@ const setEvents = async (events: CalendarEvent[], useAPI: boolean) => {
         const exist = getEventById(event.id);
         if (exist) {
             setEvent(event.id, event);
-            console.log('to', event);
             if (useAPI) EventAPI.updateEvent(event);
         } else {
             throw new Error('Event not found');
@@ -135,7 +134,7 @@ const toggleEventCompleted = (id: string) => {
  * @description usually Event has only one linked Todo
  * @param event
  */
-const updateLinkedTodosToEvent = (event: CalendarEvent) => {
+const locallyUpdateLinkedTodosToEvent = (event: CalendarEvent) => {
     event.linkedTodos?.forEach(async (todoId) => {
         const todo = useTodoStore.getState().getTodoById(todoId);
         if (todo) {
@@ -155,7 +154,7 @@ const updateLinkedTodosToEvent = (event: CalendarEvent) => {
  * update ONLY TITLE, DESC
  * UPDATE LOGIC: the event --> linked todos --> linked events --> update events
  */
-const updateLinkedEventsToEvent = (event: CalendarEvent) => {
+const locallyUpdateLinkedEventsToEvent = (event: CalendarEvent) => {
     const { getTodoById } = useTodoStore.getState();
     const { getEventById } = useEventStore.getState();
     event.linkedTodos?.forEach((todoId) => {
@@ -254,6 +253,6 @@ export const EventClient = {
     removeEvent,
     removeEvents,
     toggleEventCompleted,
-    updateLinkedEventsToEvent,
-    updateLinkedTodosToEvent
+    updateLinkedEventsToEvent: locallyUpdateLinkedEventsToEvent,
+    updateLinkedTodosToEvent: locallyUpdateLinkedTodosToEvent
 };
