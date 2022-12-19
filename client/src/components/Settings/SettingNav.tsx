@@ -1,3 +1,5 @@
+import { AuthAPI } from '@/apis';
+import { IconClose } from '@douyinfe/semi-icons';
 import { ActionIcon, Modal, Button, Text, Divider } from '@mantine/core';
 import {
     IconAffiliate,
@@ -10,11 +12,23 @@ import {
     IconSettings,
     IconUser
 } from '@tabler/icons';
-import { IconClose } from '@douyinfe/semi-icons';
 import { ReactNode, useState } from 'react';
-import { AuthAPI } from '@/apis';
 
-const SettingNavButton = ({ icon, label, color, selected, disabled, onClick }: any) => {
+const SettingNavButton = ({
+    icon,
+    label,
+    color,
+    onClick,
+    selected = false,
+    disabled = false
+}: {
+    icon: ReactNode;
+    label: string;
+    color?: string;
+    selected?: boolean;
+    disabled?: boolean;
+    onClick?: () => void;
+}) => {
     return (
         <>
             <Button
