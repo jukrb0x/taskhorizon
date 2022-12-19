@@ -79,7 +79,7 @@ export class EventService {
     }
 
     /**
-     * Deletes an event by id
+     * Delete an event and the relation to todos
      * @TODO logically delete
      * @param id
      */
@@ -88,6 +88,7 @@ export class EventService {
         // disconnect from its linked todos
         if (event) {
             event.LinkedTodos?.forEach((todo) => {
+                // usually there is only one linked todo for an event
                 this.todoRepository.update({
                     where: { id: todo.id },
                     data: {

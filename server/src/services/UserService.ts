@@ -1,10 +1,12 @@
 import { Inject, Injectable } from '@tsed/di';
-import { TodoCategoriesRepository, UsersRepository } from '@/repositories';
+import { TodoCategoriesRepository, TodosRepository, UsersRepository } from '@/repositories';
 import { BadRequest, InternalServerError } from '@tsed/exceptions';
 import jwt from 'jsonwebtoken';
 import { envs } from '@/config/envs';
 import { getJwtSecret, jwtSign } from '@/config/jwt';
 import { UserModel } from '@/models';
+import { REG_EMAIL } from '@/utils/regex';
+import { UUID64 } from '@/utils/uuid';
 
 export interface UserResponseModel {
     uid: number;
@@ -20,9 +22,10 @@ export class UserService {
     @Inject()
     private todoCategoriesRepo: TodoCategoriesRepository;
 
+    @Inject()
+    private todosRepo: TodosRepository;
+
     checkEmail(email: string) {
-        const REG_EMAIL =
-            /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (REG_EMAIL.test(email)) {
             return Promise.resolve(true);
         } else {
@@ -52,20 +55,22 @@ export class UserService {
     async signup(username: string, email: string, password: string): Promise<UserResponseModel> {
         await this.checkUserExists(username, email);
         const user = await this.userRepo.create({ data: { email, username, password } });
-        await this.initialize(user);
-
-        // eslint-disable-next-line @typescript-eslint/no-unused-vars
-        return {
-            uid: user.id,
-            username: user.username,
-            email: user.email
-        };
+        if (user) {
+            await this.initialize(user);
+            return {
+                uid: user.id,
+                username: user.username,
+                email: user.email
+            };
+        } else {
+            throw new InternalServerError('Creating user failed.');
+        }
     }
 
     async initialize(user: UserModel) {
         // const user = await this.userRepo.findUnique({ where: { username: username } });
         if (user === null) {
-            throw new BadRequest('User not found');
+            throw new InternalServerError('User not found, Error in initialization');
         }
         await this.todoCategoriesRepo.create({
             data: {
@@ -74,6 +79,37 @@ export class UserService {
                 User: { connect: { id: user.id } }
             }
         });
+
+        await this.todosRepo.create({
+            data: {
+                title: 'Welcome to TaskHorizon',
+                uuid: UUID64() + `-todo:${user.username}`,
+                completed: false,
+                User: { connect: { id: user.id } },
+                Category: {
+                    connect: {
+                        uuid: `default-category:${user.username}`
+                    }
+                }
+            },
+            include: { Category: true, LinkedEvents: true }
+        });
+
+        await this.todosRepo.create({
+            data: {
+                title: 'Drag me to calendar to create an event',
+                uuid: UUID64() + `-todo:${user.username}`,
+                completed: false,
+                User: { connect: { id: user.id } },
+                Category: {
+                    connect: {
+                        uuid: `default-category:${user.username}`
+                    }
+                }
+            },
+            include: { Category: true, LinkedEvents: true }
+        });
+
         return user;
     }
 

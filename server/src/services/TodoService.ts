@@ -86,6 +86,7 @@ export class TodoService {
     }
 
     /**
+     * @description Deletes a todo and its linked events and returns the deleted todo
      * @TODO logically delete the todo is better
      * @param id
      */

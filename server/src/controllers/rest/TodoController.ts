@@ -47,7 +47,7 @@ export class TodoController {
      * @param id
      */
     @Get('/:id')
-    async getTodo(@Req() req: Req, @PathParams('id') id: number): Promise<TodoResponseModel | null | undefined> {
+    async getTodo_deprecated(@Req() req: Req, @PathParams('id') id: number): Promise<TodoResponseModel | null | undefined> {
         const payload = extractJwtPayload(req);
         if (payload) {
             const todo = await this.todoService.getTodoById(id);
@@ -75,6 +75,7 @@ export class TodoController {
             const created = await this.todoService.createTodo(payload.username, todo);
             const { Category } = created;
             return {
+                // return created todo
                 category: { id: Category.uuid, name: Category.name },
                 completed: created.completed,
                 createdAt: created.createdAt,
@@ -97,6 +98,7 @@ export class TodoController {
                 const deleted = await this.todoService.deleteTodoById(todo.id);
                 const { Category } = deleted;
                 return {
+                    // return deleted todo
                     category: { id: Category.uuid, name: Category.name },
                     completed: deleted.completed,
                     createdAt: deleted.createdAt,
