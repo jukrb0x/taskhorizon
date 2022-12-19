@@ -36,7 +36,10 @@ export const Settings = (props: { opened: boolean; onClose: () => void }) => {
                 zIndex={30}
             >
                 <div
-                    className={'tw-w-full tw-flex tw-justify-end tw-fixed tw-h-8 tw-p-2'}
+                    className={clsx(
+                        'tw-w-full tw-flex tw-justify-end',
+                        'tw-fixed tw-top-0 tw-z-30 tw-fixed tw-h-13 tw-p-2'
+                    )}
                     data-tauri-drag-region
                 >
                     <ActionIcon size={'xl'} onClick={props.onClose} radius={'xl'}>
@@ -58,7 +61,7 @@ export const Settings = (props: { opened: boolean; onClose: () => void }) => {
                     <div
                         className={clsx(
                             'tw-basis-3/5 tw-h-screen tw-pt-20 tw-px-10',
-                            'tw-border-l tw-drop-shadow-xl tw-rounded-l-3xl tw-bg-white'
+                            'tw-drop-shadow-xl tw-rounded-l-3xl tw-bg-white'
                         )}
                     >
                         <div className={'tw-flex'}>Content will change based on nav selected.</div>
