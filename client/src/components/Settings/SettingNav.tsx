@@ -39,7 +39,13 @@ const SettingNavButton = ({ icon, label, color, selected, disabled, onClick }: a
 
 const SectionTitle = ({ children }: { children: ReactNode }) => {
     return (
-        <Text tt={'uppercase'} c={'dimmed'} fz={'xs'} fw={600} className={'tw-p-1'}>
+        <Text
+            tt={'uppercase'}
+            c={'dimmed'}
+            fz={'xs'}
+            fw={600}
+            className={'tw-p-1 tw-select-none tw-cursor-default'}
+        >
             {children}
         </Text>
     );
