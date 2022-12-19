@@ -37,6 +37,7 @@ const updateEvent = async (event: CalendarEvent): Promise<CalendarEvent> => {
     return data;
 };
 
+// TODO: DO NOT USE ME
 const updateEvents = async (events: CalendarEvent[]): Promise<CalendarEvent[]> => {
     const req: CalendarEventRequestModel[] = events.map((event) => {
         return renameKeys(event, { id: 'uuid', desc: 'description' });

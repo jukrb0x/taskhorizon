@@ -2,7 +2,7 @@ import { Controller, Inject } from '@tsed/di';
 import { JwtAuth } from '@/decorators/JwtAuth';
 import { EventService } from '@/services/EventService';
 import { Get, Post } from '@tsed/schema';
-import { PathParams, Req } from '@tsed/common';
+import { $log, PathParams, Req } from '@tsed/common';
 import { extractJwtPayload } from '@/config/jwt';
 import { BodyParams } from '@tsed/platform-params';
 import { EventModel } from '@/models';
@@ -73,10 +73,15 @@ export class EventController {
     async updateEvent(@Req() req: Req, @BodyParams() event: EventRequestModel): Promise<EventResponseModel> {
         const payload = extractJwtPayload(req);
         if (payload) {
-            // check ownership
             const exist = await this.eventService.getEventByUUID(event.uuid);
             if (exist?.userId === payload.uid) {
+                // update event itself
                 const updated = await this.eventService.update(event);
+                // update linked todos
+                await this.eventService.updateLinkedTodos(updated);
+                // update linked events of the linked todos
+                await this.eventService.updateLinkedEvents(updated);
+
                 return {
                     id: updated.uuid,
                     desc: updated.description || '',

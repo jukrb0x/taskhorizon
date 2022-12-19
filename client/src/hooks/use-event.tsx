@@ -12,14 +12,12 @@ const fetcher = (url: string) => {
 
 const addEvent = async (
     event: CalendarEvent,
-    data?: CalendarEvent[] | undefined,
-    mutate?: KeyedMutator<CalendarEvent[]>
+    data: CalendarEvent[] | undefined,
+    mutate: KeyedMutator<CalendarEvent[]>
 ) => {
-    const created = await EventAPI.createEvent(event);
-    if (created) {
-        useEventStore.getState().addEvent(event);
-        return event;
-    }
+    data && (await mutate([...data, event]));
+    useEventStore.getState().addEvent(event);
+    await EventAPI.createEvent(event);
 };
 
 /**
@@ -98,14 +96,15 @@ const removeEvent = async (
  * @description Event (n - 1) Todo
  * @description Linked Todos (1) will be checked when all linked events (n) is completed
  */
-const toggleEventCompleted = (id: string) => {
+const toggleEventCompleted = async (id: string) => {
     const { getEventById, toggleCompleted } = useEventStore.getState();
     const { getTodoById } = useTodoStore.getState();
     const event = getEventById(id);
     if (event) {
         const toggledEvent = toggleCompleted(id);
+        await EventAPI.updateEvent(toggledEvent);
         // process linked todos, usually it's only one linked todo for one event
-        toggledEvent.linkedTodos?.forEach(async (todoId) => {
+        toggledEvent.linkedTodos?.forEach((todoId) => {
             const todo = getTodoById(todoId) as Todo;
             const uncompletedEvents = todo?.linkedEvents?.filter((eventId) => {
                 const event = getEventById(eventId);
@@ -117,13 +116,13 @@ const toggleEventCompleted = (id: string) => {
                     ...todo,
                     completed: true
                 };
-                await TodoClient.setTodo(todoId, next, false);
+                TodoClient.setTodo(todoId, next);
             } else {
                 const next = {
                     ...todo,
                     completed: false
                 };
-                await TodoClient.setTodo(todoId, next, false);
+                TodoClient.setTodo(todoId, next);
             }
         });
     }
@@ -144,7 +143,7 @@ const locallyUpdateLinkedTodosToEvent = (event: CalendarEvent) => {
                 completed: event.completed
             };
             await useTodoStore.getState().setTodo(todoId, next);
-            await TodoAPI.updateTodo(next);
+            // await TodoAPI.updateTodo(next);
         }
     });
 };
@@ -167,7 +166,7 @@ const locallyUpdateLinkedEventsToEvent = (event: CalendarEvent) => {
                     desc: event.desc
                 };
                 await setEvent(eventId, next, false);
-                await EventAPI.updateEvent(next);
+                // await EventAPI.updateEvent(next);
             }
         });
     });
