@@ -43,7 +43,7 @@ export class TodoService {
     }
 
     // todo: figure out json validation in tsed (ajv)
-    async createTodo(username: string, todo: TodoRequestModel): Promise<TodoModel> {
+    async create(username: string, todo: TodoRequestModel): Promise<TodoModel> {
         const user = await this.userService.findByUsername(username);
         const { category, linkedEvents, ...data } = todo;
         return await this.todoRepository.create({
@@ -70,7 +70,6 @@ export class TodoService {
             where: { uuid: data.uuid },
             data: {
                 ...data,
-                // categoryId: todoCategory?.id,
                 Category: {
                     connect: {
                         uuid: category.id
@@ -86,15 +85,16 @@ export class TodoService {
     }
 
     /**
-     * @description Deletes a todo and its linked events and returns the deleted todo
+     * @description Deletes a todo by id and returns the deleted todo
      * @TODO logically delete the todo is better
      * @param id
      */
-    async deleteTodoById(id: number) {
+    async deleteTodoById(id: number): Promise<TodoModel> {
         const deleted = await this.todoRepository.delete({ where: { id }, include: { Category: true, LinkedEvents: true } });
         // keep the consistency of the data structure in the server-side
         // delete the todo and its linked events
-        await this.eventService.deleteEventsByUUIDs(deleted.LinkedEvents.map((event) => event.uuid));
+        // await this.eventService.deleteEventsByUUIDs(deleted.LinkedEvents.map((event) => event.uuid));
+        // ^ this is moved to controller
         return deleted;
     }
 }

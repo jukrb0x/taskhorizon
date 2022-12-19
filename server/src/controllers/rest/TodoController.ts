@@ -8,12 +8,20 @@ import { extractJwtPayload } from '@/config/jwt';
 import { BodyParams } from '@tsed/platform-params';
 import { BadRequest } from '@tsed/exceptions';
 import { TodoRequestModel, TodoResponseModel } from '@/interfaces/TodoInterface';
+import { EventService } from '@/services/EventService';
+import { EventsRepository, TodosRepository } from '@/repositories';
 
 @JwtAuth()
 @Controller('/todo')
 export class TodoController {
     @Inject()
     private todoService: TodoService;
+
+    @Inject()
+    private eventService: EventService;
+
+    @Inject()
+    private eventRepo: EventsRepository;
 
     @Get('/')
     @Get('/all')
@@ -69,10 +77,10 @@ export class TodoController {
     }
 
     @Post('/create')
-    async create(@Req() req: Req, @BodyParams() todo: TodoRequestModel): Promise<TodoResponseModel | undefined> {
+    async create(@Req() req: Req, @BodyParams() todo: TodoRequestModel): Promise<TodoResponseModel> {
         const payload = extractJwtPayload(req);
         if (payload) {
-            const created = await this.todoService.createTodo(payload.username, todo);
+            const created = await this.todoService.create(payload.username, todo);
             const { Category } = created;
             return {
                 // return created todo
@@ -86,16 +94,24 @@ export class TodoController {
                 updatedAt: created.updatedAt
             };
         }
+        throw new BadRequest('Cannot create todo');
     }
 
+    /**
+     * @description Delete a todo by uuid, the linked events will be deleted too.
+     * @param req
+     * @param uuid
+     */
     @Get('/delete/:uuid')
     @Delete('/delete/:uuid')
-    async delete(@Req() req: Req, @PathParams('uuid') uuid: string): Promise<TodoResponseModel | undefined> {
+    async delete(@Req() req: Req, @PathParams('uuid') uuid: string): Promise<TodoResponseModel> {
         const payload = extractJwtPayload(req);
         if (payload) {
             const todo = await this.todoService.getTodoByUUID(uuid);
             if (todo && todo?.userId === payload.uid) {
                 const deleted = await this.todoService.deleteTodoById(todo.id);
+                // delete linked events
+                await this.eventService.deleteEventsByUUIDs(deleted.LinkedEvents.map((event) => event.uuid));
                 const { Category } = deleted;
                 return {
                     // return deleted todo
@@ -108,19 +124,34 @@ export class TodoController {
                     title: deleted.title,
                     updatedAt: deleted.updatedAt
                 };
-            } else {
-                throw new BadRequest('Todo not found');
             }
         }
+        throw new BadRequest('Todo not found');
     }
 
+    /**
+     * @description Update a todo by uuid, the title will be synced to linked events if there is any.
+     * @param req
+     * @param todo
+     */
     @Post('/update')
-    async update(@Req() req: Req, @BodyParams() todo: TodoRequestModel): Promise<TodoResponseModel | undefined> {
+    async update(@Req() req: Req, @BodyParams() todo: TodoRequestModel): Promise<TodoResponseModel> {
         const payload = extractJwtPayload(req);
         if (payload) {
             const exist = await this.todoService.getTodoByUUID(todo.uuid);
             if (exist && exist?.userId === payload.uid) {
                 const updated = await this.todoService.updateTodo(todo);
+
+                // sync title to linked events
+                updated.LinkedEvents.forEach((event) => {
+                    this.eventRepo.update({
+                        where: { id: event.id },
+                        data: {
+                            title: updated.title
+                        }
+                    });
+                });
+
                 return {
                     category: { id: updated?.Category.uuid, name: updated?.Category.name },
                     completed: updated.completed,
@@ -131,9 +162,9 @@ export class TodoController {
                     title: updated.title,
                     updatedAt: updated.updatedAt
                 };
-            } else {
-                throw new BadRequest('Todo not found');
             }
         }
+
+        throw new BadRequest('Todo not found');
     }
 }

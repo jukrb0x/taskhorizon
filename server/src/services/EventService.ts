@@ -16,22 +16,9 @@ export class EventService {
     @Inject()
     private userService: UserService;
 
-    async getEventsByUsername(username: string): Promise<EventResponseModel[]> {
+    async getEventsByUsername(username: string): Promise<EventModel[]> {
         const user = await this.userService.findByUsername(username);
-        const events = await this.eventRepository.findMany({ where: { userId: user.id } });
-        return events.map((e) => {
-            return {
-                id: e.uuid,
-                desc: e.description || '',
-                title: e.title,
-                start: e.start,
-                end: e.end,
-                allDay: e.allDay,
-                completed: e.completed,
-                updatedAt: e.updatedAt,
-                linkedTodos: e.LinkedTodos?.map((todo) => todo.uuid)
-            };
-        });
+        return await this.eventRepository.findMany({ where: { userId: user.id } });
     }
 
     async getEventById(id: number) {
@@ -46,7 +33,7 @@ export class EventService {
         // return await this.eventRepository.findMany({ where: { uuid: { : uuids } } });
     }
 
-    async createEvent(username: string, event: EventRequestModel) {
+    async create(username: string, event: EventRequestModel): Promise<EventModel> {
         const user = await this.userService.findByUsername(username);
         const { linkedTodos, ...data } = event;
         return await this.eventRepository.create({
@@ -60,7 +47,7 @@ export class EventService {
         });
     }
 
-    async updateEvent(event: EventRequestModel) {
+    async update(event: EventRequestModel) {
         const { linkedTodos, ...data } = event;
         return await this.eventRepository.update({
             where: { uuid: event.uuid },
