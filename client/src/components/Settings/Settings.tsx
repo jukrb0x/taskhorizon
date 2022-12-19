@@ -1,8 +1,14 @@
 import { ActionIcon, Modal, Button as MButton } from '@mantine/core';
 import { IconMessageCircle, IconPhoto, IconSettings } from '@tabler/icons';
 import { IconClose } from '@douyinfe/semi-icons';
-import { useState } from 'react';
+import { ReactNode, useState } from 'react';
 import { Button, SettingsNav } from '@/components';
+import clsx from 'clsx';
+
+const ModalContent = ({ left, right }: { left: ReactNode; right: ReactNode }) => {
+    // TODO
+    return <></>;
+};
 
 export const Settings = (props: { opened: boolean; onClose: () => void }) => {
     const [activeTab, setActiveTab] = useState('');
@@ -27,7 +33,6 @@ export const Settings = (props: { opened: boolean; onClose: () => void }) => {
                 }}
                 withCloseButton={false}
                 withFocusReturn={false}
-                // trapFocus={false}
                 zIndex={30}
             >
                 <div
@@ -40,17 +45,23 @@ export const Settings = (props: { opened: boolean; onClose: () => void }) => {
                 </div>
 
                 <div
-                    className={
-                        'tw-flex tw-flex-row tw-items-center tw-justify-center tw-h-full tw-w-full'
-                    }
+                    className={clsx(
+                        'tw-flex tw-flex-row tw-items-center tw-justify-center tw-h-full tw-w-full',
+                        ' tw-bg-[#eee]/60'
+                    )}
                 >
-                    <div className={'tw-basis-1/4 tw-h-screen tw-pt-20 tw-bg-[#eee]/60'}>
+                    <div className={'tw-basis-2/5 tw-h-screen tw-pt-20 '}>
                         <div className={'tw-flex-col tw-flex tw-ml-auto tw-pr-5 tw-w-48'}>
                             <SettingsNav />
                         </div>
                     </div>
-                    <div className={'tw-basis-3/4 tw-px-10'}>
-                        Content will change based on nav selected.
+                    <div
+                        className={clsx(
+                            'tw-basis-3/5 tw-h-screen tw-pt-20 tw-px-10',
+                            'tw-border-l tw-drop-shadow-xl tw-rounded-l-3xl tw-bg-white'
+                        )}
+                    >
+                        <div className={'tw-flex'}>Content will change based on nav selected.</div>
                     </div>
                 </div>
             </Modal>
