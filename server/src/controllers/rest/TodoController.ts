@@ -130,7 +130,7 @@ export class TodoController {
     }
 
     /**
-     * @description Update a todo by uuid, the title will be synced to linked events if there is any.
+     * @description Update a todo by uuid, the title and completed status will be synced to linked events if there is any.
      * @param req
      * @param todo
      */
@@ -142,12 +142,13 @@ export class TodoController {
             if (exist && exist?.userId === payload.uid) {
                 const updated = await this.todoService.updateTodo(todo);
 
-                // sync title to linked events
+                // sync title, completed to linked events
                 updated.LinkedEvents.forEach((event) => {
                     this.eventRepo.update({
                         where: { id: event.id },
                         data: {
-                            title: updated.title
+                            title: updated.title,
+                            completed: updated.completed
                         }
                     });
                 });

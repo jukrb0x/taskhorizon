@@ -17,23 +17,29 @@ const fetcher = (url: string) => {
 // only make local store change but the server is on charge of the actual updates
 const updateLinkedEventsToTodo = (todo: Todo) => {
     // TODO: old
-    todo.linkedEvents?.forEach(async (eventId) => {
-        const event = useEventStore.getState().getEventById(eventId);
-        if (event) {
-            await EventClient.setEvent(eventId, {
-                ...event,
-                title: todo.title,
-                completed: todo.completed
-            });
-        }
-    });
-    // TODO: new
     /*
+        todo.linkedEvents?.forEach(async (eventId) => {
+            const event = useEventStore.getState().getEventById(eventId);
+            if (event) {
+                await EventClient.setEvent(eventId, {
+                    ...event,
+                    title: todo.title,
+                    completed: todo.completed
+                });
+            }
+        });
+    */
+    // TODO: new
     const events: CalendarEvent[] = todo.linkedEvents.map(
         (eventId) => useEventStore.getState().getEventById(eventId) as CalendarEvent
     );
-    events && setEvents(events, false); // visual consistency
-     */
+    const newEvents = events.map((event) => ({
+        ...event,
+        title: todo.title,
+        completed: todo.completed
+    }));
+
+    events && EventClient.setEvents(newEvents, false); // visual consistency
 };
 
 /**

@@ -70,7 +70,7 @@ export class EventService {
      * @TODO logically delete
      * @param id
      */
-    async deleteEvent(id: number) {
+    async deleteEvent(id: number): Promise<EventModel> {
         const event = await this.getEventById(id);
         // disconnect from its linked todos
         if (event) {

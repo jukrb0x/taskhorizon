@@ -32,6 +32,7 @@ const setEvent = async (
     id: string,
     newEvent: CalendarEvent,
     propagation = false,
+    useAPI = false,
     data?: CalendarEvent[] | undefined,
     mutate?: KeyedMutator<CalendarEvent[]>
 ) => {
@@ -41,7 +42,7 @@ const setEvent = async (
         await updateLinkedTodosToEvent(newEvent);
         await updateLinkedEventsToEvent(newEvent);
     }
-    return await EventAPI.updateEvent(newEvent); // update the event itself
+    if (useAPI) return await EventAPI.updateEvent(newEvent); // update the event itself
 };
 
 const setEvents = async (events: CalendarEvent[], useAPI: boolean) => {
@@ -50,6 +51,7 @@ const setEvents = async (events: CalendarEvent[], useAPI: boolean) => {
         const exist = getEventById(event.id);
         if (exist) {
             setEvent(event.id, event);
+            console.log('to', event);
             if (useAPI) EventAPI.updateEvent(event);
         } else {
             throw new Error('Event not found');
@@ -228,7 +230,7 @@ export const useEvent = (shouldFetch = true) => {
 
     const setEventWrapper = async (id: string, newEvent: CalendarEvent, propagation?: boolean) => {
         if (propagation === undefined) propagation = true;
-        return await setEvent(id, newEvent, propagation, data, mutate);
+        return await setEvent(id, newEvent, propagation, true, data, mutate);
     };
 
     const removeEventWrapper = async (id: string) => {
