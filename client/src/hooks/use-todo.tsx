@@ -1,10 +1,9 @@
+import { http, TodoAPI } from '@/apis';
+import { EventAPI } from '@/apis/event';
+import { EventClient, useEvent } from '@/hooks/use-event';
 import { CalendarEvent, useEventStore, useTodoStore } from '@/store';
 import { Todo } from '@/store/todo-store';
-import { http, TodoAPI } from '@/apis';
 import useSWR, { KeyedMutator } from 'swr';
-import { removeEvent, removeEvents, setEvent, useEvent } from '@/hooks/use-event';
-import { should } from 'vitest';
-import { EventAPI } from '@/apis/event';
 
 const fetcher = (url: string) => {
     // http.interceptors.response.clear(); // clear all notification
@@ -21,7 +20,7 @@ const updateLinkedEventsToTodo = (todo: Todo) => {
     todo.linkedEvents?.forEach(async (eventId) => {
         const event = useEventStore.getState().getEventById(eventId);
         if (event) {
-            await setEvent(eventId, {
+            await EventClient.setEvent(eventId, {
                 ...event,
                 title: todo.title,
                 completed: todo.completed
@@ -45,18 +44,14 @@ const updateLinkedEventsToTodo = (todo: Todo) => {
  * 4. Promise return failed, update stack status to failed
  * 5. if failed, remove todo from local store
  */
-export const addTodo = async (
-    todo: Todo,
-    data: Todo[] | undefined,
-    mutate: KeyedMutator<Todo[]>
-) => {
+const addTodo = async (todo: Todo, data: Todo[] | undefined, mutate: KeyedMutator<Todo[]>) => {
     // FIXME: when exactly should i mutate...?
     data && (await mutate([...data, todo]));
     useTodoStore.getState().addTodo(todo);
     await TodoAPI.createTodo(todo);
 };
 
-export const setTodo = async (
+const setTodo = async (
     id: string,
     todo: Todo,
     drillDown = false,
@@ -97,7 +92,7 @@ const removeTodo = async (id: string, data?: Todo[] | undefined, mutate?: KeyedM
     // remove the todo will also remove the linked events in the server
     await TodoAPI.deleteTodoById(id);
     // remove the linked events in local store for visual consistency
-    await removeEvents(removeTodo(id).linkedEvents, false);
+    await EventClient.removeEvents(removeTodo(id).linkedEvents, false);
 };
 
 export const useTodo = (shouldFetch = true) => {
@@ -177,4 +172,11 @@ export const useTodo = (shouldFetch = true) => {
         removeTodo: removeTodoWrapper,
         getEventById
     };
+};
+
+export const TodoClient = {
+    addTodo,
+    setTodo,
+    removeTodo,
+    updateLinkedEventsToTodo
 };

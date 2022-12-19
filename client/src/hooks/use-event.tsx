@@ -1,20 +1,20 @@
+import { http, TodoAPI } from '@/apis';
+import { EventAPI } from '@/apis/event';
+import { TodoClient, useTodo } from '@/hooks/use-todo';
 import { Todo, useEventStore, useTodoStore } from '@/store';
 import { CalendarEvent } from '@/store/event-store';
-import { EventAPI } from '@/apis/event';
-import { http, TodoAPI } from '@/apis';
 import useSWR, { KeyedMutator } from 'swr';
-import { setTodo, useTodo } from '@/hooks/use-todo';
 
 const fetcher = (url: string) => {
     // http.interceptors.response.clear(); // clear all notification
     return http.get(url).then((res) => res.data);
 };
 
-export const addEvent: (
+const addEvent = async (
     event: CalendarEvent,
-    data: CalendarEvent[] | undefined,
-    mutate: KeyedMutator<CalendarEvent[]>
-) => Promise<CalendarEvent | undefined> = async (event: CalendarEvent) => {
+    data?: CalendarEvent[] | undefined,
+    mutate?: KeyedMutator<CalendarEvent[]>
+) => {
     const created = await EventAPI.createEvent(event);
     if (created) {
         useEventStore.getState().addEvent(event);
@@ -28,7 +28,7 @@ export const addEvent: (
  * @param drilldown
  * @description update the event, and it's linked todos, the linked events of linked todos will also be updated ONLY for the title and description.
  */
-export const setEvent = async (
+const setEvent = async (
     id: string,
     newEvent: CalendarEvent,
     propagation = false,
@@ -44,7 +44,7 @@ export const setEvent = async (
     return await EventAPI.updateEvent(newEvent); // update the event itself
 };
 
-export const setEvents = async (events: CalendarEvent[], useAPI: boolean) => {
+const setEvents = async (events: CalendarEvent[], useAPI: boolean) => {
     const { getEventById, setEvent } = useEventStore.getState();
     events.forEach((event) => {
         const exist = getEventById(event.id);
@@ -57,13 +57,13 @@ export const setEvents = async (events: CalendarEvent[], useAPI: boolean) => {
     });
 };
 
-export const removeEvents = async (ids: string[], useAPI: boolean) => {
+const removeEvents = async (ids: string[], useAPI: boolean) => {
     const { removeEvents } = useEventStore.getState();
     removeEvents(ids);
     if (useAPI) await EventAPI.deleteEvents(ids);
 };
 
-export const removeEvent = async (
+const removeEvent = async (
     id: string,
     data?: CalendarEvent[] | undefined,
     mutate?: KeyedMutator<CalendarEvent[]>
@@ -116,13 +116,13 @@ const toggleEventCompleted = (id: string) => {
                     ...todo,
                     completed: true
                 };
-                await setTodo(todoId, next, false);
+                await TodoClient.setTodo(todoId, next, false);
             } else {
                 const next = {
                     ...todo,
                     completed: false
                 };
-                await setTodo(todoId, next, false);
+                await TodoClient.setTodo(todoId, next, false);
             }
         });
     }
@@ -243,4 +243,15 @@ export const useEvent = (shouldFetch = true) => {
         removeEvent: removeEventWrapper,
         getEventById
     };
+};
+
+export const EventClient = {
+    addEvent,
+    setEvent,
+    setEvents,
+    removeEvent,
+    removeEvents,
+    toggleEventCompleted,
+    updateLinkedEventsToEvent,
+    updateLinkedTodosToEvent
 };
