@@ -45,6 +45,14 @@ const addTodo = async (todo: Todo, data: Todo[] | undefined, mutate: KeyedMutato
     await TodoAPI.createTodo(todo);
 };
 
+/**
+ * @description [Client Action] SetTodo
+ * @description local store update --> local linked mutation --> server atomic action
+ * @param i
+ * @param todo
+ * @param data
+ * @param mutate
+ */
 const setTodo = async (
     id: string,
     todo: Todo,

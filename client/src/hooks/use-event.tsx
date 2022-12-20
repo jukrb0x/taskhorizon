@@ -21,26 +21,23 @@ const addEvent = async (
 };
 
 /**
+ * @description [Client Action] SetEvent
+ * @description update the event, and it's linked todos, the linked events of linked todos will also be updated ONLY for the title and description.
  * @param id
  * @param newEvent
  * @param drilldown
- * @description update the event, and it's linked todos, the linked events of linked todos will also be updated ONLY for the title and description.
  */
 const setEvent = async (
     id: string,
     newEvent: CalendarEvent,
-    propagation = false,
-    useAPI = false,
     data?: CalendarEvent[] | undefined,
     mutate?: KeyedMutator<CalendarEvent[]>
 ) => {
     // await mutate([...eventList.filter((event) => event.id !== id), newEvent]);
     useEventStore.getState().setEvent(id, newEvent);
-    if (propagation) {
-        await locallyUpdateLinkedTodosToEvent(newEvent);
-        await locallyUpdateLinkedEventsToEvent(newEvent);
-    }
-    if (useAPI) return await EventAPI.updateEvent(newEvent); // update the event itself
+    locallyUpdateLinkedTodosToEvent(newEvent);
+    locallyUpdateLinkedEventsToEvent(newEvent);
+    return await EventAPI.updateEvent(newEvent); // update the event itself
 };
 
 const setEvents = async (events: CalendarEvent[], useAPI: boolean) => {
@@ -143,7 +140,6 @@ const locallyUpdateLinkedTodosToEvent = (event: CalendarEvent) => {
                 completed: event.completed
             };
             await useTodoStore.getState().setTodo(todoId, next);
-            // await TodoAPI.updateTodo(next);
         }
     });
 };
@@ -165,8 +161,7 @@ const locallyUpdateLinkedEventsToEvent = (event: CalendarEvent) => {
                     title: event.title,
                     desc: event.desc
                 };
-                await setEvent(eventId, next, false);
-                // await EventAPI.updateEvent(next);
+                useEventStore.getState().setEvent(next.id, next);
             }
         });
     });
@@ -223,12 +218,11 @@ export const useEvent = (shouldFetch = true) => {
     };
 
     const toggleEventCompletedWrapper = async (id: string) => {
-        toggleEventCompleted(id);
+        await toggleEventCompleted(id);
     };
 
-    const setEventWrapper = async (id: string, newEvent: CalendarEvent, propagation?: boolean) => {
-        if (propagation === undefined) propagation = true;
-        return await setEvent(id, newEvent, propagation, true, data, mutate);
+    const setEventWrapper = async (id: string, newEvent: CalendarEvent) => {
+        return await setEvent(id, newEvent, data, mutate);
     };
 
     const removeEventWrapper = async (id: string) => {
