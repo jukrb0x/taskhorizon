@@ -12,7 +12,6 @@ import { useEffect, useRef, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
 export const HomeLayout = () => {
-    const { isTauri } = useTauriExtension();
     const { Header, Content, Sider } = Layout;
     const navigate = useNavigate();
     const { user, loggedOut, isLoading } = useUser();
