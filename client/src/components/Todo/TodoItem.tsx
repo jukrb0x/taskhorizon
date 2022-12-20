@@ -43,9 +43,6 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
         [setIsEdit]
     );
 
-    const linkedEventNumber = useMemo(() => {
-        return todo.linkedEvents?.length || 0;
-    }, [todo, todo.linkedEvents, eventList]);
     const formattedLinkedEventsDateTimeList = useMemo(() => {
         return todo.linkedEvents
             ?.filter((id) => getEventById(id)) // filter out the missing events
@@ -58,6 +55,10 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
                 return format(DT, 'eee, dd MMMM') + ' at ' + format(DT, 'HH:mm');
             });
     }, [todo, todo.linkedEvents, getEventById, eventList]);
+
+    const linkedEventNumber = useMemo(() => {
+        return formattedLinkedEventsDateTimeList?.length || 0;
+    }, [todo, todo.linkedEvents, eventList, formattedLinkedEventsDateTimeList]);
 
     const handleSave = useCallback(async () => {
         if (title.trim() == '') return;
