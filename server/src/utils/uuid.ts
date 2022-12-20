@@ -11,4 +11,4 @@ const UUID64 = (length: UUIDLength = 12) => {
     return result;
 };
 
-export { UUID64 as UUID };
+export { UUID64 };

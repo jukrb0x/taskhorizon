@@ -1,16 +1,17 @@
-import { ActionIcon, Checkbox, Menu, Text, Textarea, Tooltip } from '@mantine/core';
+import { useEvent, useTodo } from '@/hooks';
+import { useEventStore } from '@/store';
 import { Todo } from '@/store/todo-store';
-import { MouseEvent, MutableRefObject, useCallback, useMemo, useState } from 'react';
-import clsx from 'clsx';
-import { IconTrash, IconX } from '@tabler/icons';
 import { useDraggable } from '@dnd-kit/core';
+import { ActionIcon, Checkbox, Menu, Text, Textarea, Tooltip } from '@mantine/core';
 import { useEventListener, useMergedRef } from '@mantine/hooks';
-import { useTodo } from '@/hooks';
+import { IconTrash, IconX } from '@tabler/icons';
+import clsx from 'clsx';
 import { format } from 'date-fns';
+import { MouseEvent, MutableRefObject, useCallback, useMemo, useState } from 'react';
 
 export const TodoItem = ({ todo }: { todo: Todo }) => {
-    const { setTodo, toggleCompleted, removeTodo, setDragItem, clearDragItem, getEventById } =
-        useTodo();
+    const { setTodo, toggleCompleted, removeTodo, setDragItem, getEventById } = useTodo();
+    const { eventList } = useEvent();
     const [isActive, setIsActive] = useState<boolean>(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [title, setTitle] = useState<string>(todo.title || ''); // todo
@@ -27,8 +28,8 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
         }) as MutableRefObject<HTMLDivElement>
     );
 
-    const handleToggle = useCallback(() => {
-        toggleCompleted(todo.id);
+    const handleToggle = useCallback(async () => {
+        await toggleCompleted(todo.id);
     }, [todo, toggleCompleted]);
 
     const handleRemove = useCallback(async () => {
@@ -42,17 +43,22 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
         [setIsEdit]
     );
 
-    const linkedEventNumber = todo.linkedEvents?.length || 0;
     const formattedLinkedEventsDateTimeList = useMemo(() => {
         return todo.linkedEvents
+            ?.filter((id) => getEventById(id)) // filter out the missing events
             ?.map((eventUUID) => {
-                return getEventById(eventUUID)?.start as Date;
+                const event = getEventById(eventUUID);
+                return event?.start as Date;
             })
             .sort((a, b) => a.getTime() - b.getTime())
             .map((DT) => {
                 return format(DT, 'eee, dd MMMM') + ' at ' + format(DT, 'HH:mm');
             });
-    }, [todo, getEventById]);
+    }, [todo, todo.linkedEvents, getEventById, eventList]);
+
+    const linkedEventNumber = useMemo(() => {
+        return formattedLinkedEventsDateTimeList?.length || 0;
+    }, [todo, todo.linkedEvents, eventList, formattedLinkedEventsDateTimeList]);
 
     const handleSave = useCallback(async () => {
         if (title.trim() == '') return;
@@ -68,7 +74,6 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
     const handleDragStart = useCallback(
         (e: MouseEvent) => {
             setDragItem(todo);
-            // console.log('drag start', todo);
         },
         [todo]
     );
@@ -163,31 +168,6 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
                         }}
                     />
                 )}
-                {linkedEventNumber > 0 && (
-                    <div>
-                        <Text
-                            size={'xs'}
-                            className={mouseHover ? 'tw-w-fit tw-px-1' : 'tw-hidden'}
-                            color={'gray'}
-                        >
-                            <Tooltip
-                                withArrow
-                                multiline
-                                position={'bottom'}
-                                styles={() => ({
-                                    tooltip: {
-                                        width: 'max-content'
-                                    }
-                                })}
-                                label={formattedLinkedEventsDateTimeList?.map((date, index) => (
-                                    <div key={index}>{date}</div>
-                                ))}
-                            >
-                                <div>{linkedEventNumber}</div>
-                            </Tooltip>
-                        </Text>
-                    </div>
-                )}
                 <Menu
                     transition={'scale-y'}
                     opened={menuOpen}
@@ -215,6 +195,28 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
                         </Menu.Item>
                     </Menu.Dropdown>
                 </Menu>
+
+                {linkedEventNumber > 0 && (
+                    <div>
+                        <Text size={'xs'} className={'tw-w-fit tw-px-1'} color={'gray'}>
+                            <Tooltip
+                                withArrow
+                                multiline
+                                position={'bottom'}
+                                styles={() => ({
+                                    tooltip: {
+                                        width: 'max-content'
+                                    }
+                                })}
+                                label={formattedLinkedEventsDateTimeList?.map((date, index) => (
+                                    <div key={index}>{date}</div>
+                                ))}
+                            >
+                                <div>{linkedEventNumber}</div>
+                            </Tooltip>
+                        </Text>
+                    </div>
+                )}
             </div>
         </div>
     );

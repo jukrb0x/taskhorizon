@@ -9,7 +9,7 @@ import { BadRequest } from '@tsed/exceptions';
 /**
  * THIS CONTROLLER IS FOR TESTING PURPOSES ONLY
  */
-@Controller('/hello-world')
+// @Controller('/hello-world')
 export class HelloWorldController {
     @Inject()
     private todoRepository: TodosRepository;

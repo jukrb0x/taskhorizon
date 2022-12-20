@@ -17,7 +17,7 @@ generator tsed {
 
 model User {
     id           Int            @id @default(autoincrement())
-    updatedAt    DateTime       @default(now())
+    updatedAt    DateTime       @default(now()) @updatedAt
     createdAt    DateTime       @default(now())
     // ------
     /// @TsED.Email()
@@ -32,7 +32,7 @@ model User {
 
 model Todo {
     id           Int          @id @default(autoincrement())
-    updatedAt    DateTime     @default(now())
+    updatedAt    DateTime     @default(now()) @updatedAt
     createdAt    DateTime     @default(now())
     // ------
     uuid         String       @unique
@@ -45,11 +45,13 @@ model Todo {
     // ------
     User         User         @relation(fields: [userId], references: [id])
     userId       Int
+    // Event        Event?       @relation(fields: [eventId], references: [id])
+    // eventId      Int?
 }
 
 model TodoCategory {
     id        Int      @id @default(autoincrement())
-    updatedAt DateTime @default(now())
+    updatedAt DateTime @default(now()) @updatedAt
     createdAt DateTime @default(now())
     // ------
     uuid      String   @unique
@@ -61,7 +63,7 @@ model TodoCategory {
 
 model Event {
     id          Int      @id @default(autoincrement())
-    updatedAt   DateTime @default(now())
+    updatedAt   DateTime @default(now()) @updatedAt
     createdAt   DateTime @default(now())
     // ------
     uuid        String   @unique
@@ -75,4 +77,6 @@ model Event {
     // ------
     User        User     @relation(fields: [userId], references: [id])
     userId      Int
+    //    Todo        Todo?    @relation(fields: [todoId], references: [id])
+    //    todoId      Int?
 }

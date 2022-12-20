@@ -1,83 +1,87 @@
+import { http, TodoAPI } from '@/apis';
+import { EventAPI } from '@/apis/event';
+import { TodoClient, useTodo } from '@/hooks/use-todo';
 import { Todo, useEventStore, useTodoStore } from '@/store';
 import { CalendarEvent } from '@/store/event-store';
-import { EventAPI } from '@/apis/event';
-import { http, TodoAPI } from '@/apis';
 import useSWR, { KeyedMutator } from 'swr';
-import { setTodo, useTodo } from '@/hooks/use-todo';
 
 const fetcher = (url: string) => {
     // http.interceptors.response.clear(); // clear all notification
     return http.get(url).then((res) => res.data);
 };
 
-export const addEvent: (
+const addEvent = async (
     event: CalendarEvent,
     data: CalendarEvent[] | undefined,
     mutate: KeyedMutator<CalendarEvent[]>
-) => Promise<CalendarEvent | undefined> = async (event: CalendarEvent) => {
-    const created = await EventAPI.createEvent(event);
-    if (created) {
-        useEventStore.getState().addEvent(event);
-        return event;
-    }
+) => {
+    data && (await mutate([...data, event]));
+    useEventStore.getState().addEvent(event);
+    // useTodoStore.getState().addLinkedEvent(event.linkedTodos[0], event.id);
+    event.linkedTodos?.forEach((todoId) => {
+        useTodoStore.getState().addLinkedEvent(todoId, event.id);
+    });
+    await EventAPI.createEvent(event);
 };
 
 /**
+ * @description [Client Action] SetEvent
+ * @description update the event, and it's linked todos, the linked events of linked todos will also be updated ONLY for the title and description.
  * @param id
  * @param newEvent
  * @param drilldown
- * @description update the event, and it's linked todos, the linked events of linked todos will also be updated ONLY for the title and description.
  */
-export const setEvent = async (
+const setEvent = async (
+    // todo: server atomic
     id: string,
     newEvent: CalendarEvent,
-    propagation = false,
     data?: CalendarEvent[] | undefined,
     mutate?: KeyedMutator<CalendarEvent[]>
 ) => {
-    // await mutate([...eventList.filter((event) => event.id !== id), newEvent]);
     useEventStore.getState().setEvent(id, newEvent);
-    if (propagation) {
-        await updateLinkedTodosToEvent(newEvent);
-        await updateLinkedEventsToEvent(newEvent);
-    }
-    return await EventAPI.updateEvent(newEvent); // update the event itself
-};
-export const removeEvents = async (ids: string[]) => {
-    const { removeEvents } = useEventStore.getState();
-    removeEvents(ids);
-    await EventAPI.deleteEvents(ids);
+    locallyUpdateLinkedTodosToEvent(newEvent);
+    locallyUpdateLinkedEventsToEvent(newEvent);
+    const updated = await EventAPI.updateEvent(newEvent); // update the event itself
+    mutate && (await mutate(data?.map((event) => (event.id === id ? updated : event))));
+    return updated;
 };
 
-export const removeEvent = async (
+const setEvents = async (events: CalendarEvent[], useAPI: boolean) => {
+    const { getEventById, setEvent } = useEventStore.getState();
+    events.forEach((event) => {
+        const exist = getEventById(event.id);
+        if (exist) {
+            setEvent(event.id, event);
+            if (useAPI) EventAPI.updateEvent(event);
+        } else {
+            throw new Error('Event not found');
+        }
+    });
+};
+
+const removeEvents = async (ids: string[], useAPI: boolean) => {
+    const { removeEvents } = useEventStore.getState();
+    removeEvents(ids);
+    if (useAPI) await EventAPI.deleteEvents(ids);
+};
+
+const removeEvent = async (
     id: string,
     data?: CalendarEvent[] | undefined,
     mutate?: KeyedMutator<CalendarEvent[]>
 ) => {
-    // TODO: use batch remove
     const { getTodoById, removeLinkedEvent, removeTodo } = useTodoStore.getState();
     const { eventList, removeEvent } = useEventStore.getState();
 
     mutate && (await mutate(eventList.filter((event) => event.id !== id)));
     const removedEvent = removeEvent(id);
-    await EventAPI.deleteEventById(id);
-
     // remove the event linkage from its linked todos,
     // usually it's only ONE linked todo on ONE event
     removedEvent.linkedTodos?.forEach((todoId) => {
-        const todo = getTodoById(todoId);
-        if (todo?.linkedEvents?.length == 0) {
-            // remove the linked todo if it has no linked events
-            removeTodo(todoId);
-            TodoAPI.deleteTodoById(todoId);
-        } else {
-            // remove the linkage in the linked todo
-            const updated = removeLinkedEvent(todoId, removedEvent.id);
-            TodoAPI.updateTodo(updated);
-        }
+        removeLinkedEvent(todoId, removedEvent.id);
     });
-
-    return removedEvent;
+    return EventAPI.deleteEventById(id);
+    // return removedEvent;
 };
 
 /**
@@ -86,14 +90,15 @@ export const removeEvent = async (
  * @description Event (n - 1) Todo
  * @description Linked Todos (1) will be checked when all linked events (n) is completed
  */
-const toggleEventCompleted = (id: string) => {
+const toggleEventCompleted = async (id: string) => {
     const { getEventById, toggleCompleted } = useEventStore.getState();
-    const { getTodoById } = useTodoStore.getState();
+    const { getTodoById, setTodo } = useTodoStore.getState();
     const event = getEventById(id);
     if (event) {
         const toggledEvent = toggleCompleted(id);
+        await EventAPI.updateEvent(toggledEvent);
         // process linked todos, usually it's only one linked todo for one event
-        toggledEvent.linkedTodos?.forEach(async (todoId) => {
+        toggledEvent.linkedTodos?.forEach((todoId) => {
             const todo = getTodoById(todoId) as Todo;
             const uncompletedEvents = todo?.linkedEvents?.filter((eventId) => {
                 const event = getEventById(eventId);
@@ -105,24 +110,24 @@ const toggleEventCompleted = (id: string) => {
                     ...todo,
                     completed: true
                 };
-                await setTodo(todoId, next, false);
+                setTodo(todoId, next);
             } else {
                 const next = {
                     ...todo,
                     completed: false
                 };
-                await setTodo(todoId, next, false);
+                setTodo(todoId, next);
             }
         });
     }
 };
 
 /**
- * @description update the linked todos when the event is updated
+ * @description LOCALLY update the linked events in linked todos to a event
  * @description usually Event has only one linked Todo
  * @param event
  */
-const updateLinkedTodosToEvent = (event: CalendarEvent) => {
+const locallyUpdateLinkedTodosToEvent = (event: CalendarEvent) => {
     event.linkedTodos?.forEach(async (todoId) => {
         const todo = useTodoStore.getState().getTodoById(todoId);
         if (todo) {
@@ -132,19 +137,18 @@ const updateLinkedTodosToEvent = (event: CalendarEvent) => {
                 completed: event.completed
             };
             await useTodoStore.getState().setTodo(todoId, next);
-            await TodoAPI.updateTodo(next);
         }
     });
 };
 
 /**
- * @description update the linked events of linked todos
- * update ONLY TITLE, DESC
- * UPDATE LOGIC: the event --> linked todos --> linked events --> update events
+ * @description LOCALLY update the linked events which shared the same todos to a event
+ * @description update ONLY TITLE, DESC to the linked events
+ * @description UPDATE LOGIC: the event --> linked todos --> linked events --> update events
  */
-const updateLinkedEventsToEvent = (event: CalendarEvent) => {
+const locallyUpdateLinkedEventsToEvent = (event: CalendarEvent) => {
     const { getTodoById } = useTodoStore.getState();
-    const { getEventById } = useEventStore.getState();
+    const { getEventById, setEvent } = useEventStore.getState();
     event.linkedTodos?.forEach((todoId) => {
         getTodoById(todoId)?.linkedEvents?.forEach(async (eventId) => {
             const exist = getEventById(eventId);
@@ -154,8 +158,7 @@ const updateLinkedEventsToEvent = (event: CalendarEvent) => {
                     title: event.title,
                     desc: event.desc
                 };
-                await setEvent(eventId, next, false);
-                await EventAPI.updateEvent(next);
+                setEvent(next.id, next);
             }
         });
     });
@@ -184,7 +187,6 @@ export const useEvent = (shouldFetch = true) => {
     // DATA SWR
     const compareWithStore = (events: CalendarEvent[]) => {
         if (events) {
-            console.log('compareWithStore EVENTS', events);
             events.forEach((event) => {
                 // parse date, not pure
                 event.start = new Date(event.start);
@@ -213,12 +215,11 @@ export const useEvent = (shouldFetch = true) => {
     };
 
     const toggleEventCompletedWrapper = async (id: string) => {
-        toggleEventCompleted(id);
+        await toggleEventCompleted(id);
     };
 
-    const setEventWrapper = async (id: string, newEvent: CalendarEvent, propagation?: boolean) => {
-        if (propagation === undefined) propagation = true;
-        return await setEvent(id, newEvent, propagation, data, mutate);
+    const setEventWrapper = async (id: string, newEvent: CalendarEvent) => {
+        return await setEvent(id, newEvent, data, mutate);
     };
 
     const removeEventWrapper = async (id: string) => {
@@ -233,4 +234,15 @@ export const useEvent = (shouldFetch = true) => {
         removeEvent: removeEventWrapper,
         getEventById
     };
+};
+
+export const EventClient = {
+    addEvent,
+    setEvent,
+    setEvents,
+    removeEvent,
+    removeEvents,
+    toggleEventCompleted,
+    updateLinkedEventsToEvent: locallyUpdateLinkedEventsToEvent,
+    updateLinkedTodosToEvent: locallyUpdateLinkedTodosToEvent
 };

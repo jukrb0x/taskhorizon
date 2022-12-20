@@ -1,10 +1,8 @@
+import { http, TodoAPI } from '@/apis';
+import { EventClient } from '@/hooks/use-event';
 import { CalendarEvent, useEventStore, useTodoStore } from '@/store';
 import { Todo } from '@/store/todo-store';
-import { http, TodoAPI } from '@/apis';
 import useSWR, { KeyedMutator } from 'swr';
-import { removeEvent, removeEvents, setEvent, useEvent } from '@/hooks/use-event';
-import { should } from 'vitest';
-import { EventAPI } from '@/apis/event';
 
 const fetcher = (url: string) => {
     // http.interceptors.response.clear(); // clear all notification
@@ -15,18 +13,22 @@ const fetcher = (url: string) => {
 // CLIENT-SIDE FUNCTIONS
 // ---------
 
-const updateLinkedEventsToTodo = (todo: Todo) => {
-    todo.linkedEvents?.forEach(async (eventId) => {
-        const event = useEventStore.getState().getEventById(eventId);
-        if (event) {
-            // TODO useles
-            await setEvent(eventId, {
-                ...event,
-                title: todo.title,
-                completed: todo.completed
-            });
-        }
-    });
+/**
+ * @description update linked events title and completed status if there is any linked event
+ * @description only make local store change but the server is on charge of the actual updates
+ * @param todo
+ */
+const locallyUpdateLinkedEventsToTodo = (todo: Todo) => {
+    const events: CalendarEvent[] = todo.linkedEvents.map(
+        (eventId) => useEventStore.getState().getEventById(eventId) as CalendarEvent
+    );
+    const newEvents = events.map((event) => ({
+        ...event,
+        title: todo.title,
+        completed: todo.completed
+    }));
+
+    events && EventClient.setEvents(newEvents, false);
 };
 
 /**
@@ -37,61 +39,45 @@ const updateLinkedEventsToTodo = (todo: Todo) => {
  * 4. Promise return failed, update stack status to failed
  * 5. if failed, remove todo from local store
  */
-export const addTodo = async (
-    todo: Todo,
-    data: Todo[] | undefined,
-    mutate: KeyedMutator<Todo[]>
-) => {
-    // FIXME: when exactly should i mutate...?
+const addTodo = async (todo: Todo, data: Todo[] | undefined, mutate: KeyedMutator<Todo[]>) => {
     data && (await mutate([...data, todo]));
     useTodoStore.getState().addTodo(todo);
     await TodoAPI.createTodo(todo);
 };
 
-export const setTodo = async (
+/**
+ * @description [Client Action] SetTodo
+ * @description local store update --> local linked mutation --> server atomic action
+ * @param i
+ * @param todo
+ * @param data
+ * @param mutate
+ */
+const setTodo = async (
     id: string,
     todo: Todo,
-    drillDown = false,
     data?: Todo[] | undefined,
     mutate?: KeyedMutator<Todo[]>
 ) => {
-    // FIXME: if mutate, we have bit of lag to see the change..???
-    // data && (await mutate(data.map((t) => (t.id === id ? todo : t))));
     useTodoStore.getState().setTodo(id, todo);
-    if (drillDown) {
-        updateLinkedEventsToTodo(todo);
-    }
-    return await TodoAPI.updateTodo(todo);
+    locallyUpdateLinkedEventsToTodo(todo);
+    const updated = await TodoAPI.updateTodo(todo);
+    mutate && (await mutate(data?.map((t) => (t.id === id ? updated : t))));
+    return updated;
 };
 
-const toggleTodoCompleted = async (
-    id: string,
-    drillDown = false,
-    data: Todo[] | undefined,
-    mutate: KeyedMutator<Todo[]>
-) => {
-    // FIXME: mutating cause lag as well as mutating on setTodo
-    //        guess it's because of the calculation & re-rendering
-    data &&
-        (await mutate([
-            ...data.map((todo) => (todo.id === id ? { ...todo, completed: !todo.completed } : todo))
-        ]));
+const toggleTodoCompleted = async (id: string) => {
     const toggled = useTodoStore.getState().toggleCompleted(id);
     await setTodo(toggled.id, toggled);
-    if (drillDown) {
-        updateLinkedEventsToTodo(toggled);
-    }
 };
 
 const removeTodo = async (id: string, data?: Todo[] | undefined, mutate?: KeyedMutator<Todo[]>) => {
     const { removeTodo } = useTodoStore.getState();
     data && mutate && (await mutate(data.filter((todo) => todo.id !== id)));
-
-    // FIXME:
-    //   we separate the removal of linked todos and events
-    //   if there was network error, we may encounter a inconsistent state in the server
-    await removeEvents(removeTodo(id).linkedEvents);
-    return await TodoAPI.deleteTodoById(id);
+    // remove the todo will also remove the linked events in the server
+    await TodoAPI.deleteTodoById(id);
+    // remove the linked events in local store for visual consistency
+    await EventClient.removeEvents(removeTodo(id).linkedEvents, false);
 };
 
 export const useTodo = (shouldFetch = true) => {
@@ -115,12 +101,10 @@ export const useTodo = (shouldFetch = true) => {
         dragItem,
         setDragItem,
         clearDragItem,
-        getTodoById,
-        addLinkedEvent
+        getTodoById
     } = useTodoStore();
 
     const compareWithStore = (todos: Todo[]) => {
-        console.log('compareWithStore', todos);
         if (todos) {
             todos.forEach((todo) => {
                 const storeTodo = getTodoById(todo.id);
@@ -145,46 +129,15 @@ export const useTodo = (shouldFetch = true) => {
     };
 
     const setTodoWrapper = async (id: string, newTodo: Todo) => {
-        await setTodo(id, newTodo, true, data, mutate);
+        await setTodo(id, newTodo, data, mutate);
     };
 
     const toggleTodoCompletedWrapper = async (id: string) => {
-        await toggleTodoCompleted(id, true, data, mutate);
+        await toggleTodoCompleted(id);
     };
-
-    // const removeLinkedEvent = async (todoId: string, eventId: string) => {
-    //     removeLinkedEventInternal(todoId, eventId);
-    //     // TODO
-    //     return await EventAPI.deleteEventById();
-    // };
-    //
-    // TODO try to decouple..
-    // const removeEvent = async (id: string) => {
-    //     const removedEvent = removeEventInternal(id);
-    //
-    //     removedEvent.linkedTodos?.forEach((todoId) => {
-    //         // remove the event from linked todo,
-    //         // usually it's only one linked todo for one event
-    //         const updated = removeLinkedEvent(todoId, removedEvent.id);
-    //         TodoAPI.updateTodo(updated);
-    //     });
-    //
-    //     // remove all linked todos only if all linked events are removed
-    //     removedEvent.linkedTodos?.forEach((todoId) => {
-    //         const todo = getTodoById(todoId);
-    //         if (todo?.linkedEvents?.length == 0) {
-    //             removeTodoInternal(todoId);
-    //             TodoAPI.deleteTodoById(todoId);
-    //         }
-    //     });
-    // };
 
     const removeTodoWrapper = async (id: string) => {
         await removeTodo(id, data, mutate);
-    };
-
-    const addLinkedEventWrapper = async (todoId: string, eventId: string) => {
-        await TodoAPI.updateTodo(addLinkedEvent(todoId, eventId));
     };
 
     return {
@@ -192,11 +145,17 @@ export const useTodo = (shouldFetch = true) => {
         dragItem,
         setDragItem,
         clearDragItem,
-        addLinkedEvent: addLinkedEventWrapper,
         setTodo: setTodoWrapper,
         addTodo: addTodoWrapper,
         toggleCompleted: toggleTodoCompletedWrapper,
         removeTodo: removeTodoWrapper,
         getEventById
     };
+};
+
+export const TodoClient = {
+    addTodo,
+    setTodo,
+    removeTodo,
+    updateLinkedEventsToTodo: locallyUpdateLinkedEventsToTodo
 };

@@ -1,10 +1,10 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
-import { math } from '@/utils/math';
 import useAppConfigStore from '@/store/config-store';
+import { math } from '@/utils/math';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 export const useResizer = () => {
     const ref = useRef<HTMLDivElement | null>(null);
-    const { setSidebarWidth } = useAppConfigStore(); // todo: (low priority) return the width instead of setting it to store
+    const { setSideAppWidth } = useAppConfigStore(); // todo: (low priority) return the width instead of setting it to store
     const [isResizing, setIsResizing] = useState(false);
 
     const startResizing = useCallback(() => {
@@ -16,12 +16,14 @@ export const useResizer = () => {
     }, [setIsResizing]);
 
     const onMouseMove = useCallback(
+        // FIXME: performance issue
         (e: MouseEvent) => {
             if (isResizing) {
-                setSidebarWidth(math(e.clientX, 300, 600));
+                const appSiderWidth = 70; // in px
+                setSideAppWidth(math(e.clientX - appSiderWidth, 300, 600));
             }
         },
-        [isResizing, setSidebarWidth]
+        [isResizing, setSideAppWidth]
     );
 
     useEffect(() => {

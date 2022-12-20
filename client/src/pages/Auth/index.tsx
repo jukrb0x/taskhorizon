@@ -1,17 +1,19 @@
-import { Navigate, NavLink, Outlet, useNavigate } from 'react-router-dom';
 import { Button } from '@/components';
 import { SocialIcons, WelcomeTitle } from '@/components';
-import autoAnimate from '@formkit/auto-animate';
-import { useEffect, useRef, useState } from 'react';
-import { Divider, Transition } from '@mantine/core';
 import { OpeningTransition } from '@/components';
-import clsx from 'clsx';
 import { useUser } from '@/hooks';
 import useUserStore from '@/store/user-store';
+import autoAnimate from '@formkit/auto-animate';
+import { Divider, Transition } from '@mantine/core';
+import clsx from 'clsx';
+import { useEffect, useRef, useState } from 'react';
+import { Navigate, NavLink, Outlet, useNavigate } from 'react-router-dom';
+import { mutate } from 'swr';
 
 export default function AuthLayout() {
     const navigate = useNavigate();
     const { token } = useUserStore();
+    // const { user, loggedOut, isLoading } = useUser();
 
     useEffect(() => {
         if (token) {
@@ -27,7 +29,12 @@ export default function AuthLayout() {
 
     return (
         <>
-            <div className={'tw-flex tw-items-center tw-justify-center tw-h-screen tw-select-none'}>
+            <div
+                data-tauri-drag-region
+                className={
+                    'tw-flex tw-items-center tw-justify-center tw-h-screen tw-select-none tw-cursor-default'
+                }
+            >
                 <div className={'tw-flex tw-flex-row'}>
                     <div className={'tw-flex tw-items-center tw-justify-center'}>
                         <div>

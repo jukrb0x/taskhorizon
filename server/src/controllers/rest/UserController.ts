@@ -1,5 +1,5 @@
 import { Controller, Inject, ProviderScope, Scope } from '@tsed/di';
-import { Get, Post } from '@tsed/schema';
+import { Email, Get, MaxLength, MinLength, Post } from '@tsed/schema';
 import { BodyParams } from '@tsed/platform-params';
 import { $log, Req } from '@tsed/common';
 import { UserResponseModel, UserService } from '@/services/UserService';
@@ -40,8 +40,8 @@ export class UserController {
     @Post('/signup')
     signup(
         @Req() req: Req,
-        @BodyParams('username') username: string,
-        @BodyParams('email') email: string,
+        @BodyParams('username') @MinLength(4) @MaxLength(15) username: string,
+        @BodyParams('email') @Email() email: string,
         @BodyParams('password') password: string
     ) {
         return this.userService.signup(username, email, password);

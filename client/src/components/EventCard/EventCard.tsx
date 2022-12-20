@@ -10,14 +10,14 @@ import {
     Menu,
     Transition
 } from '@mantine/core';
-import { Button } from '@/components';
+import { Button, DatetimePicker } from '@/components';
 import * as dateFns from 'date-fns';
-import { DatetimePicker } from './DatetimePicker';
 import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 import { useEventStore } from '@/store';
 import { IconChevronDown, IconDots, IconTrash } from '@tabler/icons';
 import { useEventListener } from '@mantine/hooks';
 import { useEvent } from '@/hooks';
+import clsx from 'clsx';
 
 type EventCardMode = 'edit' | 'create';
 
@@ -74,7 +74,9 @@ const EventCard = (props: EventCardProps) => {
     }, [defaultEvent, title, description, completed, start, end, allDay]);
     const isValidEvent = title.trim() != '' && startDate != null && endDate != null;
 
-    // ----- COMPONENT METHODS -----
+    // -----
+    // COMPONENT METHODS
+    // -----
     const handleStartChange = (date: Date, time: Date) => {
         if (!date) date = new Date();
         setStartTime(time);
@@ -134,7 +136,9 @@ const EventCard = (props: EventCardProps) => {
         props.onDismissed && props.onDismissed();
     };
 
+    // -------
     // keyboard bindings
+    // -------
     const ref = useEventListener('keydown', async (e) => {
         // new line
         if (e.shiftKey && e.key == 'Enter') {
@@ -156,10 +160,17 @@ const EventCard = (props: EventCardProps) => {
     });
     ref.current = document.body;
 
-    // ----- RENDER -----
+    // -----
+    // RENDER
+    // -----
     return (
         <>
-            <div className="tw-h-auto tw-w-72 tw-p-2 tw-rounded-2xl tw-bg-white tw-space-y-1.5 tw-drop-shadow-xl tw-shadow-gray-600 tw-z-50 tw-select-none">
+            <div
+                className={clsx(
+                    'tw-h-auto tw-w-72 tw-p-2 tw-rounded-2xl tw-bg-white tw-space-y-1.5 tw-drop-shadow-xl tw-shadow-gray-600 tw-select-none',
+                    'tw-z-50'
+                )}
+            >
                 <div className={'tw-flex tw-row-auto tw-px-0.5'}>
                     <input // this will prevent autofocus on the checkbox
                         style={{ display: 'none' }}
@@ -173,7 +184,7 @@ const EventCard = (props: EventCardProps) => {
                         autoFocus={false}
                     />
                     <Textarea // todo: use div instead of input, no wrap
-                        autoFocus={!title} // todo: only for new event
+                        autoFocus={!title}
                         variant={'unstyled'}
                         value={title}
                         autosize
@@ -273,7 +284,6 @@ const EventCard = (props: EventCardProps) => {
                                                 <Menu transition={'scale-y'}>
                                                     <Menu.Target>
                                                         <Button
-                                                            // disabled
                                                             color={'green'}
                                                             variant={'filled'}
                                                             className={

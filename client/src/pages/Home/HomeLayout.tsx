@@ -1,23 +1,15 @@
-import { Navigate, Outlet, useNavigate } from 'react-router-dom';
-import { Layout } from '@douyinfe/semi-ui';
-import { Button, Resizer } from '@/components';
+import { AppSider, Button, Resizer } from '@/components';
 import { TodoApp } from '@/components';
-import { cls } from '@/utils';
-import useAppConfigStore from '@/store/config-store';
-import { useTauriExtension } from '@/hooks/use-tauri-extension';
-import { DndContext } from '@dnd-kit/core';
-import { Spacer } from '@/components';
-import { Profile } from '@/components';
-import { Divider, LoadingOverlay, Menu } from '@mantine/core';
 import { useUser } from '@/hooks';
-import { useEffect, useState } from 'react';
-import { AuthAPI } from '@/apis';
-import { mutate } from 'swr';
+import { useTauriExtension } from '@/hooks/use-tauri-extension';
+import useAppConfigStore from '@/store/config-store';
 import useUserStore from '@/store/user-store';
-import { IconMessageCircle, IconPhoto, IconSearch, IconSettings } from '@tabler/icons';
-import { TodoAPI } from '@/apis/todo';
-
-const DragRegionOffsetWrapper = cls.div`tw-h-5`;
+import { DndContext } from '@dnd-kit/core';
+import { Layout } from '@douyinfe/semi-ui';
+import { Divider, LoadingOverlay, Menu, Transition } from '@mantine/core';
+import { useHotkeys } from '@mantine/hooks';
+import { useEffect, useRef, useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 export const HomeLayout = () => {
     const isTauri = useTauriExtension();
@@ -25,77 +17,102 @@ export const HomeLayout = () => {
     const navigate = useNavigate();
     const { user, loggedOut, isLoading } = useUser();
     const { token } = useUserStore();
-    const [settingsOpen, setSettingsOpen] = useState(false);
+    const { toggleSettings } = useAppConfigStore();
+    // const
 
     useEffect(() => {
         if (loggedOut) {
-            navigate('/auth/login');
+            navigate('/auth');
         }
     }, [user, loggedOut, isLoading]);
 
-    const { sidebarWidth } = useAppConfigStore();
+    // hotkeys to toggle app settings
+    // fixme: tauri keydown events trigger twice
+    useHotkeys([
+        // Ctrl + , Cmd + ,
+        [
+            'mod+,',
+            () => {
+                toggleSettings();
+                console.log('too');
+            }
+        ]
+    ]);
+
+    // const captureToggleSettings = (event: KeyboardEvent) => {
+    //     if (event.key === 'a') {
+    //         event.preventDefault();
+    //         toggleSettings();
+    //     }
+    // }
+    //
+    // useEffect(()=>{
+    //     document.addEventListener('keydown', captureToggleSettings );
+    //     return () => {
+    //         document.removeEventListener('keydown', captureToggleSettings );
+    //     }
+    // },[])
+
+    const { sideAppWidth, showSideApp } = useAppConfigStore();
 
     return (
         <>
             {!user && isLoading && <LoadingOverlay visible />}
             <DndContext>
-                <div className={'tw-select-none tw-h-screen'}>
+                <div className={'tw-select-none tw-h-screen tw-flex tw-flex-row'}>
+                    <AppSider />
                     <Layout hasSider className={'tw-h-screen'}>
-                        <Sider
-                            className={'tw-min-[300px] tw-max-[600px] '}
-                            style={{ width: `${sidebarWidth}px` }}
+                        <Transition
+                            mounted={showSideApp}
+                            transition="slide-right"
+                            duration={150}
+                            timingFunction="ease"
                         >
-                            <div className={'tw-flex tw-flex-col tw-h-full'}>
-                                {isTauri && <DragRegionOffsetWrapper />}
-                                <TodoApp
-                                    TodoListClassName={'tw-px-3.5 tw-flex-grow'}
-                                    TodoInputClassName={'tw-px-3.5 tw-pt-3.5'}
-                                />
-                                <div className={'tw-bottom-0'}>
-                                    <Divider />
-                                    <Profile
-                                        opened={settingsOpen}
-                                        onClose={() => setSettingsOpen(false)}
-                                    />
-                                    <div className={'tw-p-3.5'}>
-                                        <Button onClick={() => AuthAPI.logout()}>Logout</Button>
-                                        <Menu trigger={'hover'}>
-                                            <Menu.Target>
-                                                <Button onClick={() => setSettingsOpen(true)}>
-                                                    asd
-                                                </Button>
-                                            </Menu.Target>
-                                            <Menu.Dropdown>
-                                                <Menu.Label>Application</Menu.Label>
-                                                <Menu.Item icon={<IconSettings size={14} />}>
-                                                    Settings
-                                                </Menu.Item>
-                                                <Menu.Item icon={<IconMessageCircle size={14} />}>
-                                                    Messages
-                                                </Menu.Item>
-                                                <Menu.Item icon={<IconPhoto size={14} />}>
-                                                    Gallery
-                                                </Menu.Item>
-                                            </Menu.Dropdown>
-                                        </Menu>
-                                    </div>
+                            {(styles) => (
+                                <div className={'tw-flex'} style={styles}>
+                                    <Sider
+                                        className={'tw-min-[300px] tw-max-[600px]'}
+                                        style={{ width: `${sideAppWidth}px` }}
+                                    >
+                                        <div className={'tw-flex tw-flex-col tw-h-full tw-flex-1'}>
+                                            <TodoApp
+                                                TodoListClassName={'tw-px-3.5 tw-flex-grow'}
+                                                TodoInputClassName={'tw-px-3.5'}
+                                            />
+                                            <div className={'tw-bottom-0'}>
+                                                <Divider color={'gray.2'} />
+                                                <div
+                                                    className={
+                                                        'tw-px-4 tw-py-2 tw-text-gray-300 tw-cursor-default tw-text-sm'
+                                                    }
+                                                >
+                                                    TaskHorizon Preview Version{' '}
+                                                    {import.meta.env.VITE_APP_VERSION}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </Sider>
+                                    <Resizer />
                                 </div>
-                            </div>
-                        </Sider>
-                        <Resizer />
+                            )}
+                        </Transition>
                         <Layout
                             className={'tw-relative hide-scrollbar'}
-                            style={{ left: `calc(${sidebarWidth})` }}
+                            style={{ left: `calc(${sideAppWidth})` }}
                         >
-                            <Header
-                                className={
-                                    'tw-font-bold tw-text-center tw-z-30 tw-bg-amber-100 tw-opacity-50 tw-h-7 tw-font-mono'
-                                }
-                            >
-                                PREVIEW - HEADER PLACEHOLDER
-                            </Header>
+                            {true ? (
+                                <Header></Header>
+                            ) : (
+                                <Header
+                                    className={
+                                        'tw-font-bold tw-text-center tw-z-30 tw-bg-amber-100 tw-opacity-50 tw-h-7 tw-font-mono'
+                                    }
+                                >
+                                    PREVIEW - HEADER PLACEHOLDER
+                                </Header>
+                            )}
                             <Content>
-                                <div className={'tw-p-2 tw-h-full'}>
+                                <div className={'tw-h-full'}>
                                     <Outlet />
                                 </div>
                             </Content>

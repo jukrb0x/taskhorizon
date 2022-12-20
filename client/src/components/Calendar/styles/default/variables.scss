@@ -18,13 +18,13 @@ $date-selection-bg-color: rgb(0 0 0 / 10%) !default;
 
 // ...
 $event-bg: #c9e1ff !default;
-//$event-border: darken(#ffffff, 10%) !default;
-$event-border: #ffffff !default;
+// $event-border: darken(#ffffff, 10%) !default;
+$event-border: rgba(255, 255, 255, 0.78) !default;
 $event-outline: #3b99fc !default;
-//$event-color: #717171FF !default;
+// $event-color: #717171FF !default;
 $event-color: darken($event-bg, 60%) !default;
 
-$event-border-radius: 8px !default;
+$event-border-radius: 9px !default;
 $event-padding: 2px 5px !default;
 $event-zindex: 4 !default;
 

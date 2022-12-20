@@ -26,7 +26,8 @@ export const useUser = () => {
         onError: async () => {
             // TODO: currently, if server is down, client will be shut down too
             //       this is not expected behavior, we want a better recovery solution
-            // await globalMutate(() => true, undefined, { revalidate: false });
+            useUserStore.setState({ uid: -1, username: '', email: '', token: '' });
+            await mutate(undefined, { revalidate: true });
         }
     });
     const { uid, username, email } = useUserStore();

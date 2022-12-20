@@ -1,5 +1,5 @@
-import { CalendarEvent, EventIdGenerator } from '@/store';
 import { http } from './http';
+import { CalendarEvent, EventIdGenerator } from '@/store';
 import { renameKeys } from '@/utils/common';
 
 interface CalendarEventRequestModel {
@@ -14,37 +14,52 @@ interface CalendarEventRequestModel {
     linkedTodos: string[];
 }
 
-export class EventAPI {
-    static async getEvents(): Promise<CalendarEvent[]> {
-        const { data } = await http.get<CalendarEvent[]>('/event/all');
-        return data;
-    }
+const getEvents = async (): Promise<CalendarEvent[]> => {
+    const { data } = await http.get<CalendarEvent[]>('/event/all');
+    return data;
+};
 
-    static async createEvent(event: CalendarEvent): Promise<CalendarEvent> {
-        const req: CalendarEventRequestModel = renameKeys(event, {
-            id: 'uuid',
-            desc: 'description'
-        });
-        const { data } = await http.post<CalendarEvent>('/event/create', req);
-        return data;
-    }
+const createEvent = async (event: CalendarEvent): Promise<CalendarEvent> => {
+    const req: CalendarEventRequestModel = renameKeys(event, {
+        id: 'uuid',
+        desc: 'description'
+    });
+    const { data } = await http.post<CalendarEvent>('/event/create', req);
+    return data;
+};
 
-    static async updateEvent(event: CalendarEvent): Promise<CalendarEvent> {
-        const req: CalendarEventRequestModel = renameKeys(event, {
-            id: 'uuid',
-            desc: 'description'
-        });
-        const { data } = await http.post<CalendarEvent>('/event/update', req);
-        return data;
-    }
+const updateEvent = async (event: CalendarEvent): Promise<CalendarEvent> => {
+    const req: CalendarEventRequestModel = renameKeys(event, {
+        id: 'uuid',
+        desc: 'description'
+    });
+    const { data } = await http.post<CalendarEvent>('/event/update', req);
+    return data;
+};
 
-    static async deleteEventById(id: string): Promise<CalendarEvent> {
-        const { data } = await http.get<CalendarEvent>(`/event/delete/${id}`);
-        return data;
-    }
+// TODO: DO NOT USE ME
+const updateEvents = async (events: CalendarEvent[]): Promise<CalendarEvent[]> => {
+    const req: CalendarEventRequestModel[] = events.map((event) => {
+        return renameKeys(event, { id: 'uuid', desc: 'description' });
+    });
+    const { data } = await http.post('/event/update/batch', req);
+    return data;
+};
 
-    static async deleteEvents(ids: string[]): Promise<CalendarEvent[]> {
-        const { data } = await http.post('/event/delete', ids);
-        return data;
-    }
-}
+const deleteEventById = async (id: string): Promise<CalendarEvent> => {
+    const { data } = await http.delete<CalendarEvent>(`/event/delete/${id}`);
+    return data;
+};
+
+const deleteEvents = async (ids: string[]): Promise<CalendarEvent[]> => {
+    const { data } = await http.post('/event/delete', ids);
+    return data;
+};
+export const EventAPI = {
+    getEvents,
+    createEvent,
+    updateEvent,
+    updateEvents,
+    deleteEventById,
+    deleteEvents
+};

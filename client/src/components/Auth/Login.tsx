@@ -57,6 +57,7 @@ const Login = () => {
             <form onSubmit={form.onSubmit(handleLogin)}>
                 <div className={'tw-my-5 tw-space-y-2'}>
                     <TextInput
+                        autoFocus
                         placeholder="Enter your username..."
                         label="Username"
                         {...form.getInputProps('username')}

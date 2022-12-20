@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@tsed/di';
-import { EventsRepository } from '@/repositories';
+import { EventsRepository, TodosRepository } from '@/repositories';
 import { UserService } from '@/services/UserService';
 import { EventModel } from '@/models';
 import { EventRequestModel, EventResponseModel } from '@/interfaces/EventInterface';
@@ -11,23 +11,17 @@ export class EventService {
     private eventRepository: EventsRepository;
 
     @Inject()
+    private todoRepository: TodosRepository;
+
+    @Inject()
     private userService: UserService;
 
-    async getEventsByUsername(username: string): Promise<EventResponseModel[]> {
+    async getEventsByUsername(username: string): Promise<EventModel[]> {
         const user = await this.userService.findByUsername(username);
-        const events = await this.eventRepository.findMany({ where: { userId: user.id } });
-        return events.map((e) => {
-            return {
-                id: e.uuid,
-                desc: e.description || '',
-                title: e.title,
-                start: e.start,
-                end: e.end,
-                allDay: e.allDay,
-                completed: e.completed,
-                updatedAt: e.updatedAt,
-                linkedTodos: e.LinkedTodos?.map((todo) => todo.uuid)
-            };
+        return await this.eventRepository.findMany({
+            where: { userId: user.id },
+            include: { LinkedTodos: true },
+            orderBy: { createdAt: 'asc' }
         });
     }
 
@@ -43,21 +37,35 @@ export class EventService {
         // return await this.eventRepository.findMany({ where: { uuid: { : uuids } } });
     }
 
-    async createEvent(username: string, event: EventRequestModel) {
+    async create(username: string, event: EventRequestModel): Promise<EventModel> {
         const user = await this.userService.findByUsername(username);
         const { linkedTodos, ...data } = event;
-        return await this.eventRepository.create({
+        const created = await this.eventRepository.create({
             data: {
                 ...data,
                 LinkedTodos: {
                     connect: linkedTodos?.map((todoUUID) => ({ uuid: todoUUID }))
                 },
                 User: { connect: { id: user.id } }
+            },
+            include: {
+                LinkedTodos: true
             }
         });
+        // refresh the linked todos
+        linkedTodos?.forEach((todoUUID) => {
+            this.todoRepository.update({
+                where: { uuid: todoUUID },
+                data: {
+                    updatedAt: new Date()
+                }
+            });
+        });
+
+        return created;
     }
 
-    async updateEvent(event: EventRequestModel) {
+    async update(event: EventRequestModel) {
         const { linkedTodos, ...data } = event;
         return await this.eventRepository.update({
             where: { uuid: event.uuid },
@@ -67,17 +75,45 @@ export class EventService {
                     connect: linkedTodos?.map((todoUUID) => ({ uuid: todoUUID }))
                 },
                 updatedAt: new Date()
+            },
+            include: {
+                LinkedTodos: true
             }
         });
     }
 
+    updateEvents(events: EventRequestModel[]) {
+        // return Promise.resolve(undefined);
+    }
+
     /**
-     * Deletes an event by id
+     * Delete an event and the relation to todos
      * @TODO logically delete
      * @param id
      */
-    async deleteEvent(id: number) {
-        return await this.eventRepository.delete({ where: { id } });
+    async deleteEvent(id: number): Promise<EventModel> {
+        const event = await this.getEventById(id);
+        // disconnect from its linked todos
+        if (event) {
+            event.LinkedTodos?.forEach((todo) => {
+                // usually there is only one linked todo for an event
+                this.todoRepository.update({
+                    where: { id: todo.id },
+                    data: {
+                        LinkedEvents: {
+                            disconnect: { id: event.id }
+                        },
+                        updatedAt: new Date()
+                    },
+                    include: {
+                        LinkedEvents: true
+                    }
+                });
+            });
+            return await this.eventRepository.delete({ where: { id: event.id } });
+        } else {
+            throw new Error('Event not found');
+        }
     }
 
     async deleteEventsByUUIDs(uuids: string[]) {
@@ -87,6 +123,64 @@ export class EventService {
                     in: uuids
                 }
             }
+        });
+    }
+
+    async getLinkedEvents(event: EventModel) {
+        const { LinkedTodos } = event;
+        const linkedEvents = await this.eventRepository.findMany({
+            where: {
+                LinkedTodos: {
+                    some: {
+                        id: {
+                            in: LinkedTodos?.map((todo) => todo.id)
+                        }
+                    }
+                }
+            },
+            include: {
+                LinkedTodos: true
+            }
+        });
+        return linkedEvents;
+    }
+
+    // update the title and completed status of linked todos with the event
+    async updateLinkedTodos(updatedEvent: EventModel) {
+        const { LinkedTodos, ...data } = updatedEvent;
+        // check if other linked events is completed
+        const linkedEvents = await this.getLinkedEvents(updatedEvent);
+        let isCompleted = updatedEvent.completed;
+        if (linkedEvents.length > 0) {
+            isCompleted = linkedEvents.every((event) => event.completed);
+        }
+
+        LinkedTodos?.forEach((todo) => {
+            this.todoRepository.update({
+                where: { id: todo.id },
+                data: {
+                    title: data.title,
+                    completed: isCompleted,
+                    updatedAt: new Date()
+                }
+            });
+        });
+    }
+
+    // update the title and description to other linked events
+    async updateLinkedEvents(updatedEvent: EventModel) {
+        const { LinkedTodos, ...data } = updatedEvent;
+        const linkedEvents = await this.getLinkedEvents(updatedEvent);
+        $log.error('linkedEvents', linkedEvents);
+        linkedEvents?.forEach((event) => {
+            this.eventRepository.update({
+                where: { id: event.id },
+                data: {
+                    title: data.title,
+                    description: data.description,
+                    updatedAt: new Date()
+                }
+            });
         });
     }
 }
