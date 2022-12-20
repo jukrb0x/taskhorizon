@@ -3,6 +3,7 @@ import { useTauriExtension } from '@/hooks';
 import useAppConfigStore from '@/store/config-store';
 import { ActionIcon, Divider, Group, Menu, Avatar, Text } from '@mantine/core';
 import {
+    IconBrandGithub,
     IconCalendar,
     IconCheckbox,
     IconChevronRight,
@@ -12,24 +13,24 @@ import {
 import clsx from 'clsx';
 import { useState } from 'react';
 
-const UserActionIcon = ({ onClick }: { onClick: () => void }) => {
+const UserActionIcon = (props: {
+    username: string;
+    email: string;
+    avatarSrc?: string;
+    onClick: () => void;
+}) => {
     return (
         <>
             <Menu trigger={'hover'} openDelay={200} position={'right-end'}>
                 <Menu.Target>
-                    <ActionIcon size={'xl'} onClick={onClick}>
+                    <ActionIcon size={'xl'} onClick={props.onClick}>
                         <IconUserCircle />
                     </ActionIcon>
                 </Menu.Target>
                 <Menu.Dropdown>
-                    <Menu.Item onClick={onClick}>
+                    <Menu.Item onClick={props.onClick}>
                         <Group>
-                            <Avatar
-                                src={
-                                    'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80'
-                                }
-                                radius="xl"
-                            />
+                            <Avatar src={props.avatarSrc ? props.avatarSrc : ''} radius="xl" />
 
                             <div style={{ flex: 1 }}>
                                 <Text size="sm" weight={500}>
@@ -45,7 +46,15 @@ const UserActionIcon = ({ onClick }: { onClick: () => void }) => {
                         </Group>
                     </Menu.Item>
                     <Menu.Divider />
-                    <Menu.Item icon={<IconSettings size={14} />} onClick={onClick}>
+                    <Menu.Item
+                        icon={<IconBrandGithub size={14} />}
+                        onClick={() => {
+                            // useTauriExtension().openExternal('
+                        }}
+                    >
+                        GitHub
+                    </Menu.Item>
+                    <Menu.Item icon={<IconSettings size={14} />} onClick={props.onClick}>
                         Settings
                     </Menu.Item>
                 </Menu.Dropdown>
