@@ -1,19 +1,15 @@
-import { Navigate, Outlet, useNavigate } from 'react-router-dom';
-import { Layout } from '@douyinfe/semi-ui';
 import { AppSider, Button, Resizer } from '@/components';
 import { TodoApp } from '@/components';
-import { cls } from '@/utils';
-import useAppConfigStore from '@/store/config-store';
-import { useTauriExtension } from '@/hooks/use-tauri-extension';
-import { DndContext } from '@dnd-kit/core';
-import { Settings } from '@/components';
-import { Divider, LoadingOverlay, Menu, Transition } from '@mantine/core';
 import { useUser } from '@/hooks';
-import { useEffect, useRef, useState } from 'react';
-import { AuthAPI, cleanAllCache } from '@/apis';
+import { useTauriExtension } from '@/hooks/use-tauri-extension';
+import useAppConfigStore from '@/store/config-store';
 import useUserStore from '@/store/user-store';
-import { IconMessageCircle, IconPhoto, IconSearch, IconSettings } from '@tabler/icons';
-import autoAnimate from '@formkit/auto-animate';
+import { DndContext } from '@dnd-kit/core';
+import { Layout } from '@douyinfe/semi-ui';
+import { Divider, LoadingOverlay, Menu, Transition } from '@mantine/core';
+import { useHotkeys } from '@mantine/hooks';
+import { useEffect, useRef, useState } from 'react';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 export const HomeLayout = () => {
     const isTauri = useTauriExtension();
@@ -21,6 +17,8 @@ export const HomeLayout = () => {
     const navigate = useNavigate();
     const { user, loggedOut, isLoading } = useUser();
     const { token } = useUserStore();
+    const { toggleSettings } = useAppConfigStore();
+    // const
 
     useEffect(() => {
         if (loggedOut) {
@@ -28,7 +26,34 @@ export const HomeLayout = () => {
         }
     }, [user, loggedOut, isLoading]);
 
-    const { sidebarWidth, showSidebar } = useAppConfigStore();
+    // hotkeys to toggle app settings
+    // fixme: tauri keydown events trigger twice
+    useHotkeys([
+        // Ctrl + , Cmd + ,
+        [
+            'mod+,',
+            () => {
+                toggleSettings();
+                console.log('too');
+            }
+        ]
+    ]);
+
+    // const captureToggleSettings = (event: KeyboardEvent) => {
+    //     if (event.key === 'a') {
+    //         event.preventDefault();
+    //         toggleSettings();
+    //     }
+    // }
+    //
+    // useEffect(()=>{
+    //     document.addEventListener('keydown', captureToggleSettings );
+    //     return () => {
+    //         document.removeEventListener('keydown', captureToggleSettings );
+    //     }
+    // },[])
+
+    const { sideAppWidth, showSideApp } = useAppConfigStore();
 
     return (
         <>
@@ -38,7 +63,7 @@ export const HomeLayout = () => {
                     <AppSider />
                     <Layout hasSider className={'tw-h-screen'}>
                         <Transition
-                            mounted={showSidebar}
+                            mounted={showSideApp}
                             transition="slide-right"
                             duration={150}
                             timingFunction="ease"
@@ -47,7 +72,7 @@ export const HomeLayout = () => {
                                 <div className={'tw-flex'} style={styles}>
                                     <Sider
                                         className={'tw-min-[300px] tw-max-[600px]'}
-                                        style={{ width: `${sidebarWidth}px` }}
+                                        style={{ width: `${sideAppWidth}px` }}
                                     >
                                         <div className={'tw-flex tw-flex-col tw-h-full tw-flex-1'}>
                                             <TodoApp
@@ -73,7 +98,7 @@ export const HomeLayout = () => {
                         </Transition>
                         <Layout
                             className={'tw-relative hide-scrollbar'}
-                            style={{ left: `calc(${sidebarWidth})` }}
+                            style={{ left: `calc(${sideAppWidth})` }}
                         >
                             {true ? (
                                 <Header></Header>

@@ -1,3 +1,6 @@
+import { Settings } from '@/components';
+import { useTauriExtension } from '@/hooks';
+import useAppConfigStore from '@/store/config-store';
 import { ActionIcon, Divider, Group, Menu, Avatar, Text } from '@mantine/core';
 import {
     IconCalendar,
@@ -7,11 +10,7 @@ import {
     IconUserCircle
 } from '@tabler/icons';
 import clsx from 'clsx';
-import { useTauriExtension } from '@/hooks';
-import useAppConfigStore from '@/store/config-store';
-import { Settings } from '@/components';
 import { useState } from 'react';
-import exp from 'constants';
 
 const UserActionIcon = ({ onClick }: { onClick: () => void }) => {
     return (
@@ -57,11 +56,12 @@ const UserActionIcon = ({ onClick }: { onClick: () => void }) => {
 
 export const AppSider = () => {
     const isTauri = useTauriExtension();
-    const { showSidebar, toggleSidebar } = useAppConfigStore();
+    const { showSideApp, toggleSideApp } = useAppConfigStore();
     const [settingsOpen, setSettingsOpen] = useState(false);
+    const { showSettings, toggleSettings } = useAppConfigStore();
     return (
         <>
-            <Settings opened={settingsOpen} onClose={() => setSettingsOpen(false)} />
+            <Settings opened={showSettings} onClose={() => toggleSettings()} />
             <div
                 data-tauri-drag-region
                 className={clsx(
@@ -76,15 +76,15 @@ export const AppSider = () => {
                     </ActionIcon>
                     <ActionIcon
                         size={'xl'}
-                        variant={showSidebar ? 'light' : 'subtle'}
-                        onClick={toggleSidebar}
+                        variant={showSideApp ? 'light' : 'subtle'}
+                        onClick={() => toggleSideApp()}
                     >
                         <IconCheckbox />
                     </ActionIcon>
                 </div>
 
                 <div className={'tw-space-y-1'}>
-                    <UserActionIcon onClick={() => setSettingsOpen(true)} />
+                    <UserActionIcon onClick={() => toggleSettings()} />
                 </div>
             </div>
             <Divider orientation={'vertical'} color={'gray.2'} />
