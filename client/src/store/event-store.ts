@@ -13,6 +13,7 @@ interface CalendarEvent {
     completed: boolean;
     linkedTodos: string[];
     updatedAt?: Date;
+    createdAt?: Date;
 }
 
 interface EventStoreState {

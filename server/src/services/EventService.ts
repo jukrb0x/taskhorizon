@@ -18,7 +18,11 @@ export class EventService {
 
     async getEventsByUsername(username: string): Promise<EventModel[]> {
         const user = await this.userService.findByUsername(username);
-        return await this.eventRepository.findMany({ where: { userId: user.id } });
+        return await this.eventRepository.findMany({
+            where: { userId: user.id },
+            include: { LinkedTodos: true },
+            orderBy: { createdAt: 'asc' }
+        });
     }
 
     async getEventById(id: number) {
@@ -43,6 +47,9 @@ export class EventService {
                     connect: linkedTodos?.map((todoUUID) => ({ uuid: todoUUID }))
                 },
                 User: { connect: { id: user.id } }
+            },
+            include: {
+                LinkedTodos: true
             }
         });
     }
@@ -121,33 +128,37 @@ export class EventService {
         const { LinkedTodos, ...data } = updatedEvent;
         // check if other linked events is completed
         const linkedEvents = await this.getLinkedEvents(updatedEvent);
-        const isCompleted = linkedEvents.every((event) => event.completed);
+        let isCompleted = updatedEvent.completed;
+        if (linkedEvents.length > 0) {
+            isCompleted = linkedEvents.every((event) => event.completed);
+        }
 
         LinkedTodos?.forEach((todo) => {
             this.todoRepository.update({
                 where: { id: todo.id },
                 data: {
                     title: data.title,
-                    completed: isCompleted
+                    completed: isCompleted,
+                    updatedAt: new Date()
                 }
             });
         });
 
         /*
-INTERESTING CODE
+LEAVE INTERESTING CODE HERE
 const otherLinkedEvents = await this.eventRepository.findMany({
-    where: {
-        LinkedTodos: {
-            some: {
-                id: {
-                    in: LinkedTodos?.map((todo) => todo.id)
-                }
-            }
+where: {
+LinkedTodos: {
+    some: {
+        id: {
+            in: LinkedTodos?.map((todo) => todo.id)
         }
-    },
-    include: {
-        LinkedTodos: true
     }
+}
+},
+include: {
+LinkedTodos: true
+}
 });
 */
     }
@@ -161,7 +172,8 @@ const otherLinkedEvents = await this.eventRepository.findMany({
                     where: { id: event.id },
                     data: {
                         title: data.title,
-                        completed: data.completed
+                        completed: data.completed,
+                        updatedAt: new Date()
                     }
                 });
             });

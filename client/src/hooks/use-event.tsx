@@ -32,6 +32,7 @@ const addEvent = async (
  * @param drilldown
  */
 const setEvent = async (
+    // todo: server atomic
     id: string,
     newEvent: CalendarEvent,
     data?: CalendarEvent[] | undefined,
@@ -99,7 +100,7 @@ const removeEvent = async (
  */
 const toggleEventCompleted = async (id: string) => {
     const { getEventById, toggleCompleted } = useEventStore.getState();
-    const { getTodoById } = useTodoStore.getState();
+    const { getTodoById, setTodo } = useTodoStore.getState();
     const event = getEventById(id);
     if (event) {
         const toggledEvent = toggleCompleted(id);
@@ -117,20 +118,20 @@ const toggleEventCompleted = async (id: string) => {
                     ...todo,
                     completed: true
                 };
-                TodoClient.setTodo(todoId, next);
+                setTodo(todoId, next);
             } else {
                 const next = {
                     ...todo,
                     completed: false
                 };
-                TodoClient.setTodo(todoId, next);
+                setTodo(todoId, next);
             }
         });
     }
 };
 
 /**
- * @description update the linked todos when the event is updated
+ * @description LOCALLY update the linked events in linked todos to a event
  * @description usually Event has only one linked Todo
  * @param event
  */
@@ -149,9 +150,9 @@ const locallyUpdateLinkedTodosToEvent = (event: CalendarEvent) => {
 };
 
 /**
- * @description update the linked events of linked todos
- * update ONLY TITLE, DESC
- * UPDATE LOGIC: the event --> linked todos --> linked events --> update events
+ * @description LOCALLY update the linked events which shared the same todos to a event
+ * @description update ONLY TITLE, DESC to the linked events
+ * @description UPDATE LOGIC: the event --> linked todos --> linked events --> update events
  */
 const locallyUpdateLinkedEventsToEvent = (event: CalendarEvent) => {
     const { getTodoById } = useTodoStore.getState();

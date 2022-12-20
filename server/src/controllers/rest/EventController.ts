@@ -32,6 +32,7 @@ export class EventController {
                     allDay: e.allDay,
                     completed: e.completed,
                     updatedAt: e.updatedAt,
+                    createdAt: e.createdAt,
                     linkedTodos: e.LinkedTodos?.map((todo) => todo.uuid)
                 };
             });

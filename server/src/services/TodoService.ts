@@ -23,7 +23,11 @@ export class TodoService {
     private todoCategoriesRepo: TodoCategoriesRepository;
 
     async getTodosByUserId(userId: number): Promise<TodoModel[]> {
-        return await this.todoRepository.findMany({ where: { userId }, include: { Category: true, LinkedEvents: true } });
+        return await this.todoRepository.findMany({
+            where: { userId },
+            include: { Category: true, LinkedEvents: true },
+            orderBy: { createdAt: 'asc' }
+        });
     }
 
     async getTodosByUsername(username: string): Promise<TodoModel[]> {
@@ -90,7 +94,10 @@ export class TodoService {
      * @param id
      */
     async deleteTodoById(id: number): Promise<TodoModel> {
-        const deleted = await this.todoRepository.delete({ where: { id }, include: { Category: true, LinkedEvents: true } });
+        const deleted = await this.todoRepository.delete({
+            where: { id },
+            include: { Category: true, LinkedEvents: true }
+        });
         // keep the consistency of the data structure in the server-side
         // delete the todo and its linked events
         // await this.eventService.deleteEventsByUUIDs(deleted.LinkedEvents.map((event) => event.uuid));

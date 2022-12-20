@@ -29,21 +29,19 @@ export class TodoController {
         const payload = extractJwtPayload(req);
         if (payload) {
             const todos = await this.todoService.getTodosByUserId(payload.uid);
-            return todos.map((todo) => {
-                return {
-                    id: todo.uuid,
-                    category: {
-                        id: todo.Category.uuid,
-                        name: todo.Category.name
-                    },
-                    order: todo.order,
-                    completed: todo.completed,
-                    title: todo.title,
-                    createdAt: todo.createdAt,
-                    updatedAt: todo.updatedAt,
-                    linkedEvents: todo.LinkedEvents.map((event) => event.uuid)
-                };
-            });
+            return todos.map((todo) => ({
+                id: todo.uuid,
+                category: {
+                    id: todo.Category.uuid,
+                    name: todo.Category.name
+                },
+                order: todo.order,
+                completed: todo.completed,
+                title: todo.title,
+                createdAt: todo.createdAt,
+                updatedAt: todo.updatedAt,
+                linkedEvents: todo.LinkedEvents.map((event) => event.uuid)
+            }));
         } else {
             return [];
         }
@@ -59,8 +57,8 @@ export class TodoController {
         const payload = extractJwtPayload(req);
         if (payload) {
             const todo = await this.todoService.getTodoById(id);
-            if (todo?.userId === payload.userId) {
-                const { Category /*FIXME*/, ...rest } = todo;
+            if (todo && todo?.userId === payload.userId) {
+                const { Category, ...rest } = todo;
                 $log.warn('CAT ', Category);
                 return {
                     category: { id: Category.uuid, name: Category.name },
@@ -83,7 +81,6 @@ export class TodoController {
             const created = await this.todoService.create(payload.username, todo);
             const { Category } = created;
             return {
-                // return created todo
                 category: { id: Category.uuid, name: Category.name },
                 completed: created.completed,
                 createdAt: created.createdAt,
@@ -109,13 +106,13 @@ export class TodoController {
         if (payload) {
             const todo = await this.todoService.getTodoByUUID(uuid);
             if (todo && todo?.userId === payload.uid) {
+                // delete the todo
                 const deleted = await this.todoService.deleteTodoById(todo.id);
                 // delete linked events
                 await this.eventService.deleteEventsByUUIDs(deleted.LinkedEvents.map((event) => event.uuid));
-                const { Category } = deleted;
                 return {
                     // return deleted todo
-                    category: { id: Category.uuid, name: Category.name },
+                    category: { id: deleted.Category.uuid, name: deleted.Category.name },
                     completed: deleted.completed,
                     createdAt: deleted.createdAt,
                     id: deleted.uuid,
@@ -140,8 +137,9 @@ export class TodoController {
         if (payload) {
             const exist = await this.todoService.getTodoByUUID(todo.uuid);
             if (exist && exist?.userId === payload.uid) {
+                // update todo itself
                 const updated = await this.todoService.updateTodo(todo);
-
+                // the todo dominates the linked events
                 // sync title, completed to linked events
                 updated.LinkedEvents.forEach((event) => {
                     this.eventRepo.update({
