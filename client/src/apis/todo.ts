@@ -31,7 +31,7 @@ const updateTodo = async (todo: Todo): Promise<Todo> => {
 };
 
 const deleteTodoById = async (id: string): Promise<Todo> => {
-    const { data } = await http.get<Todo>(`/todo/delete/${id}`);
+    const { data } = await http.delete<Todo>(`/todo/delete/${id}`);
     return data;
 };
 

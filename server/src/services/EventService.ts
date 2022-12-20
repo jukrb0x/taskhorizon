@@ -102,11 +102,15 @@ export class EventService {
                     data: {
                         LinkedEvents: {
                             disconnect: { id: event.id }
-                        }
+                        },
+                        updatedAt: new Date()
+                    },
+                    include: {
+                        LinkedEvents: true
                     }
                 });
             });
-            return await this.eventRepository.delete({ where: { id } });
+            return await this.eventRepository.delete({ where: { id: event.id } });
         } else {
             throw new Error('Event not found');
         }

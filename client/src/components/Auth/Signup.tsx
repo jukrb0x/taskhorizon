@@ -1,12 +1,12 @@
-import { NavLink, useNavigate } from 'react-router-dom';
+import { AuthAPI } from '@/apis';
 import { Button } from '@/components';
+import { REG_EMAIL } from '@/utils/regex';
 import { Text, PasswordInput, TextInput, Title, Button as MButton, Tooltip } from '@mantine/core';
 import { useForm } from '@mantine/form';
-import { useCallback } from 'react';
-import { REG_EMAIL } from '@/utils/regex';
-import { AuthAPI } from '@/apis';
 import { showNotification } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons';
+import { useCallback } from 'react';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 interface SignupFormValues {
     username: string;
@@ -32,8 +32,8 @@ const Signup = () => {
                 errors.username = 'Username is required';
             } else if (values.username.includes(' ')) {
                 errors.username = 'Username cannot contain spaces';
-            } else if (values.username.length < 3) {
-                errors.username = 'Username must be at least 3 characters long';
+            } else if (values.username.length < 4) {
+                errors.username = 'Username must be at least 4 characters long';
             } else if (values.username.length > 15) {
                 errors.username = 'Username must be at most 15 characters long';
             }

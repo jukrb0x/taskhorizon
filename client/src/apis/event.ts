@@ -47,7 +47,7 @@ const updateEvents = async (events: CalendarEvent[]): Promise<CalendarEvent[]> =
 };
 
 const deleteEventById = async (id: string): Promise<CalendarEvent> => {
-    const { data } = await http.get<CalendarEvent>(`/event/delete/${id}`);
+    const { data } = await http.delete<CalendarEvent>(`/event/delete/${id}`);
     return data;
 };
 

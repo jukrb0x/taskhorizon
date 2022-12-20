@@ -1,7 +1,7 @@
 import { Controller, Inject } from '@tsed/di';
 import { JwtAuth } from '@/decorators/JwtAuth';
 import { EventService } from '@/services/EventService';
-import { Get, Post } from '@tsed/schema';
+import { Delete, Get, Post } from '@tsed/schema';
 import { $log, PathParams, Req } from '@tsed/common';
 import { extractJwtPayload } from '@/config/jwt';
 import { BodyParams } from '@tsed/platform-params';
@@ -108,6 +108,7 @@ export class EventController {
     }
 
     @Get('/delete/:uuid')
+    @Delete('/delete/:uuid')
     async deleteEvent(@Req() req: Req, @PathParams('uuid') uuid: string): Promise<EventModel | undefined> {
         const payload = extractJwtPayload(req);
         if (payload) {

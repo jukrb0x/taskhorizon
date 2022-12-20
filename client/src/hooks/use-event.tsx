@@ -78,16 +78,7 @@ const removeEvent = async (
     // remove the event linkage from its linked todos,
     // usually it's only ONE linked todo on ONE event
     removedEvent.linkedTodos?.forEach((todoId) => {
-        const todo = getTodoById(todoId);
-        if (todo?.linkedEvents?.length == 0) {
-            // remove the linked todo if it has no linked events
-            removeTodo(todoId);
-            TodoAPI.deleteTodoById(todoId);
-        } else {
-            // remove the linkage in the linked todos
-            const updated = removeLinkedEvent(todoId, removedEvent.id);
-            TodoAPI.updateTodo(updated);
-        }
+        removeLinkedEvent(todoId, removedEvent.id);
     });
     return EventAPI.deleteEventById(id);
     // return removedEvent;
