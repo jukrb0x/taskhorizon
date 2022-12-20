@@ -1,17 +1,18 @@
 import './index.scss';
-import { invoke } from '@tauri-apps/api';
-import { useEffect } from 'react';
+import { useTauriExtension } from '@/hooks/use-tauri-extension';
 import AppRoute from '@/routes/AppRoute';
-import { BrowserRouter, HashRouter, MemoryRouter } from 'react-router-dom';
 import DebugPanelWrapper from '@/routes/components/DebugPanel';
-import styled from 'styled-components';
+import { useEventStore } from '@/store';
+import { ConfigProvider as SemiConfigProvider } from '@douyinfe/semi-ui';
+import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
 // import { DndProvider } from 'react-dnd';
 // import { HTML5Backend } from 'react-dnd-html5-backend';
 import { MantineProvider } from '@mantine/core';
-import { useTauriExtension } from '@/hooks/use-tauri-extension';
-import { ConfigProvider as SemiConfigProvider } from '@douyinfe/semi-ui';
-import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
 import { NotificationsProvider } from '@mantine/notifications';
+import { invoke } from '@tauri-apps/api';
+import { EventHandler, KeyboardEventHandler, useEffect } from 'react';
+import { BrowserRouter, HashRouter, MemoryRouter } from 'react-router-dom';
+import styled from 'styled-components';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -41,6 +42,14 @@ const mantineTheme = {
     defaultRadius: 'md'
 };
 
+// prevent backspace from navigating back in webkit
+const captureBackspace = (event: KeyboardEvent) => {
+    // console.log(event.target);
+    if (event.key === 'Backspace' && event.target == document.body) {
+        event.preventDefault();
+    }
+};
+
 function App() {
     const isTauri = useTauriExtension();
     useEffect(() => {
@@ -51,7 +60,15 @@ function App() {
     }, [isTauri]);
 
     // disable context menu in desktop app
-    isTauri && document.addEventListener('contextmenu', (event) => event.preventDefault());
+    useEffect(() => {
+        isTauri && document.addEventListener('contextmenu', (event) => event.preventDefault());
+        window.addEventListener('keydown', captureBackspace);
+        return () => {
+            isTauri &&
+                document.removeEventListener('contextmenu', (event) => event.preventDefault());
+            window.removeEventListener('keydown', captureBackspace);
+        };
+    }, [isTauri]);
 
     return (
         <BrowserRouter>
