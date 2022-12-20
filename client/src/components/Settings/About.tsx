@@ -1,3 +1,3 @@
-export const About = () => {
-    return <></>;
+export const SettingsAbout = () => {
+    return <>settings about</>;
 };

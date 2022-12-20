@@ -18,7 +18,6 @@ export const HomeLayout = () => {
     const { user, loggedOut, isLoading } = useUser();
     const { token } = useUserStore();
     const { toggleSettings } = useAppConfigStore();
-    // const
 
     useEffect(() => {
         if (loggedOut) {
@@ -38,20 +37,6 @@ export const HomeLayout = () => {
             }
         ]
     ]);
-
-    // const captureToggleSettings = (event: KeyboardEvent) => {
-    //     if (event.key === 'a') {
-    //         event.preventDefault();
-    //         toggleSettings();
-    //     }
-    // }
-    //
-    // useEffect(()=>{
-    //     document.addEventListener('keydown', captureToggleSettings );
-    //     return () => {
-    //         document.removeEventListener('keydown', captureToggleSettings );
-    //     }
-    // },[])
 
     const { sideAppWidth, showSideApp } = useAppConfigStore();
 

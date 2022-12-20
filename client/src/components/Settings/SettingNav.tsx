@@ -1,18 +1,9 @@
+import { SettingsNavs, SettingsNavTabs } from './Settings';
 import { AuthAPI } from '@/apis';
-import { IconClose } from '@douyinfe/semi-icons';
-import { ActionIcon, Modal, Button, Text, Divider } from '@mantine/core';
-import {
-    IconAffiliate,
-    IconFlame,
-    IconLogout,
-    IconMessageCircle,
-    IconPacman,
-    IconPennant,
-    IconPhoto,
-    IconSettings,
-    IconUser
-} from '@tabler/icons';
-import { ReactNode, useState } from 'react';
+import { SettingsAbout, SettingsProfile } from '@/components';
+import { Button, Divider, Text } from '@mantine/core';
+import { IconLogout, IconPacman, IconUser } from '@tabler/icons';
+import { ReactNode } from 'react';
 
 const SettingNavButton = ({
     icon,
@@ -65,14 +56,30 @@ const SectionTitle = ({ children }: { children: ReactNode }) => {
     );
 };
 
-export const SettingsNav = () => {
-    const [activeTab, setActiveTab] = useState('');
+export interface SettingsNav {
+    label: SettingsNavTabs;
+    icon: ReactNode;
+    component: ReactNode;
+}
 
+export const SettingsNav = (props: {
+    activeTab: SettingsNavTabs;
+    setActiveTab: (label: SettingsNavTabs) => void;
+}) => {
     return (
         <div className={'tw-space-y-1.5 tw-flex tw-flex-col'}>
             <SectionTitle>Settings</SectionTitle>
-            <SettingNavButton icon={<IconUser />} label={'Profile'} selected />
-            <SettingNavButton icon={<IconPacman />} label={'About'} />
+            {SettingsNavs.map((nav, index) => {
+                return (
+                    <SettingNavButton
+                        key={index}
+                        icon={nav.icon}
+                        label={nav.label}
+                        selected={props.activeTab === nav.label}
+                        onClick={() => props.setActiveTab(nav.label)}
+                    />
+                );
+            })}
             <Divider color={'gray.3'} my={'xs'} />
             <SettingNavButton
                 icon={<IconLogout />}
