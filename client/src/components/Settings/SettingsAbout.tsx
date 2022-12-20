@@ -1,3 +1,6 @@
+import { useTauriExtension } from '@/hooks';
+
 export const SettingsAbout = () => {
-    return <>settings about</>;
+    const { openLink } = useTauriExtension();
+    return <></>;
 };

@@ -1,6 +1,7 @@
 import { Settings } from '@/components';
-import { useTauriExtension } from '@/hooks';
+import { useTauriExtension, useUser } from '@/hooks';
 import useAppConfigStore from '@/store/config-store';
+import useUserStore from '@/store/user-store';
 import { ActionIcon, Divider, Group, Menu, Avatar, Text } from '@mantine/core';
 import {
     IconBrandGithub,
@@ -19,6 +20,7 @@ const UserActionIcon = (props: {
     avatarSrc?: string;
     onClick: () => void;
 }) => {
+    const { openLink } = useTauriExtension();
     return (
         <>
             <Menu trigger={'hover'} openDelay={200} position={'right-end'}>
@@ -34,11 +36,11 @@ const UserActionIcon = (props: {
 
                             <div style={{ flex: 1 }}>
                                 <Text size="sm" weight={500}>
-                                    Harriette Spoonlicker
+                                    {props.username}
                                 </Text>
 
                                 <Text color="dimmed" size="xs">
-                                    asdad@sd.com
+                                    {props.email}
                                 </Text>
                             </div>
 
@@ -48,8 +50,8 @@ const UserActionIcon = (props: {
                     <Menu.Divider />
                     <Menu.Item
                         icon={<IconBrandGithub size={14} />}
-                        onClick={() => {
-                            // useTauriExtension().openExternal('
+                        onClick={async () => {
+                            await openLink(import.meta.env.VITE_GITHUB_REPO_URL);
                         }}
                     >
                         GitHub
@@ -64,10 +66,10 @@ const UserActionIcon = (props: {
 };
 
 export const AppSider = () => {
-    const isTauri = useTauriExtension();
-    const { showSideApp, toggleSideApp } = useAppConfigStore();
+    const { isTauri } = useTauriExtension();
+    const { showSideApp, toggleSideApp, showSettings, toggleSettings } = useAppConfigStore();
+    const { username, email } = useUserStore();
     const [settingsOpen, setSettingsOpen] = useState(false);
-    const { showSettings, toggleSettings } = useAppConfigStore();
     return (
         <>
             <Settings opened={showSettings} onClose={() => toggleSettings()} />
@@ -93,7 +95,11 @@ export const AppSider = () => {
                 </div>
 
                 <div className={'tw-space-y-1'}>
-                    <UserActionIcon onClick={() => toggleSettings()} />
+                    <UserActionIcon
+                        onClick={() => toggleSettings()}
+                        username={username}
+                        email={email}
+                    />
                 </div>
             </div>
             <Divider orientation={'vertical'} color={'gray.2'} />

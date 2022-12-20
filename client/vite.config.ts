@@ -10,7 +10,7 @@ export default defineConfig({
             '~': path.resolve(__dirname, '')
         }
     },
-    plugins: [react({ include: ['src/**/*.tsx'] })],
+    plugins: [react({ include: ['./src/**/*.tsx'] })],
     // Vite optons tailored for Tauri development and only applied in `tauri dev` or `tauri build`
     // prevent vite from obscuring rust errors
     clearScreen: false,

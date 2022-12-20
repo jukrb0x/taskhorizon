@@ -51,7 +51,7 @@ const captureBackspace = (event: KeyboardEvent) => {
 };
 
 function App() {
-    const isTauri = useTauriExtension();
+    const { isTauri } = useTauriExtension();
     useEffect(() => {
         if (false && isTauri) {
             // test demo
