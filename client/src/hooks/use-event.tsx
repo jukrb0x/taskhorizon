@@ -156,7 +156,7 @@ const locallyUpdateLinkedTodosToEvent = (event: CalendarEvent) => {
  */
 const locallyUpdateLinkedEventsToEvent = (event: CalendarEvent) => {
     const { getTodoById } = useTodoStore.getState();
-    const { getEventById } = useEventStore.getState();
+    const { getEventById, setEvent } = useEventStore.getState();
     event.linkedTodos?.forEach((todoId) => {
         getTodoById(todoId)?.linkedEvents?.forEach(async (eventId) => {
             const exist = getEventById(eventId);
@@ -166,7 +166,7 @@ const locallyUpdateLinkedEventsToEvent = (event: CalendarEvent) => {
                     title: event.title,
                     desc: event.desc
                 };
-                useEventStore.getState().setEvent(next.id, next);
+                setEvent(next.id, next);
             }
         });
     });
