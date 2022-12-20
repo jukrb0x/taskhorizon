@@ -5,11 +5,6 @@ import { IconMessageCircle, IconPacman, IconPhoto, IconSettings, IconUser } from
 import clsx from 'clsx';
 import { ReactNode, useState } from 'react';
 
-const ModalContent = ({ left, right }: { left: ReactNode; right: ReactNode }) => {
-    // TODO
-    return <></>;
-};
-
 export const enum SettingsNavTabs {
     Profile = 'Profile',
     About = 'About'
