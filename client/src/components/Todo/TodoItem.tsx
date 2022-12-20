@@ -1,4 +1,4 @@
-import { useTodo } from '@/hooks';
+import { useEvent, useTodo } from '@/hooks';
 import { useEventStore } from '@/store';
 import { Todo } from '@/store/todo-store';
 import { useDraggable } from '@dnd-kit/core';
@@ -10,8 +10,8 @@ import { format } from 'date-fns';
 import { MouseEvent, MutableRefObject, useCallback, useMemo, useState } from 'react';
 
 export const TodoItem = ({ todo }: { todo: Todo }) => {
-    const { setTodo, toggleCompleted, removeTodo, setDragItem, clearDragItem, getEventById } =
-        useTodo();
+    const { setTodo, toggleCompleted, removeTodo, setDragItem, getEventById } = useTodo();
+    const { eventList } = useEvent();
     const [isActive, setIsActive] = useState<boolean>(false);
     const [isEdit, setIsEdit] = useState<boolean>(false);
     const [title, setTitle] = useState<string>(todo.title || ''); // todo
@@ -43,7 +43,9 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
         [setIsEdit]
     );
 
-    const linkedEventNumber = todo.linkedEvents?.length || 0;
+    const linkedEventNumber = useMemo(() => {
+        return todo.linkedEvents?.length || 0;
+    }, [todo, todo.linkedEvents, eventList]);
     const formattedLinkedEventsDateTimeList = useMemo(() => {
         return todo.linkedEvents
             ?.filter((id) => getEventById(id)) // filter out the missing events
@@ -55,7 +57,7 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
             .map((DT) => {
                 return format(DT, 'eee, dd MMMM') + ' at ' + format(DT, 'HH:mm');
             });
-    }, [todo, getEventById, useEventStore.getState().eventList]);
+    }, [todo, todo.linkedEvents, getEventById, eventList]);
 
     const handleSave = useCallback(async () => {
         if (title.trim() == '') return;
@@ -71,7 +73,6 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
     const handleDragStart = useCallback(
         (e: MouseEvent) => {
             setDragItem(todo);
-            // console.log('drag start', todo);
         },
         [todo]
     );
