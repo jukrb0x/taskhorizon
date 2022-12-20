@@ -1,12 +1,13 @@
-import { ActionIcon, Checkbox, Menu, Text, Textarea, Tooltip } from '@mantine/core';
-import { Todo } from '@/store/todo-store';
-import { MouseEvent, MutableRefObject, useCallback, useMemo, useState } from 'react';
-import clsx from 'clsx';
-import { IconTrash, IconX } from '@tabler/icons';
-import { useDraggable } from '@dnd-kit/core';
-import { useEventListener, useMergedRef } from '@mantine/hooks';
 import { useTodo } from '@/hooks';
+import { useEventStore } from '@/store';
+import { Todo } from '@/store/todo-store';
+import { useDraggable } from '@dnd-kit/core';
+import { ActionIcon, Checkbox, Menu, Text, Textarea, Tooltip } from '@mantine/core';
+import { useEventListener, useMergedRef } from '@mantine/hooks';
+import { IconTrash, IconX } from '@tabler/icons';
+import clsx from 'clsx';
 import { format } from 'date-fns';
+import { MouseEvent, MutableRefObject, useCallback, useMemo, useState } from 'react';
 
 export const TodoItem = ({ todo }: { todo: Todo }) => {
     const { setTodo, toggleCompleted, removeTodo, setDragItem, clearDragItem, getEventById } =
@@ -54,7 +55,7 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
             .map((DT) => {
                 return format(DT, 'eee, dd MMMM') + ' at ' + format(DT, 'HH:mm');
             });
-    }, [todo, getEventById]);
+    }, [todo, getEventById, useEventStore.getState().eventList]);
 
     const handleSave = useCallback(async () => {
         if (title.trim() == '') return;

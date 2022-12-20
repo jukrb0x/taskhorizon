@@ -40,7 +40,7 @@ export class EventService {
     async create(username: string, event: EventRequestModel): Promise<EventModel> {
         const user = await this.userService.findByUsername(username);
         const { linkedTodos, ...data } = event;
-        return await this.eventRepository.create({
+        const created = await this.eventRepository.create({
             data: {
                 ...data,
                 LinkedTodos: {
@@ -52,6 +52,17 @@ export class EventService {
                 LinkedTodos: true
             }
         });
+        // refresh the linked todos
+        linkedTodos?.forEach((todoUUID) => {
+            this.todoRepository.update({
+                where: { uuid: todoUUID },
+                data: {
+                    updatedAt: new Date()
+                }
+            });
+        });
+
+        return created;
     }
 
     async update(event: EventRequestModel) {
@@ -113,12 +124,19 @@ export class EventService {
 
     async getLinkedEvents(event: EventModel) {
         const { LinkedTodos } = event;
-        const linkedEvents: EventModel[] = [];
-        LinkedTodos?.forEach((todo) => {
-            const { LinkedEvents } = todo;
-            LinkedEvents?.forEach((event) => {
-                linkedEvents.push(event);
-            });
+        const linkedEvents = await this.eventRepository.findMany({
+            where: {
+                LinkedTodos: {
+                    some: {
+                        id: {
+                            in: LinkedTodos?.map((todo) => todo.id)
+                        }
+                    }
+                }
+            },
+            include: {
+                LinkedTodos: true
+            }
         });
         return linkedEvents;
     }
@@ -143,39 +161,21 @@ export class EventService {
                 }
             });
         });
-
-        /*
-LEAVE INTERESTING CODE HERE
-const otherLinkedEvents = await this.eventRepository.findMany({
-where: {
-LinkedTodos: {
-    some: {
-        id: {
-            in: LinkedTodos?.map((todo) => todo.id)
-        }
-    }
-}
-},
-include: {
-LinkedTodos: true
-}
-});
-*/
     }
 
+    // update the title and description to other linked events
     async updateLinkedEvents(updatedEvent: EventModel) {
         const { LinkedTodos, ...data } = updatedEvent;
-        LinkedTodos?.forEach((todo) => {
-            const { LinkedEvents } = todo;
-            LinkedEvents?.forEach((event) => {
-                this.eventRepository.update({
-                    where: { id: event.id },
-                    data: {
-                        title: data.title,
-                        completed: data.completed,
-                        updatedAt: new Date()
-                    }
-                });
+        const linkedEvents = await this.getLinkedEvents(updatedEvent);
+        $log.error('linkedEvents', linkedEvents);
+        linkedEvents?.forEach((event) => {
+            this.eventRepository.update({
+                where: { id: event.id },
+                data: {
+                    title: data.title,
+                    description: data.description,
+                    updatedAt: new Date()
+                }
             });
         });
     }

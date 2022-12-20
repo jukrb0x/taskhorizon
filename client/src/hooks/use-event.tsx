@@ -38,11 +38,12 @@ const setEvent = async (
     data?: CalendarEvent[] | undefined,
     mutate?: KeyedMutator<CalendarEvent[]>
 ) => {
-    // await mutate([...eventList.filter((event) => event.id !== id), newEvent]);
     useEventStore.getState().setEvent(id, newEvent);
     locallyUpdateLinkedTodosToEvent(newEvent);
     locallyUpdateLinkedEventsToEvent(newEvent);
-    return await EventAPI.updateEvent(newEvent); // update the event itself
+    const updated = await EventAPI.updateEvent(newEvent); // update the event itself
+    mutate && (await mutate(data?.map((event) => (event.id === id ? updated : event))));
+    return updated;
 };
 
 const setEvents = async (events: CalendarEvent[], useAPI: boolean) => {
