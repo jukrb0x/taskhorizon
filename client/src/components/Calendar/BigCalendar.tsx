@@ -1,12 +1,12 @@
-import { Calendar, luxonLocalizer, momentLocalizer, SlotInfo } from 'react-big-calendar';
-import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
-import moment from 'moment';
+import './styles/animation.scss';
+import './styles/default/dragAndDrop.scss';
 // import luxon from 'luxon';
 import './styles/default/styles.scss';
-import './styles/default/dragAndDrop.scss';
-import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
-import { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { EventCard, EventCardMode } from '@/components';
+import CustomToolbar from '@/components/Calendar/components/CustomToolbar';
+import { useTodo } from '@/hooks';
+import { useEvent } from '@/hooks/use-event';
+import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 import {
     flip,
     offset,
@@ -21,12 +21,12 @@ import {
     autoUpdate,
     ClientRectObject
 } from '@floating-ui/react-dom-interactions';
-import { CSSTransition } from 'react-transition-group';
-import './styles/animation.scss';
 import { useEventListener } from '@mantine/hooks';
-import { useEvent } from '@/hooks/use-event';
-import { useTodo } from '@/hooks';
-import CustomToolbar from '@/components/Calendar/components/CustomToolbar';
+import moment from 'moment';
+import { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Calendar, luxonLocalizer, momentLocalizer, SlotInfo } from 'react-big-calendar';
+import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
+import { CSSTransition } from 'react-transition-group';
 
 const localizer = momentLocalizer(moment); // todo: use luxon, later when we need multi-timezone support, moment.js is not good enough
 
@@ -36,7 +36,7 @@ const DnDCalendar = withDragAndDrop(Calendar);
 //     this function is too long, need to be refactored.
 export const BigCalendar = () => {
     const { eventList, setEvent, addEvent } = useEvent();
-    const { dragItem, clearDragItem, addLinkedEvent } = useTodo();
+    const { dragItem, clearDragItem } = useTodo();
     // Floating Event Card (Pop-up)
     const [popEvent, setPopEvent] = useState<CalendarEvent>();
     const [popMode, setPopMode] = useState<EventCardMode>('create');
@@ -105,8 +105,7 @@ export const BigCalendar = () => {
                 completed: dragItem.completed,
                 linkedTodos: [dragItem.id]
             };
-            const createdEvent = await addEvent(event);
-            createdEvent && (await addLinkedEvent(dragItem.id, createdEvent.id));
+            await addEvent(event);
             clearDragItem();
         },
         [setPopVisible, setPopEventCard, dragItem, clearDragItem]

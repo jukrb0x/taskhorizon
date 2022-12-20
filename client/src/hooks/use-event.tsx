@@ -17,6 +17,10 @@ const addEvent = async (
 ) => {
     data && (await mutate([...data, event]));
     useEventStore.getState().addEvent(event);
+    // useTodoStore.getState().addLinkedEvent(event.linkedTodos[0], event.id);
+    event.linkedTodos?.forEach((todoId) => {
+        useTodoStore.getState().addLinkedEvent(todoId, event.id);
+    });
     await EventAPI.createEvent(event);
 };
 

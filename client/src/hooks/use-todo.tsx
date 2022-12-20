@@ -111,8 +111,7 @@ export const useTodo = (shouldFetch = true) => {
         dragItem,
         setDragItem,
         clearDragItem,
-        getTodoById,
-        addLinkedEvent
+        getTodoById
     } = useTodoStore();
 
     const compareWithStore = (todos: Todo[]) => {
@@ -151,16 +150,11 @@ export const useTodo = (shouldFetch = true) => {
         await removeTodo(id, data, mutate);
     };
 
-    const addLinkedEventWrapper = async (todoId: string, eventId: string) => {
-        await TodoAPI.updateTodo(addLinkedEvent(todoId, eventId));
-    };
-
     return {
         todoList,
         dragItem,
         setDragItem,
         clearDragItem,
-        addLinkedEvent: addLinkedEventWrapper,
         setTodo: setTodoWrapper,
         addTodo: addTodoWrapper,
         toggleCompleted: toggleTodoCompletedWrapper,
