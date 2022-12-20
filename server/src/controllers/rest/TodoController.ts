@@ -99,7 +99,6 @@ export class TodoController {
      * @param req
      * @param uuid
      */
-    @Get('/delete/:uuid')
     @Delete('/delete/:uuid')
     async delete(@Req() req: Req, @PathParams('uuid') uuid: string): Promise<TodoResponseModel> {
         const payload = extractJwtPayload(req);
