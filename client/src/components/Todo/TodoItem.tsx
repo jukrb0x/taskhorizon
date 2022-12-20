@@ -28,8 +28,8 @@ export const TodoItem = ({ todo }: { todo: Todo }) => {
         }) as MutableRefObject<HTMLDivElement>
     );
 
-    const handleToggle = useCallback(() => {
-        toggleCompleted(todo.id);
+    const handleToggle = useCallback(async () => {
+        await toggleCompleted(todo.id);
     }, [todo, toggleCompleted]);
 
     const handleRemove = useCallback(async () => {
