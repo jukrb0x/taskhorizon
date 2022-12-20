@@ -32,7 +32,6 @@ export const HomeLayout = () => {
             'mod+,',
             () => {
                 toggleSettings();
-                console.log('too');
             }
         ]
     ]);

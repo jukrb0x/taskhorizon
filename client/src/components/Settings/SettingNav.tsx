@@ -1,6 +1,6 @@
-import { SettingsNavs, SettingsNavTabs } from './Settings';
 import { AuthAPI } from '@/apis';
-import { SettingsAbout, SettingsProfile } from '@/components';
+import { SettingsAbout, SettingsNavTabs, SettingsProfile } from '@/components';
+import { SettingsNavs } from '@/components/Settings/SettingsNavTabs';
 import { Button, Divider, Text } from '@mantine/core';
 import { IconLogout, IconPacman, IconUser } from '@tabler/icons';
 import { ReactNode } from 'react';
@@ -59,7 +59,6 @@ const SectionTitle = ({ children }: { children: ReactNode }) => {
 export interface SettingsNav {
     label: SettingsNavTabs;
     icon: ReactNode;
-    component: ReactNode;
 }
 
 export const SettingsNav = (props: {
