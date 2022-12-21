@@ -1,6 +1,6 @@
 import { AuthAPI, http, refillHttpInterceptor } from '@/apis';
-import useSWR, { useSWRConfig } from 'swr';
 import useUserStore from '@/store/user-store';
+import useSWR, { useSWRConfig } from 'swr';
 
 const fetcher = (url: string) => {
     http.interceptors.response.clear(); // clear all notification
@@ -55,3 +55,5 @@ export const useUser = () => {
         mutate
     };
 };
+
+if (import.meta.hot) import.meta.hot.acceptExports('default');
