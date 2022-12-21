@@ -80,11 +80,11 @@ export const SettingsShortcuts = () => {
                     <Alert title="Coming soon..." color="blue" mb={20}>
                         Some keyboard shortcuts are available in the app but not yet listed here.
                     </Alert>
-                </div>
 
-                {keyBindingsList.map((keyBinding, index) => (
-                    <KeyBindings key={index} name={keyBinding.name} kbd={keyBinding.kbd} />
-                ))}
+                    {keyBindingsList.map((keyBinding, index) => (
+                        <KeyBindings key={index} name={keyBinding.name} kbd={keyBinding.kbd} />
+                    ))}
+                </div>
             </div>
         </>
     );

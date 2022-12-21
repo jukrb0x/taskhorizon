@@ -59,16 +59,8 @@ export const SettingsAbout = () => {
                     </Title>
                 </div>
 
-                <div className={'tw-max-w-[550px] tw-min-w-[510px]'}>
-                    <Card
-                        radius={'lg'}
-                        m={'sm'}
-                        px={30}
-                        py={35}
-                        withBorder
-                        className={'tw-max-w-[550px] tw-min-w-[300px]'}
-                        shadow={'md'}
-                    >
+                <div className={'tw-w-[550px]'}>
+                    <Card radius={'lg'} m={'sm'} px={30} py={35} withBorder shadow={'md'}>
                         <WelcomeTitle />
                     </Card>
 
