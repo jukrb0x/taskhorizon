@@ -56,4 +56,4 @@ export const useUser = () => {
     };
 };
 
-if (import.meta.hot) import.meta.hot.acceptExports('default');
+if (import.meta.hot) import.meta.hot.acceptExports('useUser');

@@ -65,5 +65,3 @@ http.interceptors.request.use(beforeRequest);
 http.interceptors.response.use(responseSuccess, responseFailed);
 
 export { http, refillHttpInterceptor };
-
-if (import.meta.hot) import.meta.hot.acceptExports('default');
