@@ -56,3 +56,5 @@ export const AuthAPI = {
     signup,
     logout
 };
+
+if (import.meta.hot) import.meta.hot.acceptExports('default');
