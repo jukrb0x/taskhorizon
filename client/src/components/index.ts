@@ -18,7 +18,6 @@ export * from './Resizer/Resizer';
 export * from './Settings/SettingNav';
 export * from './Settings/Settings';
 export * from './Settings/SettingsAbout';
-export * from './Settings/SettingsNavTabs';
 export * from './Settings/SettingsProfile';
 export * from './Settings/SettingsShortcuts';
 export * from './Spacer/Spacer';

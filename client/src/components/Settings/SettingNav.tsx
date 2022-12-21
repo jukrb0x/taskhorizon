@@ -1,10 +1,8 @@
 import { Button, Divider, Text } from '@mantine/core';
-import { IconLogout } from '@tabler/icons';
+import { IconCommand, IconLogout, IconPacman, IconUser } from '@tabler/icons';
 import { ReactNode } from 'react';
 
 import { AuthAPI } from '@/apis';
-import { SettingsNavTabs } from '@/components';
-import { SettingsNavs } from '@/components/Settings/SettingsNavTabs';
 
 const SettingNavButton = ({
     icon,
@@ -57,10 +55,31 @@ const SectionTitle = ({ children }: { children: ReactNode }) => {
     );
 };
 
-export interface SettingsNav {
+export interface SettingsNavTab {
     label: SettingsNavTabs;
     icon: ReactNode;
 }
+
+export const enum SettingsNavTabs {
+    Profile = 'Profile',
+    About = 'About',
+    Shortcuts = 'Shortcuts'
+}
+
+const SettingsNavs: SettingsNavTab[] = [
+    {
+        label: SettingsNavTabs.Profile,
+        icon: <IconUser />
+    },
+    {
+        label: SettingsNavTabs.Shortcuts,
+        icon: <IconCommand />
+    },
+    {
+        label: SettingsNavTabs.About,
+        icon: <IconPacman />
+    }
+];
 
 export const SettingsNav = (props: {
     activeTab: SettingsNavTabs;

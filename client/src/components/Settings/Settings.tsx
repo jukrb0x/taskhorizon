@@ -1,11 +1,38 @@
 import { IconClose } from '@douyinfe/semi-icons';
 import { ActionIcon, Button as MButton, Modal, ScrollArea } from '@mantine/core';
-import { IconMessageCircle, IconPacman, IconPhoto, IconSettings, IconUser } from '@tabler/icons';
+import {
+    IconCommand,
+    IconMessageCircle,
+    IconPacman,
+    IconPhoto,
+    IconSettings,
+    IconUser
+} from '@tabler/icons';
 import clsx from 'clsx';
 import { ReactNode, useState } from 'react';
 
-import { Button, SettingsAbout, SettingsNav, SettingsNavTabs, SettingsProfile } from '@/components';
-import { SettingNavContent, SettingsNavs } from '@/components/Settings/SettingsNavTabs';
+import {
+    Button,
+    SettingsAbout,
+    SettingsNav,
+    SettingsNavTabs,
+    SettingsProfile,
+    SettingsShortcuts
+} from '@/components';
+
+/**
+ * This one cannot be exported as const, otherwise it will cause the Vite HMR to fail.
+ */
+const SettingNavContent = ({ activeTab }: { activeTab: SettingsNavTabs }) => {
+    switch (activeTab) {
+    case SettingsNavTabs.Profile:
+        return <SettingsProfile />;
+    case SettingsNavTabs.About:
+        return <SettingsAbout />;
+    case SettingsNavTabs.Shortcuts:
+        return <SettingsShortcuts />;
+    }
+};
 
 export const Settings = (props: { opened: boolean; onClose: () => void }) => {
     const [activeTab, setActiveTab] = useState<SettingsNavTabs>(SettingsNavTabs.Profile);
@@ -78,3 +105,7 @@ export const Settings = (props: { opened: boolean; onClose: () => void }) => {
         </>
     );
 };
+
+// if (import.meta.hot)
+//     import.meta.hot.acceptExports(['SettingsNavs', 'SettingsNavTabs', 'SettingNavContent']);
+//
