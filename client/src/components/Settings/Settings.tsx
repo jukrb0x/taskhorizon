@@ -1,10 +1,9 @@
 import { IconClose } from '@douyinfe/semi-icons';
-import { ActionIcon, Button as MButton, Modal, ScrollArea } from '@mantine/core';
+import { ActionIcon, Modal, ScrollArea } from '@mantine/core';
 import clsx from 'clsx';
-import { ReactNode, useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
-    Button,
     SettingsAbout,
     SettingsNav,
     SettingsNavTabs,
@@ -17,27 +16,36 @@ import {
  */
 const SettingNavContent = ({ activeTab }: { activeTab: SettingsNavTabs }) => {
     switch (activeTab) {
-        case SettingsNavTabs.Profile:
-            return <SettingsProfile />;
-        case SettingsNavTabs.About:
-            return <SettingsAbout />;
-        case SettingsNavTabs.Shortcuts:
-            return <SettingsShortcuts />;
+    case SettingsNavTabs.Profile:
+        return <SettingsProfile />;
+    case SettingsNavTabs.About:
+        return <SettingsAbout />;
+    case SettingsNavTabs.Shortcuts:
+        return <SettingsShortcuts />;
     }
 };
 
 export const Settings = (props: { opened: boolean; onClose: () => void }) => {
     const [activeTab, setActiveTab] = useState<SettingsNavTabs>(SettingsNavTabs.Profile);
 
+    useEffect(() => {
+        if (props.opened) {
+            setActiveTab(SettingsNavTabs.Profile);
+        }
+    }, [props.opened]);
+
     return (
         <>
             <Modal
                 opened={props.opened}
-                onClose={props.onClose}
+                onClose={() => {
+                    props.onClose();
+                }}
                 fullScreen
                 transition={'pop'}
                 exitTransitionDuration={300}
                 styles={() => {
+                    // unset the default modal header
                     return {
                         title: {
                             height: '7px'
@@ -52,6 +60,7 @@ export const Settings = (props: { opened: boolean; onClose: () => void }) => {
                 zIndex={30}
             >
                 <div
+                    // Modal Close Button
                     className={clsx(
                         'tw-w-full tw-flex tw-justify-end',
                         'tw-fixed tw-top-0 tw-z-30 tw-fixed tw-h-13 tw-p-2'
@@ -78,6 +87,7 @@ export const Settings = (props: { opened: boolean; onClose: () => void }) => {
                             />
                         </div>
                     </div>
+
                     <div
                         className={clsx(
                             'tw-basis-3/5 tw-h-screen tw-pt-20 tw-px-10',

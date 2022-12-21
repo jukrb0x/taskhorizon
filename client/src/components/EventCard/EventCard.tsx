@@ -153,7 +153,7 @@ const EventCard = (props: EventCardProps) => {
             } else if (props.mode === 'edit') {
                 await updateEvent();
             }
-        } else if (e.key === 'Backspace') {
+        } else if (e.key === 'Backspace' || e.key === 'Delete') {
             if (props.mode === 'edit' && document.activeElement === document.body) {
                 await deleteEvent();
             }
