@@ -5,5 +5,3 @@ export const renameKeys = (obj: object, newKeys: object) => {
     });
     return Object.assign({}, ...keyValues);
 };
-
-if (import.meta.hot) import.meta.hot.acceptExports('renameKeys');

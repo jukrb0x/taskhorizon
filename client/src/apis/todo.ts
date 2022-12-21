@@ -40,5 +40,3 @@ export const TodoAPI = {
     updateTodo,
     deleteTodoById
 };
-
-if (import.meta.hot) import.meta.hot.acceptExports('TodoAPI');

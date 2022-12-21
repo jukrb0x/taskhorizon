@@ -247,5 +247,3 @@ export const EventClient = {
     updateLinkedEventsToEvent: locallyUpdateLinkedEventsToEvent,
     updateLinkedTodosToEvent: locallyUpdateLinkedTodosToEvent
 };
-
-if (import.meta.hot) import.meta.hot.acceptExports(['EventClient', 'useEvent']);

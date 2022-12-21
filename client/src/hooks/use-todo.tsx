@@ -160,5 +160,3 @@ export const TodoClient = {
     removeTodo,
     updateLinkedEventsToTodo: locallyUpdateLinkedEventsToTodo
 };
-
-if (import.meta.hot) import.meta.hot.acceptExports(['TodoClient', 'useTodo']);

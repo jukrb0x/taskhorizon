@@ -50,5 +50,3 @@ export const cls = new Proxy(
         apply: (_, __, [el]: [React.ReactElement]) => classyComponentFactory(el)
     }
 );
-
-if (import.meta.hot) import.meta.hot.acceptExports('cls');

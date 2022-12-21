@@ -56,5 +56,3 @@ export const useUser = () => {
         mutate
     };
 };
-
-if (import.meta.hot) import.meta.hot.acceptExports('useUser');

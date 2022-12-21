@@ -105,7 +105,3 @@ export const Settings = (props: { opened: boolean; onClose: () => void }) => {
         </>
     );
 };
-
-// if (import.meta.hot)
-//     import.meta.hot.acceptExports(['SettingsNavs', 'SettingsNavTabs', 'SettingNavContent']);
-//

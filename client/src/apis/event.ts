@@ -64,5 +64,3 @@ export const EventAPI = {
     deleteEventById,
     deleteEvents
 };
-
-if (import.meta.hot) import.meta.hot.acceptExports('EventAPI');
