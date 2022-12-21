@@ -17,12 +17,12 @@ import {
  */
 const SettingNavContent = ({ activeTab }: { activeTab: SettingsNavTabs }) => {
     switch (activeTab) {
-    case SettingsNavTabs.Profile:
-        return <SettingsProfile />;
-    case SettingsNavTabs.About:
-        return <SettingsAbout />;
-    case SettingsNavTabs.Shortcuts:
-        return <SettingsShortcuts />;
+        case SettingsNavTabs.Profile:
+            return <SettingsProfile />;
+        case SettingsNavTabs.About:
+            return <SettingsAbout />;
+        case SettingsNavTabs.Shortcuts:
+            return <SettingsShortcuts />;
     }
 };
 
