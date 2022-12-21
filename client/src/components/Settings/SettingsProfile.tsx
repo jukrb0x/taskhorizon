@@ -88,11 +88,7 @@ const ProfileCard = ({
     );
 };
 
-export const SettingsProfile = () => {
-    const { username, email } = useUserStore();
-    const [isEditing, setIsEditing] = useState(false);
-    const [ref] = useAutoAnimate<HTMLDivElement>();
-
+const ProfileEditor = ({ onCancel }: { onCancel: () => void }) => {
     const [file, setFile] = useState<File | null>(null);
     const resetRef = useRef<() => void>(null);
 
@@ -103,8 +99,58 @@ export const SettingsProfile = () => {
 
     const handleCancel = () => {
         clearFile();
-        setIsEditing(false);
+        onCancel();
     };
+
+    return (
+        // todo: use-form
+        <Stack pt={20} spacing={'md'}>
+            <Alert icon={<IconAlertCircle size={16} />} title="Remember to save!" color="orange">
+                Your changes will not be saved to your account unless you save them.
+            </Alert>
+            <Group position="center">
+                <FileButton
+                    resetRef={resetRef}
+                    onChange={setFile}
+                    accept="image/png,image/jpeg" // fixme: accept not working with Tauri
+                >
+                    {(props) => (
+                        <Button {...props}>{file ? file.name : 'Upload New Profile Photo'}</Button>
+                    )}
+                </FileButton>
+                <MButton disabled={!file} color="red" onClick={clearFile}>
+                    Reset
+                </MButton>
+            </Group>
+            <TextInput label="Email" placeholder="your_new@email.com" />
+            <Group position={'apart'} grow>
+                <PasswordInput label="New Password" placeholder="New password" />
+                <PasswordInput
+                    label="Confirm New Password"
+                    placeholder="Confirm your new password"
+                />
+            </Group>
+            <PasswordInput
+                label="Current Password"
+                placeholder="This is required to save changes"
+                required
+            />
+            <Group position="center">
+                <MButton variant={'light'} color="red" onClick={handleCancel}>
+                    Cancel
+                </MButton>
+                <MButton variant={'light'} color="blue">
+                    Save
+                </MButton>
+            </Group>
+        </Stack>
+    );
+};
+
+export const SettingsProfile = () => {
+    const { username, email } = useUserStore();
+    const [isEditing, setIsEditing] = useState(false);
+    const [ref] = useAutoAnimate<HTMLDivElement>();
 
     return (
         <div className={'tw-flex tw-flex-col tw-select-none tw-cursor-default'}>
@@ -114,54 +160,7 @@ export const SettingsProfile = () => {
             <div className={'tw-max-w-[550px] tw-min-w-[300px]'}>
                 <ProfileCard user={{ username, email }} onEditClicked={() => setIsEditing(true)} />
                 <div ref={ref}>
-                    {isEditing && (
-                        <Stack pt={20} spacing={'md'}>
-                            <Alert
-                                icon={<IconAlertCircle size={16} />}
-                                title="Remember to save!"
-                                color="orange"
-                            >
-                                Your changes will not be saved to your account unless you save them.
-                            </Alert>
-                            <Group position="center">
-                                <FileButton
-                                    resetRef={resetRef}
-                                    onChange={setFile}
-                                    accept="image/png,image/jpeg"
-                                >
-                                    {(props) => (
-                                        <Button {...props}>
-                                            {file ? file.name : 'Upload New Profile Photo'}
-                                        </Button>
-                                    )}
-                                </FileButton>
-                                <MButton disabled={!file} color="red" onClick={clearFile}>
-                                    Reset
-                                </MButton>
-                            </Group>
-                            <TextInput label="Email" placeholder="your_new@email.com" />
-                            <Group position={'apart'} grow>
-                                <PasswordInput label="New Password" placeholder="New password" />
-                                <PasswordInput
-                                    label="Confirm New Password"
-                                    placeholder="Confirm your new password"
-                                />
-                            </Group>
-                            <PasswordInput
-                                label="Current Password"
-                                placeholder="This is required to save changes"
-                                required
-                            />
-                            <Group position="center">
-                                <MButton variant={'light'} color="red" onClick={handleCancel}>
-                                    Cancel
-                                </MButton>
-                                <MButton variant={'light'} color="blue">
-                                    Save
-                                </MButton>
-                            </Group>
-                        </Stack>
-                    )}
+                    {isEditing && <ProfileEditor onCancel={() => setIsEditing(false)} />}
                 </div>
             </div>
         </div>
