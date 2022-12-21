@@ -1,9 +1,3 @@
-import { AppSider, Button, Resizer } from '@/components';
-import { TodoApp } from '@/components';
-import { useUser } from '@/hooks';
-import { useTauriExtension } from '@/hooks/use-tauri-extension';
-import useAppConfigStore from '@/store/config-store';
-import useUserStore from '@/store/user-store';
 import { DndContext } from '@dnd-kit/core';
 import { Layout } from '@douyinfe/semi-ui';
 import { Divider, LoadingOverlay, Menu, Transition } from '@mantine/core';
@@ -11,14 +5,19 @@ import { useHotkeys } from '@mantine/hooks';
 import { useEffect, useRef, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
 
+import { AppSider, Button, Resizer } from '@/components';
+import { TodoApp } from '@/components';
+import { useUser } from '@/hooks';
+import { useTauriExtension } from '@/hooks/use-tauri-extension';
+import useAppConfigStore from '@/store/config-store';
+import useUserStore from '@/store/user-store';
+
 export const HomeLayout = () => {
-    const isTauri = useTauriExtension();
     const { Header, Content, Sider } = Layout;
     const navigate = useNavigate();
     const { user, loggedOut, isLoading } = useUser();
     const { token } = useUserStore();
     const { toggleSettings } = useAppConfigStore();
-    // const
 
     useEffect(() => {
         if (loggedOut) {
@@ -34,24 +33,9 @@ export const HomeLayout = () => {
             'mod+,',
             () => {
                 toggleSettings();
-                console.log('too');
             }
         ]
     ]);
-
-    // const captureToggleSettings = (event: KeyboardEvent) => {
-    //     if (event.key === 'a') {
-    //         event.preventDefault();
-    //         toggleSettings();
-    //     }
-    // }
-    //
-    // useEffect(()=>{
-    //     document.addEventListener('keydown', captureToggleSettings );
-    //     return () => {
-    //         document.removeEventListener('keydown', captureToggleSettings );
-    //     }
-    // },[])
 
     const { sideAppWidth, showSideApp } = useAppConfigStore();
 

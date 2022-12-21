@@ -1,12 +1,13 @@
-import { AuthAPI } from '@/apis';
-import { Button } from '@/components';
-import { REG_EMAIL } from '@/utils/regex';
-import { Text, PasswordInput, TextInput, Title, Button as MButton, Tooltip } from '@mantine/core';
+import { Button as MButton, PasswordInput, Text, TextInput, Title, Tooltip } from '@mantine/core';
 import { useForm } from '@mantine/form';
 import { showNotification } from '@mantine/notifications';
 import { IconCheck } from '@tabler/icons';
 import { useCallback } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
+
+import { AuthAPI } from '@/apis';
+import { Button } from '@/components';
+import { REG_EMAIL } from '@/utils/regex';
 
 interface SignupFormValues {
     username: string;

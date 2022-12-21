@@ -1,9 +1,10 @@
-import React from 'react';
-import clsx from 'clsx';
-import { IconChevronLeft, IconChevronRight, IconChevronsLeft } from '@tabler/icons';
 import { ActionIcon, Title } from '@mantine/core';
-import { Button } from '@/components';
 import { Button as MButton } from '@mantine/core';
+import { IconChevronLeft, IconChevronRight, IconChevronsLeft } from '@tabler/icons';
+import clsx from 'clsx';
+import React from 'react';
+
+import { Button } from '@/components';
 
 // import { Navigate as navigate } from '../../../src'
 

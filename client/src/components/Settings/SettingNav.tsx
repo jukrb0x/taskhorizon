@@ -1,18 +1,8 @@
+import { Button, Divider, Text } from '@mantine/core';
+import { IconCommand, IconLogout, IconPacman, IconUser } from '@tabler/icons';
+import { ReactNode } from 'react';
+
 import { AuthAPI } from '@/apis';
-import { IconClose } from '@douyinfe/semi-icons';
-import { ActionIcon, Modal, Button, Text, Divider } from '@mantine/core';
-import {
-    IconAffiliate,
-    IconFlame,
-    IconLogout,
-    IconMessageCircle,
-    IconPacman,
-    IconPennant,
-    IconPhoto,
-    IconSettings,
-    IconUser
-} from '@tabler/icons';
-import { ReactNode, useState } from 'react';
 
 const SettingNavButton = ({
     icon,
@@ -65,14 +55,50 @@ const SectionTitle = ({ children }: { children: ReactNode }) => {
     );
 };
 
-export const SettingsNav = () => {
-    const [activeTab, setActiveTab] = useState('');
+export interface SettingsNavTab {
+    label: SettingsNavTabs;
+    icon: ReactNode;
+}
 
+export const enum SettingsNavTabs {
+    Profile = 'Profile',
+    About = 'About',
+    Shortcuts = 'Shortcuts'
+}
+
+const SettingsNavs: SettingsNavTab[] = [
+    {
+        label: SettingsNavTabs.Profile,
+        icon: <IconUser />
+    },
+    {
+        label: SettingsNavTabs.Shortcuts,
+        icon: <IconCommand />
+    },
+    {
+        label: SettingsNavTabs.About,
+        icon: <IconPacman />
+    }
+];
+
+export const SettingsNav = (props: {
+    activeTab: SettingsNavTabs;
+    setActiveTab: (label: SettingsNavTabs) => void;
+}) => {
     return (
         <div className={'tw-space-y-1.5 tw-flex tw-flex-col'}>
             <SectionTitle>Settings</SectionTitle>
-            <SettingNavButton icon={<IconUser />} label={'Profile'} selected />
-            <SettingNavButton icon={<IconPacman />} label={'About'} />
+            {SettingsNavs.map((nav, index) => {
+                return (
+                    <SettingNavButton
+                        key={index}
+                        icon={nav.icon}
+                        label={nav.label}
+                        selected={props.activeTab === nav.label}
+                        onClick={() => props.setActiveTab(nav.label)}
+                    />
+                );
+            })}
             <Divider color={'gray.3'} my={'xs'} />
             <SettingNavButton
                 icon={<IconLogout />}

@@ -1,7 +1,8 @@
-import useUserStore from '@/store/user-store';
-import { UUID } from '@/utils';
 import create, { StateCreator } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
+
+import useUserStore from '@/store/user-store';
+import { UUID } from '@/utils';
 
 interface CalendarEvent {
     id: string; // generate inside store

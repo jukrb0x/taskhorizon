@@ -1,6 +1,6 @@
-import { DatePicker, TimeInput } from '@mantine/dates';
 import { TimePicker } from '@douyinfe/semi-ui';
 import { TextInput } from '@mantine/core';
+import { DatePicker, TimeInput } from '@mantine/dates';
 import * as dateFns from 'date-fns';
 import { ChangeEvent } from 'react';
 
@@ -58,10 +58,10 @@ const DatetimePicker = (props: DatetimePickerProps) => {
                                 height: '100%'
                             },
                             input: {
-                                height: '100%',
-                                minHeight: '100%',
-                                lineHeight: '100%',
-                                padding: '0 0.5px',
+                                'height': '100%',
+                                'minHeight': '100%',
+                                'lineHeight': '100%',
+                                'padding': '0 0.5px',
                                 // border: 'none',
                                 '&:focus': {
                                     // borderColor: theme.colors.gray[5]

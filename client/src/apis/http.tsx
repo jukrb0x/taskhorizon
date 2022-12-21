@@ -1,8 +1,9 @@
-import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
-import userStore from '@/store/user-store';
+import { NotificationProps } from '@mantine/core';
 import { showNotification } from '@mantine/notifications';
 import { IconX } from '@tabler/icons';
-import { NotificationProps } from '@mantine/core';
+import axios, { AxiosError, AxiosRequestConfig, AxiosResponse } from 'axios';
+
+import userStore from '@/store/user-store';
 
 const http = axios.create({
     baseURL: `${import.meta.env.VITE_BASE_URL}/rest`,

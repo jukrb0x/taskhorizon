@@ -1,7 +1,7 @@
 import { Button, Empty, Notification } from '@douyinfe/semi-ui';
+import { useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import styled from 'styled-components';
-import { useEffect } from 'react';
 
 const Center = styled.div`
     display: flex;
@@ -13,7 +13,7 @@ const Center = styled.div`
     text-align: center;
     height: 100vh;
 `;
-export default function NotFound() {
+export const NotFound = () => {
     const location = useLocation();
     const opts = {
         title: '404 Not Found',
@@ -47,4 +47,4 @@ export default function NotFound() {
             </Center>
         </div>
     );
-}
+};

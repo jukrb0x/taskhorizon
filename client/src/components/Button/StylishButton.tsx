@@ -1,6 +1,7 @@
-import { Button, ButtonProps } from './Button';
-import { ReactNode } from 'react';
 import clsx from 'clsx';
+import { ReactNode } from 'react';
+
+import { Button, ButtonProps } from './Button';
 
 interface StylishButtonProps extends ButtonProps {
     children: ReactNode;

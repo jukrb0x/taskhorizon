@@ -52,6 +52,12 @@ const rootDir = __dirname;
     exclude: ['**/*.spec.ts'],
     passport: {
         userInfoModel: UserModel
+    },
+    multer: {
+        dest: join(process.cwd(), '../uploads'),
+        limits: {
+            fileSize: 20 /* MB */ * 1024 * 1024 // in bytes
+        }
     }
 })
 export class Server {

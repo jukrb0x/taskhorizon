@@ -1,8 +1,6 @@
 import { ActionIcon, Badge, Tooltip } from '@mantine/core';
 import { IconBrandGithub, IconBulb, IconMail, IconMessage, IconMessageReport } from '@tabler/icons';
 import { ReactNode } from 'react';
-import clsx from 'clsx';
-import styled from 'styled-components';
 
 const LinkTo = (props: { href: string; children: ReactNode }) => {
     return (

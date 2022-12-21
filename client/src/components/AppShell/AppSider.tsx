@@ -1,8 +1,6 @@
-import { Settings } from '@/components';
-import { useTauriExtension } from '@/hooks';
-import useAppConfigStore from '@/store/config-store';
-import { ActionIcon, Divider, Group, Menu, Avatar, Text } from '@mantine/core';
+import { ActionIcon, Avatar, Divider, Group, Menu, Text } from '@mantine/core';
 import {
+    IconBrandGithub,
     IconCalendar,
     IconCheckbox,
     IconChevronRight,
@@ -12,32 +10,38 @@ import {
 import clsx from 'clsx';
 import { useState } from 'react';
 
-const UserActionIcon = ({ onClick }: { onClick: () => void }) => {
+import { Settings } from '@/components';
+import { useTauriExtension, useUser } from '@/hooks';
+import useAppConfigStore from '@/store/config-store';
+import useUserStore from '@/store/user-store';
+
+const UserActionIcon = (props: {
+    username: string;
+    email: string;
+    avatarSrc?: string;
+    onClick: () => void;
+}) => {
+    const { openLink } = useTauriExtension();
     return (
         <>
             <Menu trigger={'hover'} openDelay={200} position={'right-end'}>
                 <Menu.Target>
-                    <ActionIcon size={'xl'} onClick={onClick}>
+                    <ActionIcon size={'xl'} onClick={props.onClick}>
                         <IconUserCircle />
                     </ActionIcon>
                 </Menu.Target>
                 <Menu.Dropdown>
-                    <Menu.Item onClick={onClick}>
+                    <Menu.Item onClick={props.onClick}>
                         <Group>
-                            <Avatar
-                                src={
-                                    'https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=255&q=80'
-                                }
-                                radius="xl"
-                            />
+                            <Avatar src={props.avatarSrc ? props.avatarSrc : ''} radius="xl" />
 
                             <div style={{ flex: 1 }}>
                                 <Text size="sm" weight={500}>
-                                    Harriette Spoonlicker
+                                    {props.username}
                                 </Text>
 
                                 <Text color="dimmed" size="xs">
-                                    asdad@sd.com
+                                    {props.email}
                                 </Text>
                             </div>
 
@@ -45,7 +49,15 @@ const UserActionIcon = ({ onClick }: { onClick: () => void }) => {
                         </Group>
                     </Menu.Item>
                     <Menu.Divider />
-                    <Menu.Item icon={<IconSettings size={14} />} onClick={onClick}>
+                    <Menu.Item
+                        icon={<IconBrandGithub size={14} />}
+                        onClick={async () => {
+                            await openLink(import.meta.env.VITE_GITHUB_REPO_URL);
+                        }}
+                    >
+                        GitHub
+                    </Menu.Item>
+                    <Menu.Item icon={<IconSettings size={14} />} onClick={props.onClick}>
                         Settings
                     </Menu.Item>
                 </Menu.Dropdown>
@@ -55,10 +67,10 @@ const UserActionIcon = ({ onClick }: { onClick: () => void }) => {
 };
 
 export const AppSider = () => {
-    const isTauri = useTauriExtension();
-    const { showSideApp, toggleSideApp } = useAppConfigStore();
+    const { isTauri } = useTauriExtension();
+    const { showSideApp, toggleSideApp, showSettings, toggleSettings } = useAppConfigStore();
+    const { username, email } = useUserStore();
     const [settingsOpen, setSettingsOpen] = useState(false);
-    const { showSettings, toggleSettings } = useAppConfigStore();
     return (
         <>
             <Settings opened={showSettings} onClose={() => toggleSettings()} />
@@ -84,7 +96,11 @@ export const AppSider = () => {
                 </div>
 
                 <div className={'tw-space-y-1'}>
-                    <UserActionIcon onClick={() => toggleSettings()} />
+                    <UserActionIcon
+                        onClick={() => toggleSettings()}
+                        username={username}
+                        email={email}
+                    />
                 </div>
             </div>
             <Divider orientation={'vertical'} color={'gray.2'} />

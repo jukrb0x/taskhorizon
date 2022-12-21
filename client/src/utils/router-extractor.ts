@@ -1,6 +1,5 @@
 // This will automatically extract all routes from the pure <Route> function
 // ref: https://github.com/alansouzati/react-router-to-array/
-
 import { Route } from 'react-router-dom';
 
 interface Route {
@@ -70,7 +69,7 @@ export default function routerExtractor(route: JSX.Element | RouteElement): Rout
             routes = routes.concat(extractRoute(r));
         });
     } else {
-        routes = routes.concat(extractRoute(<RouteElement>route));
+        routes = routes.concat(extractRoute(route as RouteElement));
     }
 
     return routes;

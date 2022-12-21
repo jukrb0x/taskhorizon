@@ -1,8 +1,9 @@
+import { Divider, ScrollArea, Title } from '@mantine/core';
+import clsx from 'clsx';
+
 import { TodoInput } from '@/components';
 import { TodoList } from '@/components';
-import { Divider, ScrollArea, Title } from '@mantine/core';
 import { useTodo } from '@/hooks';
-import clsx from 'clsx';
 
 export const TodoApp = (props: { TodoInputClassName?: string; TodoListClassName?: string }) => {
     const { todoList } = useTodo();

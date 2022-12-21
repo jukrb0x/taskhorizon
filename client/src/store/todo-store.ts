@@ -1,7 +1,8 @@
-import useUserStore from '@/store/user-store';
-import { UUID } from '@/utils';
 import create, { StateCreator } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
+
+import useUserStore from '@/store/user-store';
+import { UUID } from '@/utils';
 
 interface Todo {
     id: string;
@@ -55,9 +56,9 @@ const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({
             todoList: state.todoList.map((todo) =>
                 todo.id === id
                     ? {
-                          ...todo,
-                          ...newTodo
-                      }
+                        ...todo,
+                        ...newTodo
+                    }
                     : todo
             )
         }));
@@ -73,9 +74,9 @@ const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({
             todoList: state.todoList.map((todo) =>
                 todo.id === id
                     ? {
-                          ...todo,
-                          completed: !todo.completed
-                      }
+                        ...todo,
+                        completed: !todo.completed
+                    }
                     : todo
             )
         }));
@@ -90,9 +91,9 @@ const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({
             todoList: state.todoList.map((todo) =>
                 todo.id === id
                     ? {
-                          ...todo,
-                          linkedEvents: [...(todo.linkedEvents || []), eventId]
-                      }
+                        ...todo,
+                        linkedEvents: [...(todo.linkedEvents || []), eventId]
+                    }
                     : todo
             )
         }));
@@ -104,9 +105,9 @@ const TodoStore: StateCreator<TodoStoreState> = (set, get) => ({
                 todoList: state.todoList.map((todo) =>
                     todo.id === id
                         ? {
-                              ...todo,
-                              linkedEvents: (todo.linkedEvents || []).filter((id) => id !== eventId)
-                          }
+                            ...todo,
+                            linkedEvents: (todo.linkedEvents || []).filter((id) => id !== eventId)
+                        }
                         : todo
                 )
             };

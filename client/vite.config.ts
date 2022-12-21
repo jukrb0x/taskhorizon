@@ -1,6 +1,7 @@
-import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import { defineConfig } from 'vite';
+import Inspect from 'vite-plugin-inspect';
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -10,7 +11,7 @@ export default defineConfig({
             '~': path.resolve(__dirname, '')
         }
     },
-    plugins: [react()],
+    plugins: [react({ include: ['**/*.tsx'] }), Inspect()],
     // Vite optons tailored for Tauri development and only applied in `tauri dev` or `tauri build`
     // prevent vite from obscuring rust errors
     clearScreen: false,
@@ -36,6 +37,8 @@ export default defineConfig({
         minify: !process.env.TAURI_DEBUG ? 'esbuild' : false,
         // produce sourcemaps for debug builds
         sourcemap: !!process.env.TAURI_DEBUG
+    },
+    experimental: {
+        hmrPartialAccept: true
     }
-    // base: process.env.VITE_BASE_URL || '/'  // not working
 });

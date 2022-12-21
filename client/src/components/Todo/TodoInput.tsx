@@ -1,10 +1,10 @@
-import { Todo, TodoIdGenerator } from '@/store/todo-store';
-import { useState } from 'react';
 import { TextInput } from '@mantine/core';
-import { Button } from '@/components';
 import clsx from 'clsx';
+import { useState } from 'react';
+
+import { Button } from '@/components';
 import { useTodo, useUser } from '@/hooks';
-import { TodoAPI } from '@/apis';
+import { Todo, TodoIdGenerator } from '@/store/todo-store';
 
 export const TodoInput = (props: { className?: string }) => {
     const { addTodo } = useTodo();

@@ -1,6 +1,7 @@
-import { http } from './http';
 import { CalendarEvent, EventIdGenerator } from '@/store';
 import { renameKeys } from '@/utils/common';
+
+import { http } from './http';
 
 interface CalendarEventRequestModel {
     uuid: string; // id

@@ -1,8 +1,3 @@
-import './index.scss';
-import { useTauriExtension } from '@/hooks/use-tauri-extension';
-import AppRoute from '@/routes/AppRoute';
-import DebugPanelWrapper from '@/routes/components/DebugPanel';
-import { useEventStore } from '@/store';
 import { ConfigProvider as SemiConfigProvider } from '@douyinfe/semi-ui';
 import en_GB from '@douyinfe/semi-ui/lib/es/locale/source/en_GB';
 // import { DndProvider } from 'react-dnd';
@@ -13,6 +8,13 @@ import { invoke } from '@tauri-apps/api';
 import { EventHandler, KeyboardEventHandler, useEffect } from 'react';
 import { BrowserRouter, HashRouter, MemoryRouter } from 'react-router-dom';
 import styled from 'styled-components';
+
+import { useTauriExtension } from '@/hooks/use-tauri-extension';
+import AppRoute from '@/routes/AppRoute';
+import DebugPanelWrapper from '@/routes/components/DebugPanel';
+import { useEventStore } from '@/store';
+
+import './index.scss';
 
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
@@ -51,7 +53,7 @@ const captureBackspace = (event: KeyboardEvent) => {
 };
 
 function App() {
-    const isTauri = useTauriExtension();
+    const { isTauri } = useTauriExtension();
     useEffect(() => {
         if (false && isTauri) {
             // test demo

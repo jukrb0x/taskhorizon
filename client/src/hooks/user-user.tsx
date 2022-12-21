@@ -1,5 +1,6 @@
-import { AuthAPI, http, refillHttpInterceptor } from '@/apis';
 import useSWR, { useSWRConfig } from 'swr';
+
+import { AuthAPI, http, refillHttpInterceptor } from '@/apis';
 import useUserStore from '@/store/user-store';
 
 const fetcher = (url: string) => {
