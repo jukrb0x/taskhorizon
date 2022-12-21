@@ -1,7 +1,7 @@
 import { Button, SettingsAbout, SettingsNav, SettingsNavTabs, SettingsProfile } from '@/components';
 import { SettingNavContent, SettingsNavs } from '@/components/Settings/SettingsNavTabs';
 import { IconClose } from '@douyinfe/semi-icons';
-import { ActionIcon, Modal, Button as MButton } from '@mantine/core';
+import { ActionIcon, Modal, Button as MButton, ScrollArea } from '@mantine/core';
 import { IconMessageCircle, IconPacman, IconPhoto, IconSettings, IconUser } from '@tabler/icons';
 import clsx from 'clsx';
 import { ReactNode, useState } from 'react';
@@ -46,7 +46,8 @@ export const Settings = (props: { opened: boolean; onClose: () => void }) => {
                 <div
                     className={clsx(
                         'tw-flex tw-flex-row tw-items-center tw-justify-center tw-h-full tw-w-full',
-                        ' tw-bg-[#eee]/60'
+                        ' tw-bg-[#eee]/60',
+                        'tw-overflow-hidden'
                     )}
                 >
                     <div className={'tw-basis-2/5 tw-h-screen tw-pt-20 '}>
@@ -63,9 +64,13 @@ export const Settings = (props: { opened: boolean; onClose: () => void }) => {
                             'tw-drop-shadow-xl tw-rounded-l-3xl tw-bg-white'
                         )}
                     >
-                        <div className={'tw-flex'}>
-                            <SettingNavContent activeTab={activeTab} />
-                        </div>
+                        <ScrollArea.Autosize maxHeight={'100%'} type={'never'}>
+                            <div className={'tw-flex'}>
+                                <div className={'tw-w-4/5 tw-pb-8'}>
+                                    <SettingNavContent activeTab={activeTab} />
+                                </div>
+                            </div>
+                        </ScrollArea.Autosize>
                     </div>
                 </div>
             </Modal>
