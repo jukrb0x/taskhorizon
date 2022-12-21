@@ -1,4 +1,5 @@
 import { IconClose } from '@douyinfe/semi-icons';
+import { useAutoAnimate } from '@formkit/auto-animate/react';
 import { ActionIcon, Button as MButton, Modal, ScrollArea } from '@mantine/core';
 import {
     IconCommand,

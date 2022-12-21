@@ -121,8 +121,7 @@ export const SettingsProfile = () => {
                                 title="Remember to save!"
                                 color="orange"
                             >
-                                The changes you make will not be saved to your account until you
-                                save them.
+                                Your changes will not be saved to your account unless you save them.
                             </Alert>
                             <Group position="center">
                                 <FileButton
