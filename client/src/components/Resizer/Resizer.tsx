@@ -1,7 +1,8 @@
-import { cls } from '@/utils';
-import { MutableRefObject, useEffect } from 'react';
-import { useResizer } from '@/hooks/use-resizer';
 import { useMergedRef } from '@mantine/hooks';
+import { MutableRefObject, useEffect } from 'react';
+
+import { useResizer } from '@/hooks/use-resizer';
+import { cls } from '@/utils';
 
 const ResizeBar = cls.div`tw-w-[0.2rem] before:tw-w-[1.3rem]
                           tw-h-full tw-cursor-col-resize

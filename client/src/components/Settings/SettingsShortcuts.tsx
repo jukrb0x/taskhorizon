@@ -1,5 +1,6 @@
-import { useTauriExtension } from '@/hooks';
 import { Title } from '@mantine/core';
+
+import { useTauriExtension } from '@/hooks';
 
 export const SettingsShortcuts = () => {
     const { openLink } = useTauriExtension();

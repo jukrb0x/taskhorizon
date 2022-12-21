@@ -1,10 +1,11 @@
-import { Button, SettingsAbout, SettingsNav, SettingsNavTabs, SettingsProfile } from '@/components';
-import { SettingNavContent, SettingsNavs } from '@/components/Settings/SettingsNavTabs';
 import { IconClose } from '@douyinfe/semi-icons';
-import { ActionIcon, Modal, Button as MButton, ScrollArea } from '@mantine/core';
+import { ActionIcon, Button as MButton, Modal, ScrollArea } from '@mantine/core';
 import { IconMessageCircle, IconPacman, IconPhoto, IconSettings, IconUser } from '@tabler/icons';
 import clsx from 'clsx';
 import { ReactNode, useState } from 'react';
+
+import { Button, SettingsAbout, SettingsNav, SettingsNavTabs, SettingsProfile } from '@/components';
+import { SettingNavContent, SettingsNavs } from '@/components/Settings/SettingsNavTabs';
 
 export const Settings = (props: { opened: boolean; onClose: () => void }) => {
     const [activeTab, setActiveTab] = useState<SettingsNavTabs>(SettingsNavTabs.Profile);

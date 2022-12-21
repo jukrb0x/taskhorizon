@@ -1,5 +1,6 @@
-import { SettingsAbout, SettingsNav, SettingsProfile, SettingsShortcuts } from '@/components';
 import { IconCommand, IconPacman, IconUser } from '@tabler/icons';
+
+import { SettingsAbout, SettingsNav, SettingsProfile, SettingsShortcuts } from '@/components';
 
 export const enum SettingsNavTabs {
     Profile = 'Profile',

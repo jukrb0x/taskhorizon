@@ -1,6 +1,6 @@
 import { Transition } from '@mantine/core';
-import { ReactNode, useEffect, useState } from 'react';
 import { MantineTransition } from '@mantine/core/lib/Transition/transitions';
+import { ReactNode, useEffect, useState } from 'react';
 
 export const OpeningTransition = ({
     transition = 'fade',

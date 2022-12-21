@@ -1,7 +1,8 @@
-import { TodoItem } from '@/components';
-import { Todo } from '@/store/todo-store';
 import { DndContext } from '@dnd-kit/core';
 import { useAutoAnimate } from '@formkit/auto-animate/react';
+
+import { TodoItem } from '@/components';
+import { Todo } from '@/store/todo-store';
 
 export const TodoList = ({ todos }: { todos: Todo[] }) => {
     const [ref] = useAutoAnimate<HTMLDivElement>({ duration: 250 });

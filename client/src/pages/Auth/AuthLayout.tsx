@@ -1,10 +1,11 @@
-import { SocialIcons, WelcomeTitle } from '@/components';
-import useUserStore from '@/store/user-store';
 import autoAnimate from '@formkit/auto-animate';
 import { Divider } from '@mantine/core';
 import clsx from 'clsx';
 import { useEffect, useRef, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
+
+import { SocialIcons, WelcomeTitle } from '@/components';
+import useUserStore from '@/store/user-store';
 
 export const AuthLayout = () => {
     const navigate = useNavigate();

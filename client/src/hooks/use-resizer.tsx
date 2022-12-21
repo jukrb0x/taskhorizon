@@ -1,6 +1,7 @@
+import { useCallback, useEffect, useRef, useState } from 'react';
+
 import useAppConfigStore from '@/store/config-store';
 import { math } from '@/utils/math';
-import { useCallback, useEffect, useRef, useState } from 'react';
 
 export const useResizer = () => {
     const ref = useRef<HTMLDivElement | null>(null);

@@ -1,11 +1,13 @@
-import { Typography, Button, Space, SideSheet, Input, Toast, Modal } from '@douyinfe/semi-ui';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
-import styles from './index.module.scss';
+import { Button, Input, Modal, SideSheet, Space, Toast, Typography } from '@douyinfe/semi-ui';
 import { ReactNode, useCallback, useEffect, useState } from 'react';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+
+import AppRoute from '@/routes/AppRoute';
 import { useDebugStore } from '@/store';
 import { cls } from '@/utils';
-import AppRoute from '@/routes/AppRoute';
 import routerExtractor from '@/utils/router-extractor';
+
+import styles from './index.module.scss';
 
 const { Title } = Typography;
 const StyledTitle = cls(Title)`tw-pb-2`;

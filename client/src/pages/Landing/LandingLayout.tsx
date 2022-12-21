@@ -1,14 +1,15 @@
+import { Divider, LoadingOverlay } from '@mantine/core';
+import { showNotification } from '@mantine/notifications';
+import { useEffect, useState } from 'react';
+import { NavLink, Navigate, useNavigate } from 'react-router-dom';
+import { mutate } from 'swr';
+
 import { Button } from '@/components';
 import { SocialIcons, WelcomeTitle } from '@/components';
 import { CopyrightBar } from '@/components';
 import { OpeningTransition } from '@/components';
 import { useUser } from '@/hooks';
 import useUserStore from '@/store/user-store';
-import { Divider, LoadingOverlay } from '@mantine/core';
-import { showNotification } from '@mantine/notifications';
-import { useEffect, useState } from 'react';
-import { Navigate, NavLink, useNavigate } from 'react-router-dom';
-import { mutate } from 'swr';
 
 export const LandingLayout = () => {
     const navigate = useNavigate();

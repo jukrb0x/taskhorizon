@@ -1,23 +1,24 @@
-import { ChangeEvent, useCallback, useMemo, useState } from 'react';
 import {
+    ActionIcon,
     Checkbox,
     Button as MButton,
+    Menu,
+    Text,
     TextInput,
     Textarea,
-    ActionIcon,
-    Text,
     Tooltip,
-    Menu,
     Transition
 } from '@mantine/core';
-import { Button, DatetimePicker } from '@/components';
-import * as dateFns from 'date-fns';
-import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
-import { useEventStore } from '@/store';
-import { IconChevronDown, IconDots, IconTrash } from '@tabler/icons';
 import { useEventListener } from '@mantine/hooks';
-import { useEvent } from '@/hooks';
+import { IconChevronDown, IconDots, IconTrash } from '@tabler/icons';
 import clsx from 'clsx';
+import * as dateFns from 'date-fns';
+import { ChangeEvent, useCallback, useMemo, useState } from 'react';
+
+import { Button, DatetimePicker } from '@/components';
+import { useEvent } from '@/hooks';
+import { useEventStore } from '@/store';
+import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
 
 type EventCardMode = 'edit' | 'create';
 

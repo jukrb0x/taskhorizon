@@ -1,10 +1,11 @@
-import { Login, Signup, BigCalendar } from '@/components';
+import { Navigate, Route, Routes } from 'react-router-dom';
+
+import { BigCalendar, Login, Signup } from '@/components';
 import { AuthLayout } from '@/pages/Auth';
 import { HomeLayout } from '@/pages/Home';
 import { LandingLayout } from '@/pages/Landing';
 import { Playground } from '@/pages/Playground/Playground';
 import { NotFound } from '@/routes/components/NotFound';
-import { Navigate, Route, Routes } from 'react-router-dom';
 
 export default function AppRoute() {
     return (

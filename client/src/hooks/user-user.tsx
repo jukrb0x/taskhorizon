@@ -1,6 +1,7 @@
+import useSWR, { useSWRConfig } from 'swr';
+
 import { AuthAPI, http, refillHttpInterceptor } from '@/apis';
 import useUserStore from '@/store/user-store';
-import useSWR, { useSWRConfig } from 'swr';
 
 const fetcher = (url: string) => {
     http.interceptors.response.clear(); // clear all notification

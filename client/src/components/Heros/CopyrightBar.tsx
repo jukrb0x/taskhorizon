@@ -1,5 +1,6 @@
-import { SocialIcons } from '@/components';
 import { Text } from '@mantine/core';
+
+import { SocialIcons } from '@/components';
 
 const CopyrightBar = () => {
     return (

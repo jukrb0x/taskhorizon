@@ -1,11 +1,11 @@
-import { forwardRef, ReactNode } from 'react';
 import {
-    createPolymorphicComponent,
     Button as MButton,
     ButtonProps as MButtonProps,
+    createPolymorphicComponent,
     useMantineTheme
 } from '@mantine/core';
 import clsx from 'clsx';
+import { ReactNode, forwardRef } from 'react';
 
 export interface ButtonProps extends MButtonProps {
     children: ReactNode;

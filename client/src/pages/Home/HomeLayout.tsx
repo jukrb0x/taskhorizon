@@ -1,15 +1,16 @@
-import { AppSider, Button, Resizer } from '@/components';
-import { TodoApp } from '@/components';
-import { useUser } from '@/hooks';
-import { useTauriExtension } from '@/hooks/use-tauri-extension';
-import useAppConfigStore from '@/store/config-store';
-import useUserStore from '@/store/user-store';
 import { DndContext } from '@dnd-kit/core';
 import { Layout } from '@douyinfe/semi-ui';
 import { Divider, LoadingOverlay, Menu, Transition } from '@mantine/core';
 import { useHotkeys } from '@mantine/hooks';
 import { useEffect, useRef, useState } from 'react';
 import { Outlet, useNavigate } from 'react-router-dom';
+
+import { AppSider, Button, Resizer } from '@/components';
+import { TodoApp } from '@/components';
+import { useUser } from '@/hooks';
+import { useTauriExtension } from '@/hooks/use-tauri-extension';
+import useAppConfigStore from '@/store/config-store';
+import useUserStore from '@/store/user-store';
 
 export const HomeLayout = () => {
     const { Header, Content, Sider } = Layout;

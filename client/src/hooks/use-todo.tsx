@@ -1,8 +1,9 @@
-import { http, TodoAPI } from '@/apis';
+import useSWR, { KeyedMutator } from 'swr';
+
+import { TodoAPI, http } from '@/apis';
 import { EventClient } from '@/hooks/use-event';
 import { CalendarEvent, useEventStore, useTodoStore } from '@/store';
 import { Todo } from '@/store/todo-store';
-import useSWR, { KeyedMutator } from 'swr';
 
 const fetcher = (url: string) => {
     // http.interceptors.response.clear(); // clear all notification

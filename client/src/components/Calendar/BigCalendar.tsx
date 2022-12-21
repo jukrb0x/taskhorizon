@@ -1,32 +1,34 @@
-import './styles/animation.scss';
-import './styles/default/dragAndDrop.scss';
-// import luxon from 'luxon';
-import './styles/default/styles.scss';
+import {
+    ClientRectObject,
+    FloatingFocusManager,
+    FloatingOverlay,
+    FloatingPortal,
+    autoUpdate,
+    flip,
+    offset,
+    shift,
+    useDismiss,
+    useFloating,
+    useInteractions,
+    useRole
+} from '@floating-ui/react-dom-interactions';
+import { useEventListener } from '@mantine/hooks';
+import moment from 'moment';
+import { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { Calendar, SlotInfo, luxonLocalizer, momentLocalizer } from 'react-big-calendar';
+import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
+import { CSSTransition } from 'react-transition-group';
+
 import { EventCard, EventCardMode } from '@/components';
 import CustomToolbar from '@/components/Calendar/components/CustomToolbar';
 import { useTodo } from '@/hooks';
 import { useEvent } from '@/hooks/use-event';
 import { CalendarEvent, EventIdGenerator } from '@/store/event-store';
-import {
-    flip,
-    offset,
-    shift,
-    useFloating,
-    FloatingPortal,
-    FloatingFocusManager,
-    useInteractions,
-    useRole,
-    useDismiss,
-    FloatingOverlay,
-    autoUpdate,
-    ClientRectObject
-} from '@floating-ui/react-dom-interactions';
-import { useEventListener } from '@mantine/hooks';
-import moment from 'moment';
-import { SyntheticEvent, useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Calendar, luxonLocalizer, momentLocalizer, SlotInfo } from 'react-big-calendar';
-import withDragAndDrop from 'react-big-calendar/lib/addons/dragAndDrop';
-import { CSSTransition } from 'react-transition-group';
+
+import './styles/animation.scss';
+import './styles/default/dragAndDrop.scss';
+// import luxon from 'luxon';
+import './styles/default/styles.scss';
 
 const localizer = momentLocalizer(moment); // todo: use luxon, later when we need multi-timezone support, moment.js is not good enough
 

@@ -1,8 +1,4 @@
-import { Settings } from '@/components';
-import { useTauriExtension, useUser } from '@/hooks';
-import useAppConfigStore from '@/store/config-store';
-import useUserStore from '@/store/user-store';
-import { ActionIcon, Divider, Group, Menu, Avatar, Text } from '@mantine/core';
+import { ActionIcon, Avatar, Divider, Group, Menu, Text } from '@mantine/core';
 import {
     IconBrandGithub,
     IconCalendar,
@@ -13,6 +9,11 @@ import {
 } from '@tabler/icons';
 import clsx from 'clsx';
 import { useState } from 'react';
+
+import { Settings } from '@/components';
+import { useTauriExtension, useUser } from '@/hooks';
+import useAppConfigStore from '@/store/config-store';
+import useUserStore from '@/store/user-store';
 
 const UserActionIcon = (props: {
     username: string;
