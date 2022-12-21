@@ -79,7 +79,7 @@ const ProfileCard = ({
                             size={'md'}
                             onClick={onEditClicked}
                         >
-                            Edit{' '}
+                            Edit
                         </Button>
                     </Group>
                 </Card.Section>
