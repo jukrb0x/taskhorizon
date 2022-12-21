@@ -1,7 +1,7 @@
 import { Controller, Inject, ProviderScope, Scope } from '@tsed/di';
 import { Email, Get, MaxLength, MinLength, Post } from '@tsed/schema';
 import { BodyParams } from '@tsed/platform-params';
-import { $log, Req } from '@tsed/common';
+import { $log, MultipartFile, PlatformMulterFile, Req } from '@tsed/common';
 import { UserResponseModel, UserService } from '@/services/UserService';
 import { BadRequest } from '@tsed/exceptions';
 import { JwtAuth } from '@/decorators/JwtAuth';
@@ -54,5 +54,15 @@ export class UserController {
         return true; // jwt client logout
         // TODO: implement logout with a blacklist
         // return this.userService.logout(token);
+    }
+
+    // ---------
+    // User Profile Settings
+    // ---------
+
+    // TODO
+    // @Post('/upload/avatar')
+    async uploadAvatar(@MultipartFile('file') image: PlatformMulterFile) {
+        //         return this.userService.uploadAvatar(payload.username, avatar);
     }
 }

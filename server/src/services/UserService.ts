@@ -143,4 +143,9 @@ export class UserService {
             throw new InternalServerError('Invalid token');
         }
     }
+
+    // TODO
+    uploadAvatar(username: string, avatar: string) {
+        // return Promise.resolve(undefined);
+    }
 }
