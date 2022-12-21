@@ -20,6 +20,7 @@ export * from './Settings/Settings';
 export * from './Settings/SettingsAbout';
 export * from './Settings/SettingsNavTabs';
 export * from './Settings/SettingsProfile';
+export * from './Settings/SettingsShortcuts';
 export * from './Spacer/Spacer';
 export * from './Todo/TodoApp';
 export * from './Todo/TodoInput';

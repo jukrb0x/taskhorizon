@@ -140,12 +140,14 @@ export const SettingsProfile = () => {
                                     Reset
                                 </MButton>
                             </Group>
-                            <TextInput label="Email" placeholder="your@email.com" />
-                            <PasswordInput label="New Password" placeholder="New password" />
-                            <PasswordInput
-                                label="Confirm Password"
-                                placeholder="Confirm your new password"
-                            />
+                            <TextInput label="Email" placeholder="your_new@email.com" />
+                            <Group position={'apart'} grow>
+                                <PasswordInput label="New Password" placeholder="New password" />
+                                <PasswordInput
+                                    label="Confirm Password"
+                                    placeholder="Confirm your new password"
+                                />
+                            </Group>
                             <PasswordInput
                                 label="Current Password"
                                 placeholder="This is required to save changes"
