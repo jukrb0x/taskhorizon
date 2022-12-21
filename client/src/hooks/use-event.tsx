@@ -134,8 +134,7 @@ const locallyUpdateLinkedTodosToEvent = (event: CalendarEvent) => {
         if (todo) {
             const next = {
                 ...todo,
-                title: event.title,
-                completed: event.completed
+                title: event.title
             };
             await useTodoStore.getState().setTodo(todoId, next);
         }
