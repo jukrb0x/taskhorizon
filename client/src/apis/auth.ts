@@ -57,4 +57,4 @@ export const AuthAPI = {
     logout
 };
 
-if (import.meta.hot) import.meta.hot.acceptExports('AuthAPI');
+if (import.meta.hot) import.meta.hot.acceptExports(['AuthAPI', 'cleanAllCache']);
