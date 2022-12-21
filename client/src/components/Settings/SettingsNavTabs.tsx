@@ -33,4 +33,5 @@ export const SettingNavContent = ({ activeTab }: { activeTab: SettingsNavTabs })
     }
 };
 
-if (import.meta.hot) import.meta.hot.acceptExports(['SettingsNavs', 'SettingsNavTabs']);
+if (import.meta.hot)
+    import.meta.hot.acceptExports(['SettingsNavs', 'SettingsNavTabs', 'SettingNavContent']);

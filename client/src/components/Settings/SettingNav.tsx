@@ -1,8 +1,8 @@
 import { AuthAPI } from '@/apis';
-import { SettingsAbout, SettingsNavTabs, SettingsProfile } from '@/components';
+import { SettingsNavTabs } from '@/components';
 import { SettingsNavs } from '@/components/Settings/SettingsNavTabs';
 import { Button, Divider, Text } from '@mantine/core';
-import { IconLogout, IconPacman, IconUser } from '@tabler/icons';
+import { IconLogout } from '@tabler/icons';
 import { ReactNode } from 'react';
 
 const SettingNavButton = ({

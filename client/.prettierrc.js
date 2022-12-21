@@ -7,7 +7,6 @@ module.exports = {
     useTabs: false,
     tabWidth: 4,
     quoteProps: 'consistent',
-    importOrder: 'auto',
     importOrderSeparation: true,
     importOrderSortSpecifiers: true
 };
