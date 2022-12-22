@@ -1,8 +1,7 @@
 
 <h1>
 <div align="center">
-    <img width="310" alt="image" src="docs/logo.png" />
-    <br />
+    <img width="310" alt="image" src="docs/logo.png" /><br />
 <!--
     <samp>
       TaskHorizon
@@ -17,6 +16,8 @@
 </p>
 
 ![demo](./docs/background-demo.jpg)
+
+<img alt="image" align="right" src="docs/th_icon_128x128.png" />
 
 TaskHorizon is a productivity app that combines To-do and Calendar functionality to enable effective daily task management and scheduling, providing a seamless experience for users. We are currently focused on developing the web and macOS versions of the app, with several exciting new features in the pipeline.
 
