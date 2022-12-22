@@ -1,4 +1,4 @@
-import { ActionIcon, Avatar, Divider, Group, Menu, Text } from '@mantine/core';
+import { ActionIcon, Avatar, Divider, Group, Menu, Text, Tooltip } from '@mantine/core';
 import {
     IconBrandGithub,
     IconCalendar,
@@ -83,16 +83,20 @@ export const AppSider = () => {
             >
                 <div data-tauri-drag-region className={'tw-space-y-1 tw-grow'}>
                     {isTauri && <div className={'tw-h-4'} />}
-                    <ActionIcon size={'xl'}>
-                        <IconCalendar />
-                    </ActionIcon>
-                    <ActionIcon
-                        size={'xl'}
-                        variant={showSideApp ? 'light' : 'subtle'}
-                        onClick={() => toggleSideApp()}
-                    >
-                        <IconCheckbox />
-                    </ActionIcon>
+                    <Tooltip label={'Calendar'} position={'right'} withArrow>
+                        <ActionIcon size={'xl'} color={'blue'} variant={'transparent'}>
+                            <IconCalendar />
+                        </ActionIcon>
+                    </Tooltip>
+                    <Tooltip label={'Todos'} position={'right'} withArrow>
+                        <ActionIcon
+                            size={'xl'}
+                            variant={showSideApp ? 'light' : 'subtle'}
+                            onClick={() => toggleSideApp()}
+                        >
+                            <IconCheckbox />
+                        </ActionIcon>
+                    </Tooltip>
                 </div>
 
                 <div className={'tw-space-y-1'}>
