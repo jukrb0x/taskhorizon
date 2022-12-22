@@ -2,7 +2,7 @@
     "name": "@th/client",
     "author": "Jabriel",
     "private": true,
-    "version": "0.2.6",
+    "version": "0.2.7",
     "scripts": {
         "barrels": "barrelsby --config .barrelsby.json",
         "dev": "vite",

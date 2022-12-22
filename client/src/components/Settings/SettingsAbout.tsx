@@ -1,4 +1,4 @@
-import { Alert, Card, Code, Group, Text, Title } from '@mantine/core';
+import { Alert, Card, Code, Divider, Group, Text, Title } from '@mantine/core';
 import { IconAlertCircle, IconBrandGithub, IconQuestionMark } from '@tabler/icons';
 
 import { Button, CopyrightBar, WelcomeTitle } from '@/components';
@@ -73,6 +73,12 @@ export const SettingsAbout = () => {
                         </p>
                         <p>
                             <AboutGuaranteeText />
+                        </p>
+                        <p>
+                            <Divider pb={10} />
+                            <Text size={'sm'} color={'gray.7'}>
+                                TaskHorizon Preview Version {import.meta.env.VITE_APP_VERSION}
+                            </Text>
                         </p>
                     </Text>
 
