@@ -6,8 +6,8 @@
         "distDir": "../dist"
     },
     "package": {
-        "productName": "taskhorizon",
-        "version": "0.2.6"
+        "productName": "TaskHorizon",
+        "version": "0.2.7"
     },
     "tauri": {
         "allowlist": {
