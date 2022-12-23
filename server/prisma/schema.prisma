@@ -15,6 +15,10 @@ generator tsed {
     output   = "../prisma/generated/tsed"
 }
 
+generator dbml {
+  provider = "prisma-dbml-generator"
+}
+
 model User {
     id           Int            @id @default(autoincrement())
     updatedAt    DateTime       @default(now()) @updatedAt

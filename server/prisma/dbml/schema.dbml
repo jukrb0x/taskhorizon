@@ -1,0 +1,71 @@
+//// ------------------------------------------------------
+//// THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+//// ------------------------------------------------------
+
+Table User {
+  id Int [pk, increment]
+  updatedAt DateTime [default: `now()`, not null]
+  createdAt DateTime [default: `now()`, not null]
+  email String [unique, not null, note: '@TsED.Email()
+@TsED.Description("Email of the user")']
+  username String [unique, not null]
+  password String [not null]
+  Todo Todo [not null]
+  Event Event [not null]
+  TodoCategory TodoCategory [not null]
+}
+
+Table Todo {
+  id Int [pk, increment]
+  updatedAt DateTime [default: `now()`, not null]
+  createdAt DateTime [default: `now()`, not null]
+  uuid String [unique, not null]
+  title String [not null]
+  completed Boolean [not null, default: false]
+  LinkedEvents Event [not null]
+  Category TodoCategory [not null]
+  categoryId Int [not null]
+  order Int
+  User User [not null]
+  userId Int [not null]
+}
+
+Table TodoCategory {
+  id Int [pk, increment]
+  updatedAt DateTime [default: `now()`, not null]
+  createdAt DateTime [default: `now()`, not null]
+  uuid String [unique, not null]
+  name String [not null]
+  User User [not null]
+  userId Int [not null]
+  Todo Todo [not null]
+}
+
+Table Event {
+  id Int [pk, increment]
+  updatedAt DateTime [default: `now()`, not null]
+  createdAt DateTime [default: `now()`, not null]
+  uuid String [unique, not null]
+  title String [not null]
+  description String
+  start DateTime [not null]
+  end DateTime [not null]
+  allDay Boolean [not null, default: false]
+  completed Boolean [not null, default: false]
+  LinkedTodos Todo [not null]
+  User User [not null]
+  userId Int [not null]
+}
+
+Table EventToTodo {
+  linkedeventsId Int [ref: > Event.id]
+  linkedtodosId Int [ref: > Todo.id]
+}
+
+Ref: Todo.categoryId > TodoCategory.id
+
+Ref: Todo.userId > User.id
+
+Ref: TodoCategory.userId > User.id
+
+Ref: Event.userId > User.id
