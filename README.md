@@ -47,12 +47,16 @@ Version `0.2 (draft)` :
 graph TB;
     A{Tauri Core} <-- Command & Event --> B[WebView]
     A --> Notification
-    B --> React[React] <-- States & Data--> rd_store[Zustand Store] -- Data Persistence --> ls[(LocalStorage)]
+    B --> React[React] <-- States --> store[Zustand Store] -- Data Persistence --> ls[(LocalStorage)]
     React -- Render --> vdom[VirtualDOM]
-    vdom --> cv(Calendar View)
-    vdom --> tv(TodoList View)
-    React -. IPC through Tauri Core .-> Notification
-
+    vdom --> al(Application Layout)
+    al --> cv(Calendar View)
+    al --> tv(TodoList View)
+    al --> us(UserSettings view)
+    React -- IPC through Tauri Core .-> Notification
+    store -- Data Fetching --> ch[Custom Hooks] -- SWR --> axios[Axios XMLHttpRequests]
+    React -- APIs --> axios
+    
 ```
 
 ### Frontend
