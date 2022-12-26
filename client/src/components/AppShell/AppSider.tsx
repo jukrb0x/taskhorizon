@@ -83,20 +83,24 @@ export const AppSider = () => {
             >
                 <div data-tauri-drag-region className={'tw-space-y-1 tw-grow'}>
                     {isTauri && <div className={'tw-h-4'} />}
-                    <Tooltip label={'Calendar'} position={'right'} withArrow>
-                        <ActionIcon size={'xl'} color={'blue'} variant={'transparent'}>
-                            <IconCalendar />
-                        </ActionIcon>
-                    </Tooltip>
-                    <Tooltip label={'Todos'} position={'right'} withArrow>
-                        <ActionIcon
-                            size={'xl'}
-                            variant={showSideApp ? 'light' : 'subtle'}
-                            onClick={() => toggleSideApp()}
-                        >
-                            <IconCheckbox />
-                        </ActionIcon>
-                    </Tooltip>
+                    <div>
+                        <Tooltip label={'Calendar'} position={'right'} withArrow>
+                            <ActionIcon size={'xl'} color={'blue'} variant={'transparent'}>
+                                <IconCalendar />
+                            </ActionIcon>
+                        </Tooltip>
+                    </div>
+                    <div>
+                        <Tooltip label={'Todos'} position={'right'} withArrow>
+                            <ActionIcon
+                                size={'xl'}
+                                variant={showSideApp ? 'light' : 'subtle'}
+                                onClick={() => toggleSideApp()}
+                            >
+                                <IconCheckbox />
+                            </ActionIcon>
+                        </Tooltip>
+                    </div>
                 </div>
 
                 <div className={'tw-space-y-1'}>
