@@ -1,6 +1,7 @@
 import useSWR, { useSWRConfig } from 'swr';
 
 import { AuthAPI, http, refillHttpInterceptor } from '@/apis';
+import useAppConfigStore from '@/store/config-store';
 import useUserStore from '@/store/user-store';
 
 const fetcher = (url: string) => {
@@ -17,20 +18,25 @@ interface Response {
 }
 
 export const useUser = () => {
+    const { offlineMode } = useAppConfigStore();
     const { mutate: globalMutate } = useSWRConfig();
-    const { data, error, isLoading, mutate } = useSWR<Response>('/user', fetcher, {
-        onSuccess: (data) => {
-            if (data) {
-                useUserStore.setState({ ...data.user });
+    const { data, error, isLoading, mutate } = useSWR<Response>(
+        !offlineMode ? '/user' : null,
+        fetcher,
+        {
+            onSuccess: (data) => {
+                if (data) {
+                    useUserStore.setState({ ...data.user });
+                }
+            },
+            onError: async () => {
+                // TODO: currently, if server is down, client will be shut down too
+                //       this is not expected behavior, we want a better recovery solution
+                useUserStore.setState({ uid: -1, username: '', email: '', token: '' });
+                await mutate(undefined, { revalidate: true });
             }
-        },
-        onError: async () => {
-            // TODO: currently, if server is down, client will be shut down too
-            //       this is not expected behavior, we want a better recovery solution
-            useUserStore.setState({ uid: -1, username: '', email: '', token: '' });
-            await mutate(undefined, { revalidate: true });
         }
-    });
+    );
     const { uid, username, email } = useUserStore();
 
     function checkStoreUserStale(data: Response) {

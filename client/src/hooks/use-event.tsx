@@ -4,6 +4,7 @@ import { TodoAPI, http } from '@/apis';
 import { EventAPI } from '@/apis/event';
 import { TodoClient, useTodo } from '@/hooks/use-todo';
 import { Todo, useEventStore, useTodoStore } from '@/store';
+import useAppConfigStore from '@/store/config-store';
 import { CalendarEvent } from '@/store/event-store';
 
 const fetcher = (url: string) => {
@@ -165,8 +166,9 @@ const locallyUpdateLinkedEventsToEvent = (event: CalendarEvent) => {
 };
 
 export const useEvent = (shouldFetch = true) => {
+    const { offlineMode } = useAppConfigStore();
     const { data, error, isLoading, mutate } = useSWR<CalendarEvent[]>(
-        shouldFetch ? '/event/all' : null,
+        !offlineMode ? '/event/all' : null,
         fetcher,
         {
             onSuccess: (data) => compareWithStore(data)

@@ -3,6 +3,7 @@ import useSWR, { KeyedMutator } from 'swr';
 import { TodoAPI, http } from '@/apis';
 import { EventClient } from '@/hooks/use-event';
 import { CalendarEvent, useEventStore, useTodoStore } from '@/store';
+import useAppConfigStore from '@/store/config-store';
 import { Todo } from '@/store/todo-store';
 
 const fetcher = (url: string) => {
@@ -82,8 +83,9 @@ const removeTodo = async (id: string, data?: Todo[] | undefined, mutate?: KeyedM
 };
 
 export const useTodo = (shouldFetch = true) => {
+    const { offlineMode } = useAppConfigStore();
     const { data, error, isLoading, mutate } = useSWR<Todo[]>(
-        shouldFetch ? '/todo/all' : null,
+        !offlineMode ? '/todo/all' : null,
         fetcher,
         {
             onSuccess: (data) => compareWithStore(data)

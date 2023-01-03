@@ -2,6 +2,7 @@ import create, { StateCreator } from 'zustand';
 import { devtools, persist } from 'zustand/middleware';
 
 interface AppConfig {
+    offlineMode: boolean;
     showSideApp: boolean;
     sideAppWidth: number;
     setSideAppWidth: (width: number) => void;
@@ -11,6 +12,7 @@ interface AppConfig {
 }
 
 const AppConfigStore: StateCreator<AppConfig> = (set) => ({
+    offlineMode: false,
     showSideApp: true,
     sideAppWidth: 350,
     setSideAppWidth: (width: number) => set(() => ({ sideAppWidth: width })),
