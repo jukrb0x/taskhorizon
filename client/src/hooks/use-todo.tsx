@@ -35,6 +35,9 @@ const locallyUpdateLinkedEventsToTodo = (todo: Todo) => {
 
 /**
  * @TODO visualization performance [#32](https://github.com/jukrb0x/taskhorizon/issues/32)
+ * @TODO ASYNC CONSISTENCY
+ *       To ensure async consistency, send the timestamp to the server and let the server
+ *       decide whether is the latest update.
  * 1. add this action to action stack, pending status
  * 2. add todo to the local store
  * 3. Promise return successful, update stack status to success
