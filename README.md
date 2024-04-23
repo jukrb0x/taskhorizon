@@ -44,7 +44,7 @@ See [Planned Roadmap](docs/Roadmap.md) and [Project real-time Roadmap](https://j
 Version `0.2 (draft)` :
 
 ```mermaid
-flowChart TB;
+flowchart TB;
     A{Tauri Core} <-- Command & Event --> B[WebView]
     A --> Notification
     B --> React[React] <-- States --> store[Zustand Store] -- Data Persistence --> ls[(LocalStorage)]
@@ -53,7 +53,7 @@ flowChart TB;
     al --> cv(Calendar View)
     al --> tv(TodoList View)
     al --> us(UserSettings view)
-    React -- IPC through Tauri Core --> Notification
+    React -- IPC through Tauri Core .> Notification
     store -- Data Fetching --> ch[Custom Hooks] -- SWR --> axios[Axios XMLHttpRequests]
     React -- APIs --> axios
     
